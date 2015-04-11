@@ -13,7 +13,7 @@ namespace DAL
         public LINQ_DAL()
         {
             DB = new List<Product>();
-
+            /*
             DB.Add(new Product("beans", "food", 0));
             DB.Add(new Product("corn", "food", 1));
             DB.Add(new Product("scale", "food", 2));
@@ -22,6 +22,7 @@ namespace DAL
             DB.Add(new Product("corn", "food", 5));
             DB.Add(new Product("shirt", "clothes", 6));
             DB.Add(new Product("pants", "clothes", 7));
+             */
         }
 
         public void AddProduct(Backend.Product p)

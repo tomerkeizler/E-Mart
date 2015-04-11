@@ -9,8 +9,10 @@ namespace BL
 {
     public class Product_BL : IBL
     {
+        //Fields:
         IDAL itsDAL;
 
+        //Constructors:
         public Product_BL(IDAL dal)
         {
             itsDAL = dal;
