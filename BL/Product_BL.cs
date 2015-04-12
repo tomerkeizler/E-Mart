@@ -37,35 +37,46 @@ namespace BL
         {
             itsDAL.RemoveProduct(p);
         }
-        public void EditProduct(Product p)
+        public void EditProduct(Product oldp, Product newp)
         {
-
+            int tempID = oldp.ProductID;
+            itsDAL.RemoveProduct(oldp);
+            itsDAL.AddProduct(newp);
+            newp.ProductID = tempID;
         }
-
         public List<Product> FindProductByName(string name)
         {
+            if (name == null)
+                throw new System.Data.DataException("Bad Input!");
             return itsDAL.ProductNameQuery(name);
         }
 
 
         public List<Product> FindProductByPrice(int price)
         {
-            throw new NotImplementedException();
+            if (price == null)
+                throw new System.Data.DataException("Bad Input!");
+            return itsDAL.ProductPriceQuery(price);
         }
 
         public List<Product> FindProductByID(int productID)
         {
-            throw new NotImplementedException();
+            if (productID == null)
+                throw new System.Data.DataException("Bad Input!");
+            return itsDAL.ProductIDQuery(productID);
         }
 
         public List<Product> FindProductByLocation(int departID)
         {
-            throw new NotImplementedException();
+            if (departID == null)
+                throw new System.Data.DataException("Bad Input!");
+            return itsDAL.ProductLocationQuery(departID);
         }
-
         public List<Product> FindProductByType(PType type)
         {
-            throw new NotImplementedException();
+            if (type == null)
+                throw new System.Data.DataException("Bad Input!");
+            return itsDAL.ProductTypeQuery(type);
         }
 
         public void AddEmployee(Employee e)
@@ -109,6 +120,12 @@ namespace BL
         }
 
         public List<Employee> FindEmployeeByGender(Gender gender)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public void EditProduct(Product p)
         {
             throw new NotImplementedException();
         }

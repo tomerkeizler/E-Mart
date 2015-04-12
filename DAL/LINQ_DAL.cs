@@ -3,18 +3,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Backend;
+using System.Xml;
+using System.Xml.Serialization;
+using System.IO;
+using System.Security.Cryptography;
+using System.Security.Cryptography.Xml;
+
 
 namespace DAL
 {
     public class LINQ_DAL : IDAL
     {
         public List<Product> DB;
+        XmlSerializer serializerP = new XmlSerializer(typeof(List<Product>));
+        //XmlSerializer serializerE = new XmlSerializer(typeof(List<Employee>));
+        RijndaelManaged key = null;
 
         public LINQ_DAL()
         {
-            DB = new List<Product>();
+
+
+            List<Product> p = new List<Product>();
+            p.Add(new Product("beans", PType.a, 1, PStatus.Empty, 1, 12, 2));
+            key = new RijndaelManaged();
+            WriteToFile(p);
             /*
-            DB.Add(new Product("beans", "food", 0));
+            p.Add(new Product("beans", PType.a, 1, PStatus.Empty, 1, 12, 2));
             DB.Add(new Product("corn", "food", 1));
             DB.Add(new Product("scale", "food", 2));
             DB.Add(new Product("tv", "electronics", 3));
@@ -22,7 +36,23 @@ namespace DAL
             DB.Add(new Product("corn", "food", 5));
             DB.Add(new Product("shirt", "clothes", 6));
             DB.Add(new Product("pants", "clothes", 7));
-             */
+            */
+        }
+
+        public void WriteToFile(Object list)
+        {
+            using (FileStream stream = File.OpenWrite(list.GetType()+"XML.xml"))
+            {
+                serializerP.Serialize(stream, list);
+            }
+        }
+
+        public List<Object> ReadFromFile(List<Object> p)
+        {
+            using (FileStream stream = File.OpenRead("ProductXML.xml"))
+            {
+                return (List<Object>)serializerP.Deserialize(stream);
+            }
         }
 
         public void AddProduct(Backend.Product p)

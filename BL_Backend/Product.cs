@@ -18,6 +18,7 @@ namespace Backend
         private int location;
         private int productID = 0;
         //Constructors:
+        public Product() { }
         public Product(string _name, PType _type, int _location, PStatus _inStock, int _stockCount, int _price, int _productID = 0)
         {
             name = _name;
@@ -28,7 +29,10 @@ namespace Backend
             stockCount = _stockCount;
             price = _price;
         }
-
+        public string ToString()
+        {
+            return name;
+        }
         //Getter and Setters:
         public int ProductID
         {
