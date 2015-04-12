@@ -44,5 +44,86 @@ namespace DAL
         {
             return DB;
         }
+
+
+        public void RemoveProduct(Product p)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void EditProduct(Product p)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Product> ProductIDQuery(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Product> ProductTypeQuery(PType type)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Product> ProductLocationQuery(int departID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Product> ProductPriceQuery(int price)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Employee> GetAllEmployees()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddEmployee(Employee e)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveEmployee(Employee e)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void EditEmployee(Employee e)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Employee> EmployeeFirstNameQuery(string firstName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Employee> EmployeeLastNameQuery(string lastName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Employee> EmployeeIDQuery(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Employee> EmployeeSalaryQuery(int salary)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Employee> EmployeeDepartmentIDQuery(int depID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Employee> EmployeeGenderQuery(Gender gender)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

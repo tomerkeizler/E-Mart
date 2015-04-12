@@ -59,10 +59,11 @@ namespace PL
                     break;
                     case "3":
                         return;//quit the program
-                        break;
                     default:
                         Console.WriteLine("That was an invalid command, please try again\n\n");
-                        break;                }
+                        break;
+                }
+
             }
         }
     }

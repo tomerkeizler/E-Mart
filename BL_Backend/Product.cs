@@ -17,9 +17,8 @@ namespace Backend
         private PStatus inStock;
         private int location;
         private int productID = 0;
-
         //Constructors:
-        public Product(string _name, PType _type, int _productID = 0, int _location, PStatus _inStock, int _stockCount, int _price)
+        public Product(string _name, PType _type, int _location, PStatus _inStock, int _stockCount, int _price, int _productID = 0)
         {
             name = _name;
             type = _type;
