@@ -8,22 +8,24 @@ using System.Xml.Serialization;
 using System.IO;
 using System.Security.Cryptography;
 using System.Security.Cryptography.Xml;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 
 namespace DAL
 {
     public class LINQ_DAL : IDAL
     {
-        public List<Product> DB;
-        XmlSerializer serializerP = new XmlSerializer(typeof(List<Product>));
+        public List<Product> p;
+        private XmlSerializer serializerP = new XmlSerializer(typeof(List<Product>));
         //XmlSerializer serializerE = new XmlSerializer(typeof(List<Employee>));
-        RijndaelManaged key = null;
+        private RijndaelManaged key;
 
         public LINQ_DAL()
         {
 
 
-            List<Product> p = new List<Product>();
+            p = new List<Product>();
             p.Add(new Product("beans", PType.a, 1, PStatus.Empty, 1, 12, 2));
             key = new RijndaelManaged();
             WriteToFile(p);
@@ -38,9 +40,17 @@ namespace DAL
             DB.Add(new Product("pants", "clothes", 7));
             */
         }
-
+        private static List<Object> encrypt(List<Object> list,RijndaelManaged key)
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            MemoryStream memStream = new MemoryStream();
+            formatter.Serialize(memStream, list);
+            byte[] listBytes = memStream.ToArray();
+            return 
+        }
         public void WriteToFile(Object list)
         {
+            
             using (FileStream stream = File.OpenWrite(list.GetType()+"XML.xml"))
             {
                 serializerP.Serialize(stream, list);
