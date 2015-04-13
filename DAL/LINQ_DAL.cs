@@ -10,6 +10,7 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.Xml;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Xml.Linq;
 
 
 namespace DAL
@@ -19,7 +20,7 @@ namespace DAL
         public List<Product> p;
         private XmlSerializer serializerP = new XmlSerializer(typeof(List<Product>));
         //XmlSerializer serializerE = new XmlSerializer(typeof(List<Employee>));
-        private RijndaelManaged key;
+        TripleDESCryptoServiceProvider tDESkey;
 
         public LINQ_DAL()
         {
@@ -27,7 +28,7 @@ namespace DAL
 
             p = new List<Product>();
             p.Add(new Product("beans", PType.a, 1, PStatus.Empty, 1, 12, 2));
-            key = new RijndaelManaged();
+            tDESkey =  new TripleDESCryptoServiceProvider();
             WriteToFile(p);
             /*
             p.Add(new Product("beans", PType.a, 1, PStatus.Empty, 1, 12, 2));
@@ -40,20 +41,33 @@ namespace DAL
             DB.Add(new Product("pants", "clothes", 7));
             */
         }
-        private static List<Object> encrypt(List<Object> list,RijndaelManaged key)
+        public static XmlDocument SerializeToXmlDoc(List<Product> list)
         {
-            BinaryFormatter formatter = new BinaryFormatter();
+            DataContractSerializer dcs = new DataContractSerializer(typeof(List<Product>));
+            MemoryStream ms = new MemoryStream();
+            dcs.WriteObject(ms, list);
+            ms.Position = 0;
+            XmlDocument doc = new XmlDocument();
+            doc.Load(ms);
+            return doc;
+        }
+        private XmlDocument encrypt(XmlDocument list)
+        {
+            /*BinaryFormatter formatter = new BinaryFormatter();
             MemoryStream memStream = new MemoryStream();
             formatter.Serialize(memStream, list);
-            byte[] listBytes = memStream.ToArray();
-            return 
-        }
-        public void WriteToFile(Object list)
-        {
+            byte[] listBytes = memStream.ToArray();*/
             
-            using (FileStream stream = File.OpenWrite(list.GetType()+"XML.xml"))
+            return list;
+        }
+        public void WriteToFile(List<Product> list)
+        {
+            XmlDocument myXML = SerializeToXmlDoc(list);
+            //myXML = encrypt(myXML);
+            using (FileStream stream = File.OpenWrite(myXML.GetType() + "XML.xml"))
             {
-                serializerP.Serialize(stream, list);
+                //serializerP.Serialize(stream, myXML);
+                myXML.Save(stream);
             }
         }
 
@@ -67,13 +81,13 @@ namespace DAL
 
         public void AddProduct(Backend.Product p)
         {
-            DB.Add(p);
+            this.p.Add(p);
         }
 
         public List<Backend.Product> ProductNameQuery(string name)
         {
             //perform query
-            var results = from Product p in DB
+            var results = from Product p in this.p
                           where p.Name == name
                           select p;
             //return results
@@ -82,7 +96,7 @@ namespace DAL
 
         public List<Backend.Product> GetAllProducts()
         {
-            return DB;
+            return p;
         }
 
 
