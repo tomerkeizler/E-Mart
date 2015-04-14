@@ -19,104 +19,80 @@ namespace BL
         }
 
         //Methods:
-        public void addEmployee(Employee e)
+        public void Add(object e)
         {
             //First find conflicts by ID
             List<Employee> AllEmps = itsDAL.GetAllEmployees();
             foreach (Employee emp in AllEmps)
             {
-                if (emp.Id == e.Id)
+                if (emp.Id == ((Employee)e).Id)
                 {
                     throw new System.Data.DuplicateNameException("The ID is already exist in the DB");
                 }
             }
-            itsDAL.AddEmployee(e);
+            itsDAL.AddEmployee((Employee)e);
+        }
+        public void Remove(object obj)
+        {
+            itsDAL.RemoveEmployee((Employee)obj);
+        }
+        public void Edit(object oldObj, object newObj)
+        {
+            itsDAL.RemoveEmployee((Employee)oldObj);
+            this.Add(newObj);
         }
 
-
-        public void AddProduct(Product p)
+        public List<object> FindByName(string name, StringFields field)
         {
-            throw new NotImplementedException();
+            List<object> result;
+            if (name == null) throw new System.Data.DataException("Bad Input!");
+            if (field == StringFields.firstName)
+                result = itsDAL.EmployeeFirstNameQuery(name).Cast<object>().ToList();
+            else if (field == StringFields.lastName)
+            {
+                result = itsDAL.EmployeeLastNameQuery(name).Cast<object>().ToList();
+            }
+            else
+            {
+                throw new System.Data.DataException("Bad Input!");
+            }
+            return result;
         }
 
-        public void RemoveProduct(Product p)
+        public List<object> FindByNumber(int number, IntFields field)
         {
-            throw new NotImplementedException();
+            List<object> result;
+            if (field == IntFields.id)
+            {
+                result = itsDAL.EmployeeIDQuery(number).Cast<object>().ToList();
+            }
+            if (field == IntFields.depID)
+            {
+                result = itsDAL.EmployeeDepartmentIDQuery(number).Cast<object>().ToList();
+            }
+            if (field == IntFields.salary)
+            {
+                result = itsDAL.EmployeeSalaryQuery(number).Cast<object>().ToList();
+            }
+            if (field == IntFields.supervisiorID)
+            {
+                result = itsDAL.EmployeesupervisiorIDQuery(number).Cast<object>().ToList();
+            }
+            else
+            {
+                throw new System.Data.DataException("Bad Input!");
+            }
+            return result;
+                                 
         }
 
-        public void EditProduct(Product p)
+        public List<object> FindByType(object type)
         {
-            throw new NotImplementedException();
-        }
-
-        public List<Product> FindProductByName(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Product> FindProductByPrice(int price)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Product> FindProductByID(int productID)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Product> FindProductByLocation(int departID)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Product> FindProductByType(PType type)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void AddEmployee(Employee e)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RemoveEmployee(Employee e)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void EditEmployee(Employee e)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Employee> FindEmployeeByFirstName(string firstName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Employee> FindEmployeeByLastName(string lastName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Employee> FindEmployeeByID(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Employee> FindEmployeeByDepartmentID(int depID)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Employee> FindEmployeeBySalary(int Salary)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Employee> FindEmployeeByGender(Gender gender)
-        {
-            throw new NotImplementedException();
+            if (!(type is Gender))
+            {
+                throw new System.Data.DataException("Bad Input!");
+            }
+            return itsDAL.EmployeeGenderQuery((Gender)type).Cast<object>().ToList();
         }
     }
 }

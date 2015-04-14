@@ -31,6 +31,7 @@ namespace DAL
         List<Employee> EmployeeLastNameQuery(string lastName);
         List<Employee> EmployeeIDQuery(int id);
         List<Employee> EmployeeSalaryQuery(int salary);
+        List<Employee> EmployeesupervisiorIDQuery(int superID);
         List<Employee> EmployeeDepartmentIDQuery(int depID);
         List<Employee> EmployeeGenderQuery(Gender gender);
     }

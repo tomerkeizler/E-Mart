@@ -8,7 +8,7 @@ using DAL;
 namespace BL
 {
     public enum StringFields { name, firstName, lastName};
-    public enum IntFields { price, stockCount, location, productID };
+    public enum IntFields { price, stockCount, location, productID, id, depID, salary, supervisiorID };
     public interface IBL
     {
         void Add(object obj);
