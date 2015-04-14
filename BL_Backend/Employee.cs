@@ -28,6 +28,12 @@ namespace Backend
             salary = _salary;
             supervisiorID = _supervisiorID;
         }
+
+        public int ToString()
+        {
+            return id;
+        }
+
         //getters and setters:
         public int Id
         {
