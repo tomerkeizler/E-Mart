@@ -18,6 +18,7 @@ namespace DAL
         List<Product> ProductTypeQuery(PType type);
         List<Product> ProductLocationQuery(int departID);
         List<Product> ProductPriceQuery(int price);
+        List<Product> ProductStockCountQuery(int stockCount);
 
 
 

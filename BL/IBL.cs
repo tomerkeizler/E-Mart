@@ -7,27 +7,15 @@ using DAL;
 
 namespace BL
 {
+    public enum StringFields { name, firstName, lastName};
+    public enum IntFields { price, stockCount, location, productID };
     public interface IBL
     {
-        //For Product Entities:
-        void AddProduct(Product p);
-        void RemoveProduct(Product p);
-        void EditProduct(Product p);
-        List<Product> FindProductByName(string name);
-        List<Product> FindProductByPrice(int price);
-        List<Product> FindProductByID(int productID);
-        List<Product> FindProductByLocation(int departID);
-        List<Product> FindProductByType(PType type);
-
-        //For Employees Entities:
-        void AddEmployee(Employee e);
-        void RemoveEmployee(Employee e);
-        void EditEmployee(Employee e);
-        List<Employee> FindEmployeeByFirstName(string firstName);
-        List<Employee> FindEmployeeByLastName(string lastName);
-        List<Employee> FindEmployeeByID(int id);
-        List<Employee> FindEmployeeByDepartmentID(int depID);
-        List<Employee> FindEmployeeBySalary(int Salary);
-        List<Employee> FindEmployeeByGender(Gender gender);
+        void Add(object obj);
+        void Remove(object obj);
+        void Edit(object oldObj, object newObj);
+        List<object> FindByName(string name, StringFields field);
+        List<object> FindByNumber(int number, IntFields field);
+        List<object> FindByType(object type);
     }
 }

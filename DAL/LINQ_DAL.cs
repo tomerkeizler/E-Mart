@@ -27,9 +27,9 @@ namespace DAL
 
 
             p = new List<Product>();
-            p.Add(new Product("beans", PType.a, 1, PStatus.Empty, 1, 12, 2));
+            //p.Add(new Product("beans", PType.a, 1, PStatus.Empty, 1, 12, 2));
             tDESkey =  new TripleDESCryptoServiceProvider();
-            WriteToFile(p);
+            //WriteToFile(p);
             /*
             p.Add(new Product("beans", PType.a, 1, PStatus.Empty, 1, 12, 2));
             DB.Add(new Product("corn", "food", 1));
@@ -84,7 +84,7 @@ namespace DAL
             this.p.Add(p);
         }
 
-        public List<Backend.Product> ProductNameQuery(string name)
+        public List<Product> ProductNameQuery(string name)
         {
             //perform query
             var results = from Product p in this.p
@@ -112,7 +112,10 @@ namespace DAL
 
         public List<Product> ProductIDQuery(int id)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            Console.WriteLine("yaaay");
+            Console.Read();
+            return new List<Product>();
         }
 
         public List<Product> ProductTypeQuery(PType type)
@@ -176,6 +179,12 @@ namespace DAL
         }
 
         public List<Employee> EmployeeGenderQuery(Gender gender)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public List<Product> ProductStockCountQuery(int stockCount)
         {
             throw new NotImplementedException();
         }

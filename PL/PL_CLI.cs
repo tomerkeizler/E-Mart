@@ -46,7 +46,7 @@ namespace PL
                     case "1":
                         Console.WriteLine("Please enter the product name:");
                         cmd = ReceiveCmd();
-                        q = itsBL.FindProductByName(cmd);
+                        q = itsBL.FindByName(cmd, StringFields.name).Cast<Product>().ToList();
                         DisplayResult(q);
                         Console.WriteLine("\nPress any key when ready");
                         Console.ReadLine();
