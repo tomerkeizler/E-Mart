@@ -22,7 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <IntermediateOutputPath>C:\Users\tomer\AppData\Local\Temp\vs364C.tmp\Debug\</IntermediateOutputPath>
+    <IntermediateOutputPath>C:\Users\tomer\AppData\Local\Temp\vsA2E2.tmp\Debug\</IntermediateOutputPath>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -32,7 +32,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <IntermediateOutputPath>C:\Users\tomer\AppData\Local\Temp\vs364C.tmp\Release\</IntermediateOutputPath>
+    <IntermediateOutputPath>C:\Users\tomer\AppData\Local\Temp\vsA2E2.tmp\Release\</IntermediateOutputPath>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>

@@ -47,8 +47,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Employee_BL.cs" />
-    <Compile Include="Product_BL.cs" />
     <Compile Include="IBL.cs" />
+    <Compile Include="Product_BL.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

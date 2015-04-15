@@ -18,10 +18,10 @@ namespace BL
             itsDAL = dal;
         }
 
-        public void AddProduct(Backend.Product p)
+        public void Add(object p)
         {
             //First generate the new product ID
-            List<Product> Allprods = itsDAL.GetAllProducts();
+            List<Product> Allprods = itsDAL.ReadFromFile(Elements.Product).Cast<Product>().ToList();
             int maxID = 0;
             foreach (Product prod in Allprods)
             {
@@ -29,105 +29,79 @@ namespace BL
                     maxID = prod.ProductID;
             }
             //set the new ID
-            p.ProductID = maxID++;
+            ((Product)p).ProductID = maxID++;
             //Add the new product to the system
-            itsDAL.AddProduct(p);
+            Allprods.Add((Product)p);
+            itsDAL.WriteToFile(Allprods.Cast<object>().ToList());
         }
-        public void RemoveProduct(Product p)
+        public void Remove(object p)
         {
-            itsDAL.RemoveProduct(p);
+            List<Product> Allprods = itsDAL.ReadFromFile(Elements.Product).Cast<Product>().ToList();
+            foreach (Product prod in Allprods)
+            {
+                if (prod.Equals(p))
+                {
+                    Allprods.Remove(prod);
+                    break;
+                }
+            }
+            itsDAL.WriteToFile(Allprods.Cast<object>().ToList());
         }
-        public void EditProduct(Product oldp, Product newp)
+        public void Edit(object oldP, object newP)
         {
-            int tempID = oldp.ProductID;
-            itsDAL.RemoveProduct(oldp);
-            itsDAL.AddProduct(newp);
-            newp.ProductID = tempID;
+            List<Product> Allprods = itsDAL.ReadFromFile(Elements.Product).Cast<Product>().ToList();
+            ((Product)newP).ProductID = ((Product)oldP).ProductID;
+            Allprods.Remove((Product)oldP);
+            Allprods.Add((Product)newP);
+            itsDAL.WriteToFile(Allprods.Cast<object>().ToList());
         }
-        public List<Product> FindProductByName(string name)
+        public List<object> FindByName(string name, StringFields field)
         {
-            if (name == null)
+            if (name == null || field != StringFields.name)
                 throw new System.Data.DataException("Bad Input!");
-            return itsDAL.ProductNameQuery(name);
+            List<object> result = itsDAL.ProductNameQuery(name).Cast<object>().ToList();
+            return result;
         }
 
 
-        public List<Product> FindProductByPrice(int price)
+        public List<object> FindByNumber(int num, IntFields field)
         {
-            if (price == null)
+            List<object> result;
+            if (field == IntFields.price)
+            {
+                result = itsDAL.ProductPriceQuery(num).Cast<object>().ToList();
+            }
+            else if (field == IntFields.productID)
+            {
+                result = itsDAL.ProductIDQuery(num).Cast<object>().ToList();
+            }
+            else if (field == IntFields.location)
+            {
+                result = itsDAL.ProductLocationQuery(num).Cast<object>().ToList();
+            }
+            else if (field == IntFields.stockCount)
+            {
+                result = itsDAL.ProductStockCountQuery(num).Cast<object>().ToList();
+            }
+            else
+            {
                 throw new System.Data.DataException("Bad Input!");
-            return itsDAL.ProductPriceQuery(price);
+            }
+            return result;
         }
-
-        public List<Product> FindProductByID(int productID)
+        public List<object> FindByType(object type)
         {
-            if (productID == null)
+            if (!(type is PType))
+            {
                 throw new System.Data.DataException("Bad Input!");
-            return itsDAL.ProductIDQuery(productID);
-        }
-
-        public List<Product> FindProductByLocation(int departID)
-        {
-            if (departID == null)
-                throw new System.Data.DataException("Bad Input!");
-            return itsDAL.ProductLocationQuery(departID);
-        }
-        public List<Product> FindProductByType(PType type)
-        {
-            if (type == null)
-                throw new System.Data.DataException("Bad Input!");
-            return itsDAL.ProductTypeQuery(type);
-        }
-
-        public void AddEmployee(Employee e)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RemoveEmployee(Employee e)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void EditEmployee(Employee e)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Employee> FindEmployeeByFirstName(string firstName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Employee> FindEmployeeByLastName(string lastName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Employee> FindEmployeeByID(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Employee> FindEmployeeByDepartmentID(int depID)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Employee> FindEmployeeBySalary(int Salary)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Employee> FindEmployeeByGender(Gender gender)
-        {
-            throw new NotImplementedException();
+            }
+            return itsDAL.ProductTypeQuery((PType)type).Cast<object>().ToList();
         }
 
 
-        public void EditProduct(Product p)
+        public List<object> GetAll(Elements element)
         {
-            throw new NotImplementedException();
+            return itsDAL.ReadFromFile(element);
         }
     }
 }
