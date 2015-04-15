@@ -15,35 +15,23 @@ using System.Xml.Linq;
 
 namespace DAL
 {
+    public enum Elements { Product, Employee}//Add more
     public class LINQ_DAL : IDAL
     {
-        public List<Product> p;
-        private XmlSerializer serializerP = new XmlSerializer(typeof(List<Product>));
-        //XmlSerializer serializerE = new XmlSerializer(typeof(List<Employee>));
-        TripleDESCryptoServiceProvider tDESkey;
+        //Fields:
+        private List<object> p;
+        private XmlSerializer SerializerObj;
 
+        //Constuctors:
         public LINQ_DAL()
         {
-
-
-            p = new List<Product>();
-            //p.Add(new Product("beans", PType.a, 1, PStatus.Empty, 1, 12, 2));
-            tDESkey =  new TripleDESCryptoServiceProvider();
-            //WriteToFile(p);
-            /*
-            p.Add(new Product("beans", PType.a, 1, PStatus.Empty, 1, 12, 2));
-            DB.Add(new Product("corn", "food", 1));
-            DB.Add(new Product("scale", "food", 2));
-            DB.Add(new Product("tv", "electronics", 3));
-            DB.Add(new Product("scale", "electronics", 4));
-            DB.Add(new Product("corn", "food", 5));
-            DB.Add(new Product("shirt", "clothes", 6));
-            DB.Add(new Product("pants", "clothes", 7));
-            */
+            SerializerObj = new XmlSerializer(typeof(List<object>), new Type[] { typeof(Product) });
         }
-        public static XmlDocument SerializeToXmlDoc(List<Product> list)
+
+        //Behaviour:
+        public static XmlDocument SerializeToXmlDoc(List<object> list)
         {
-            DataContractSerializer dcs = new DataContractSerializer(typeof(List<Product>));
+            DataContractSerializer dcs = new DataContractSerializer(typeof(List<object>));
             MemoryStream ms = new MemoryStream();
             dcs.WriteObject(ms, list);
             ms.Position = 0;
@@ -51,34 +39,20 @@ namespace DAL
             doc.Load(ms);
             return doc;
         }
-        private XmlDocument encrypt(XmlDocument list)
+        public void WriteToFile(List<object> list)
         {
-            /*BinaryFormatter formatter = new BinaryFormatter();
-            MemoryStream memStream = new MemoryStream();
-            formatter.Serialize(memStream, list);
-            byte[] listBytes = memStream.ToArray();*/
-            
-            return list;
-        }
-        public void WriteToFile(List<Product> list)
-        {
-            XmlDocument myXML = SerializeToXmlDoc(list);
-            //myXML = encrypt(myXML);
-            using (FileStream stream = File.OpenWrite(myXML.GetType() + "XML.xml"))
-            {
-                //serializerP.Serialize(stream, myXML);
-                myXML.Save(stream);
-            }
+            TextWriter WriteFileStream = new StreamWriter(list.ElementAt(0).GetType()+".xml");
+            SerializerObj.Serialize(WriteFileStream, list);
         }
 
-        public List<Object> ReadFromFile(List<Object> p)
+        public List<object> ReadFromFile(Elements element)
         {
-            using (FileStream stream = File.OpenRead("ProductXML.xml"))
+            using (FileStream stream = File.OpenRead("Backend."+element.ToString()+".xml"))
             {
-                return (List<Object>)serializerP.Deserialize(stream);
+                return (List<object>)SerializerObj.Deserialize(stream);
             }
         }
-
+        
         public void AddProduct(Backend.Product p)
         {
             this.p.Add(p);
@@ -94,7 +68,7 @@ namespace DAL
             return results.ToList();
         }
 
-        public List<Backend.Product> GetAllProducts()
+        public List<object> GetAllProducts()
         {
             return p;
         }
@@ -112,10 +86,7 @@ namespace DAL
 
         public List<Product> ProductIDQuery(int id)
         {
-            //throw new NotImplementedException();
-            Console.WriteLine("yaaay");
-            Console.Read();
-            return new List<Product>();
+            throw new NotImplementedException();
         }
 
         public List<Product> ProductTypeQuery(PType type)
@@ -185,6 +156,12 @@ namespace DAL
 
 
         public List<Product> ProductStockCountQuery(int stockCount)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public List<Employee> EmployeesupervisiorIDQuery(int superID)
         {
             throw new NotImplementedException();
         }

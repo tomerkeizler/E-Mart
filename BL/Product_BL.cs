@@ -21,7 +21,7 @@ namespace BL
         public void Add(object p)
         {
             //First generate the new product ID
-            List<Product> Allprods = itsDAL.GetAllProducts();
+            List<Product> Allprods = itsDAL.ReadFromFile(Elements.Product).Cast<Product>().ToList();
             int maxID = 0;
             foreach (Product prod in Allprods)
             {
@@ -31,18 +31,30 @@ namespace BL
             //set the new ID
             ((Product)p).ProductID = maxID++;
             //Add the new product to the system
-            itsDAL.AddProduct((Product)p);
+            Allprods.Add((Product)p);
+            itsDAL.WriteToFile(Allprods.Cast<object>().ToList());
         }
         public void Remove(object p)
         {
-            itsDAL.RemoveProduct((Product)p);
+            List<Product> Allprods = itsDAL.ReadFromFile(Elements.Product).Cast<Product>().ToList();
+            foreach (Product prod in Allprods)
+            {
+                if (prod.Equals(p))
+                {
+                    Allprods.Remove(prod);
+                    break;
+                }
+            }
+            itsDAL.WriteToFile(Allprods.Cast<object>().ToList());
         }
         public void Edit(object oldP, object newP)
         {
+            List<Product> Allprods = itsDAL.ReadFromFile(Elements.Product).Cast<Product>().ToList();
             int tempID = ((Product)oldP).ProductID;
-            itsDAL.RemoveProduct((Product)oldP);
-            itsDAL.AddProduct((Product)newP);
+            Allprods.Remove((Product)oldP);
             ((Product)newP).ProductID = tempID;
+            Allprods.Add((Product)newP);
+            itsDAL.WriteToFile(Allprods.Cast<object>().ToList());
         }
         public List<object> FindByName(string name, StringFields field)
         {
@@ -85,6 +97,12 @@ namespace BL
                 throw new System.Data.DataException("Bad Input!");
             }
             return itsDAL.ProductTypeQuery((PType)type).Cast<object>().ToList();
+        }
+
+
+        public List<object> GetAll(Elements element)
+        {
+            return itsDAL.ReadFromFile(element);
         }
     }
 }
