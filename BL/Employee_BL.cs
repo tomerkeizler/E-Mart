@@ -21,25 +21,40 @@ namespace BL
         //Methods:
         public void Add(object e)
         {
-            //First find conflicts by ID
-            List<Employee> AllEmps = itsDAL.GetAllEmployees();
-            foreach (Employee emp in AllEmps)
+            //First generate the new product ID
+            List<Employee> Allemps = itsDAL.ReadFromFile(Elements.Employee).Cast<Employee>().ToList();
+            int maxID = 0;
+            foreach (Employee emp in Allemps)
             {
-                if (emp.Id == ((Employee)e).Id)
+                if (emp.Id > maxID)
+                    maxID = emp.Id;
+            }
+            //set the new ID
+            ((Employee)e).Id = maxID++;
+            //Add the new product to the system
+            Allemps.Add((Employee)e);
+            itsDAL.WriteToFile(Allemps.Cast<object>().ToList());
+        }
+        public void Remove(object e)
+        {
+            List<Employee> Allemps = itsDAL.ReadFromFile(Elements.Employee).Cast<Employee>().ToList();
+            foreach (Employee emp in Allemps)
+            {
+                if (emp.Equals(e))
                 {
-                    throw new System.Data.DuplicateNameException("The ID is already exist in the DB");
+                    Allemps.Remove(emp);
+                    break;
                 }
             }
-            itsDAL.AddEmployee((Employee)e);
+            itsDAL.WriteToFile(Allemps.Cast<object>().ToList());
         }
-        public void Remove(object obj)
+        public void Edit(object oldE, object newE)
         {
-            itsDAL.RemoveEmployee((Employee)obj);
-        }
-        public void Edit(object oldObj, object newObj)
-        {
-            itsDAL.RemoveEmployee((Employee)oldObj);
-            this.Add(newObj);
+            List<Employee> Allemps = itsDAL.ReadFromFile(Elements.Employee).Cast<Employee>().ToList();
+            ((Employee)newE).Id = ((Employee)oldE).Id;
+            Allemps.Remove((Employee)oldE);
+            Allemps.Add((Employee)newE);
+            itsDAL.WriteToFile(Allemps.Cast<object>().ToList());
         }
 
         public List<object> FindByName(string name, StringFields field)
@@ -49,13 +64,9 @@ namespace BL
             if (field == StringFields.firstName)
                 result = itsDAL.EmployeeFirstNameQuery(name).Cast<object>().ToList();
             else if (field == StringFields.lastName)
-            {
                 result = itsDAL.EmployeeLastNameQuery(name).Cast<object>().ToList();
-            }
             else
-            {
                 throw new System.Data.DataException("Bad Input!");
-            }
             return result;
         }
 
@@ -93,6 +104,11 @@ namespace BL
                 throw new System.Data.DataException("Bad Input!");
             }
             return itsDAL.EmployeeGenderQuery((Gender)type).Cast<object>().ToList();
+        }
+
+        public List<object> GetAll(Elements element)
+        {
+            return itsDAL.ReadFromFile(element);
         }
     }
 }

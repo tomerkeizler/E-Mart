@@ -50,9 +50,8 @@ namespace BL
         public void Edit(object oldP, object newP)
         {
             List<Product> Allprods = itsDAL.ReadFromFile(Elements.Product).Cast<Product>().ToList();
-            int tempID = ((Product)oldP).ProductID;
+            ((Product)newP).ProductID = ((Product)oldP).ProductID;
             Allprods.Remove((Product)oldP);
-            ((Product)newP).ProductID = tempID;
             Allprods.Add((Product)newP);
             itsDAL.WriteToFile(Allprods.Cast<object>().ToList());
         }
