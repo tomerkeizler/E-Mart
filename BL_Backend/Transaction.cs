@@ -26,9 +26,9 @@ namespace Backend
             receipt = _receipt;
             payment = _payment;
         }
-        public int ToString()
+        public string ToString()
         {
-            return transactionID;
+            return transactionID+"";
         }
         //getters and setters:
         public int Id

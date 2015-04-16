@@ -59,14 +59,14 @@ namespace BL
         {
             if (name == null)
                 throw new System.Data.DataException("Bad Input!");
-            List<object> result = itsDAL.ProductNameQuery(name, StringFields.name).Cast<object>().ToList();
+            List<object> result = itsDAL.ProductNameQuery(name, field).Cast<object>().ToList();
             return result;
         }
 
 
-        public List<object> FindByNumber(int num, IntFields field)
+        public List<object> FindByNumber(int number, IntFields field)
         {
-            return itsDAL.ProductNumberQuery(num, field).Cast<object>().ToList();
+            return itsDAL.ProductNumberQuery(number, field).Cast<object>().ToList();
         }
         public List<object> FindByType(ValueType type)
         {

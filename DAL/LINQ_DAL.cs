@@ -199,17 +199,75 @@ namespace DAL
 
         public List<Employee> EmployeeNameQuery(string name, StringFields field)
         {
-            throw new NotImplementedException();
+            List<Employee> allEmployee = ReadFromFile(Elements.Employee).Cast<Employee>().ToList();
+            List<Employee> filteredEmployee;
+            if (allEmployee.ElementAtOrDefault(0) == null)
+            {
+                throw new InvalidDataException("There is nothing to find from.");
+            }
+            if (field == StringFields.firstName)
+            {
+                filteredEmployee = allEmployee.Where(n => n.FirstName == name).Cast<Employee>().ToList();
+            }
+            else if (field == StringFields.lastName)
+            {
+                filteredEmployee = allEmployee.Where(n => n.LastName == name).Cast<Employee>().ToList();
+            }
+            else
+            {
+                throw new System.Data.DataException("Bad Input!");
+            }
+            return filteredEmployee;
         }
 
         public List<Employee> EmployeeNumberQuery(int number, IntFields field)
         {
-            throw new NotImplementedException();
+            List<Employee> allEmployee = ReadFromFile(Elements.Employee).Cast<Employee>().ToList();
+            List<Employee> filteredEmployee;
+            if (allEmployee.ElementAtOrDefault(0) == null)
+            {
+                throw new InvalidDataException("There is nothing to find from.");
+            }
+            if (field == IntFields.id)
+            {
+                filteredEmployee = allEmployee.Where(n => n.Id == number).Cast<Employee>().ToList();
+            }
+            if (field == IntFields.depID)
+            {
+                filteredEmployee = allEmployee.Where(n => n.DepID == number).Cast<Employee>().ToList();
+            }
+            if (field == IntFields.salary)
+            {
+                filteredEmployee = allEmployee.Where(n => n.Salary == number).Cast<Employee>().ToList();
+            }
+            if (field == IntFields.supervisiorID)
+            {
+                filteredEmployee = allEmployee.Where(n => n.SupervisiorID == number).Cast<Employee>().ToList();
+            }
+            else
+            {
+                throw new System.Data.DataException("Bad Input!");
+            }
+            return filteredEmployee;
         }
 
         public List<Employee> EmployeeTypeQuery(ValueType type)
         {
-            throw new NotImplementedException();
+            List<Employee> allEmployee = ReadFromFile(Elements.Employee).Cast<Employee>().ToList();
+            List<Employee> filteredEmployee;
+            if (allEmployee.ElementAtOrDefault(0) == null)
+            {
+                throw new InvalidDataException("There is nothing to find from.");
+            }
+            if (!(type is Gender))
+            {
+                throw new System.Data.DataException("Bad Input!");
+            }
+            else
+            {
+                filteredEmployee = allEmployee.Where(n => n.Gender.Equals((Gender)type)).Cast<Employee>().ToList();
+            }
+            return filteredEmployee;
         }
     }
 }

@@ -59,51 +59,20 @@ namespace BL
 
         public List<object> FindByName(string name, StringFields field)
         {
-            List<object> result;
-            if (name == null) throw new System.Data.DataException("Bad Input!");
-            if (field == StringFields.firstName)
-                result = itsDAL.EmployeeFirstNameQuery(name).Cast<object>().ToList();
-            else if (field == StringFields.lastName)
-                result = itsDAL.EmployeeLastNameQuery(name).Cast<object>().ToList();
-            else
+            if (name == null)
                 throw new System.Data.DataException("Bad Input!");
+            List<object> result = itsDAL.EmployeeNameQuery(name, field).Cast<object>().ToList();
             return result;
         }
 
         public List<object> FindByNumber(int number, IntFields field)
         {
-            List<object> result;
-            if (field == IntFields.id)
-            {
-                result = itsDAL.EmployeeIDQuery(number).Cast<object>().ToList();
-            }
-            if (field == IntFields.depID)
-            {
-                result = itsDAL.EmployeeDepartmentIDQuery(number).Cast<object>().ToList();
-            }
-            if (field == IntFields.salary)
-            {
-                result = itsDAL.EmployeeSalaryQuery(number).Cast<object>().ToList();
-            }
-            if (field == IntFields.supervisiorID)
-            {
-                result = itsDAL.EmployeesupervisiorIDQuery(number).Cast<object>().ToList();
-            }
-            else
-            {
-                throw new System.Data.DataException("Bad Input!");
-            }
-            return result;
-                                 
+            return itsDAL.EmployeeNumberQuery(number, field).Cast<object>().ToList();                     
         }
 
-        public List<object> FindByType(object type)
+        public List<object> FindByType(ValueType type)
         {
-            if (!(type is Gender))
-            {
-                throw new System.Data.DataException("Bad Input!");
-            }
-            return itsDAL.EmployeeGenderQuery((Gender)type).Cast<object>().ToList();
+            return itsDAL.EmployeeTypeQuery(type).Cast<object>().ToList();
         }
 
         public List<object> GetAll(Elements element)

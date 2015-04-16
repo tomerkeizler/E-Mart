@@ -30,9 +30,9 @@ namespace Backend
             gender = _gender;
         }
 
-        public int ToString()
+        public override string ToString()
         {
-            return memberID;
+            return memberID+"";
         }
 
         //getters and setters:
