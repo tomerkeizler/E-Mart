@@ -43,13 +43,21 @@ namespace DAL
         {
             TextWriter WriteFileStream = new StreamWriter(list.ElementAt(0).GetType()+".xml");
             SerializerObj.Serialize(WriteFileStream, list);
+            WriteFileStream.Close();
         }
 
         public List<object> ReadFromFile(Elements element)
         {
-            using (FileStream stream = File.OpenRead("Backend."+element.ToString()+".xml"))
+            if (File.Exists("Backend."+element.ToString()+".xml"))
             {
+                using (FileStream stream = File.OpenRead("Backend."+element.ToString()+".xml"))
+               {
                 return (List<object>)SerializerObj.Deserialize(stream);
+               }
+            }
+            else
+            {
+                return new List<object>();
             }
         }
         

@@ -52,11 +52,12 @@ namespace PL
                         Console.ReadLine();
                         break;
                     case "2":
-                    //to compile implementation later...
-                    Console.WriteLine("Sorry, this feature has not been implimented yet");
-                    Console.WriteLine("\nPress any key when ready");
-                    Console.ReadLine();
-                    break;
+                        //to compile implementation later...
+                        /*Console.WriteLine("Sorry, this feature has not been implimented yet");
+                        Console.WriteLine("\nPress any key when ready");*/
+                        Product current = new Product("Asaf", PType.a, 2, PStatus.Empty, 2, 12);
+                        itsBL.Add(current);
+                        return;
                     case "3":
                         return;//quit the program
                     default:
