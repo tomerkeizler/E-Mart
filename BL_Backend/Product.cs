@@ -7,6 +7,7 @@ namespace Backend
 {
     public enum PType {a, b ,c};
     public enum PStatus {Empty, LowQuantity, InStock};
+    [Serializable()]
     public class Product
     {
         //Fields:
@@ -29,7 +30,7 @@ namespace Backend
             stockCount = _stockCount;
             price = _price;
         }
-        public string ToString()
+        public override string ToString()
         {
             return name;
         }

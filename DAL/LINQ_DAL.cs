@@ -20,32 +20,97 @@ namespace DAL
     {
         //Fields:
         private XmlSerializer SerializerObj;
+        private static RijndaelManaged myRijndael;
+        private static BinaryFormatter binFormatter;
+        private static byte[] key;
+        private static byte[] iv;
 
         //Constuctors:
         public LINQ_DAL()
         {
-            SerializerObj = new XmlSerializer(typeof(List<object>), new Type[] { typeof(Product) });
+            binFormatter = new BinaryFormatter();
+            SerializerObj = new XmlSerializer(typeof(byte[]), new Type[] { typeof(Product), typeof(byte[]) });
+            myRijndael = new RijndaelManaged();
+            key = new byte[32] { 118, 123, 23, 17, 161, 152, 35, 68, 126, 213, 16, 115, 68, 217, 58, 108, 56, 218, 5, 78, 28, 128, 113, 208, 61, 56, 10, 87, 187, 162, 233, 38 };
+            iv = new byte[16] { 33, 241, 14, 16, 103, 18, 14, 248, 4, 54, 18, 5, 60, 76, 16, 191 };
         }
 
+
         //Behaviour:
-        public static XmlDocument SerializeToXmlDoc(List<object> list)
+        private static byte[] Encrypt(List<object> original)
         {
-            DataContractSerializer dcs = new DataContractSerializer(typeof(List<object>));
-            MemoryStream ms = new MemoryStream();
-            dcs.WriteObject(ms, list);
-            ms.Position = 0;
-            XmlDocument doc = new XmlDocument();
-            doc.Load(ms);
-            return doc;
+            myRijndael.Key = key;
+            myRijndael.IV = iv;
+            var mStream = new MemoryStream();
+            binFormatter.Serialize(mStream, original);
+            byte[] encrypted = EncryptBytes(myRijndael, mStream.ToArray());
+            return encrypted;
         }
+        private static List<object> Decrypt(byte[] encrypted)
+        {
+            myRijndael.Key = key;
+            myRijndael.IV = iv;
+            var mStream = new MemoryStream(encrypted);
+            byte[] decrypted = DecryptBytes(myRijndael, mStream.ToArray());
+            mStream = new MemoryStream(decrypted);
+            List<object> list = binFormatter.Deserialize(mStream) as List<object>;
+            return list;
+        }
+        private static byte[] EncryptBytes(SymmetricAlgorithm alg, byte[] message)
+        {
+            if ((message == null) || (message.Length == 0))
+            {
+                return message;
+            }
+
+            if (alg == null)
+            {
+                throw new ArgumentNullException("alg");
+            }
+
+            using (var stream = new MemoryStream())
+            using (var encryptor = alg.CreateEncryptor())
+            using (var encrypt = new CryptoStream(stream, encryptor, CryptoStreamMode.Write))
+            {
+                encrypt.Write(message, 0, message.Length);
+                encrypt.FlushFinalBlock();
+                return stream.ToArray();
+            }
+        }
+
+        private static byte[] DecryptBytes(SymmetricAlgorithm alg, byte[] message)
+        {
+            if ((message == null) || (message.Length == 0))
+            {
+                return message;
+            }
+
+            if (alg == null)
+            {
+                throw new ArgumentNullException("alg");
+            }
+
+            using (var stream = new MemoryStream())
+            using (var decryptor = alg.CreateDecryptor())
+            using (var encrypt = new CryptoStream(stream, decryptor, CryptoStreamMode.Write))
+            {
+                encrypt.Write(message, 0, message.Length);
+                encrypt.FlushFinalBlock();
+                return stream.ToArray();
+            }
+        }
+        
+
+
         public void WriteToFile(List<object> list)
         {
             if (list.ElementAtOrDefault(0) == null)
             {
                 throw new InvalidDataException("Nothing to Write");
             }
-            TextWriter WriteFileStream = new StreamWriter(list.ElementAtOrDefault(0).GetType() + ".xml");
-            SerializerObj.Serialize(WriteFileStream, list);
+            StreamWriter WriteFileStream = new StreamWriter(list.ElementAtOrDefault(0).GetType() + ".xml");
+            byte[] encrypted = Encrypt(list);
+            SerializerObj.Serialize(WriteFileStream, encrypted);
             WriteFileStream.Close();
         }
 
@@ -55,7 +120,9 @@ namespace DAL
             {
                 using (FileStream stream = File.OpenRead("Backend." + element.ToString() + ".xml"))
                 {
-                    return (List<object>)SerializerObj.Deserialize(stream);
+                    byte[] encrypted = SerializerObj.Deserialize(stream) as byte[];
+                    return Decrypt(encrypted);
+
                 }
             }
             else

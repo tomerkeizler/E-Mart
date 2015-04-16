@@ -29,9 +29,9 @@ namespace Backend
             supervisiorID = _supervisiorID;
         }
 
-        public int ToString()
+        public override string ToString()
         {
-            return id;
+            return id+"";
         }
 
         //getters and setters:
