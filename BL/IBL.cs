@@ -14,7 +14,7 @@ namespace BL
         void Edit(object oldObj, object newObj);
         List<object> FindByName(string name, StringFields field);
         List<object> FindByNumber(int number, IntFields field);
-        List<object> FindByType(object type);
+        List<object> FindByType(ValueType type);
         List<object> GetAll(Elements element);
     }
 }

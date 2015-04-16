@@ -11,6 +11,7 @@ using System.Security.Cryptography.Xml;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml.Linq;
+using System.Reflection;
 
 
 namespace DAL
@@ -18,7 +19,6 @@ namespace DAL
     public class LINQ_DAL : IDAL
     {
         //Fields:
-        private List<object> p;
         private XmlSerializer SerializerObj;
 
         //Constuctors:
@@ -40,135 +40,107 @@ namespace DAL
         }
         public void WriteToFile(List<object> list)
         {
-            TextWriter WriteFileStream = new StreamWriter(list.ElementAt(0).GetType()+".xml");
+            if (list.ElementAtOrDefault(0) == null)
+            {
+                throw new InvalidDataException("Nothing to Write");
+            }
+            TextWriter WriteFileStream = new StreamWriter(list.ElementAtOrDefault(0).GetType() + ".xml");
             SerializerObj.Serialize(WriteFileStream, list);
             WriteFileStream.Close();
         }
 
         public List<object> ReadFromFile(Elements element)
         {
-            if (File.Exists("Backend."+element.ToString()+".xml"))
+            if (File.Exists("Backend." + element.ToString() + ".xml"))
             {
-                using (FileStream stream = File.OpenRead("Backend."+element.ToString()+".xml"))
-               {
-                return (List<object>)SerializerObj.Deserialize(stream);
-               }
+                using (FileStream stream = File.OpenRead("Backend." + element.ToString() + ".xml"))
+                {
+                    return (List<object>)SerializerObj.Deserialize(stream);
+                }
             }
             else
             {
                 return new List<object>();
             }
         }
-        
-        public void AddProduct(Backend.Product p)
+        public List<Product> ProductNameQuery(string name, StringFields field)
         {
-            this.p.Add(p);
-        }
-
-        public List<Product> ProductNameQuery(string name)
-        {
-            //perform query
-            var results = from Product p in this.p
-                          where p.Name == name
-                          select p;
-            //return results
-            return results.ToList();
-        }
-
-        public List<object> GetAllProducts()
-        {
-            return p;
+            List<Product> allProducts = ReadFromFile(Elements.Product).Cast<Product>().ToList();
+            List<Product> filteredProducts;
+            if (allProducts.ElementAtOrDefault(0) == null)
+            {
+                throw new InvalidDataException("There is nothing to find from.");
+            }
+            if (field != StringFields.name)
+            {
+                throw new System.Data.DataException("Bad Input!");
+            }
+            filteredProducts = allProducts.Where(n => n.Name.Equals(name)).Cast<Product>().ToList();
+            return filteredProducts;
         }
 
 
-        public void RemoveProduct(Product p)
+        public List<Product> ProductNumberQuery(int number, IntFields field)
         {
-            throw new NotImplementedException();
+            List<Product> allProducts = ReadFromFile(Elements.Product).Cast<Product>().ToList();
+            List<Product> filteredProducts;
+            if (allProducts.ElementAtOrDefault(0) == null)
+            {
+                throw new InvalidDataException("There is nothing to find from.");
+            }
+            if (field == IntFields.price)
+            {
+                filteredProducts = allProducts.Where(n => n.Price <= number).Cast<Product>().ToList();
+            }
+            else if (field == IntFields.productID)
+            {
+                filteredProducts = allProducts.Where(n => n.ProductID == number).Cast<Product>().ToList();
+            }
+            else if (field == IntFields.location)
+            {
+                filteredProducts = allProducts.Where(n => n.Location == number).Cast<Product>().ToList();
+            }
+            else if (field == IntFields.stockCount)
+            {
+                filteredProducts = allProducts.Where(n => n.StockCount <= number).Cast<Product>().ToList();
+            }
+            else
+            {
+                throw new System.Data.DataException("Bad Input!");
+            }
+            return filteredProducts;
         }
 
-        public void EditProduct(Product p)
+        public List<Product> ProductTypeQuery(ValueType type)
         {
-            throw new NotImplementedException();
+            List<Product> allProducts = ReadFromFile(Elements.Product).Cast<Product>().ToList();
+            List<Product> filteredProducts;
+            if (allProducts.ElementAtOrDefault(0) == null)
+            {
+                throw new InvalidDataException("There is nothing to find from.");
+            }
+            if (!(type is PType))
+            {
+                throw new System.Data.DataException("Bad Input!");
+            }
+            else
+            {
+                filteredProducts = allProducts.Where(n => n.Type.Equals((PType)type)).Cast<Product>().ToList();
+            }
+            return filteredProducts;
         }
 
-        public List<Product> ProductIDQuery(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Product> ProductTypeQuery(PType type)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Product> ProductLocationQuery(int departID)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Product> ProductPriceQuery(int price)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Employee> GetAllEmployees()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void AddEmployee(Employee e)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RemoveEmployee(Employee e)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void EditEmployee(Employee e)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Employee> EmployeeFirstNameQuery(string firstName)
+        public List<Employee> EmployeeNameQuery(string name, StringFields field)
         {
             throw new NotImplementedException();
         }
 
-        public List<Employee> EmployeeLastNameQuery(string lastName)
+        public List<Employee> EmployeeNumberQuery(int number, IntFields field)
         {
             throw new NotImplementedException();
         }
 
-        public List<Employee> EmployeeIDQuery(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Employee> EmployeeSalaryQuery(int salary)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Employee> EmployeeDepartmentIDQuery(int depID)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Employee> EmployeeGenderQuery(Gender gender)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public List<Product> ProductStockCountQuery(int stockCount)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public List<Employee> EmployeesupervisiorIDQuery(int superID)
+        public List<Employee> EmployeeTypeQuery(ValueType type)
         {
             throw new NotImplementedException();
         }

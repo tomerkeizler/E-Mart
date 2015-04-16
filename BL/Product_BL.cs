@@ -57,45 +57,20 @@ namespace BL
         }
         public List<object> FindByName(string name, StringFields field)
         {
-            if (name == null || field != StringFields.name)
+            if (name == null)
                 throw new System.Data.DataException("Bad Input!");
-            List<object> result = itsDAL.ProductNameQuery(name).Cast<object>().ToList();
+            List<object> result = itsDAL.ProductNameQuery(name, StringFields.name).Cast<object>().ToList();
             return result;
         }
 
 
         public List<object> FindByNumber(int num, IntFields field)
         {
-            List<object> result;
-            if (field == IntFields.price)
-            {
-                result = itsDAL.ProductPriceQuery(num).Cast<object>().ToList();
-            }
-            else if (field == IntFields.productID)
-            {
-                result = itsDAL.ProductIDQuery(num).Cast<object>().ToList();
-            }
-            else if (field == IntFields.location)
-            {
-                result = itsDAL.ProductLocationQuery(num).Cast<object>().ToList();
-            }
-            else if (field == IntFields.stockCount)
-            {
-                result = itsDAL.ProductStockCountQuery(num).Cast<object>().ToList();
-            }
-            else
-            {
-                throw new System.Data.DataException("Bad Input!");
-            }
-            return result;
+            return itsDAL.ProductNumberQuery(num, field).Cast<object>().ToList();
         }
-        public List<object> FindByType(object type)
+        public List<object> FindByType(ValueType type)
         {
-            if (!(type is PType))
-            {
-                throw new System.Data.DataException("Bad Input!");
-            }
-            return itsDAL.ProductTypeQuery((PType)type).Cast<object>().ToList();
+            return itsDAL.ProductTypeQuery(type).Cast<object>().ToList();
         }
 
 

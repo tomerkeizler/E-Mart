@@ -13,22 +13,14 @@ namespace DAL
         List<object> ReadFromFile(Elements element);
 
         //Products:
-        List<Product> ProductNameQuery(string name);
-        List<Product> ProductIDQuery(int id);
-        List<Product> ProductTypeQuery(PType type);
-        List<Product> ProductLocationQuery(int departID);
-        List<Product> ProductPriceQuery(int price);
-        List<Product> ProductStockCountQuery(int stockCount);
-
+        List<Product> ProductNameQuery(string name, StringFields field);
+        List<Product> ProductNumberQuery(int number, IntFields field);
+        List<Product> ProductTypeQuery(ValueType type);
 
 
         //Employees:
-        List<Employee> EmployeeFirstNameQuery(string firstName);
-        List<Employee> EmployeeLastNameQuery(string lastName);
-        List<Employee> EmployeeIDQuery(int id);
-        List<Employee> EmployeeSalaryQuery(int salary);
-        List<Employee> EmployeesupervisiorIDQuery(int superID);
-        List<Employee> EmployeeDepartmentIDQuery(int depID);
-        List<Employee> EmployeeGenderQuery(Gender gender);
+        List<Employee> EmployeeNameQuery(string name, StringFields field);
+        List<Employee> EmployeeNumberQuery(int number, IntFields field);
+        List<Employee> EmployeeTypeQuery(ValueType type);
     }
 }
