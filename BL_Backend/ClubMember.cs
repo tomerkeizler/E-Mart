@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BL_Backend
+namespace Backend
 {
     public enum Gender {Male, Female };
     class ClubMember

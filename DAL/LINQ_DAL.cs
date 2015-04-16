@@ -15,7 +15,6 @@ using System.Xml.Linq;
 
 namespace DAL
 {
-    public enum Elements { Product, Employee}//Add more
     public class LINQ_DAL : IDAL
     {
         //Fields:

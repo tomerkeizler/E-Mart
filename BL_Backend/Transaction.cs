@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BL_Backend
+namespace Backend
 {
     public enum Is_a_return { Return, Purchase };
     public enum PaymentMethod { Cash, Check, Visa };
