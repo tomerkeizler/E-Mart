@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Backend
 {
-    class Department
+    public class Department
     {
         //Fields:
         private string name;
@@ -18,7 +18,7 @@ namespace Backend
             name = _name;
             id = _id;
         }
-        public string ToString()
+        public override string ToString()
         {
             return name;
         }

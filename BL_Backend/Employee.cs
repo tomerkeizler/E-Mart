@@ -28,7 +28,7 @@ namespace Backend
             supervisiorID = _supervisiorID;
         }
 
-        public string ToString()
+        public override string ToString()
         {
             return firstName + lastName;
         }

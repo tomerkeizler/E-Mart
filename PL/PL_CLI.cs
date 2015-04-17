@@ -46,7 +46,7 @@ namespace PL
                     case "1":
                         Console.WriteLine("Please enter the product name:");
                         cmd = ReceiveCmd();
-                        //q = itsBL.FindByName(cmd, StringFields.name).Cast<Product>().ToList();  //************************************ For QueryString!!
+                        q = itsBL.FindByName(cmd, StringFields.name).Cast<Product>().ToList();  //************************************ For QueryString!!
                         //q = itsBL.FindByNumber(Convert.ToInt32(cmd), IntFields.*INTTYPE*).Cast<Product>().ToList(); **************** For QueryInt!!
                         /*if (Enum.IsDefined(typeof(PType), cmd))  ******************************************************************* For QueryType!!
                         {
@@ -56,7 +56,7 @@ namespace PL
                         }
                          */
                         Console.WriteLine("\nPress any key when ready");
-                        //DisplayResult(q); //****************************************************************************************** For Display Result Of Query!!
+                        DisplayResult(q); //****************************************************************************************** For Display Result Of Query!!
                         Console.ReadLine();
                         break;
                     case "2":

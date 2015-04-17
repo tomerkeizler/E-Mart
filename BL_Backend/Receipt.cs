@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Backend
 {
-    class Receipt
+    public class Receipt
     {
         //Fields:
         private List<int> productsIDs;

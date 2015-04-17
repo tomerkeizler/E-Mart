@@ -8,7 +8,7 @@ namespace Backend
 {
     public enum Is_a_return { Return, Purchase };
     public enum PaymentMethod { Cash, Check, Visa };
-    class Transaction
+    public class Transaction
     {
         //Fields:
         private int transactionID;
@@ -26,7 +26,7 @@ namespace Backend
             receipt = _receipt;
             payment = _payment;
         }
-        public string ToString()
+        public override string ToString()
         {
             return transactionID+"";
         }

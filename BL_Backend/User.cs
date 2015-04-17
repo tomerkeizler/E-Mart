@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BL_Backend
+namespace Backend
 {
-    class User
+    public class User
     {
         //Fields:
         private string username;
@@ -18,7 +18,7 @@ namespace BL_Backend
             username = _username;
             password = _password;
         }
-        public string ToString()
+        public override string ToString()
         {
             return username;
         }
