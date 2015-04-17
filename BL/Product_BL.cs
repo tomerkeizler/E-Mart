@@ -37,15 +37,20 @@ namespace BL
         public void Remove(object p)
         {
             List<Product> Allprods = itsDAL.ReadFromFile(Elements.Product).Cast<Product>().ToList();
-            foreach (Product prod in Allprods)
+            if (!Allprods.Any())
+                throw new NullReferenceException("No Employees to remove!");
+            else
             {
-                if (prod.Equals(p))
+                foreach (Product prod in Allprods)
                 {
-                    Allprods.Remove(prod);
-                    break;
+                    if (prod.Equals(p))
+                    {
+                        Allprods.Remove(prod);
+                        break;
+                    }
                 }
+                itsDAL.WriteToFile(Allprods.Cast<object>().ToList());
             }
-            itsDAL.WriteToFile(Allprods.Cast<object>().ToList());
         }
         public void Edit(object oldP, object newP)
         {
@@ -68,6 +73,7 @@ namespace BL
         {
             return itsDAL.ProductNumberQuery(number, field).Cast<object>().ToList();
         }
+
         public List<object> FindByType(ValueType type)
         {
             return itsDAL.ProductTypeQuery(type).Cast<object>().ToList();
