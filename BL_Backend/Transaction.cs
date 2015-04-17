@@ -46,7 +46,7 @@ namespace Backend
             get { return is_a_return; }
             set { is_a_return = value; }
         }
-        public Receipt receipt
+        public Receipt Receipt
         {
             get { return receipt; }
             set { receipt = value; }
