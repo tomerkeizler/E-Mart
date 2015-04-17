@@ -47,7 +47,6 @@ namespace BL
         public void Edit(object oldE, object newE)
         {
             List<Employee> Allemps = itsDAL.ReadFromFile(Elements.Employee).Cast<Employee>().ToList();
-            ((Employee)newE).Id = ((Employee)oldE).Id;
             Allemps.Remove((Employee)oldE);
             Allemps.Add((Employee)newE);
             itsDAL.WriteToFile(Allemps.Cast<object>().ToList());

@@ -291,7 +291,7 @@ namespace DAL
             throw new NotImplementedException();
         }
 
-        public List<Transaction> TransactionNameQuery(string name, StringFields field)
+        public List<Transaction> TransactionNumberQuery(int number, IntFields field)
         {
             throw new NotImplementedException();
         }

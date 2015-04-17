@@ -49,7 +49,7 @@ namespace BL
         public void Edit(object oldCM, object newCM)
         {
             List<ClubMember> Allclubmems = itsDAL.ReadFromFile(Elements.ClubMember).Cast<ClubMember>().ToList();
-            ((ClubMember)newCM).Id = ((ClubMember)oldCM).Id;
+            ((ClubMember)newCM).MemberID = ((ClubMember)oldCM).MemberID;
             Allclubmems.Remove((ClubMember)oldCM);
             Allclubmems.Add((ClubMember)newCM);
             itsDAL.WriteToFile(Allclubmems.Cast<object>().ToList());
@@ -59,23 +59,23 @@ namespace BL
         {
             if (name == null)
                 throw new System.Data.DataException("Bad Input!");
-            List<object> result = itsDAL.EmployeeNameQuery(name, field).Cast<object>().ToList();
+            List<object> result = itsDAL.ClubMemberNameQuery(name, field).Cast<object>().ToList();
             return result;
         }
 
         public List<object> FindByNumber(int number, IntFields field)
         {
-            throw new NotImplementedException();
+            return itsDAL.ClubMemberNumberQuery(number, field).Cast<object>().ToList(); 
         }
 
         public List<object> FindByType(ValueType type)
         {
-            throw new NotImplementedException();
+            return itsDAL.ClubMemberTypeQuery(type).Cast<object>().ToList();
         }
 
         public List<object> GetAll(Elements element)
         {
-            throw new NotImplementedException();
+            return itsDAL.ReadFromFile(element);
         }
     }
 }

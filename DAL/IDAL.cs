@@ -33,7 +33,7 @@ namespace DAL
         List<Department> DepartmentNumberQuery(int number, IntFields field);
 
         //Transaction:
-        List<Transaction> TransactionNameQuery(string name, StringFields field);
+        List<Transaction> TransactionNumberQuery(int number, IntFields field);
         List<Transaction> TransactionTypeQuery(ValueType type);
 
         //User:
