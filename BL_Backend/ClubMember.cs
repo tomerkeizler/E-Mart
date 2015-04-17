@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace Backend
 {
-    public enum Gender {Male, Female };
     class ClubMember
     {
         //Fields:

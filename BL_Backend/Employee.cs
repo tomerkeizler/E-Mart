@@ -5,7 +5,6 @@ using System.Text;
 
 namespace Backend
 {
-    public enum Gender {Male, Female };
     public class Employee
     {
         //Fields:
@@ -29,9 +28,9 @@ namespace Backend
             supervisiorID = _supervisiorID;
         }
 
-        public override string ToString()
+        public string ToString()
         {
-            return id+"";
+            return firstName + lastName;
         }
 
         //getters and setters:
