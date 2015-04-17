@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Backend
 {
-    public enum Elements { Product, Employee, Department, ClubMember, Transaction };//Add more
-    public enum StringFields { name, firstName, lastName };
-    public enum IntFields { price, stockCount, location, productID, id, depID, salary, supervisiorID };
+    public enum Elements { Product, Employee, Department, ClubMember, Transaction, User };
+    public enum StringFields { name, firstName, lastName, dateOfBirth, username };
+    public enum IntFields { price, stockCount, location, productID, id, depID, salary, supervisiorID, memberID, transactionID };
     public enum Gender { Male, Female };
     class Fields
     {

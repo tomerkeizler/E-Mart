@@ -202,11 +202,11 @@ namespace DAL
             }
             if (field == StringFields.firstName)
             {
-                filteredEmployee = allEmployee.Where(n => n.FirstName == name).Cast<Employee>().ToList();
+                filteredEmployee = allEmployee.Where(n => n.FirstName.Equals(name)).Cast<Employee>().ToList();
             }
             else if (field == StringFields.lastName)
             {
-                filteredEmployee = allEmployee.Where(n => n.LastName == name).Cast<Employee>().ToList();
+                filteredEmployee = allEmployee.Where(n => n.LastName.Equals(name)).Cast<Employee>().ToList();
             }
             else
             {
@@ -268,42 +268,177 @@ namespace DAL
 
         public List<ClubMember> ClubMemberNameQuery(string name, StringFields field)
         {
-            throw new NotImplementedException();
+            List<ClubMember> allClubMember = ReadFromFile(Elements.ClubMember).Cast<ClubMember>().ToList();
+            List<ClubMember> filteredClubMember;
+            if (allClubMember.ElementAtOrDefault(0) == null)
+            {
+                throw new InvalidDataException("There is nothing to find from.");
+            }
+            if (field == StringFields.firstName)
+            {
+                filteredClubMember = allClubMember.Where(n => n.FirstName.Equals(name)).Cast<ClubMember>().ToList();
+            }
+            else if (field == StringFields.lastName)
+            {
+                filteredClubMember = allClubMember.Where(n => n.LastName.Equals(name)).Cast<ClubMember>().ToList();
+            }
+            else
+            {
+                throw new System.Data.DataException("Bad Input!");
+            }
+            return filteredClubMember;
         }
 
         public List<ClubMember> ClubMemberNumberQuery(int number, IntFields field)
         {
-            throw new NotImplementedException();
+            List<ClubMember> allClubMember = ReadFromFile(Elements.ClubMember).Cast<ClubMember>().ToList();
+            List<ClubMember> filteredClubMember;
+            if (allClubMember.ElementAtOrDefault(0) == null)
+            {
+                throw new InvalidDataException("There is nothing to find from.");
+            }
+            if (field == IntFields.memberID)
+            {
+                filteredClubMember = allClubMember.Where(n => n.MemberID == number).Cast<ClubMember>().ToList();
+            }
+            else if (field == IntFields.id)
+            {
+                filteredClubMember = allClubMember.Where(n => n.Id == number).Cast<ClubMember>().ToList();
+            }
+            else if (field == IntFields.transactionID)
+            {
+                filteredClubMember = allClubMember.Where(n => n.TransactionHistory.Any(x => x.Id == number)).Cast<ClubMember>().ToList();
+            }
+            else
+            {
+                throw new System.Data.DataException("Bad Input!");
+            }
+            return filteredClubMember;
         }
 
         public List<ClubMember> ClubMemberTypeQuery(ValueType type)
         {
-            throw new NotImplementedException();
+            List<ClubMember> allClubMember = ReadFromFile(Elements.ClubMember).Cast<ClubMember>().ToList();
+            List<ClubMember> filteredClubMember;
+            if (allClubMember.ElementAtOrDefault(0) == null)
+            {
+                throw new InvalidDataException("There is nothing to find from.");
+            }
+            if (type is Gender)
+            {
+                filteredClubMember = allClubMember.Where(n => n.Gender.Equals((Gender)type)).Cast<ClubMember>().ToList();
+            }
+            else if (type is DateTime)
+            {
+                filteredClubMember = allClubMember.Where(n => n.DateOfBirth.Equals(type)).Cast<ClubMember>().ToList();
+            }
+            else
+            {
+                throw new System.Data.DataException("Bad Input!");
+            }
+            return filteredClubMember;
         }
 
         public List<Department> DepartmentNameQuery(string name, StringFields field)
         {
-            throw new NotImplementedException();
+            List<Department> allDepartment = ReadFromFile(Elements.Department).Cast<Department>().ToList();
+            List<Department> filteredDepartment;
+            if (allDepartment.ElementAtOrDefault(0) == null)
+            {
+                throw new InvalidDataException("There is nothing to find from.");
+            }
+            if (field != StringFields.name)
+            {
+                throw new System.Data.DataException("Bad Input!");
+            }
+            filteredDepartment = allDepartment.Where(n => n.Name.Equals(name)).Cast<Department>().ToList();
+            return filteredDepartment;
         }
 
         public List<Department> DepartmentNumberQuery(int number, IntFields field)
         {
-            throw new NotImplementedException();
+            {
+                List<Department> allDepartment = ReadFromFile(Elements.Department).Cast<Department>().ToList();
+                List<Department> filteredDepartment;
+                if (allDepartment.ElementAtOrDefault(0) == null)
+                {
+                    throw new InvalidDataException("There is nothing to find from.");
+                }
+                if (field != IntFields.id)
+                {
+                    throw new System.Data.DataException("Bad Input!");
+                }
+                filteredDepartment = allDepartment.Where(n => n.Id == number).Cast<Department>().ToList();
+                return filteredDepartment;
+            }
         }
 
-        public List<Transaction> TransactionNameQuery(string name, StringFields field)
+        public List<Transaction> TransactionNumberQuery(int number, IntFields field)
         {
-            throw new NotImplementedException();
+            {
+                List<Transaction> allTransaction = ReadFromFile(Elements.Transaction).Cast<Transaction>().ToList();
+                List<Transaction> filteredTransaction;
+                if (allTransaction.ElementAtOrDefault(0) == null)
+                {
+                    throw new InvalidDataException("There is nothing to find from.");
+                }
+                if (field == IntFields.transactionID)
+                {
+                    filteredTransaction = allTransaction.Where(n => n.Id == number).Cast<Transaction>().ToList();
+                }
+                else if (field == IntFields.productID)
+                {
+                    filteredTransaction = allTransaction.Where(n => n.Receipt.ProductsIDs.Any(x => x.Equals(number))).Cast<Transaction>().ToList();
+                }
+                else
+                {
+                    throw new System.Data.DataException("Bad Input!");
+                }
+                return filteredTransaction;
+            }
         }
 
         public List<Transaction> TransactionTypeQuery(ValueType type)
         {
-            throw new NotImplementedException();
+            List<Transaction> allTransaction = ReadFromFile(Elements.Transaction).Cast<Transaction>().ToList();
+            List<Transaction> filteredTransaction;
+            if (allTransaction.ElementAtOrDefault(0) == null)
+            {
+                throw new InvalidDataException("There is nothing to find from.");
+            }
+            if (type is DateTime)
+            {
+                filteredTransaction = allTransaction.Where(n => n.CurrentDate.Equals(type)).Cast<Transaction>().ToList();
+            }
+            else if (type is Is_a_return)
+            {
+                filteredTransaction = allTransaction.Where(n => n.Is_a_Return.Equals(type)).Cast<Transaction>().ToList();
+            }
+            else if (type is PaymentMethod)
+            {
+                filteredTransaction = allTransaction.Where(n => n.Payment.Equals(type)).Cast<Transaction>().ToList();
+            }
+            else
+            {
+                throw new System.Data.DataException("Bad Input!");
+            }
+            return filteredTransaction;
         }
 
         public List<User> UserNameQuery(string name, StringFields field)
         {
-            throw new NotImplementedException();
+            List<User> allUser = ReadFromFile(Elements.User).Cast<User>().ToList();
+            List<User> filteredUser;
+            if (allUser.ElementAtOrDefault(0) == null)
+            {
+                throw new InvalidDataException("There is nothing to find from.");
+            }
+            if (field != StringFields.username)
+            {
+                throw new System.Data.DataException("Bad Input!");
+            }
+            filteredUser = allUser.Where(n => n.UserName.Equals(name)).Cast<User>().ToList();
+            return filteredUser;
         }
     }
 }

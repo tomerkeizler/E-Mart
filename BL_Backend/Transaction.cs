@@ -12,16 +12,16 @@ namespace Backend
     {
         //Fields:
         private int transactionID;
-        private int dateTime;
+        private DateTime currentDate;
         private Is_a_return is_a_return;
         private Receipt receipt;
         private PaymentMethod payment;
 
         //Constructors:
-        public Transaction(int _transactionID, int _dateTime, Is_a_return _is_a_return, Receipt _receipt, PaymentMethod _payment)
+        public Transaction(int _transactionID, Is_a_return _is_a_return, Receipt _receipt, PaymentMethod _payment)
         {
             transactionID = _transactionID;
-            dateTime = _dateTime;
+            currentDate = DateTime.Today;
             is_a_return = _is_a_return;
             receipt = _receipt;
             payment = _payment;
@@ -35,11 +35,6 @@ namespace Backend
         {
             get { return transactionID; }
             set { transactionID = value; }
-        }
-        public int DateTime
-        {
-            get { return dateTime; }
-            set { dateTime = value; }
         }
         public Is_a_return Is_a_Return
         {
@@ -55,6 +50,10 @@ namespace Backend
         {
             get { return payment; }
             set { payment = value; }
+        }
+        public DateTime CurrentDate
+        {
+            get { return currentDate; }
         }
     }
 }
