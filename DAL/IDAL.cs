@@ -27,7 +27,6 @@ namespace DAL
         List<ClubMember> ClubMemberNameQuery(string name, StringFields field);
         List<ClubMember> ClubMemberNumberQuery(int number, IntFields field);
         List<ClubMember> ClubMemberTypeQuery(ValueType type);
-        List<Transaction> ClubMemberTransactionQuery(int name, ClubMember clubmember);
 
         //Department:
         List<Department> DepartmentNameQuery(string name, StringFields field);

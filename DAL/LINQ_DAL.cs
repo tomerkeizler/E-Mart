@@ -281,11 +281,6 @@ namespace DAL
             throw new NotImplementedException();
         }
 
-        public List<Transaction> ClubMemberTransactionQuery(int name, ClubMember clubmember)
-        {
-            throw new NotImplementedException();
-        }
-
         public List<Department> DepartmentNameQuery(string name, StringFields field)
         {
             throw new NotImplementedException();
