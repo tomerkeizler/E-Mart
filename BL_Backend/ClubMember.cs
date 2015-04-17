@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Backend
 {
-    class ClubMember
+    public class ClubMember
     {
         //Fields:
         private int memberID;

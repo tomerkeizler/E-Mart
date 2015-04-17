@@ -21,32 +21,28 @@ namespace BL
         //Methods:
         public void Add(object e)
         {
-            //First generate the new product ID
+            //Add the new employee to the system
             List<Employee> Allemps = itsDAL.ReadFromFile(Elements.Employee).Cast<Employee>().ToList();
-            int maxID = 0;
-            foreach (Employee emp in Allemps)
-            {
-                if (emp.Id > maxID)
-                    maxID = emp.Id;
-            }
-            //set the new ID
-            ((Employee)e).Id = maxID++;
-            //Add the new product to the system
             Allemps.Add((Employee)e);
             itsDAL.WriteToFile(Allemps.Cast<object>().ToList());
         }
         public void Remove(object e)
         {
             List<Employee> Allemps = itsDAL.ReadFromFile(Elements.Employee).Cast<Employee>().ToList();
-            foreach (Employee emp in Allemps)
+            if (!Allemps.Any())
+                throw new NullReferenceException("No Employees to remove!");
+            else
             {
-                if (emp.Equals(e))
+                foreach (Employee emp in Allemps)
                 {
-                    Allemps.Remove(emp);
-                    break;
+                    if (emp.Equals(e))
+                    {
+                        Allemps.Remove(emp);
+                        break;
+                    }
                 }
+                itsDAL.WriteToFile(Allemps.Cast<object>().ToList());
             }
-            itsDAL.WriteToFile(Allemps.Cast<object>().ToList());
         }
         public void Edit(object oldE, object newE)
         {

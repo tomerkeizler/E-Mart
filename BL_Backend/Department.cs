@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Backend
 {
-    class Department
+    public class Department
     {
         //Fields:
         private string name;

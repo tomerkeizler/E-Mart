@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BL_Backend
 {
-    class User
+    public class User
     {
         //Fields:
         private string username;

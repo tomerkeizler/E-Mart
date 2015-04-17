@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClubMember_BL.cs" />
     <Compile Include="Employee_BL.cs">
       <SubType>Code</SubType>
     </Compile>
