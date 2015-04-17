@@ -7,8 +7,6 @@ using DAL;
 
 namespace BL
 {
-    public enum StringFields { name, firstName, lastName};
-    public enum IntFields { price, stockCount, location, productID, id, depID, salary, supervisiorID };
     public interface IBL
     {
         void Add(object obj);
@@ -16,7 +14,7 @@ namespace BL
         void Edit(object oldObj, object newObj);
         List<object> FindByName(string name, StringFields field);
         List<object> FindByNumber(int number, IntFields field);
-        List<object> FindByType(object type);
+        List<object> FindByType(ValueType type);
         List<object> GetAll(Elements element);
     }
 }

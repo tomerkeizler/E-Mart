@@ -46,17 +46,28 @@ namespace PL
                     case "1":
                         Console.WriteLine("Please enter the product name:");
                         cmd = ReceiveCmd();
-                        q = itsBL.FindByName(cmd, StringFields.name).Cast<Product>().ToList();
-                        DisplayResult(q);
+                        //q = itsBL.FindByName(cmd, StringFields.name).Cast<Product>().ToList();  ************************************ For QueryString!!
+                        //q = itsBL.FindByNumber(Convert.ToInt32(cmd), IntFields.*INTTYPE*).Cast<Product>().ToList(); **************** For QueryInt!!
+                        /*if (Enum.IsDefined(typeof(PType), cmd))  ******************************************************************* For QueryType!!
+                        {
+                            PType PTypeValue = (PType)Enum.Parse(typeof(PType), cmd);
+                            q = itsBL.FindByType(PTypeValue).Cast<Product>().ToList();
+                            DisplayResult(q);
+                        }
+                         */
                         Console.WriteLine("\nPress any key when ready");
+                        //DisplayResult(q); ****************************************************************************************** For Display Result Of Query!!
                         Console.ReadLine();
                         break;
                     case "2":
-                    //to compile implementation later...
-                    Console.WriteLine("Sorry, this feature has not been implimented yet");
-                    Console.WriteLine("\nPress any key when ready");
-                    Console.ReadLine();
-                    break;
+                        //to compile implementation later...
+                        /*Console.WriteLine("Sorry, this feature has not been implimented yet");
+                        Console.WriteLine("\nPress any key when ready");*/
+                        Product current = new Product("Tomer", PType.a, 2, PStatus.Empty, 2, 12);
+                        itsBL.Add(current);
+                        current = new Product("Asaf", PType.b, 3, PStatus.LowQuantity, 10, 300);
+                        itsBL.Add(current);
+                        return;
                     case "3":
                         return;//quit the program
                     default:

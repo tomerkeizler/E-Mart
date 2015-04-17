@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BL_Backend
+namespace Backend
 {
     public enum Is_a_return { Return, Purchase };
     public enum PaymentMethod { Cash, Check, Visa };
@@ -46,7 +46,7 @@ namespace BL_Backend
             get { return is_a_return; }
             set { is_a_return = value; }
         }
-        public Receipt receipt
+        public Receipt Receipt
         {
             get { return receipt; }
             set { receipt = value; }
