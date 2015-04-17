@@ -21,7 +21,7 @@ namespace Backend
                 prices.Add(prod.Price);
             }
         }
-        public string ToString()
+        public override string ToString()
         {
             string str = "";
             for (int i = 0; i < productsIDs.Count; i++ )
@@ -51,9 +51,16 @@ namespace Backend
         }
         public void Remove(Product product)
         {
-            int index = productsIDs.IndexOf(product.ProductID);
-            productsIDs.Remove(index);
-            prices.Remove(index);
+            if (productsIDs.Contains(product.ProductID))
+            {
+                int index = productsIDs.IndexOf(product.ProductID);
+                productsIDs.Remove(index);
+                prices.Remove(index);
+            }
+            else
+            {
+                throw new IndexOutOfRangeException("There is not products like this in the Reciept");
+            }
         }
     }
 }
