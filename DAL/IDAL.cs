@@ -22,5 +22,21 @@ namespace DAL
         List<Employee> EmployeeNameQuery(string name, StringFields field);
         List<Employee> EmployeeNumberQuery(int number, IntFields field);
         List<Employee> EmployeeTypeQuery(ValueType type);
+
+        //ClubMember:
+        List<ClubMember> ClubMemberNameQuery(string name, StringFields field);
+        List<ClubMember> ClubMemberNumberQuery(int number, IntFields field);
+        List<ClubMember> ClubMemberTypeQuery(ValueType type);
+
+        //Department:
+        List<Department> DepartmentNameQuery(string name, StringFields field);
+        List<Department> DepartmentNumberQuery(int number, IntFields field);
+
+        //Transaction:
+        List<Transaction> TransactionNameQuery(string name, StringFields field);
+        List<Transaction> TransactionTypeQuery(ValueType type);
+
+        //User:
+        List<User> UserNameQuery(string name, StringFields field);
     }
 }

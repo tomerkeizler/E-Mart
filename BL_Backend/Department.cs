@@ -18,7 +18,7 @@ namespace Backend
             name = _name;
             id = _id;
         }
-        public string ToString()
+        public override string ToString()
         {
             return name;
         }

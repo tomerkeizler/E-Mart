@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Backend;
-using System.Xml;
 using System.Xml.Serialization;
 using System.IO;
 using System.Security.Cryptography;
-using System.Security.Cryptography.Xml;
-using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml.Linq;
-using System.Reflection;
 
 
 namespace DAL
@@ -268,6 +263,47 @@ namespace DAL
                 filteredEmployee = allEmployee.Where(n => n.Gender.Equals((Gender)type)).Cast<Employee>().ToList();
             }
             return filteredEmployee;
+        }
+
+
+        public List<ClubMember> ClubMemberNameQuery(string name, StringFields field)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<ClubMember> ClubMemberNumberQuery(int number, IntFields field)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<ClubMember> ClubMemberTypeQuery(ValueType type)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Department> DepartmentNameQuery(string name, StringFields field)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Department> DepartmentNumberQuery(int number, IntFields field)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Transaction> TransactionNameQuery(string name, StringFields field)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Transaction> TransactionTypeQuery(ValueType type)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<User> UserNameQuery(string name, StringFields field)
+        {
+            throw new NotImplementedException();
         }
     }
 }

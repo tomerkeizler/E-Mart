@@ -26,7 +26,7 @@ namespace Backend
             receipt = _receipt;
             payment = _payment;
         }
-        public string ToString()
+        public override string ToString()
         {
             return transactionID+"";
         }
