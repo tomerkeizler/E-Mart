@@ -77,5 +77,24 @@ namespace BL
         {
             return itsDAL.ReadFromFile(element);
         }
+        //Method for User Only
+        public bool isItValidUser(User user)
+        {
+            List<User> Allusers = itsDAL.ReadFromFile(Elements.User).Cast<User>().ToList();
+            if (!Allusers.Any())
+                throw new NullReferenceException("There is no users at all!");
+            if (user.UserName == null || user.Password == null)
+            {
+                throw new System.Data.DataException("Bad Input!");
+            }
+            foreach (User _user in Allusers)
+            {
+                if (_user.UserName.Equals(user.UserName) && _user.Password.Equals(user.Password))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }
