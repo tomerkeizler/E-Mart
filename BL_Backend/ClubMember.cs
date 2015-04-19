@@ -14,11 +14,11 @@ namespace Backend
         private string firstName;
         private string lastName;
         private List<Transaction> tranHistory;
-        private int dateOfBirth;
+        private DateTime dateOfBirth;
         private Gender gender;
 
         //Constructors:
-        public ClubMember(int _memID, int _id, string _firstName, string _lastName, List<Transaction> _tranHistory, int dob, Gender _gender)
+        public ClubMember(int _memID, int _id, string _firstName, string _lastName, List<Transaction> _tranHistory, DateTime dob, Gender _gender)
         {
             memberID = _memID;
             id = _id;
@@ -61,7 +61,7 @@ namespace Backend
             get { return tranHistory; }
             set { tranHistory = value; }
         }
-        public int DateOfBirth
+        public DateTime DateOfBirth
         {
             get { return dateOfBirth; }
             set { dateOfBirth = value; }

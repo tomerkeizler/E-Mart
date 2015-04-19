@@ -15,8 +15,13 @@ namespace MainProg1
         {
             
             IDAL adal = new LINQ_DAL();
-            IBL abl = new Product_BL(adal);
-            IPL apl = new PL_CLI(abl);
+            IBL apbl = new Product_BL(adal);
+            IBL acbl = new Product_BL(adal);
+            IBL adbl = new Product_BL(adal);
+            IBL aebl = new Product_BL(adal);
+            IBL atbl = new Product_BL(adal);
+            IBL aubl = new Product_BL(adal);
+            IPL apl = new PL_CLI(apbl,acbl,adbl,aebl,atbl,aubl);
             apl.Run();
 
         }
