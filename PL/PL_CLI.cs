@@ -14,16 +14,18 @@ namespace PL
         private IBL[] cats;
         private string[] catsNames;
 
+
         // constructors
         public PL_CLI(IBL itsClubMemberBL, IBL itsDepartmentBL, IBL itsEmployeeBL, IBL itsProductBL, IBL itsTransactionBL, IBL itsUserBL)
         {
-            cats = new IBL[6];
-            cats[0] = itsClubMemberBL;
-            cats[1] = itsDepartmentBL;
-            cats[2] = itsEmployeeBL;
-            cats[3] = itsProductBL;
-            cats[4] = itsTransactionBL;
-            cats[5] = itsUserBL;
+            cats = new IBL[7];
+            cats[1] = null;
+            cats[1] = itsClubMemberBL;
+            cats[2] = itsDepartmentBL;
+            cats[3] = itsEmployeeBL;
+            cats[4] = itsProductBL;
+            cats[5] = itsTransactionBL;
+            cats[6] = itsUserBL;
             catsNames = new string[6] { "Club member", "Department", "Employee", "Product", "Transaction", "User" };
         }
 
@@ -79,11 +81,11 @@ namespace PL
                 Console.Clear(); //clear the screen
 
                 // Action menu
-                Console.WriteLine("\n--- " + catsNames[categoryNum - 1] + "s management ---");
+                Console.WriteLine("\n--- " + catsNames[categoryNum] + "s management ---");
                 Console.WriteLine("Please select an action:");
-                Console.WriteLine("\t1. Run a query for " + catsNames[categoryNum - 1]);
-                Console.WriteLine("\t2. Add " + catsNames[categoryNum - 1]);
-                Console.WriteLine("\t3. Show all " + catsNames[categoryNum - 1] + "s");
+                Console.WriteLine("\t1. Run a query for " + catsNames[categoryNum]);
+                Console.WriteLine("\t2. Add " + catsNames[categoryNum]);
+                Console.WriteLine("\t3. Show all " + catsNames[categoryNum] + "s");
                 Console.WriteLine("\t4. Exit");
                 cmd = ReceiveCmd();
                 while (!Regex.IsMatch(cmd, @"^[1-4]{1}$")) // checks validity of the input
@@ -144,24 +146,16 @@ namespace PL
                     newObj = CreateUser();
                     break;
             }       
-            cats[categoryNum-1].Add(newObj);
+            cats[categoryNum].Add(newObj);
         }
 
 
-        private ClubMember CreateClubMember()
+
+        private string[][] getInputsForAdd(int categoryNum, string[][] info)
         {
-            // information array about the input fields
-            string[][] info = new string[7][];
-            info[0] = new string[4] { "ID", "^[0-9]{9}$", "exactly 9 digits (0-9)", "" };
-            info[1] = new string[4] { "First name", "^[A-Za-z]{2,}(( )[A-Za-z]{2,})*$", "only letters (A-Z) or (a-z)", "" };
-            info[2] = new string[4] { "Last name", "^[A-Za-z]{2,}(( )[A-Za-z]{2,})*$", "only letters (A-Z) or (a-z)", "" };
-            info[3] = new string[4] { "Day of birth", "^(0[1-9]|[12][0-9]|3[01])$", "a 2-digit number (01-31)", "" };
-            info[4] = new string[4] { "Month of birth", "^(0[1-9]|1[012])$", "a 2-digit number (01-31)", "" };
-            info[5] = new string[4] { "Year of birth", "^((19|20)[0-9][0-9])$", "a 4-digit number (19**) or (20**)", "" };
-            info[6] = new string[4] { "Gender", "^M|m|F|f$", "M for male or F for female", "" };
             // getting inputs from the user
             string cmd;
-            Console.WriteLine("\n--- Creating a new Club member ---");
+            Console.WriteLine("\n--- Creating a new {0} ---", cats[categoryNum]);
             Console.WriteLine("Please enter the following details:");
             for (int i = 0; i < info.Length; i++)
             {
@@ -176,25 +170,182 @@ namespace PL
                 }
                 info[i][3] = cmd;
             }
-            // creation of fields
-            int memberID = 0;
+            return info;
+        }
+
+
+
+        private ClubMember CreateClubMember()
+        {
+            // information array about the input fields
+            string[][] info = new string[7][];
+            info[0] = new string[4] { "ID", "^[0-9]{9}$", "exactly 9 digits (0-9)", "" };
+            info[1] = new string[4] { "First name", "^[A-Za-z]{2,}(( )[A-Za-z]{2,})*$", "only letters (A-Z) or (a-z)", "" };
+            info[2] = new string[4] { "Last name", "^[A-Za-z]{2,}(( )[A-Za-z]{2,})*$", "only letters (A-Z) or (a-z)", "" };
+            info[3] = new string[4] { "Day of birth", "^(0[1-9]|[12][0-9]|3[01])$", "a 2-digit number (01-31)", "" };
+            info[4] = new string[4] { "Month of birth", "^(0[1-9]|1[012])$", "a 2-digit number (01-31)", "" };
+            info[5] = new string[4] { "Year of birth", "^((19|20)[0-9][0-9])$", "a 4-digit number (19**) or (20**)", "" };
+            info[6] = new string[4] { "Gender", "^M|m|F|f$", "M for male or F for female", "" };
+            // getting inputs from the user
+            info = getInputsForAdd(1, info);
+            ////// creation of fields
             int id = int.Parse(info[0][3]);
             string firstName = info[1][3];
             string lastName = info[2][3];
+            // field: Transactions history
             List<Transaction> tranHistory = new List<Transaction>();
+            // field: Date of Birth
             DateTime dateOfBirth = new DateTime(int.Parse(info[5][3]), int.Parse(info[4][3]), int.Parse(info[3][3]));
+            // field: Gender
             Gender gender;
             if (info[6][3] == "m" || info[6][3] == "M")
                 gender = Gender.Male;
             else
                 gender = Gender.Female;
             // final creation
-            return new ClubMember(memberID, id, firstName, lastName, tranHistory, dateOfBirth, gender);
+            return new ClubMember(id, firstName, lastName, tranHistory, dateOfBirth, gender, 0);
         }
 
 
 
 
+        private Department CreateDepartment()
+        {
+            // information array about the input fields
+            string[][] info = new string[1][];
+            info[0] = new string[4] { "Department name", "^[A-Za-z]{2,}(( )[A-Za-z]{2,})*$", "only letters (A-Z) or (a-z)", "" };
+            // getting inputs from the user
+            info = getInputsForAdd(2, info);
+            // creation of fields
+            string name = info[0][3];
+            // final creation
+            return new Department(name, 0);
+        }
+
+
+
+        private Employee CreateEmployee()
+        {
+            // information array about the input fields
+            string[][] info = new string[7][];
+            info[0] = new string[4] { "ID", "^[0-9]{9}$", "exactly 9 digits (0-9)", "" };
+            info[1] = new string[4] { "First name", "^[A-Za-z]{2,}(( )[A-Za-z]{2,})*$", "only letters (A-Z) or (a-z)", "" };
+            info[2] = new string[4] { "Last name", "^[A-Za-z]{2,}(( )[A-Za-z]{2,})*$", "only letters (A-Z) or (a-z)", "" };
+            info[3] = new string[4] { "Department ID", "^[0-9]+$", "only digits (0-9)", "" };
+            info[4] = new string[4] { "Salary", "^[0-9]+$", "only digits (0-9)", "" };
+            info[5] = new string[4] { "Supervisor ID", "^[0-9]+$", "only digits (0-9)", "" };
+            info[6] = new string[4] { "Gender", "^M|m|F|f$", "M for male or F for female", "" };
+            // getting inputs from the user
+            info = getInputsForAdd(3, info);
+            // creation of fields
+            int id = int.Parse(info[0][3]); 
+            string firstName = info[1][3];
+            string lastName = info[2][3];
+            int depID = int.Parse(info[3][3]);
+            int salary = int.Parse(info[4][3]);
+            int supervisorID = int.Parse(info[5][3]);
+            // field: Gender
+            Gender gender;
+            if (info[6][3] == "m" || info[6][3] == "M")
+                gender = Gender.Male;
+            else
+                gender = Gender.Female;
+
+            // final creation
+            return new Employee(firstName, lastName, id, gender, depID, salary, supervisorID);
+        }
+
+
+        private Product CreateProduct()
+        {
+            // information array about the input fields
+            string[][] info = new string[6][];
+            info[0] = new string[4] { "Name", "^[A-Za-z]{2,}(( )[A-Za-z]{2,})*$", "only letters (A-Z) or (a-z)", "" };
+            info[1] = new string[4] { "Product type", "^(a|b|c)$", "one of the types: a, b, c", "" };
+            info[2] = new string[4] { "Price", "^[0-9]+$", "only digits (0-9)", "" };
+            info[3] = new string[4] { "Stock count", "^[0-9]+$", "only digits (0-9)", "" };
+            info[4] = new string[4] { "Product status", "^(1|2|3)$", "one of the following: \n\t1 - Empty, \n\t2 - LowQuantity, \n\t3 - InStock", "" };
+            info[5] = new string[4] { "Location department ID", "^[0-9]+$", "only digits (0-9)", "" };
+            // getting inputs from the user
+            info = getInputsForAdd(4, info);
+            ////// creation of fields
+            // field: Name
+            string name = info[0][3];
+            // field: Product type
+            PType type;
+            if (info[1][3] == "a")
+                type = PType.a;
+            else if (info[1][3] == "b")
+                type = PType.b;
+            else
+                type = PType.c;
+            // field: Price
+            int price = int.Parse(info[2][3]);
+            // field: Stock count
+            int stockCount = int.Parse(info[3][3]);
+            // field: Product status
+            PStatus inStock;
+            if (info[4][3] == "1")
+                inStock = PStatus.Empty;
+            else if (info[4][3] == "2")
+                inStock = PStatus.LowQuantity;
+            else
+                inStock = PStatus.InStock;
+            // field: Location department ID
+            int location = int.Parse(info[5][3]);
+            // final creation
+            return new Product(name, type, location, inStock, stockCount, price, 0);
+        }
+
+
+
+
+        private Transaction CreateTransaction()
+        {
+            // information array about the input fields
+            string[][] info = new string[2][];
+            info[0] = new string[4] { "Transaction type", "^(R|r|P|p)$", "one of the following: \n\tR - Return, \n\tP - Purchase", "" };
+            info[1] = new string[4] { "Payment method", "^(1|2|3)$", "one of the following: \n\t1 - Cash, \n\t2 - Check, \n\t3 - Visa", "" };
+            // getting inputs from the user
+            info = getInputsForAdd(5, info);
+            ////// creation of fields
+            // field: Transaction type
+            Is_a_return is_a_return;
+            if (info[0][3] == "R" || info[0][3] == "r")
+                is_a_return = Is_a_return.Return;
+            else
+                is_a_return = Is_a_return.Purchase;
+            // field: Payment method
+            PaymentMethod payment;
+            if (info[1][3] == "1")
+                payment = PaymentMethod.Cash;
+            else if (info[1][3] == "2")
+                payment = PaymentMethod.Check;
+            else
+                payment = PaymentMethod.Visa;
+            // field: Receipt
+            List<Product> prods = new List<Product>();
+            Receipt receipt = new Receipt(prods);
+            // final creation
+            return new Transaction(0, is_a_return, receipt, payment);
+        }
+
+
+
+        private User CreateUser()
+        {
+            // information array about the input fields
+            string[][] info = new string[2][];
+            info[0] = new string[4] { "User name", "^[A-Za-z0-9]{6,}$", "at least 6 characters of only letters (A-Z) or (a-z) and digits (0-9)", "" };
+            info[1] = new string[4] { "Password", "^[A-Za-z0-9]{6,}$", "at least 6 characters of only letters (A-Z) or (a-z) and digits (0-9)", "" };
+            // getting inputs from the user
+            info = getInputsForAdd(6, info);
+            // creation of fields
+            string username = info[0][3];
+            string password = info[1][3];
+            // final creation
+            return new User(username, password);
+        }
 
 
 
