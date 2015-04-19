@@ -21,40 +21,54 @@ namespace BL
         //Methods:
         public void Add(object e)
         {
-            //First generate the new product ID
+            //Add the new employee to the system
             List<Employee> Allemps = itsDAL.ReadFromFile(Elements.Employee).Cast<Employee>().ToList();
-            int maxID = 0;
-            foreach (Employee emp in Allemps)
+            List<Department> Alldeparts = itsDAL.ReadFromFile(Elements.Department).Cast<Department>().ToList();
+            bool checkID = false;
+            foreach (Department dep in Alldeparts)
             {
-                if (emp.Id > maxID)
-                    maxID = emp.Id;
+                if (((Employee)e).DepID == dep.Id)
+                {
+                    checkID = true;
+                    break;
+                }
             }
-            //set the new ID
-            ((Employee)e).Id = maxID++;
-            //Add the new product to the system
-            Allemps.Add((Employee)e);
+            if (!checkID)
+                throw new Exception("department ID doesn't exist!");
+            else
+            {
+                foreach (Employee emp in Allemps)
+                {
+                    if (emp.Equals(e))
+                        throw new Exception("employee is already exists!");
+                }
+                Allemps.Add((Employee)e);
+            }
+            itsDAL.WriteToFile(Alldeparts.Cast<object>().ToList());
             itsDAL.WriteToFile(Allemps.Cast<object>().ToList());
         }
         public void Remove(object e)
         {
             List<Employee> Allemps = itsDAL.ReadFromFile(Elements.Employee).Cast<Employee>().ToList();
-            foreach (Employee emp in Allemps)
+            if (!Allemps.Any())
+                throw new NullReferenceException("No Employees to remove!");
+            else
             {
-                if (emp.Equals(e))
+                foreach (Employee emp in Allemps)
                 {
-                    Allemps.Remove(emp);
-                    break;
+                    if (emp.Equals(e))
+                    {
+                        Allemps.Remove(emp);
+                        break;
+                    }
                 }
+                itsDAL.WriteToFile(Allemps.Cast<object>().ToList());
             }
-            itsDAL.WriteToFile(Allemps.Cast<object>().ToList());
         }
         public void Edit(object oldE, object newE)
         {
-            List<Employee> Allemps = itsDAL.ReadFromFile(Elements.Employee).Cast<Employee>().ToList();
-            ((Employee)newE).Id = ((Employee)oldE).Id;
-            Allemps.Remove((Employee)oldE);
-            Allemps.Add((Employee)newE);
-            itsDAL.WriteToFile(Allemps.Cast<object>().ToList());
+            this.Remove(oldE);
+            this.Add(newE);            
         }
 
         public List<object> FindByName(string name, StringFields field)

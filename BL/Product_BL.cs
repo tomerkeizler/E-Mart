@@ -20,16 +20,23 @@ namespace BL
 
         public void Add(object p)
         {
-            //First generate the new product ID
             List<Product> Allprods = itsDAL.ReadFromFile(Elements.Product).Cast<Product>().ToList();
+            //Generate the new product ID
             int maxID = 0;
             foreach (Product prod in Allprods)
             {
                 if (prod.ProductID > maxID)
                     maxID = prod.ProductID;
+                if (((Product)p).ProductID == prod.ProductID)
+                {
+                    throw new System.Data.DataException("The ID allready exist in the system");
+                }
             }
-            //set the new ID
-            ((Product)p).ProductID = maxID++;
+            if (((Product)p).ProductID == 0)
+            {
+                //set the new ID
+                ((Product)p).ProductID = maxID++;
+            }
             //Add the new product to the system
             Allprods.Add((Product)p);
             itsDAL.WriteToFile(Allprods.Cast<object>().ToList());
@@ -37,23 +44,26 @@ namespace BL
         public void Remove(object p)
         {
             List<Product> Allprods = itsDAL.ReadFromFile(Elements.Product).Cast<Product>().ToList();
-            foreach (Product prod in Allprods)
+            if (!Allprods.Any())
+                throw new NullReferenceException("No Employees to remove!");
+            else
             {
-                if (prod.Equals(p))
+                foreach (Product prod in Allprods)
                 {
-                    Allprods.Remove(prod);
-                    break;
+                    if (prod.Equals(p))
+                    {
+                        Allprods.Remove(prod);
+                        break;
+                    }
                 }
+                itsDAL.WriteToFile(Allprods.Cast<object>().ToList());
             }
-            itsDAL.WriteToFile(Allprods.Cast<object>().ToList());
         }
         public void Edit(object oldP, object newP)
         {
-            List<Product> Allprods = itsDAL.ReadFromFile(Elements.Product).Cast<Product>().ToList();
             ((Product)newP).ProductID = ((Product)oldP).ProductID;
-            Allprods.Remove((Product)oldP);
-            Allprods.Add((Product)newP);
-            itsDAL.WriteToFile(Allprods.Cast<object>().ToList());
+            this.Remove(oldP);
+            this.Add(newP);
         }
         public List<object> FindByName(string name, StringFields field)
         {
@@ -68,6 +78,7 @@ namespace BL
         {
             return itsDAL.ProductNumberQuery(number, field).Cast<object>().ToList();
         }
+
         public List<object> FindByType(ValueType type)
         {
             return itsDAL.ProductTypeQuery(type).Cast<object>().ToList();

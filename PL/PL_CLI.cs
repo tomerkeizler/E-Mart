@@ -9,11 +9,21 @@ namespace PL
 {
     public class PL_CLI : IPL
     {
-        private IBL itsBL;
+        private IBL itsProductBL;
+        private IBL itsClubMemberBL;
+        private IBL itsEmployeeBL;
+        private IBL itsTransactionBL;
+        private IBL itsUserBL;
+        private IBL itsDepartmentBL;
 
-        public PL_CLI(IBL bl)
+        public PL_CLI(IBL pbl, IBL cpl, IBL dbl, IBL ebl, IBL tbl, IBL ubl)
         {
-            itsBL = bl;
+            itsProductBL = pbl;
+            itsClubMemberBL = cpl;
+            itsDepartmentBL = dbl;
+            itsEmployeeBL = ebl;
+            itsTransactionBL = tbl;
+            itsUserBL = ubl;
         }
 
         private void DisplayResult(List<Product> prod)
@@ -46,7 +56,7 @@ namespace PL
                     case "1":
                         Console.WriteLine("Please enter the product name:");
                         cmd = ReceiveCmd();
-                        q = itsBL.FindByName(cmd, StringFields.name).Cast<Product>().ToList();  //************************************ For QueryString!!
+                        q = itsProductBL.FindByName(cmd, StringFields.name).Cast<Product>().ToList();  //************************************ For QueryString!!
                         //q = itsBL.FindByNumber(Convert.ToInt32(cmd), IntFields.*INTTYPE*).Cast<Product>().ToList(); **************** For QueryInt!!
                         /*if (Enum.IsDefined(typeof(PType), cmd))  ******************************************************************* For QueryType!!
                         {
@@ -64,9 +74,9 @@ namespace PL
                         /*Console.WriteLine("Sorry, this feature has not been implimented yet");
                         Console.WriteLine("\nPress any key when ready");*/
                         Product current = new Product("Tomer", PType.a, 2, PStatus.Empty, 2, 12);
-                        itsBL.Add(current);
+                        itsProductBL.Add(current);
                         current = new Product("Asaf", PType.b, 3, PStatus.LowQuantity, 10, 300);
-                        itsBL.Add(current);
+                        itsProductBL.Add(current);
                         return;
                     case "3":
                         return;//quit the program

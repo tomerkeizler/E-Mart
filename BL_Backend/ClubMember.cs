@@ -18,7 +18,7 @@ namespace Backend
         private Gender gender;
 
         //Constructors:
-        public ClubMember(int _memID, int _id, string _firstName, string _lastName, List<Transaction> _tranHistory, DateTime dob, Gender _gender)
+        public ClubMember(int _id, string _firstName, string _lastName, List<Transaction> _tranHistory, DateTime dob, Gender _gender, int _memID=0)
         {
             memberID = _memID;
             id = _id;
@@ -28,12 +28,33 @@ namespace Backend
             dateOfBirth = dob;
             gender = _gender;
         }
+        public ClubMember(ClubMember other)
+        {
+            memberID = other.MemberID;
+            id = other.Id;
+            firstName = other.firstName;
+            lastName = other.lastName;
+            tranHistory = other.tranHistory;
+            dateOfBirth = other.dateOfBirth;
+            gender = other.gender;
+        }
+
 
         public override string ToString()
         {
             return memberID+"";
         }
-
+        public override bool Equals(object _other)
+        {
+            if (!(_other is ClubMember)) return false;
+            ClubMember other = (ClubMember)_other;
+            return (memberID == other.MemberID && id == other.Id && firstName.Equals(other.firstName) && lastName.Equals(other.lastName)
+                    && dateOfBirth.Equals(other.dateOfBirth) && gender.Equals(other.gender) && tranHistory.SequenceEqual(other.tranHistory));
+        }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode() ^ firstName.GetHashCode();
+        }
         //getters and setters:
         public int MemberID
         {
