@@ -27,10 +27,31 @@ namespace Backend
             salary = _salary;
             supervisiorID = _supervisiorID;
         }
+        public Employee(Employee other)
+        {
+            firstName = other.firstName;
+            lastName = other.lastName;
+            id = other.id;
+            gender = other.gender;
+            depID = other.depID;
+            salary = other.salary;
+            supervisiorID = other.supervisiorID;
+        }
 
         public override string ToString()
         {
-            return firstName + lastName;
+            return firstName + " " + lastName;
+        }
+        public override bool Equals(object _other)
+        {
+            if (!(_other is Employee)) return false;
+            Employee other = (Employee)_other;
+            return (firstName.Equals(other.firstName) && lastName.Equals(other.lastName) && id == other.id && gender.Equals(other.gender)
+                    && depID == other.depID && salary == other.salary && supervisiorID == other.supervisiorID);
+        }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode() ^ firstName.GetHashCode();
         }
 
         //getters and setters:

@@ -49,10 +49,8 @@ namespace BL
 
         public void Edit(object oldU, object newU)
         {
-            List<User> Allusers = itsDAL.ReadFromFile(Elements.User).Cast<User>().ToList();
-            Allusers.Remove((User)oldU);
-            Allusers.Add((User)newU);
-            itsDAL.WriteToFile(Allusers.Cast<object>().ToList());
+            this.Remove(oldU);
+            this.Add(newU);            
         }
 
         public List<object> FindByName(string name, Backend.StringFields field)

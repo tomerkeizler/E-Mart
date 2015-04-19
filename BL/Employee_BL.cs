@@ -23,7 +23,28 @@ namespace BL
         {
             //Add the new employee to the system
             List<Employee> Allemps = itsDAL.ReadFromFile(Elements.Employee).Cast<Employee>().ToList();
-            Allemps.Add((Employee)e);
+            List<Department> Alldeparts = itsDAL.ReadFromFile(Elements.Department).Cast<Department>().ToList();
+            bool checkID = false;
+            foreach (Department dep in Alldeparts)
+            {
+                if (((Employee)e).DepID == dep.Id)
+                {
+                    checkID = true;
+                    break;
+                }
+            }
+            if (!checkID)
+                throw new Exception("department ID doesn't exist!");
+            else
+            {
+                foreach (Employee emp in Allemps)
+                {
+                    if (emp.Equals(e))
+                        throw new Exception("employee is already exists!");
+                }
+                Allemps.Add((Employee)e);
+            }
+            itsDAL.WriteToFile(Alldeparts.Cast<object>().ToList());
             itsDAL.WriteToFile(Allemps.Cast<object>().ToList());
         }
         public void Remove(object e)
@@ -46,10 +67,8 @@ namespace BL
         }
         public void Edit(object oldE, object newE)
         {
-            List<Employee> Allemps = itsDAL.ReadFromFile(Elements.Employee).Cast<Employee>().ToList();
-            Allemps.Remove((Employee)oldE);
-            Allemps.Add((Employee)newE);
-            itsDAL.WriteToFile(Allemps.Cast<object>().ToList());
+            this.Remove(oldE);
+            this.Add(newE);            
         }
 
         public List<object> FindByName(string name, StringFields field)

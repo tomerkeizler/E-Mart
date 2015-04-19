@@ -21,6 +21,21 @@ namespace Backend
                 prices.Add(prod.Price);
             }
         }
+        public Receipt(Receipt other)
+        {
+            productsIDs = new List<int>(other.productsIDs);
+            prices = new List<int>(other.prices);
+        }
+        public override bool Equals(object _other)
+        {
+            if (!(_other is Receipt)) return false;
+            Receipt other = (Receipt)_other;
+            return (productsIDs.Equals(other.productsIDs) && prices.Equals(other.prices));
+        }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode() ^ productsIDs.GetHashCode();
+        }
         public override string ToString()
         {
             string str = "";
