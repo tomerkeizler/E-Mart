@@ -22,16 +22,23 @@ namespace BL
         //Methods:
         public void Add(object d)
         {
-            //First generate the new department ID
             List<Department> Alldeparts = itsDAL.ReadFromFile(Elements.Department).Cast<Department>().ToList();
-            int maxID = 0;
-            foreach (Department depart in Alldeparts)
-            {
-                if (depart.Id > maxID)
-                    maxID = depart.Id;
-            }
-            //set the new ID
-            ((Department)d).Id = maxID++;
+             //Generate the new department ID
+             int maxID = 0;
+             foreach (Department depart in Alldeparts)
+             {
+                 if (depart.Id > maxID)
+                     maxID = depart.Id;
+                 if (((Department)d).Id == depart.Id)
+                 {
+                     throw new System.Data.DataException("The ID allready exist in the system");
+                 }
+             }
+             if (((Department)d).Id == 0)
+             {
+                 //set the new ID
+                 ((Department)d).Id = maxID++;
+             }
             //Add the new department to the system
             Alldeparts.Add((Department)d);
             itsDAL.WriteToFile(Alldeparts.Cast<object>().ToList());
@@ -65,11 +72,9 @@ namespace BL
 
         public void Edit(object oldD, object newD)
         {
-            List<Department> Alldeparts = itsDAL.ReadFromFile(Elements.Department).Cast<Department>().ToList();
             ((Department)newD).Id = ((Department)oldD).Id;
-            Alldeparts.Remove((Department)oldD);
-            Alldeparts.Add((Department)newD);
-            itsDAL.WriteToFile(Alldeparts.Cast<object>().ToList());
+            this.Remove(oldD);
+            this.Add(newD);
         }
 
         public List<object> FindByName(string name, Backend.StringFields field)

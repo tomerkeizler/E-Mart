@@ -56,12 +56,10 @@ namespace BL
         }
 
         public void Edit(object oldT, object newT)
-        {
-            List<Transaction> Alltrans = itsDAL.ReadFromFile(Elements.Transaction).Cast<Transaction>().ToList();
+        {           
             ((Transaction)newT).Id = ((Transaction)oldT).Id;
-            Alltrans.Remove((Transaction)oldT);
-            Alltrans.Add((Transaction)newT);
-            itsDAL.WriteToFile(Alltrans.Cast<object>().ToList());
+            this.Remove(oldT);
+            this.Add(newT);            
         }
 
         public List<object> FindByName(string name, StringFields field)

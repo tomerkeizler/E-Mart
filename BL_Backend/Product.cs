@@ -30,9 +30,26 @@ namespace Backend
             stockCount = _stockCount;
             price = _price;
         }
+        public Product(Product other)
+        {
+            name = other.name;
+            type = other.type;
+            productID = other.productID;
+            location = other.location;
+            inStock = other.inStock;
+            stockCount = other.stockCount;
+            price = other.price;
+        }
         public override string ToString()
         {
             return name;
+        }
+        public override bool Equals(object _other)
+        {
+            if (!(_other is Product)) return false;
+            Product other = (Product)_other;
+            return (name.Equals(other.name) && type.Equals(other.type) && productID == other.productID && inStock.Equals(other.inStock) &&
+                    stockCount == other.stockCount && price == other.price);
         }
         //Getter and Setters:
         public int ProductID

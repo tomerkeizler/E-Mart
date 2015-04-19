@@ -26,6 +26,21 @@ namespace Backend
             receipt = _receipt;
             payment = _payment;
         }
+        public Transaction(Transaction other)
+        {
+            transactionID = other.transactionID;
+            currentDate = other.currentDate;
+            is_a_return = other.is_a_return;
+            receipt = new Receipt(other.receipt);
+            payment = other.payment;
+        }
+        public override bool Equals(object _other)
+        {
+            if (!(_other is Transaction)) return false;
+            Transaction other = (Transaction)_other;
+            return (transactionID == other.transactionID && currentDate.Equals(other.currentDate) && is_a_return.Equals(other.is_a_return)
+                    && receipt.Equals(other.receipt) && payment.Equals(other.payment));
+        }
         public override string ToString()
         {
             return transactionID+"";

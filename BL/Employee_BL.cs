@@ -67,10 +67,8 @@ namespace BL
         }
         public void Edit(object oldE, object newE)
         {
-            List<Employee> Allemps = itsDAL.ReadFromFile(Elements.Employee).Cast<Employee>().ToList();
-            Allemps.Remove((Employee)oldE);
-            Allemps.Add((Employee)newE);
-            itsDAL.WriteToFile(Allemps.Cast<object>().ToList());
+            this.Remove(oldE);
+            this.Add(newE);            
         }
 
         public List<object> FindByName(string name, StringFields field)
