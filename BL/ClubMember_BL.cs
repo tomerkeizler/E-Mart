@@ -38,7 +38,7 @@ namespace BL
                 //set the new ID
                 ((ClubMember)cm).Id = maxID++;
             }
-            //Add the new clubmember to the system
+            //Add the new clubmember to the system.
             Allclubmems.Add((ClubMember)cm);
             itsDAL.WriteToFile(Allclubmems.Cast<object>().ToList());
         }
