@@ -49,6 +49,10 @@ namespace Backend
             return (firstName.Equals(other.firstName) && lastName.Equals(other.lastName) && id == other.id && gender.Equals(other.gender)
                     && depID == other.depID && salary == other.salary && supervisiorID == other.supervisiorID);
         }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode() ^ firstName.GetHashCode();
+        }
 
         //getters and setters:
         public int Id

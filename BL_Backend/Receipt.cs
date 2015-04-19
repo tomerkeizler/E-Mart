@@ -32,6 +32,10 @@ namespace Backend
             Receipt other = (Receipt)_other;
             return (productsIDs.Equals(other.productsIDs) && prices.Equals(other.prices));
         }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode() ^ productsIDs.GetHashCode();
+        }
         public override string ToString()
         {
             string str = "";

@@ -51,6 +51,10 @@ namespace Backend
             return (memberID == other.MemberID && id == other.Id && firstName.Equals(other.firstName) && lastName.Equals(other.lastName)
                     && dateOfBirth.Equals(other.dateOfBirth) && gender.Equals(other.gender) && tranHistory.SequenceEqual(other.tranHistory));
         }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode() ^ firstName.GetHashCode();
+        }
         //getters and setters:
         public int MemberID
         {

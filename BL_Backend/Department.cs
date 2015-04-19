@@ -23,11 +23,15 @@ namespace Backend
             name = other.name;
             id = other.id;
         }
-        public bool Equals(object _other)
+        public override bool Equals(object _other)
         {
             if (!(_other is Department)) return false;
             Department other = (Department)_other;
             return (this.id == other.id && this.name.Equals(other.name));
+        }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode() ^ name.GetHashCode();
         }
         public override string ToString()
         {

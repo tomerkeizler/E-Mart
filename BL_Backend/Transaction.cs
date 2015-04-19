@@ -41,6 +41,10 @@ namespace Backend
             return (transactionID == other.transactionID && currentDate.Equals(other.currentDate) && is_a_return.Equals(other.is_a_return)
                     && receipt.Equals(other.receipt) && payment.Equals(other.payment));
         }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode() ^ transactionID.GetHashCode();
+        }
         public override string ToString()
         {
             return transactionID+"";

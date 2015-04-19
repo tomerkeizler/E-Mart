@@ -29,6 +29,10 @@ namespace Backend
             User other = (User)_other;
             return (username.Equals(other.username) && password.Equals(other.password));
         }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode() ^ username.GetHashCode();
+        }
         public override string ToString()
         {
             return username;

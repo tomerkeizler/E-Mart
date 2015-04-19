@@ -51,6 +51,10 @@ namespace Backend
             return (name.Equals(other.name) && type.Equals(other.type) && productID == other.productID && inStock.Equals(other.inStock) &&
                     stockCount == other.stockCount && price == other.price);
         }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode() ^ name.GetHashCode();
+        }
         //Getter and Setters:
         public int ProductID
         {
