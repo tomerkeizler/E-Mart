@@ -13,7 +13,7 @@ namespace Backend
         private int id;
 
         //Constructors:
-        public Department(string _name, int _id)
+        public Department(string _name, int _id = 0)
         {
             name = _name;
             id = _id;

@@ -40,19 +40,26 @@ namespace BL
         public void Remove(object d)
         {
             List<Department> Alldeparts = itsDAL.ReadFromFile(Elements.Department).Cast<Department>().ToList();
+            List<Employee> Allemps = itsDAL.ReadFromFile(Elements.Employee).Cast<Employee>().ToList();
             if (!Alldeparts.Any())
                 throw new NullReferenceException("No Departments to remove!");
             else
             {
+                foreach (Employee emp in Allemps)
+                {
+                    if (((Department)d).Id == emp.DepID)
+                        throw new Exception("this department is currently in use!");
+                }
                 foreach (Department depart in Alldeparts)
                 {
                     if (depart.Equals(d))
                     {
-                        Alldeparts.Remove(depart);
-                        break;
+                            Alldeparts.Remove(depart);
+                            break;
                     }
                 }
                 itsDAL.WriteToFile(Alldeparts.Cast<object>().ToList());
+                itsDAL.WriteToFile(Allemps.Cast<object>().ToList());
             }
         }
 

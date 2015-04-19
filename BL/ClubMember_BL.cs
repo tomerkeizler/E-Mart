@@ -21,8 +21,17 @@ namespace BL
         //Methods:
         public void Add(object cm)
         {
-            //Add the new ClubMember to the system
+            //First generate the new clubmember ID
             List<ClubMember> Allclubmems = itsDAL.ReadFromFile(Elements.ClubMember).Cast<ClubMember>().ToList();
+            int maxID = 0;
+            foreach (ClubMember clubmem in Allclubmems)
+            {
+                if (clubmem.Id > maxID)
+                    maxID = clubmem.Id;
+            }
+            //set the new ID
+            ((ClubMember)cm).Id = maxID++;
+            //Add the new clubmember to the system
             Allclubmems.Add((ClubMember)cm);
             itsDAL.WriteToFile(Allclubmems.Cast<object>().ToList());
         }
