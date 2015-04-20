@@ -13,17 +13,22 @@ namespace MainProg1
     {
         static void Main(string[] args)
         {
-            /*
-            IDAL adal = new LINQ_DAL();
-            IBL apbl = new Product_BL(adal);
-            IBL acbl = new Product_BL(adal);
-            IBL adbl = new Product_BL(adal);
-            IBL aebl = new Product_BL(adal);
-            IBL atbl = new Product_BL(adal);
-            IBL aubl = new Product_BL(adal);
-            IPL apl = new PL_CLI(apbl,acbl,adbl,aebl,atbl,aubl);
-            apl.Run();
-            */
+            IDAL myDal = new LINQ_DAL();
+
+            IBL clubMember = new ClubMember_BL(myDal);
+            IBL department = new Department_BL(myDal);
+            IBL employee = new Employee_BL(myDal);
+            IBL product = new Product_BL(myDal);
+            IBL transaction = new Transaction_BL(myDal);
+            IBL user = new User_BL(myDal);
+
+            IPL myPl = new PL_CLI(clubMember, department, employee, product, transaction, user);
+
+            //myPl.Run();
+
+            ((PL_CLI)myPl).test(1);
+
+            
         }
     }
 }

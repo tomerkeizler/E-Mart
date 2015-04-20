@@ -8,7 +8,7 @@ using DAL;
 
 namespace BL
 {
-    class User_BL : IBL
+    public class User_BL : IBL
     {
          //Fields:
         IDAL itsDAL;

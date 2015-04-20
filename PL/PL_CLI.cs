@@ -5,6 +5,7 @@ using System.Text;
 using Backend;
 using BL;
 using System.Text.RegularExpressions;
+using System.Reflection;
 
 namespace PL
 {
@@ -16,7 +17,7 @@ namespace PL
         public static string[][] inputsInfo = new string[11][];
         
         // static constructor
-        public static PL_CLI()
+        static PL_CLI()
         {
             // ID - 9 digits
             inputsInfo[0] = new string[2] { "^[0-9]{9}$", "exactly 9 digits (0-9)"};
@@ -72,25 +73,10 @@ namespace PL
 
         // methods
 
-        // to be changes.....
-        private void DisplayResult(List<Product> prod)
-        {
-            foreach (Product p in prod)
-            {
-                Console.WriteLine(p.Name + " " + p.Type);
-            }
-        }
-
         private string ReceiveCmd()
         {
             return Console.ReadLine();
         }
-
-        
-
-
-
-
 
 
         public void Run()
@@ -115,11 +101,10 @@ namespace PL
                 // check username and password validity
                 if (((User_BL)cats[6]).isItValidUser(new User(username, password)))
                     MainMenu(); // Main menu
+                else
+                    Console.WriteLine("\nIncorrect username and password\n\nAccess denied! Please try again...");
             }
         }
-
-
-
 
 
         private void MainMenu()
@@ -149,9 +134,6 @@ namespace PL
             Console.Clear(); //clear the screen
             ActionMenu(categoryNum); // Action menu
         }
-
-
-
 
 
         private void ActionMenu(int categoryNum)
@@ -184,7 +166,7 @@ namespace PL
                     break;
 
                 case "3": // Show all
-                    // to be continued...
+                    // ShowAll(categoryNum);
                     break;
 
                 case "4":
@@ -197,13 +179,9 @@ namespace PL
         }
 
 
-
-
-
-
         private void Add(int categoryNum)
         {
-            Console.WriteLine("\n--- Creating a new {0} ---", cats[categoryNum]);
+            Console.WriteLine("\n--- Creating a new {0} ---", catsNames[categoryNum]);
             Object newObj = new Object();
             switch (categoryNum)   
             {   
@@ -235,7 +213,6 @@ namespace PL
         }
 
 
-
         private string[][] getInputsFromUser(string[][] info)
         {
             // getting inputs from the user
@@ -256,7 +233,6 @@ namespace PL
             }
             return info;
         }
-
 
 
         private ClubMember CreateClubMember()
@@ -295,8 +271,6 @@ namespace PL
         }
 
 
-
-
         private Department CreateDepartment()
         {
             // information array about the input fields
@@ -309,7 +283,6 @@ namespace PL
             // final creation
             return new Department(name, 0);
         }
-
 
 
         private Employee CreateEmployee()
@@ -386,8 +359,6 @@ namespace PL
         }
 
 
-
-
         private Transaction CreateTransaction()
         {
             // information array about the input fields
@@ -419,7 +390,6 @@ namespace PL
         }
 
 
-
         private User CreateUser()
         {
             // information array about the input fields
@@ -443,9 +413,86 @@ namespace PL
 
 
 
+        public void test(int categoryNum)
+        {
+          //  Elements elementType = Elements.((Elements)cats[categoryNum]).GetType();
+
+            //((Elements)cats[categoryNum]).GetType()
+
+                //Console.WriteLine(cats[categoryNum].GetType());
+                //Console.ReadLine();
+
+            //List<Object> objList = cats[categoryNum].GetAll(Elements.ClubMember);
+
+
+            List<Object> objList = new List<Object>();
+            objList.Add(new ClubMember(203608096, "Tomer", "Keizler", new List<Transaction>(), new DateTime(1991, 9, 5), Gender.Male, 0));
+
+            string lstType = objList.GetType().Name;
+            Console.WriteLine(lstType);
+            
+            Convert.ChangeType(objList, Type.GetType("ClubMember"));
 
 
 
+            Console.ReadLine();
+        }
+
+
+
+
+        private void ShowAll(int categoryNum)
+        {
+            Console.WriteLine("\n--- List of all {0}s ---\n", catsNames[categoryNum]);
+
+            List<Object> objList = cats[categoryNum].GetAll();
+            DisplayResult(objList);
+
+            Console.WriteLine("");
+
+            Console.WriteLine("\nPress any key to continue");
+            Console.ReadLine();
+
+
+            Console.Clear(); // clear the screen
+            ActionMenu(categoryNum); // Action menu
+        }
+
+
+
+        
+
+        
+        private void DisplayResult(List<Object> objList)
+        {
+            int index = 1;
+            foreach (Object obj in objList)
+            {
+                foreach (PropertyInfo field in obj.GetType().GetProperties())
+                {
+                    Console.Write("[{0}]", index);
+                    if (field.CanRead)
+                        Console.Write("\t{0}", field.GetValue(obj, null));
+                }
+                index++;
+            }
+        }
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /*
         
         public void Run1()
         {
@@ -466,21 +513,18 @@ namespace PL
                         cmd = ReceiveCmd();
                         q = itsProductBL.FindByName(cmd, StringFields.name).Cast<Product>().ToList();  //************************************ For QueryString!!
                         //q = itsBL.FindByNumber(Convert.ToInt32(cmd), IntFields.*INTTYPE*).Cast<Product>().ToList(); **************** For QueryInt!!
-                        /*if (Enum.IsDefined(typeof(PType), cmd))  ******************************************************************* For QueryType!!
+                        if (Enum.IsDefined(typeof(PType), cmd))  ******************************************************************* For QueryType!!
                         {
                             PType PTypeValue = (PType)Enum.Parse(typeof(PType), cmd);
                             q = itsBL.FindByType(PTypeValue).Cast<Product>().ToList();
                             DisplayResult(q);
                         }
-                         */
+                         
                         Console.WriteLine("\nPress any key when ready");
                         DisplayResult(q); //****************************************************************************************** For Display Result Of Query!!
                         Console.ReadLine();
                         break;
                     case "2":
-                        //to compile implementation later...
-                        /*Console.WriteLine("Sorry, this feature has not been implimented yet");
-                        Console.WriteLine("\nPress any key when ready");*/
                         Product current = new Product("Tomer", PType.a, 2, PStatus.Empty, 2, 12);
                         itsProductBL.Add(current);
                         current = new Product("Asaf", PType.b, 3, PStatus.LowQuantity, 10, 300);
@@ -495,7 +539,7 @@ namespace PL
 
             }
         }
-        
+        */
 
 
 

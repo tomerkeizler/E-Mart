@@ -7,7 +7,7 @@ using DAL;
 
 namespace BL
 {
-    class ClubMember_BL : IBL
+    public class ClubMember_BL : IBL
     {
          //Fields:
         IDAL itsDAL;
