@@ -95,9 +95,9 @@ namespace BL
             throw new System.Data.DataException("transactions doesn't have types!");
         }
 
-        public List<object> GetAll(Backend.Elements element)
+        public List<object> GetAll()
         {
-            return itsDAL.ReadFromFile(element);
+            return itsDAL.ReadFromFile(Elements.Department);
         }
     }
 }

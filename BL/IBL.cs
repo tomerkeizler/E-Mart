@@ -15,6 +15,6 @@ namespace BL
         List<object> FindByName(string name, StringFields field);
         List<object> FindByNumber(int number, IntFields field);
         List<object> FindByType(ValueType type);
-        List<object> GetAll(Elements element);
+        List<object> GetAll();
     }
 }
