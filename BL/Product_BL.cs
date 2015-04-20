@@ -85,9 +85,9 @@ namespace BL
         }
 
 
-        public List<object> GetAll(Elements element)
+        public List<object> GetAll()
         {
-            return itsDAL.ReadFromFile(element);
+            return itsDAL.ReadFromFile(Elements.Product);
         }
     }
 }
