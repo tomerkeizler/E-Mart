@@ -13,7 +13,48 @@ namespace PL
         // atributes
         private IBL[] cats;
         private string[] catsNames;
+        public static string[][] inputsInfo = new string[11][];
+        
+        // static constructor
+        public static PL_CLI()
+        {
+            // ID - 9 digits
+            inputsInfo[0] = new string[2] { "^[0-9]{9}$", "exactly 9 digits (0-9)"};
 
+            // only letters and possibly more than one word
+            // firstName, lastName, Product - name, Department - name
+            inputsInfo[1] = new string[2] { "^[A-Za-z]{2,}(( )[A-Za-z]{2,})*$", "only letters (A-Z) or (a-z)"};
+
+            // day - 2-digit number between 01-31
+            inputsInfo[2] = new string[2] { "^(0[1-9]|[12][0-9]|3[01])$", "a 2-digit number (01-31)"};
+            
+            // month - 2-digit number between 01-12
+            inputsInfo[3] = new string[2] { "^(0[1-9]|1[012])$", "a 2-digit number (01-12)"};
+            
+            // year - 4-digit number starts with 19 or 20
+            inputsInfo[4] = new string[2] { "^((19|20)[0-9][0-9])$", "a 4-digit number (19**) or (20**)"};
+            
+            // gender - M,m,F,f
+            inputsInfo[5] = new string[2] { "^M|m|F|f$", "M for male or F for female"};
+            
+            // Number - unlimited digits
+            inputsInfo[6] = new string[2] { "^[0-9]+$", "only digits (0-9)"};
+            
+            // one char of a,b,c
+            // product type
+            inputsInfo[7] = new string[2] { "^(a|b|c)$", "one of the types: a, b, c"};
+            
+            // one char of 1,2,3
+            // product status, Payment method
+            inputsInfo[8] = new string[2] { "^(1|2|3)$", "one of the following: \n\t1 - Empty, \n\t2 - LowQuantity, \n\t3 - InStock"};
+            
+            // transaction type - one char of R,r,P,p
+            inputsInfo[9] = new string[2] { "^(R|r|P|p)$", "one of the following: \n\tR - Return, \n\tP - Purchase"};
+            
+            // at least 6 characters of letters and digits
+            // username, password
+            inputsInfo[10] = new string[2] { "^[A-Za-z0-9]{6,}$", "at least 6 characters of only letters (A-Z) or (a-z) and digits (0-9)"};
+        }
 
         // constructors
         public PL_CLI(IBL itsClubMemberBL, IBL itsDepartmentBL, IBL itsEmployeeBL, IBL itsProductBL, IBL itsTransactionBL, IBL itsUserBL)
@@ -45,7 +86,7 @@ namespace PL
             return Console.ReadLine();
         }
 
-
+        
 
 
 
@@ -54,65 +95,104 @@ namespace PL
 
         public void Run()
         {
-            int categoryNum;
-            string cmd;
+            // Start of program
             while (true)
             {
-                // Main menu
-                Console.WriteLine("--- Main menu ---");
-                Console.WriteLine("Please select a data entity to manage:");
-                Console.WriteLine("\t1. Club member");
-                Console.WriteLine("\t2. Department");
-                Console.WriteLine("\t3. Employee");
-                Console.WriteLine("\t4. Product");
-                Console.WriteLine("\t5. Transaction");
-                Console.WriteLine("\t6. User");
-                Console.WriteLine("\n\n\t7. Exit");
-                // getting input from the user
+                // Check username and password
+                Console.WriteLine("\n--- User Log in ---");
+                Console.WriteLine("\nPlease enter your Username and Password for logging in the system");
+
+                // information array about the input fields
+                string[][] logIn = new string[2][];
+                logIn[0] = new string[4] { "User name", "^[A-Za-z0-9]{6,}$", "at least 6 characters of only letters (A-Z) or (a-z) and digits (0-9)", "" };
+                logIn[1] = new string[4] { "Password", "^[A-Za-z0-9]{6,}$", "at least 6 characters of only letters (A-Z) or (a-z) and digits (0-9)", "" };
+                
+                // getting inputs from the user
+                logIn = getInputsFromUser(logIn);
+                string username = logIn[0][3];
+                string password = logIn[1][3];
+
+                // check username and password validity
+                if (((User_BL)cats[6]).isItValidUser(new User(username, password)))
+                    MainMenu(); // Main menu
+            }
+        }
+
+
+
+
+
+        private void MainMenu()
+        {
+            int categoryNum;
+            string cmd; 
+            Console.WriteLine("\n--- Main menu ---\n");
+            Console.WriteLine("Please select a data entity to manage:");
+            Console.WriteLine("\t1. Club member");
+            Console.WriteLine("\t2. Department");
+            Console.WriteLine("\t3. Employee");
+            Console.WriteLine("\t4. Product");
+            Console.WriteLine("\t5. Transaction");
+            Console.WriteLine("\t6. User");
+            Console.WriteLine("\n\t7. Exit");
+
+            // getting input from the user
+            cmd = ReceiveCmd();
+            while (!Regex.IsMatch(cmd, @"^[1-7]{1}$")) // checks validity of the input
+            {
+                Console.WriteLine("\nInvalid input! Please select a Data Entity (1-6) or Exit (7)");
                 cmd = ReceiveCmd();
-                while (!Regex.IsMatch(cmd, @"^[1-7]{1}$")) // checks validity of the input
-                {
-                    Console.WriteLine("\nInvalid input! Please select a data entity (1-6) or exit (7)");
-                    cmd = ReceiveCmd();
-                }
-                categoryNum = int.Parse(cmd);
-                if (categoryNum == 7)
+            }
+            categoryNum = int.Parse(cmd);
+            if (categoryNum == 7)
+                return; //quit the program
+            Console.Clear(); //clear the screen
+            ActionMenu(categoryNum); // Action menu
+        }
+
+
+
+
+
+        private void ActionMenu(int categoryNum)
+        {
+            string cmd;
+            Console.WriteLine("\n--- " + catsNames[categoryNum] + "s management ---\n");
+            Console.WriteLine("Please select an action:");
+            Console.WriteLine("\t1. Run a query for " + catsNames[categoryNum]);
+            Console.WriteLine("\t2. Add " + catsNames[categoryNum]);
+            Console.WriteLine("\t3. Show all " + catsNames[categoryNum] + "s");
+            Console.WriteLine("\n\t4. Go back");
+            Console.WriteLine("\t5. Exit");
+            cmd = ReceiveCmd();
+            while (!Regex.IsMatch(cmd, @"^[1-5]{1}$")) // checks validity of the input
+            {
+                Console.WriteLine("\nInvalid input! Please select an Action (1-3) or Go back (4) or Exit (5)");
+                cmd = ReceiveCmd();
+            }
+            Console.Clear(); //clear the screen
+
+            // calling for a method according to the action selected by the user
+            switch (cmd)
+            {
+                case "1": //Run a Query
+                    // to be continued...
+                    break;
+
+                case "2": // Add
+                    Add(categoryNum);
+                    break;
+
+                case "3": // Show all
+                    // to be continued...
+                    break;
+
+                case "4":
+                    MainMenu(); // go back
+                    break;
+
+                case "5":
                     return; //quit the program
-                Console.Clear(); //clear the screen
-
-                // Action menu
-                Console.WriteLine("\n--- " + catsNames[categoryNum] + "s management ---");
-                Console.WriteLine("Please select an action:");
-                Console.WriteLine("\t1. Run a query for " + catsNames[categoryNum]);
-                Console.WriteLine("\t2. Add " + catsNames[categoryNum]);
-                Console.WriteLine("\t3. Show all " + catsNames[categoryNum] + "s");
-                Console.WriteLine("\t4. Exit");
-                cmd = ReceiveCmd();
-                while (!Regex.IsMatch(cmd, @"^[1-4]{1}$")) // checks validity of the input
-                {
-                    Console.WriteLine("\nInvalid input! Please select an action (1-3) or exit (4)");
-                    cmd = ReceiveCmd();
-                }
-                Console.Clear(); //clear the screen
-
-
-                switch (cmd)
-                {
-                    case "1":
-                        // to be continued...
-                        break;
-
-                    case "2":
-                        // to be continued...
-                        break;
-
-                    case "3":
-                        // to be continued...
-                        break;
-
-                    case "4":
-                        return; //quit the program
-                }
             }
         }
 
@@ -121,10 +201,10 @@ namespace PL
 
 
 
-
         private void Add(int categoryNum)
-        {          
-            Object newObj;  
+        {
+            Console.WriteLine("\n--- Creating a new {0} ---", cats[categoryNum]);
+            Object newObj = new Object();
             switch (categoryNum)   
             {   
                 case 1:    
@@ -147,16 +227,20 @@ namespace PL
                     break;
             }       
             cats[categoryNum].Add(newObj);
+            Console.WriteLine("\n{0} was added successfully!", catsNames[categoryNum]);
+            Console.WriteLine("\nPress any key to continue");
+            Console.ReadLine();
+            Console.Clear(); // clear the screen
+            ActionMenu(categoryNum); // Action menu
         }
 
 
 
-        private string[][] getInputsForAdd(int categoryNum, string[][] info)
+        private string[][] getInputsFromUser(string[][] info)
         {
             // getting inputs from the user
             string cmd;
-            Console.WriteLine("\n--- Creating a new {0} ---", cats[categoryNum]);
-            Console.WriteLine("Please enter the following details:");
+            Console.WriteLine("\nPlease enter the following details:");
             for (int i = 0; i < info.Length; i++)
             {
                 Console.Write("\n{0}: ", info[i][0]);
@@ -178,8 +262,12 @@ namespace PL
         private ClubMember CreateClubMember()
         {
             // information array about the input fields
+
+            Dictionary<string,int> d = new Dictionary<string,int>();
+            
+
             string[][] info = new string[7][];
-            info[0] = new string[4] { "ID", "^[0-9]{9}$", "exactly 9 digits (0-9)", "" };
+            info[0] = new string[3] { "ID", "0", "" };
             info[1] = new string[4] { "First name", "^[A-Za-z]{2,}(( )[A-Za-z]{2,})*$", "only letters (A-Z) or (a-z)", "" };
             info[2] = new string[4] { "Last name", "^[A-Za-z]{2,}(( )[A-Za-z]{2,})*$", "only letters (A-Z) or (a-z)", "" };
             info[3] = new string[4] { "Day of birth", "^(0[1-9]|[12][0-9]|3[01])$", "a 2-digit number (01-31)", "" };
@@ -187,7 +275,7 @@ namespace PL
             info[5] = new string[4] { "Year of birth", "^((19|20)[0-9][0-9])$", "a 4-digit number (19**) or (20**)", "" };
             info[6] = new string[4] { "Gender", "^M|m|F|f$", "M for male or F for female", "" };
             // getting inputs from the user
-            info = getInputsForAdd(1, info);
+            info = getInputsFromUser(info);
             ////// creation of fields
             int id = int.Parse(info[0][3]);
             string firstName = info[1][3];
@@ -215,7 +303,7 @@ namespace PL
             string[][] info = new string[1][];
             info[0] = new string[4] { "Department name", "^[A-Za-z]{2,}(( )[A-Za-z]{2,})*$", "only letters (A-Z) or (a-z)", "" };
             // getting inputs from the user
-            info = getInputsForAdd(2, info);
+            info = getInputsFromUser(info);
             // creation of fields
             string name = info[0][3];
             // final creation
@@ -236,7 +324,7 @@ namespace PL
             info[5] = new string[4] { "Supervisor ID", "^[0-9]+$", "only digits (0-9)", "" };
             info[6] = new string[4] { "Gender", "^M|m|F|f$", "M for male or F for female", "" };
             // getting inputs from the user
-            info = getInputsForAdd(3, info);
+            info = getInputsFromUser(info);
             // creation of fields
             int id = int.Parse(info[0][3]); 
             string firstName = info[1][3];
@@ -267,7 +355,7 @@ namespace PL
             info[4] = new string[4] { "Product status", "^(1|2|3)$", "one of the following: \n\t1 - Empty, \n\t2 - LowQuantity, \n\t3 - InStock", "" };
             info[5] = new string[4] { "Location department ID", "^[0-9]+$", "only digits (0-9)", "" };
             // getting inputs from the user
-            info = getInputsForAdd(4, info);
+            info = getInputsFromUser(info);
             ////// creation of fields
             // field: Name
             string name = info[0][3];
@@ -307,7 +395,7 @@ namespace PL
             info[0] = new string[4] { "Transaction type", "^(R|r|P|p)$", "one of the following: \n\tR - Return, \n\tP - Purchase", "" };
             info[1] = new string[4] { "Payment method", "^(1|2|3)$", "one of the following: \n\t1 - Cash, \n\t2 - Check, \n\t3 - Visa", "" };
             // getting inputs from the user
-            info = getInputsForAdd(5, info);
+            info = getInputsFromUser(info);
             ////// creation of fields
             // field: Transaction type
             Is_a_return is_a_return;
@@ -339,7 +427,7 @@ namespace PL
             info[0] = new string[4] { "User name", "^[A-Za-z0-9]{6,}$", "at least 6 characters of only letters (A-Z) or (a-z) and digits (0-9)", "" };
             info[1] = new string[4] { "Password", "^[A-Za-z0-9]{6,}$", "at least 6 characters of only letters (A-Z) or (a-z) and digits (0-9)", "" };
             // getting inputs from the user
-            info = getInputsForAdd(6, info);
+            info = getInputsFromUser(info);
             // creation of fields
             string username = info[0][3];
             string password = info[1][3];
