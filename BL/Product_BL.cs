@@ -27,7 +27,7 @@ namespace BL
             {
                 if (prod.ProductID > maxID)
                     maxID = prod.ProductID;
-                if (((Product)p).ProductID == prod.ProductID)
+                if (((Product)p).ProductID != 0 && ((Product)p).ProductID == prod.ProductID)
                 {
                     throw new System.Data.DataException("The ID allready exist in the system");
                 }
@@ -74,9 +74,9 @@ namespace BL
         }
 
 
-        public List<object> FindByNumber(int number, IntFields field)
+        public List<object> FindByNumber(IntFields field, int minNumber, int maxNumber)
         {
-            return itsDAL.ProductNumberQuery(number, field).Cast<object>().ToList();
+            return itsDAL.ProductNumberQuery(minNumber,maxNumber, field).Cast<object>().ToList();
         }
 
         public List<object> FindByType(ValueType type)

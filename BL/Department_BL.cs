@@ -29,7 +29,7 @@ namespace BL
              {
                  if (depart.Id > maxID)
                      maxID = depart.Id;
-                 if (((Department)d).Id == depart.Id)
+                 if (((Department)d).Id != 0 && ((Department)d).Id == depart.Id)
                  {
                      throw new System.Data.DataException("The ID allready exist in the system");
                  }
@@ -85,9 +85,9 @@ namespace BL
             return result;
         }
 
-        public List<object> FindByNumber(int number, Backend.IntFields field)
+        public List<object> FindByNumber(IntFields field, int minNumber, int maxNumber)
         {
-            return itsDAL.DepartmentNumberQuery(number, field).Cast<object>().ToList();
+            return itsDAL.DepartmentNumberQuery(minNumber,maxNumber, field).Cast<object>().ToList();
         }
 
         public List<object> FindByType(ValueType type)

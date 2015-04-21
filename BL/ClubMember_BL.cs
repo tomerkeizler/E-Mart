@@ -28,7 +28,7 @@ namespace BL
             {
                 if (clubmem.Id > maxID)
                     maxID = clubmem.Id;
-                if (((ClubMember)cm).Id == clubmem.Id)
+                if (((ClubMember)cm).Id!=0 && ((ClubMember)cm).Id == clubmem.Id)
                 {
                     throw new System.Data.DataException("The ID allready exist in the system");
                 }
@@ -77,9 +77,9 @@ namespace BL
             return result;
         }
 
-        public List<object> FindByNumber(int number, IntFields field)
+        public List<object> FindByNumber(IntFields field, int minNumber, int maxNumber)
         {
-            return itsDAL.ClubMemberNumberQuery(number, field).Cast<object>().ToList(); 
+            return itsDAL.ClubMemberNumberQuery(minNumber,maxNumber, field).Cast<object>().ToList(); 
         }
 
         public List<object> FindByType(ValueType type)
