@@ -78,7 +78,7 @@ namespace PL
             return Console.ReadLine();
         }
 
-        public void PressEnter()
+        private void PressEnter()
         {
             Console.WriteLine("\nPress ENTER to continue");
             Console.ReadLine();
@@ -88,6 +88,7 @@ namespace PL
         // Start of program
         public void Run()
         {
+            bool login = false; ;
             while (true)
             {
                 // Check username and password
@@ -105,7 +106,21 @@ namespace PL
                 string password = logIn[1][2];
 
                 // check username and password validity
-                if (((User_BL)cats[6]).isItValidUser(new User(username, password)))
+                try
+                {
+                    login = ((User_BL)cats[6]).isItValidUser(new User(username, password));
+                }
+                catch(NullReferenceException e)
+                {
+                    Console.WriteLine("\n" + e);
+                }
+                catch(System.Data.DataException e)
+                {
+                    Console.WriteLine("\n" + e);
+                }
+
+
+                if (login)
                 {
                     MainMenu(); // Main menu
                     break;
