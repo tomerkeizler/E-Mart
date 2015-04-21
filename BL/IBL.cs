@@ -13,7 +13,7 @@ namespace BL
         void Remove(object obj);
         void Edit(object oldObj, object newObj);
         List<object> FindByName(string name, StringFields field);
-        List<object> FindByNumber(int number, IntFields field);
+        List<object> FindByNumber(IntFields field, int minNumber, int maxNumber);
         List<object> FindByType(ValueType type);
         List<object> GetAll();
     }
