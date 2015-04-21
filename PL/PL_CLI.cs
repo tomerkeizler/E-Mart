@@ -78,10 +78,16 @@ namespace PL
             return Console.ReadLine();
         }
 
+        public void PressEnter()
+        {
+            Console.WriteLine("\nPress ENTER to continue");
+            Console.ReadLine();
+        }
+
+
         // Start of program
         public void Run()
         {
-            /*
             while (true)
             {
                 // Check username and password
@@ -100,13 +106,13 @@ namespace PL
 
                 // check username and password validity
                 if (((User_BL)cats[6]).isItValidUser(new User(username, password)))
-            */
-            MainMenu(); // Main menu
-            /*
+                {
+                    MainMenu(); // Main menu
+                    break;
+                }
                 else
                     Console.WriteLine("\nIncorrect username and password\n\nAccess denied! Please try again...");
             }
-             */
         }
 
 
@@ -225,8 +231,7 @@ namespace PL
             }
             cats[categoryNum].Add(newObj);
             Console.WriteLine("\n{0} was added successfully!", catsNames[categoryNum]);
-            Console.WriteLine("\nPress ENTRT to continue");
-            Console.ReadLine();
+            PressEnter();
             Console.Clear(); // clear the screen
             ActionMenu(categoryNum); // Action menu
         }
@@ -438,19 +443,18 @@ namespace PL
             List<Object> objList = cats[categoryNum].GetAll(); // get all the records
             int maxRecord = DisplayResult(objList); // displays the records and returns the maximal record number
             if (maxRecord != 0)
-                AskOneRecord(objList, maxRecord);
+                AskOneRecord(objList, maxRecord, categoryNum);
             else
             {
                 Console.WriteLine("Sorry, there are no {0}s in the system.", catsNames[categoryNum]);
-                Console.WriteLine("\nPress ENTER to continue");
-                Console.ReadLine();
+                PressEnter();
                 Console.Clear(); //clear the screen
                 ActionMenu(categoryNum); // Action menu
             }
         }
 
 
-        private void AskOneRecord(List<Object> objList, int maxRecord)
+        private void AskOneRecord(List<Object> objList, int maxRecord, int categoryNum)
         {
             Console.WriteLine("Please select one of the following:");
             Console.WriteLine("\t1 - Watch a single record");
