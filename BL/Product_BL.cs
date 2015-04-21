@@ -20,16 +20,23 @@ namespace BL
 
         public void Add(object p)
         {
-            //First generate the new product ID
             List<Product> Allprods = itsDAL.ReadFromFile(Elements.Product).Cast<Product>().ToList();
+            //Generate the new product ID
             int maxID = 0;
             foreach (Product prod in Allprods)
             {
                 if (prod.ProductID > maxID)
                     maxID = prod.ProductID;
+                if (((Product)p).ProductID != 0 && ((Product)p).ProductID == prod.ProductID)
+                {
+                    throw new System.Data.DataException("The ID allready exist in the system");
+                }
             }
-            //set the new ID
-            ((Product)p).ProductID = maxID++;
+            if (((Product)p).ProductID == 0)
+            {
+                //set the new ID
+                ((Product)p).ProductID = maxID++;
+            }
             //Add the new product to the system
             Allprods.Add((Product)p);
             itsDAL.WriteToFile(Allprods.Cast<object>().ToList());
@@ -54,11 +61,9 @@ namespace BL
         }
         public void Edit(object oldP, object newP)
         {
-            List<Product> Allprods = itsDAL.ReadFromFile(Elements.Product).Cast<Product>().ToList();
             ((Product)newP).ProductID = ((Product)oldP).ProductID;
-            Allprods.Remove((Product)oldP);
-            Allprods.Add((Product)newP);
-            itsDAL.WriteToFile(Allprods.Cast<object>().ToList());
+            this.Remove(oldP);
+            this.Add(newP);
         }
         public List<object> FindByName(string name, StringFields field)
         {
@@ -69,9 +74,9 @@ namespace BL
         }
 
 
-        public List<object> FindByNumber(int number, IntFields field)
+        public List<object> FindByNumber(IntFields field, int minNumber, int maxNumber)
         {
-            return itsDAL.ProductNumberQuery(number, field).Cast<object>().ToList();
+            return itsDAL.ProductNumberQuery(minNumber,maxNumber, field).Cast<object>().ToList();
         }
 
         public List<object> FindByType(ValueType type)
@@ -80,9 +85,9 @@ namespace BL
         }
 
 
-        public List<object> GetAll(Elements element)
+        public List<object> GetAll()
         {
-            return itsDAL.ReadFromFile(element);
+            return itsDAL.ReadFromFile(Elements.Product);
         }
     }
 }

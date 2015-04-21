@@ -14,26 +14,26 @@ namespace DAL
 
         //Products:
         List<Product> ProductNameQuery(string name, StringFields field);
-        List<Product> ProductNumberQuery(int number, IntFields field);
+        List<Product> ProductNumberQuery(int minNumber, int maxNumber, IntFields field);
         List<Product> ProductTypeQuery(ValueType type);
 
 
         //Employees:
         List<Employee> EmployeeNameQuery(string name, StringFields field);
-        List<Employee> EmployeeNumberQuery(int number, IntFields field);
+        List<Employee> EmployeeNumberQuery(int minNumber, int maxNumber, IntFields field);
         List<Employee> EmployeeTypeQuery(ValueType type);
 
         //ClubMember:
         List<ClubMember> ClubMemberNameQuery(string name, StringFields field);
-        List<ClubMember> ClubMemberNumberQuery(int number, IntFields field);
+        List<ClubMember> ClubMemberNumberQuery(int minNumber, int maxNumber, IntFields field);
         List<ClubMember> ClubMemberTypeQuery(ValueType type);
 
         //Department:
         List<Department> DepartmentNameQuery(string name, StringFields field);
-        List<Department> DepartmentNumberQuery(int number, IntFields field);
+        List<Department> DepartmentNumberQuery(int minNumber, int maxNumber, IntFields field);
 
         //Transaction:
-        List<Transaction> TransactionNumberQuery(int number, IntFields field);
+        List<Transaction> TransactionNumberQuery(int minNumber, int maxNumber, IntFields field);
         List<Transaction> TransactionTypeQuery(ValueType type);
 
         //User:
