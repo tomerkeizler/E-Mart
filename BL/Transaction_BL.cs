@@ -21,16 +21,23 @@ namespace BL
 
         public void Add(object t)
         {
-            //First generate the new transaction ID
             List<Transaction> Alltrans = itsDAL.ReadFromFile(Elements.Transaction).Cast<Transaction>().ToList();
+            //Gene      rate the new transaction ID
             int maxID = 0;
             foreach (Transaction tran in Alltrans)
             {
                 if (tran.Id > maxID)
                     maxID = tran.Id;
+                if (((Transaction)t).Id != 0 && ((Transaction)t).Id == tran.Id)
+                 {
+                     throw new System.Data.DataException("The ID allready exist in the system");
+                 }
             }
-            //set the new ID
-            ((Transaction)t).Id = maxID++;
+            if (((Transaction)t).Id == 0)
+            {
+                //set the new ID
+                ((Transaction)t).Id = maxID++;
+            }
             //Add the new transaction to the system
             Alltrans.Add((Transaction)t);
             itsDAL.WriteToFile(Alltrans.Cast<object>().ToList());

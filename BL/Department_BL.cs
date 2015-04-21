@@ -29,7 +29,7 @@ namespace BL
              {
                  if (depart.Id > maxID)
                      maxID = depart.Id;
-                 if (((Department)d).Id == depart.Id)
+                 if (((Department)d).Id != 0 && ((Department)d).Id == depart.Id)
                  {
                      throw new System.Data.DataException("The ID allready exist in the system");
                  }

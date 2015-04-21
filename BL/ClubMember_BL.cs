@@ -28,7 +28,7 @@ namespace BL
             {
                 if (clubmem.Id > maxID)
                     maxID = clubmem.Id;
-                if (((ClubMember)cm).Id == clubmem.Id)
+                if (((ClubMember)cm).Id!=0 && ((ClubMember)cm).Id == clubmem.Id)
                 {
                     throw new System.Data.DataException("The ID allready exist in the system");
                 }

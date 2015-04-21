@@ -27,7 +27,7 @@ namespace BL
             {
                 if (prod.ProductID > maxID)
                     maxID = prod.ProductID;
-                if (((Product)p).ProductID == prod.ProductID)
+                if (((Product)p).ProductID != 0 && ((Product)p).ProductID == prod.ProductID)
                 {
                     throw new System.Data.DataException("The ID allready exist in the system");
                 }
