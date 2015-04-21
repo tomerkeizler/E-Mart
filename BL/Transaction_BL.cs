@@ -8,7 +8,7 @@ using DAL;
 
 namespace BL
 {
-    class Transaction_BL : IBL
+    public class Transaction_BL : IBL
     {
         //Fields:
         IDAL itsDAL;
@@ -21,16 +21,23 @@ namespace BL
 
         public void Add(object t)
         {
-            //First generate the new transaction ID
             List<Transaction> Alltrans = itsDAL.ReadFromFile(Elements.Transaction).Cast<Transaction>().ToList();
+            //Gene      rate the new transaction ID
             int maxID = 0;
             foreach (Transaction tran in Alltrans)
             {
                 if (tran.Id > maxID)
                     maxID = tran.Id;
+                if (((Transaction)t).Id != 0 && ((Transaction)t).Id == tran.Id)
+                 {
+                     throw new System.Data.DataException("The ID allready exist in the system");
+                 }
             }
-            //set the new ID
-            ((Transaction)t).Id = maxID++;
+            if (((Transaction)t).Id == 0)
+            {
+                //set the new ID
+                ((Transaction)t).Id = maxID++;
+            }
             //Add the new transaction to the system
             Alltrans.Add((Transaction)t);
             itsDAL.WriteToFile(Alltrans.Cast<object>().ToList());
@@ -56,12 +63,10 @@ namespace BL
         }
 
         public void Edit(object oldT, object newT)
-        {
-            List<Transaction> Alltrans = itsDAL.ReadFromFile(Elements.Transaction).Cast<Transaction>().ToList();
+        {           
             ((Transaction)newT).Id = ((Transaction)oldT).Id;
-            Alltrans.Remove((Transaction)oldT);
-            Alltrans.Add((Transaction)newT);
-            itsDAL.WriteToFile(Alltrans.Cast<object>().ToList());
+            this.Remove(oldT);
+            this.Add(newT);            
         }
 
         public List<object> FindByName(string name, StringFields field)
@@ -69,9 +74,9 @@ namespace BL
             throw new System.Data.DataException("transactions doesn't have names!");
         }
 
-        public List<object> FindByNumber(int number, IntFields field)
+        public List<object> FindByNumber(IntFields field, int minNumber, int maxNumber)
         {
-            return itsDAL.TransactionNumberQuery(number, field).Cast<object>().ToList();
+            return itsDAL.TransactionNumberQuery(minNumber,maxNumber, field).Cast<object>().ToList();
         }
 
         public List<object> FindByType(ValueType type)
@@ -79,9 +84,9 @@ namespace BL
             return itsDAL.TransactionTypeQuery(type).Cast<object>().ToList();
         }
 
-        public List<object> GetAll(Elements element)
+        public List<object> GetAll()
         {
-            return itsDAL.ReadFromFile(element);
+            return itsDAL.ReadFromFile(Elements.Transaction);
         }
     }
 }

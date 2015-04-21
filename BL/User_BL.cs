@@ -8,9 +8,11 @@ using DAL;
 
 namespace BL
 {
-    class User_BL : IBL
+    public class User_BL : IBL
     {
-         //Fields:
+        //Fields:
+        private const string DEFAULT_USER_NAME = "administrator";
+        private const string DEFAULT_PASSWORD = "password";
         IDAL itsDAL;
 
         //Constructors:
@@ -49,10 +51,8 @@ namespace BL
 
         public void Edit(object oldU, object newU)
         {
-            List<User> Allusers = itsDAL.ReadFromFile(Elements.User).Cast<User>().ToList();
-            Allusers.Remove((User)oldU);
-            Allusers.Add((User)newU);
-            itsDAL.WriteToFile(Allusers.Cast<object>().ToList());
+            this.Remove(oldU);
+            this.Add(newU);            
         }
 
         public List<object> FindByName(string name, Backend.StringFields field)
@@ -62,20 +62,40 @@ namespace BL
             List<object> result = itsDAL.UserNameQuery(name, field).Cast<object>().ToList();
             return result;
         }
-
-        public List<object> FindByNumber(int number, Backend.IntFields field)
+        public List<object> FindByNumber(IntFields field, int minNumber, int maxNumber)
         {
             throw new System.Data.DataException("users doesn't have numbers!");
         }
-
         public List<object> FindByType(ValueType type)
         {
             throw new System.Data.DataException("users doesn't have types!");
         }
 
-        public List<object> GetAll(Backend.Elements element)
+        public List<object> GetAll()
         {
-            return itsDAL.ReadFromFile(element);
+            return itsDAL.ReadFromFile(Elements.User);
+        }
+        //Method for User Only
+        public bool isItValidUser(User user)
+        {
+            List<User> Allusers = itsDAL.ReadFromFile(Elements.User).Cast<User>().ToList();
+            if (!Allusers.Any())
+            {
+                User admin = new User(DEFAULT_USER_NAME, DEFAULT_PASSWORD);
+                Allusers.Add(admin);
+            }
+            if (user.UserName == null || user.Password == null)
+            {
+                throw new System.Data.DataException("Bad Input!");
+            }
+            foreach (User _user in Allusers)
+            {
+                if (_user.UserName.Equals(user.UserName) && _user.Password.Equals(user.Password))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

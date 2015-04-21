@@ -7,7 +7,7 @@ using DAL;
 
 namespace BL
 {
-    class ClubMember_BL : IBL
+    public class ClubMember_BL : IBL
     {
          //Fields:
         IDAL itsDAL;
@@ -21,17 +21,24 @@ namespace BL
         //Methods:
         public void Add(object cm)
         {
-            //First generate the new clubmember ID
             List<ClubMember> Allclubmems = itsDAL.ReadFromFile(Elements.ClubMember).Cast<ClubMember>().ToList();
+            //Generate the new clubmember ID              
             int maxID = 0;
             foreach (ClubMember clubmem in Allclubmems)
             {
                 if (clubmem.Id > maxID)
                     maxID = clubmem.Id;
+                if (((ClubMember)cm).Id!=0 && ((ClubMember)cm).Id == clubmem.Id)
+                {
+                    throw new System.Data.DataException("The ID allready exist in the system");
+                }
             }
-            //set the new ID
-            ((ClubMember)cm).Id = maxID++;
-            //Add the new clubmember to the system
+            if (((ClubMember)cm).MemberID == 0)
+            {
+                //set the new ID
+                ((ClubMember)cm).Id = maxID++;
+            }
+            //Add the new clubmember to the system.
             Allclubmems.Add((ClubMember)cm);
             itsDAL.WriteToFile(Allclubmems.Cast<object>().ToList());
         }
@@ -57,11 +64,9 @@ namespace BL
 
         public void Edit(object oldCM, object newCM)
         {
-            List<ClubMember> Allclubmems = itsDAL.ReadFromFile(Elements.ClubMember).Cast<ClubMember>().ToList();
             ((ClubMember)newCM).MemberID = ((ClubMember)oldCM).MemberID;
-            Allclubmems.Remove((ClubMember)oldCM);
-            Allclubmems.Add((ClubMember)newCM);
-            itsDAL.WriteToFile(Allclubmems.Cast<object>().ToList());
+            this.Remove(oldCM);
+            this.Add(newCM);
         }
 
         public List<object> FindByName(string name, StringFields field)
@@ -72,9 +77,9 @@ namespace BL
             return result;
         }
 
-        public List<object> FindByNumber(int number, IntFields field)
+        public List<object> FindByNumber(IntFields field, int minNumber, int maxNumber)
         {
-            return itsDAL.ClubMemberNumberQuery(number, field).Cast<object>().ToList(); 
+            return itsDAL.ClubMemberNumberQuery(minNumber,maxNumber, field).Cast<object>().ToList(); 
         }
 
         public List<object> FindByType(ValueType type)
@@ -82,9 +87,9 @@ namespace BL
             return itsDAL.ClubMemberTypeQuery(type).Cast<object>().ToList();
         }
 
-        public List<object> GetAll(Elements element)
+        public List<object> GetAll()
         {
-            return itsDAL.ReadFromFile(element);
+            return itsDAL.ReadFromFile(Elements.ClubMember);
         }
     }
 }

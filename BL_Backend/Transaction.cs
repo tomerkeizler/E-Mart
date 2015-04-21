@@ -8,23 +8,43 @@ namespace Backend
 {
     public enum Is_a_return { Return, Purchase };
     public enum PaymentMethod { Cash, Check, Visa };
+    [Serializable()]
     public class Transaction
     {
         //Fields:
         private int transactionID;
-        private int dateTime;
+        private DateTime currentDate;
         private Is_a_return is_a_return;
         private Receipt receipt;
         private PaymentMethod payment;
 
         //Constructors:
-        public Transaction(int _transactionID, int _dateTime, Is_a_return _is_a_return, Receipt _receipt, PaymentMethod _payment)
+        public Transaction(int _transactionID, Is_a_return _is_a_return, Receipt _receipt, PaymentMethod _payment)
         {
             transactionID = _transactionID;
-            dateTime = _dateTime;
+            currentDate = DateTime.Today;
             is_a_return = _is_a_return;
             receipt = _receipt;
             payment = _payment;
+        }
+        public Transaction(Transaction other)
+        {
+            transactionID = other.transactionID;
+            currentDate = other.currentDate;
+            is_a_return = other.is_a_return;
+            receipt = new Receipt(other.receipt);
+            payment = other.payment;
+        }
+        public override bool Equals(object _other)
+        {
+            if (!(_other is Transaction)) return false;
+            Transaction other = (Transaction)_other;
+            return (transactionID == other.transactionID && currentDate.Equals(other.currentDate) && is_a_return.Equals(other.is_a_return)
+                    && receipt.Equals(other.receipt) && payment.Equals(other.payment));
+        }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode() ^ transactionID.GetHashCode();
         }
         public override string ToString()
         {
@@ -35,11 +55,6 @@ namespace Backend
         {
             get { return transactionID; }
             set { transactionID = value; }
-        }
-        public int DateTime
-        {
-            get { return dateTime; }
-            set { dateTime = value; }
         }
         public Is_a_return Is_a_Return
         {
@@ -55,6 +70,10 @@ namespace Backend
         {
             get { return payment; }
             set { payment = value; }
+        }
+        public DateTime CurrentDate
+        {
+            get { return currentDate; }
         }
     }
 }

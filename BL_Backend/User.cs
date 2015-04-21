@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Backend
 {
+    [Serializable()]
     public class User
     {
         //Fields:
@@ -17,6 +18,21 @@ namespace Backend
         {
             username = _username;
             password = _password;
+        }
+        public User(User other)
+        {
+            username = other.username;
+            password = other.password;
+        }
+        public override bool Equals(object _other)
+        {
+            if (!(_other is User)) return false;
+            User other = (User)_other;
+            return (username.Equals(other.username) && password.Equals(other.password));
+        }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode() ^ username.GetHashCode();
         }
         public override string ToString()
         {

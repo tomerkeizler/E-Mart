@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Backend
 {
+    [Serializable()]
     public class Department
     {
         //Fields:
@@ -17,6 +18,21 @@ namespace Backend
         {
             name = _name;
             id = _id;
+        }
+        public Department(Department other)
+        {
+            name = other.name;
+            id = other.id;
+        }
+        public override bool Equals(object _other)
+        {
+            if (!(_other is Department)) return false;
+            Department other = (Department)_other;
+            return (this.id == other.id && this.name.Equals(other.name));
+        }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode() ^ name.GetHashCode();
         }
         public override string ToString()
         {

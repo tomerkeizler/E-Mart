@@ -67,10 +67,8 @@ namespace BL
         }
         public void Edit(object oldE, object newE)
         {
-            List<Employee> Allemps = itsDAL.ReadFromFile(Elements.Employee).Cast<Employee>().ToList();
-            Allemps.Remove((Employee)oldE);
-            Allemps.Add((Employee)newE);
-            itsDAL.WriteToFile(Allemps.Cast<object>().ToList());
+            this.Remove(oldE);
+            this.Add(newE);            
         }
 
         public List<object> FindByName(string name, StringFields field)
@@ -81,9 +79,9 @@ namespace BL
             return result;
         }
 
-        public List<object> FindByNumber(int number, IntFields field)
+        public List<object> FindByNumber(IntFields field, int minNumber, int maxNumber)
         {
-            return itsDAL.EmployeeNumberQuery(number, field).Cast<object>().ToList();                     
+            return itsDAL.EmployeeNumberQuery(minNumber,maxNumber, field).Cast<object>().ToList();                     
         }
 
         public List<object> FindByType(ValueType type)
@@ -91,9 +89,9 @@ namespace BL
             return itsDAL.EmployeeTypeQuery(type).Cast<object>().ToList();
         }
 
-        public List<object> GetAll(Elements element)
+        public List<object> GetAll()
         {
-            return itsDAL.ReadFromFile(element);
+            return itsDAL.ReadFromFile(Elements.Employee);
         }
     }
 }
