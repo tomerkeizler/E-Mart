@@ -8,6 +8,7 @@ namespace Backend
 {
     public enum Is_a_return { Return, Purchase };
     public enum PaymentMethod { Cash, Check, Visa };
+    [Serializable()]
     public class Transaction
     {
         //Fields:

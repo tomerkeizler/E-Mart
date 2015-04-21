@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Backend
 {
+    [Serializable()]
     public class Department
     {
         //Fields:
