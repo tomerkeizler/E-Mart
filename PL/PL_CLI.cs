@@ -490,7 +490,7 @@ namespace PL
 
                 case "2":
                     Console.Clear(); //clear the screen
-                    MainMenu(); // Main menu
+                    ActionMenu(categoryNum); // Action menu
                     break;
             }
         }
