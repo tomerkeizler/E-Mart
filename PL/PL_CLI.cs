@@ -36,21 +36,21 @@ namespace PL
             inputsInfo[4] = new string[2] { "^((19|20)[0-9][0-9])$", "a 4-digit number (19**) or (20**)"};
             
             // gender - M,m,F,f
-            inputsInfo[5] = new string[2] { "^M|m|F|f$", "M for male or F for female"};
+            inputsInfo[5] = new string[2] { "^(M|m|F|f){1}$", "M for male or F for female"};
             
             // Number - unlimited digits
             inputsInfo[6] = new string[2] { "^[0-9]+$", "only digits (0-9)"};
             
             // one char of a,b,c
             // product type
-            inputsInfo[7] = new string[2] { "^(a|b|c)$", "one of the types: a, b, c"};
+            inputsInfo[7] = new string[2] { "^((a|b|c){1})$", "one of the types: a, b, c" };
             
             // one char of 1,2,3
             // product status, Payment method
-            inputsInfo[8] = new string[2] { "^(1|2|3)$", "one of the following: \n\t1 - Empty, \n\t2 - LowQuantity, \n\t3 - InStock"};
+            inputsInfo[8] = new string[2] { "^((1|2|3){1})$", "one of the following: \n\t1 - Empty, \n\t2 - LowQuantity, \n\t3 - InStock" };
             
             // transaction type - one char of R,r,P,p
-            inputsInfo[9] = new string[2] { "^(R|r|P|p)$", "one of the following: \n\tR - Return, \n\tP - Purchase"};
+            inputsInfo[9] = new string[2] { "^((R|r|P|p){1})$", "one of the following: \n\tR - Return, \n\tP - Purchase" };
             
             // at least 6 characters of letters and digits
             // username, password
@@ -61,14 +61,14 @@ namespace PL
         public PL_CLI(IBL itsClubMemberBL, IBL itsDepartmentBL, IBL itsEmployeeBL, IBL itsProductBL, IBL itsTransactionBL, IBL itsUserBL)
         {
             cats = new IBL[7];
-            cats[1] = null;
+            cats[0] = null;
             cats[1] = itsClubMemberBL;
             cats[2] = itsDepartmentBL;
             cats[3] = itsEmployeeBL;
             cats[4] = itsProductBL;
             cats[5] = itsTransactionBL;
             cats[6] = itsUserBL;
-            catsNames = new string[6] { "Club member", "Department", "Employee", "Product", "Transaction", "User" };
+            catsNames = new string[7] { "", "Club member", "Department", "Employee", "Product", "Transaction", "User" };
         }
 
         // methods
@@ -81,6 +81,7 @@ namespace PL
         // Start of program
         public void Run()
         {
+            /*
             while (true)
             {
                 // Check username and password
@@ -99,15 +100,18 @@ namespace PL
 
                 // check username and password validity
                 if (((User_BL)cats[6]).isItValidUser(new User(username, password)))
+            */
                     MainMenu(); // Main menu
+            /*
                 else
                     Console.WriteLine("\nIncorrect username and password\n\nAccess denied! Please try again...");
             }
+             */
         }
 
 
         /***************************
-         *Menu methods
+         * Menu methods
          ****************************/
 
         private void MainMenu()
@@ -181,6 +185,14 @@ namespace PL
             }
         }
 
+        /***************************
+         * Querying methods
+         * ***************************/
+
+
+
+
+
 
         /***************************
          *Adding methods
@@ -213,7 +225,7 @@ namespace PL
             }       
             cats[categoryNum].Add(newObj);
             Console.WriteLine("\n{0} was added successfully!", catsNames[categoryNum]);
-            Console.WriteLine("\nPress any key to continue");
+            Console.WriteLine("\nPress ENTRT to continue");
             Console.ReadLine();
             Console.Clear(); // clear the screen
             ActionMenu(categoryNum); // Action menu
@@ -417,7 +429,7 @@ namespace PL
 
 
        /***************************
-        Showing methods
+        * Showing methods
         ***************************/
 
         private void ShowAllRecords(int categoryNum)
@@ -425,7 +437,16 @@ namespace PL
             Console.WriteLine("\n--- List of all {0}s ---\n", catsNames[categoryNum]);
             List<Object> objList = cats[categoryNum].GetAll(); // get all the records
             int maxRecord = DisplayResult(objList); // displays the records and returns the maximal record number
-            AskOneRecord(objList, maxRecord);
+            if (maxRecord != 0)
+                AskOneRecord(objList, maxRecord);
+            else
+            {
+                Console.WriteLine("Sorry, there are no {0}s in the system.", catsNames[categoryNum]);
+                Console.WriteLine("\nPress ENTER to continue");
+                Console.ReadLine();
+                Console.Clear(); //clear the screen
+                ActionMenu(categoryNum); // Action menu
+            }
         }
 
 
@@ -435,9 +456,7 @@ namespace PL
             Console.WriteLine("\t1 - Watch a single record");
             Console.WriteLine("\t2 - Go back");
 
-            string cmd;
-            int numRecord;
-            cmd = ReceiveCmd();
+            string cmd = ReceiveCmd();
             while (!Regex.IsMatch(cmd, @"^[1-2]{1}$")) // checks validity of the input
             {
                 Console.WriteLine("\nInvalid input! Please select 1 or 2");
@@ -445,6 +464,8 @@ namespace PL
             }
            
             // act according to the action selected by the user
+            int numRecord;
+            bool isSuits;
             switch (cmd)
             {
                 case "1":
@@ -452,17 +473,18 @@ namespace PL
                     Console.WriteLine("\n\nPlease type a record number in order to watch it");
                     Console.Write("\nRecord number: ");
                     cmd = ReceiveCmd();
-                    numRecord = int.Parse(cmd);
-                    while (!Regex.IsMatch(cmd, @"^[0-9]+$") || numRecord > maxRecord || numRecord == 0) // checks validity of the input
+                    isSuits = !Regex.IsMatch(cmd, @"^[0-9]+$");
+                    while (isSuits || int.Parse(cmd) > maxRecord || int.Parse(cmd) == 0) // checks validity of the input
                     {
-                        if (numRecord > maxRecord || numRecord == 0)
-                            Console.WriteLine("\nInvalid input!\nPlease type an existing record number from {0} to (1)", 1, maxRecord);
-                        else
+                        if (isSuits)
                             Console.WriteLine("\nInvalid input! Please type only digits (0-9)");
+                        else
+                            Console.WriteLine("\nInvalid input!\nPlease type an existing record number from {0} to {1}", 1, maxRecord);
                         Console.Write("\nRecord number: ");
                         cmd = ReceiveCmd();
-                        numRecord = int.Parse(cmd);
+                        isSuits = !Regex.IsMatch(cmd, @"^[0-9]+$");
                     }
+                    numRecord = int.Parse(cmd);
                     DisplayOneRecord(objList, numRecord);
                     break;
 
@@ -498,6 +520,29 @@ namespace PL
 
             /////// edit.....remove......
         }
+
+        /***************************
+         * Editing methods
+         ***************************/
+
+        // public void Edit()
+
+
+
+        /***************************
+         * Removing methods
+         * ***************************/
+
+        // public void Remove()
+
+
+
+
+
+
+
+
+
 
 
 
