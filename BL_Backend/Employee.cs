@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Backend
 {
+    [Serializable()]
     public class Employee
     {
         //Fields:
