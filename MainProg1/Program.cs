@@ -24,9 +24,9 @@ namespace MainProg1
 
             IPL myPl = new PL_CLI(clubMember, department, employee, product, transaction, user);
 
-            //myPl.Run();
+            myPl.Run();
 
-            ((PL_CLI)myPl).test(1);
+            //((PL_CLI)myPl).test(1);
 
             
         }
