@@ -77,9 +77,9 @@ namespace BL
             return result;
         }
 
-        List<object> FindByNumber(IntFields field, int minNumber, int maxNumber=0)
+        public List<object> FindByNumber(IntFields field, int minNumber, int maxNumber)
         {
-            return itsDAL.ClubMemberNumberQuery(minNumber, field).Cast<object>().ToList(); 
+            return itsDAL.ClubMemberNumberQuery(minNumber,maxNumber, field).Cast<object>().ToList(); 
         }
 
         public List<object> FindByType(ValueType type)

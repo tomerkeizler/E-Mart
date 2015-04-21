@@ -67,9 +67,9 @@ namespace BL
             throw new System.Data.DataException("transactions doesn't have names!");
         }
 
-        public List<object> FindByNumber(int number, IntFields field)
+        public List<object> FindByNumber(IntFields field, int minNumber, int maxNumber)
         {
-            return itsDAL.TransactionNumberQuery(number, field).Cast<object>().ToList();
+            return itsDAL.TransactionNumberQuery(minNumber,maxNumber, field).Cast<object>().ToList();
         }
 
         public List<object> FindByType(ValueType type)

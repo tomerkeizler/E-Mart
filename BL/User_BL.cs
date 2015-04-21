@@ -60,12 +60,10 @@ namespace BL
             List<object> result = itsDAL.UserNameQuery(name, field).Cast<object>().ToList();
             return result;
         }
-
-        public List<object> FindByNumber(int number, Backend.IntFields field)
+        public List<object> FindByNumber(IntFields field, int minNumber, int maxNumber)
         {
             throw new System.Data.DataException("users doesn't have numbers!");
         }
-
         public List<object> FindByType(ValueType type)
         {
             throw new System.Data.DataException("users doesn't have types!");

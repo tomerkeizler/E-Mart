@@ -74,9 +74,9 @@ namespace BL
         }
 
 
-        public List<object> FindByNumber(int number, IntFields field)
+        public List<object> FindByNumber(IntFields field, int minNumber, int maxNumber)
         {
-            return itsDAL.ProductNumberQuery(number, field).Cast<object>().ToList();
+            return itsDAL.ProductNumberQuery(minNumber,maxNumber, field).Cast<object>().ToList();
         }
 
         public List<object> FindByType(ValueType type)
