@@ -142,7 +142,7 @@ namespace DAL
         }
 
 
-        public List<Product> ProductNumberQuery(int number, IntFields field)
+        public List<Product> ProductNumberQuery(int minNumber, int maxNumber, IntFields field)
         {
             List<Product> allProducts = ReadFromFile(Elements.Product).Cast<Product>().ToList();
             List<Product> filteredProducts;
@@ -152,19 +152,19 @@ namespace DAL
             }
             if (field == IntFields.price)
             {
-                filteredProducts = allProducts.Where(n => n.Price <= number).Cast<Product>().ToList();
+                filteredProducts = allProducts.Where(n => n.Price >= minNumber && n.Price <= maxNumber).Cast<Product>().ToList();
             }
             else if (field == IntFields.productID)
             {
-                filteredProducts = allProducts.Where(n => n.ProductID == number).Cast<Product>().ToList();
+                filteredProducts = allProducts.Where(n => n.ProductID >= minNumber && n.ProductID <= maxNumber).Cast<Product>().ToList();
             }
             else if (field == IntFields.location)
             {
-                filteredProducts = allProducts.Where(n => n.Location == number).Cast<Product>().ToList();
+                filteredProducts = allProducts.Where(n => n.Location >= minNumber && n.Location <= maxNumber).Cast<Product>().ToList();
             }
             else if (field == IntFields.stockCount)
             {
-                filteredProducts = allProducts.Where(n => n.StockCount <= number).Cast<Product>().ToList();
+                filteredProducts = allProducts.Where(n => n.StockCount >= minNumber && n.StockCount <= maxNumber).Cast<Product>().ToList();
             }
             else
             {
@@ -181,13 +181,18 @@ namespace DAL
             {
                 throw new InvalidDataException("There is nothing to find from.");
             }
-            if (!(type is PType))
-            {
-                throw new System.Data.DataException("Bad Input!");
-            }
-            else
+            if (type is PType)
             {
                 filteredProducts = allProducts.Where(n => n.Type.Equals((PType)type)).Cast<Product>().ToList();
+            }
+            else if (type is PStatus)
+            {
+                filteredProducts = allProducts.Where(n => n.Type.Equals((PStatus)type)).Cast<Product>().ToList();
+            }
+              
+            else
+            {
+                throw new System.Data.DataException("Bad Input!");
             }
             return filteredProducts;
         }
@@ -215,7 +220,7 @@ namespace DAL
             return filteredEmployee;
         }
 
-        public List<Employee> EmployeeNumberQuery(int number, IntFields field)
+        public List<Employee> EmployeeNumberQuery(int minNumber, int maxNumber, IntFields field)
         {
             List<Employee> allEmployee = ReadFromFile(Elements.Employee).Cast<Employee>().ToList();
             List<Employee> filteredEmployee;
@@ -225,19 +230,19 @@ namespace DAL
             }
             if (field == IntFields.id)
             {
-                filteredEmployee = allEmployee.Where(n => n.Id == number).Cast<Employee>().ToList();
+                filteredEmployee = allEmployee.Where(n => n.Id >= minNumber && n.Id <= maxNumber).Cast<Employee>().ToList();
             }
             if (field == IntFields.depID)
             {
-                filteredEmployee = allEmployee.Where(n => n.DepID == number).Cast<Employee>().ToList();
+                filteredEmployee = allEmployee.Where(n => n.DepID >= minNumber && n.DepID <= maxNumber).Cast<Employee>().ToList();
             }
             if (field == IntFields.salary)
             {
-                filteredEmployee = allEmployee.Where(n => n.Salary == number).Cast<Employee>().ToList();
+                filteredEmployee = allEmployee.Where(n => n.Salary >= minNumber && n.Salary <= maxNumber).Cast<Employee>().ToList();
             }
             if (field == IntFields.supervisiorID)
             {
-                filteredEmployee = allEmployee.Where(n => n.SupervisiorID == number).Cast<Employee>().ToList();
+                filteredEmployee = allEmployee.Where(n => n.SupervisiorID >= minNumber && n.SupervisiorID <= maxNumber).Cast<Employee>().ToList();
             }
             else
             {
@@ -289,7 +294,7 @@ namespace DAL
             return filteredClubMember;
         }
 
-        public List<ClubMember> ClubMemberNumberQuery(int number, IntFields field)
+        public List<ClubMember> ClubMemberNumberQuery(int minNumber, int maxNumber, IntFields field)
         {
             List<ClubMember> allClubMember = ReadFromFile(Elements.ClubMember).Cast<ClubMember>().ToList();
             List<ClubMember> filteredClubMember;
@@ -299,15 +304,15 @@ namespace DAL
             }
             if (field == IntFields.memberID)
             {
-                filteredClubMember = allClubMember.Where(n => n.MemberID == number).Cast<ClubMember>().ToList();
+                filteredClubMember = allClubMember.Where(n => n.MemberID >= minNumber && n.MemberID <= maxNumber).Cast<ClubMember>().ToList();
             }
             else if (field == IntFields.id)
             {
-                filteredClubMember = allClubMember.Where(n => n.Id == number).Cast<ClubMember>().ToList();
+                filteredClubMember = allClubMember.Where(n => n.Id >= minNumber && n.Id <= maxNumber).Cast<ClubMember>().ToList();
             }
-            else if (field == IntFields.transactionID)
+            else if (field == IntFields.tranHistory)
             {
-                filteredClubMember = allClubMember.Where(n => n.TransactionHistory.Any(x => x.Id == number)).Cast<ClubMember>().ToList();
+                filteredClubMember = allClubMember.Where(n => n.TransactionHistory.Any(x => x.Id >= minNumber && x.Id <= maxNumber)).Cast<ClubMember>().ToList();
             }
             else
             {
@@ -355,7 +360,7 @@ namespace DAL
             return filteredDepartment;
         }
 
-        public List<Department> DepartmentNumberQuery(int number, IntFields field)
+        public List<Department> DepartmentNumberQuery(int minNumber, int maxNumber, IntFields field)
         {
             {
                 List<Department> allDepartment = ReadFromFile(Elements.Department).Cast<Department>().ToList();
@@ -368,12 +373,12 @@ namespace DAL
                 {
                     throw new System.Data.DataException("Bad Input!");
                 }
-                filteredDepartment = allDepartment.Where(n => n.Id == number).Cast<Department>().ToList();
+                filteredDepartment = allDepartment.Where(n => n.Id >= minNumber && n.Id <= maxNumber).Cast<Department>().ToList();
                 return filteredDepartment;
             }
         }
 
-        public List<Transaction> TransactionNumberQuery(int number, IntFields field)
+        public List<Transaction> TransactionNumberQuery(int minNumber, int maxNumber, IntFields field)
         {
             {
                 List<Transaction> allTransaction = ReadFromFile(Elements.Transaction).Cast<Transaction>().ToList();
@@ -384,11 +389,11 @@ namespace DAL
                 }
                 if (field == IntFields.transactionID)
                 {
-                    filteredTransaction = allTransaction.Where(n => n.Id == number).Cast<Transaction>().ToList();
+                    filteredTransaction = allTransaction.Where(n => n.Id >= maxNumber && n.Id <= minNumber).Cast<Transaction>().ToList();
                 }
-                else if (field == IntFields.productID)
+                else if (field == IntFields.receipt)
                 {
-                    filteredTransaction = allTransaction.Where(n => n.Receipt.ProductsIDs.Any(x => x.Equals(number))).Cast<Transaction>().ToList();
+                    filteredTransaction = allTransaction.Where(n => n.Receipt.ProductsIDs.Any(x => x >= minNumber && x <= maxNumber)).Cast<Transaction>().ToList();
                 }
                 else
                 {
