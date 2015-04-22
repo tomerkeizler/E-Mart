@@ -36,7 +36,7 @@ namespace BL
             if (((ClubMember)cm).MemberID == 0)
             {
                 //set the new ID
-                ((ClubMember)cm).Id = maxID++;
+                ((ClubMember)cm).Id = maxID + 1;
             }
             //Add the new clubmember to the system.
             Allclubmems.Add((ClubMember)cm);
