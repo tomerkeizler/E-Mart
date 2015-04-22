@@ -37,7 +37,7 @@ namespace BL
              if (((Department)d).Id == 0)
              {
                  //set the new ID
-                 ((Department)d).Id = maxID++;
+                 ((Department)d).Id = maxID + 1;
              }
             //Add the new department to the system
             Alldeparts.Add((Department)d);

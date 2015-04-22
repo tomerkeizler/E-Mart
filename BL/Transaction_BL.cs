@@ -36,7 +36,7 @@ namespace BL
             if (((Transaction)t).Id == 0)
             {
                 //set the new ID
-                ((Transaction)t).Id = maxID++;
+                ((Transaction)t).Id = maxID + 1;
             }
             //Add the new transaction to the system
             Alltrans.Add((Transaction)t);

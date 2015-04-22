@@ -35,7 +35,7 @@ namespace BL
             if (((Product)p).ProductID == 0)
             {
                 //set the new ID
-                ((Product)p).ProductID = maxID++;
+                ((Product)p).ProductID = maxID + 1;
             }
             //Add the new product to the system
             Allprods.Add((Product)p);
