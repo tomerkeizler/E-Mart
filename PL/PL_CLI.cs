@@ -170,7 +170,7 @@ namespace PL
 
         // Start of program
         public void Run()
-        {/*
+        {
             bool login = false; ;
             while (true)
             {
@@ -204,13 +204,13 @@ namespace PL
 
 
                 if (login)
-                {*/
+                {
                     MainMenu(); // Main menu
-                    /*break;
+                    break;
                 }
                 else
                     Console.WriteLine("\nIncorrect username and password\n\nAccess denied! Please try again...");
-            }*/
+            }
         }
 
 
@@ -405,6 +405,7 @@ namespace PL
                 Console.Write("\n{0}: ", info[i][0]);
                 cmd = ReceiveCmd();
                 isSuits = Regex.IsMatch(cmd, inputsInfo[numOfTest][0]);
+                /*
                 if (isSuits)
                 {
                     if (numOfTest == 6) // only digits field
@@ -418,6 +419,7 @@ namespace PL
                             Console.WriteLine("\nToo big number...");
                         }
                 }
+                */
                 while (!isSuits) // checks validity of the input
                 {
                     WriteColor("\nInvalid input! Please try again", true, ConsoleColor.Red);
