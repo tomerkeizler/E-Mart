@@ -42,7 +42,7 @@ namespace Backend
             string str = "";
             for (int i = 0; i < productsIDs.Count; i++ )
             {
-                str = str + productsIDs[i] + "    " + prices[i] + "\n";
+                str = str + productsIDs.ElementAt(i).ToString() + ":   " + prices.ElementAt(i).ToString() + "\n";
             }
             return str;
         }
