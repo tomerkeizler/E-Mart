@@ -22,7 +22,7 @@ namespace DAL
             list.Add(a);
             list.Add(b);
             File.Delete("Backend.Product.xml");
-            linq.WriteToFile(list);
+            linq.WriteToFile(list, a);
             Assert.IsTrue(File.Exists("Backend.Product.xml"));
         }
         [Test]

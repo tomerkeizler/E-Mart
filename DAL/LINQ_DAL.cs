@@ -64,7 +64,7 @@ namespace DAL
 
             if (alg == null)
             {
-                throw new ArgumentNullException("alg");
+                throw new ArgumentNullException("Bad Encrypt Type!");
             }
 
             using (var stream = new MemoryStream())
@@ -107,10 +107,13 @@ namespace DAL
             {
                 File.Delete(obj.GetType() + ".xml");
             }
-            StreamWriter WriteFileStream = new StreamWriter(list.ElementAtOrDefault(0).GetType() + ".xml");
-            byte[] encrypted = Encrypt(list);
-            SerializerObj.Serialize(WriteFileStream, encrypted);
-            WriteFileStream.Close();
+            else
+            {
+                StreamWriter WriteFileStream = new StreamWriter(list.ElementAtOrDefault(0).GetType() + ".xml");
+                byte[] encrypted = Encrypt(list);
+                SerializerObj.Serialize(WriteFileStream, encrypted);
+                WriteFileStream.Close();
+            } 
         }
 
         public List<object> ReadFromFile(Elements element)
