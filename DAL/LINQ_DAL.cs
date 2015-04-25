@@ -376,7 +376,7 @@ namespace DAL
                 {
                     throw new InvalidDataException("There is nothing to find from.");
                 }
-                if (field != IntFields.id)
+                if (field != IntFields.departmentID)
                 {
                     throw new System.Data.DataException("Bad Input!");
                 }
