@@ -19,6 +19,7 @@ namespace Backend
             name = _name;
             id = _id;
         }
+        //For Deep Copy
         public Department(Department other)
         {
             name = other.name;

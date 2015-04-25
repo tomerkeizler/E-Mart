@@ -25,6 +25,7 @@ namespace BL
             List<Employee> Allemps = itsDAL.ReadFromFile(Elements.Employee).Cast<Employee>().ToList();
             List<Department> Alldeparts = itsDAL.ReadFromFile(Elements.Department).Cast<Department>().ToList();
             bool checkID = false;
+            bool checkSup = false;
             foreach (Department dep in Alldeparts)
             {
                 if (((Employee)e).DepID == dep.Id)
@@ -41,8 +42,13 @@ namespace BL
                 {
                     if (emp.Equals(e))
                         throw new Exception("employee is already exists!");
+                    if (((Employee)e).SupervisiorID == emp.SupervisiorID)
+                        checkSup = true;
                 }
+                if(checkSup)
                 Allemps.Add((Employee)e);
+                else
+                    throw new Exception("his supervisor doesn't exists!");
             }
             itsDAL.WriteToFile(Allemps.Cast<object>().ToList(), (Employee)e);
         }

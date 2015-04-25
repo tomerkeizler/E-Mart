@@ -7,6 +7,7 @@ using BL;
 using System.Text.RegularExpressions;
 using System.Reflection;
 
+
 namespace PL
 {
     public class PL_CLI : IPL
@@ -47,10 +48,10 @@ namespace PL
 
             // one char of 1,2,3
             // product status, Payment method
-            inputsInfo[8] = new string[2] { "^((1|2|3){1})$", "one of the following: \n\t1 - Empty, \n\t2 - LowQuantity, \n\t3 - InStock" };
+            inputsInfo[8] = new string[2] { "^((1|2|3){1})$", "one of the following:\n\t1 - Empty\n\t2 - LowQuantity\n\t3 - InStock" };
 
             // transaction type - one char of R,r,P,p
-            inputsInfo[9] = new string[2] { "^((R|r|P|p){1})$", "one of the following: \n\tR - Return, \n\tP - Purchase" };
+            inputsInfo[9] = new string[2] { "^((R|r|P|p){1})$", "one of the following:\n\tR - Return\n\tP - Purchase" };
 
             // at least 6 characters of letters and digits
             // username, password
@@ -78,16 +79,99 @@ namespace PL
             return Console.ReadLine();
         }
 
-        public void PressEnter()
+
+        private void PressEnter()
         {
-            Console.WriteLine("\nPress ENTER to continue");
+            WriteColor("\nPress ENTER to continue", true, ConsoleColor.Blue);
             Console.ReadLine();
+            Console.Clear(); //clear the screen
+        }
+
+
+        private void GoBack(int categoryNum)
+        {
+            Console.Clear(); //clear the screen
+            ActionMenu(categoryNum); // Action menu
+        }
+
+
+        private void WriteColor(string text, bool newLine, ConsoleColor color)
+        {
+            Console.BackgroundColor = color;
+            Console.ForegroundColor = ConsoleColor.White;
+            if (newLine)
+                Console.WriteLine(text);
+            else
+                Console.Write(text);
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+
+        private int internalMenu(string[] options, string instruction, string error)
+        {
+            // Show the menu options
+            int index = 0;
+            foreach (string opt in options)
+            {
+                if (opt != null)
+                {
+                    if (opt.Equals("Go back") || opt.Equals("Exit"))
+                        Console.WriteLine();
+                    Console.WriteLine("\t{0}. {1}", index, opt);
+                }
+                index++;
+            }
+            return inputMenuLoop(options.Length - 1, instruction, error); // Return the choice of the user;
+        }
+
+
+        private int inputMenuLoop(int max, string instruction, string error)
+        {
+            int choice = inputMenuSingle(instruction);
+            while (choice == -1 || choice == -2 || choice == 0 || choice > max) // checks validity of the input
+            {
+                // pointing the error for the user
+                if (choice == -1)
+                    WriteColor("Invalid input! Please type only digits (0-9)\n", true, ConsoleColor.Red);
+                else if (choice == -2)
+                    WriteColor("Invalid input! Too big number\n", true, ConsoleColor.Red);
+                else
+                    WriteColor("Invalid input! Please select " + error + "\n", true, ConsoleColor.Red);
+                choice = inputMenuSingle(instruction);
+            }
+            return choice;
+        }
+
+
+        private int inputMenuSingle(string instruction)
+        {
+            string cmd;
+            int choice = -1;
+            // instruction for the user
+            if (instruction != "")
+                Console.Write(instruction + ": ");
+            // getting input from the user
+            cmd = ReceiveCmd();
+            if (Regex.IsMatch(cmd, @"^[0-9]+$"))
+            {
+                try
+                {
+                    choice = int.Parse(cmd);
+                }
+                catch (OverflowException)
+                {
+                    choice = -2;
+                }
+            }
+            return choice;
         }
 
 
         // Start of program
         public void Run()
         {
+            bool login = false; ;
             while (true)
             {
                 // Check username and password
@@ -98,14 +182,28 @@ namespace PL
                 string[][] logIn = new string[2][];
                 logIn[0] = new string[3] { "User name", "10", "" };
                 logIn[1] = new string[3] { "Password", "10", "" };
-                
+
                 // getting inputs from the user
                 logIn = getInputsFromUser(logIn);
                 string username = logIn[0][2];
                 string password = logIn[1][2];
 
                 // check username and password validity
-                if (((User_BL)cats[6]).isItValidUser(new User(username, password)))
+                try
+                {
+                    login = ((User_BL)cats[6]).isItValidUser(new User(username, password));
+                }
+                catch (NullReferenceException e)
+                {
+                    Console.WriteLine("\n" + e);
+                }
+                catch (System.Data.DataException e)
+                {
+                    Console.WriteLine("\n" + e);
+                }
+
+
+                if (login)
                 {
                     MainMenu(); // Main menu
                     break;
@@ -122,71 +220,51 @@ namespace PL
 
         private void MainMenu()
         {
-            int categoryNum;
-            string cmd;
-            Console.WriteLine("\n--- Main menu ---\n");
-            Console.WriteLine("Please select a data entity to manage:");
-            Console.WriteLine("\t1. Club member");
-            Console.WriteLine("\t2. Department");
-            Console.WriteLine("\t3. Employee");
-            Console.WriteLine("\t4. Product");
-            Console.WriteLine("\t5. Transaction");
-            Console.WriteLine("\t6. User");
-            Console.WriteLine("\n\t7. Exit");
-
-            // getting input from the user
-            cmd = ReceiveCmd();
-            while (!Regex.IsMatch(cmd, @"^[1-7]{1}$")) // checks validity of the input
-            {
-                Console.WriteLine("\nInvalid input! Please select a Data Entity (1-6) or Exit (7)");
-                cmd = ReceiveCmd();
-            }
-            categoryNum = int.Parse(cmd);
+            WriteColor("\n--- Main menu ---\n", true, ConsoleColor.DarkGreen);
+            Console.WriteLine("Please select a data entity to manage:\n");
+            string[] options = new string[] { null, "Club member", "Department", "Employee", "Product", "Transaction", "User", "Exit" };
+            int categoryNum = internalMenu(options, "", "a data entity (1-6) or Exit (7)");
             if (categoryNum == 7)
                 return; //quit the program
-            Console.Clear(); //clear the screen
+            Console.Clear(); // clear the screen
             ActionMenu(categoryNum); // Action menu
         }
 
 
         private void ActionMenu(int categoryNum)
         {
-            string cmd;
-            Console.WriteLine("\n--- " + catsNames[categoryNum] + "s management ---\n");
-            Console.WriteLine("Please select an action:");
-            Console.WriteLine("\t1. Run a query for " + catsNames[categoryNum]);
-            Console.WriteLine("\t2. Add " + catsNames[categoryNum]);
-            Console.WriteLine("\t3. Show all " + catsNames[categoryNum] + "s");
-            Console.WriteLine("\n\t4. Go back");
-            Console.WriteLine("\t5. Exit");
-            cmd = ReceiveCmd();
-            while (!Regex.IsMatch(cmd, @"^[1-5]{1}$")) // checks validity of the input
-            {
-                Console.WriteLine("\nInvalid input! Please select an Action (1-3) or Go back (4) or Exit (5)");
-                cmd = ReceiveCmd();
-            }
-            Console.Clear(); //clear the screen
+            WriteColor("\n--- " + catsNames[categoryNum] + "s management ---\n", true, ConsoleColor.DarkGreen);
+            Console.WriteLine("Please select an action:\n");
+            int numOfOptions = 5;
+            string[] options = new string[numOfOptions + 1];
+            options[1] = "Run a query for " + catsNames[categoryNum];
+            options[2] = "Add " + catsNames[categoryNum];
+            options[3] = "Show all " + catsNames[categoryNum] + "s";
+            options[4] = "Go back";
+            options[5] = "Exit";
+            int choice = internalMenu(options, "", "an Action (1-3) or Go back (4) or Exit (5)");
+            Console.Clear(); // clear the screen
 
             // calling for a method according to the action selected by the user
-            switch (cmd)
+            switch (choice)
             {
-                case "1": //Run a Query
-                    // to be continued...
+                case 1: //Run a Query
+                    RunQuery(categoryNum);
                     break;
 
-                case "2": // Add
+                case 2: // Add
                     Add(categoryNum);
                     break;
 
-                case "3": // Show all
-                    ShowAllRecords(categoryNum);
+                case 3: // Show all
+                    ShowAll(categoryNum);
                     break;
 
-                case "4":
+                case 4:
                     MainMenu(); // go back
                     break;
 
-                case "5":
+                case 5:
                     return; //quit the program
             }
         }
@@ -194,6 +272,83 @@ namespace PL
         /***************************
          * Querying methods
          * ***************************/
+
+        private void RunQuery(int categoryNum)
+        {
+
+
+
+            ClubMember tk = new ClubMember(203608096, "Tomer", "Keizler", new List<Transaction>(), new DateTime(1991, 9, 5), Gender.Male, 0);
+            PropertyInfo[] props1 = tk.GetType().GetProperties();
+            foreach (PropertyInfo field in props1)
+            {
+                //Console.WriteLine(field.ToString());
+                Console.WriteLine(field.GetValue(tk, null));
+                Console.WriteLine(field.Name);
+                Console.WriteLine(field.PropertyType);
+                Console.WriteLine();
+
+            }
+            Console.ReadLine();
+
+
+
+            WriteColor("\n--- Running a query for a " + catsNames[categoryNum] + " ---", true, ConsoleColor.DarkGreen);
+            PropertyInfo[] props = cats[categoryNum].GetType().GetProperties();
+            int numOfProperties = props.Length;
+
+            // showing the user all of the object properties
+            int index = 1;
+            Console.WriteLine("\nPlease choose one of the following fields:");
+            foreach (PropertyInfo field in props)
+                if (field.CanRead)
+                    Console.WriteLine("\t{0} - {1}", index, field.Name);
+
+            // getting a property number from the user
+            int max = index - 1;
+            int choice = inputMenuLoop(max, "", "a valid property number (1-" + max + ")");
+
+            // running a suitable query by the user's choice
+            bool foundType = false;
+            PropertyInfo fieldSelected = props[choice];
+            List<Object> queryResult = new List<object>();
+            // Name
+            foreach (StringFields stringType in Enum.GetValues(typeof(StringFields)))
+                if (stringType.Equals(fieldSelected.Name))
+                {
+                    foundType = true;
+                    Console.WriteLine("\nPlease type a value for searching by the field selected");
+                    // information array about the input fields
+                    string[][] info = new string[1][];
+                    info[0] = new string[3] { fieldSelected.Name, "1", "" };
+                    // getting inputs from the user
+                    info = getInputsFromUser(info);
+                    string s = fieldSelected.PropertyType.Name;
+                    //queryResult = cats[categoryNum].FindByName(info[0][2], typeof(StringFields).GetProperty(s).PropertyType);
+
+                }
+            // Number
+            if (!foundType)
+            {
+                foreach (IntFields intType in Enum.GetValues(typeof(IntFields)))
+                    if (intType.Equals(fieldSelected.Name))
+                    {
+                        foundType = true;
+                        //
+                    }
+            }
+            // Type
+            if (!foundType)
+            {
+                    foundType = true;
+                    //
+            }
+            
+            
+
+
+
+        }
 
 
 
@@ -206,7 +361,8 @@ namespace PL
 
         private void Add(int categoryNum)
         {
-            Console.WriteLine("\n--- Creating a new {0} ---", catsNames[categoryNum]);
+            WriteColor("\n--- Creating a new  " + catsNames[categoryNum] + " ---", true, ConsoleColor.DarkGreen);
+            Console.WriteLine("\nPlease type the following details:");
             Object newObj = new Object();
             switch (categoryNum)
             {
@@ -230,10 +386,9 @@ namespace PL
                     break;
             }
             cats[categoryNum].Add(newObj);
-            Console.WriteLine("\n{0} was added successfully!", catsNames[categoryNum]);
+            WriteColor("\n" + catsNames[categoryNum] + " was added successfully!", true, ConsoleColor.Blue);
             PressEnter();
-            Console.Clear(); // clear the screen
-            ActionMenu(categoryNum); // Action menu
+            GoBack(categoryNum); // Action menu
         }
 
 
@@ -241,15 +396,33 @@ namespace PL
         {
             // getting inputs from the user
             string cmd;
-            int numOfTest;
+            bool isSuits;
+            int numOfTest, int32Test;
             for (int i = 0; i < info.Length; i++)
             {
+                numOfTest = int.Parse(info[i][1]); // number of test information in static array inputsInfo
+                Console.Write("\n{0}", inputsInfo[numOfTest][1]);
                 Console.Write("\n{0}: ", info[i][0]);
                 cmd = ReceiveCmd();
-                numOfTest = int.Parse(info[i][1]); // number of test information in static array inputsInfo
-                while (!Regex.IsMatch(cmd, inputsInfo[numOfTest][0])) // checks validity of the input
+                isSuits = Regex.IsMatch(cmd, inputsInfo[numOfTest][0]);
+                /*
+                if (isSuits)
                 {
-                    Console.WriteLine("\nInvalid input! Please try again");
+                    if (numOfTest == 6) // only digits field
+                        try
+                        {
+                            int32Test = int.Parse(cmd);
+                        }
+                        catch (OverflowException)
+                        {
+                            isSuits = false;
+                            Console.WriteLine("\nToo big number...");
+                        }
+                }
+                */
+                while (!isSuits) // checks validity of the input
+                {
+                    WriteColor("\nInvalid input! Please try again", true, ConsoleColor.Red);
                     Console.WriteLine("You should type {0}", inputsInfo[numOfTest][1]);
                     Console.Write("\n{0}: ", info[i][0]);
                     cmd = ReceiveCmd();
@@ -272,7 +445,6 @@ namespace PL
             info[5] = new string[3] { "Year of birth", "4", "" };
             info[6] = new string[3] { "Gender", "5", "" };
             // getting inputs from the user
-            Console.WriteLine("\nPlease enter the following details:");
             info = getInputsFromUser(info);
             ////// creation of fields
             int id = int.Parse(info[0][2]);
@@ -299,7 +471,6 @@ namespace PL
             string[][] info = new string[1][];
             info[0] = new string[3] { "Department name", "1", "" };
             // getting inputs from the user
-            Console.WriteLine("\nPlease enter the following details:");
             info = getInputsFromUser(info);
             // creation of fields
             string name = info[0][2];
@@ -320,7 +491,6 @@ namespace PL
             info[5] = new string[3] { "Supervisor ID", "6", "" };
             info[6] = new string[3] { "Gender", "5", "" };
             // getting inputs from the user
-            Console.WriteLine("\nPlease enter the following details:");
             info = getInputsFromUser(info);
             // creation of fields
             int id = int.Parse(info[0][2]);
@@ -352,7 +522,6 @@ namespace PL
             info[4] = new string[3] { "Product status", "8", "" };
             info[5] = new string[3] { "Location department ID", "6", "" };
             // getting inputs from the user
-            Console.WriteLine("\nPlease enter the following details:");
             info = getInputsFromUser(info);
             ////// creation of fields
             // field: Name
@@ -391,7 +560,6 @@ namespace PL
             info[0] = new string[3] { "Transaction type", "9", "" };
             info[1] = new string[3] { "Payment method", "8", "" };
             // getting inputs from the user
-            Console.WriteLine("\nPlease enter the following details:");
             info = getInputsFromUser(info);
             ////// creation of fields
             // field: Transaction type
@@ -423,7 +591,6 @@ namespace PL
             info[0] = new string[3] { "User name", "10", "" };
             info[1] = new string[3] { "Password", "10", "" };
             // getting inputs from the user
-            Console.WriteLine("\nPlease enter the following details:");
             info = getInputsFromUser(info);
             // creation of fields
             string username = info[0][2];
@@ -434,137 +601,222 @@ namespace PL
 
 
         /***************************
-         * Showing methods
+         * Viewing methods
          ***************************/
 
-        private void ShowAllRecords(int categoryNum)
+        private void ShowAll(int categoryNum)
         {
             Console.WriteLine("\n--- List of all {0}s ---\n", catsNames[categoryNum]);
             List<Object> objList = cats[categoryNum].GetAll(); // get all the records
-            int maxRecord = DisplayResult(objList); // displays the records and returns the maximal record number
-            if (maxRecord != 0)
-                AskOneRecord(objList, maxRecord, categoryNum);
-            else
-            {
-                Console.WriteLine("Sorry, there are no {0}s in the system.", catsNames[categoryNum]);
-                PressEnter();
-                Console.Clear(); //clear the screen
-                ActionMenu(categoryNum); // Action menu
-            }
+            DisplayResult(categoryNum, objList); // displays the records
+            if (objList.Any<object>())
+                ShowOne(categoryNum, objList);
         }
 
 
-        private void AskOneRecord(List<Object> objList, int maxRecord, int categoryNum)
+        private void ShowOne(int categoryNum, List<Object> objList)
         {
-            Console.WriteLine("Please select one of the following:");
-            Console.WriteLine("\t1 - Watch a single record");
-            Console.WriteLine("\t2 - Go back");
-
-            string cmd = ReceiveCmd();
-            while (!Regex.IsMatch(cmd, @"^[1-2]{1}$")) // checks validity of the input
-            {
-                Console.WriteLine("\nInvalid input! Please select 1 or 2");
-                cmd = ReceiveCmd();
-            }
+            // getting an input from the user
+            Console.WriteLine("\n\nPlease select one of the following:\n");
+            string[] options = new string[] { null, "View a single record", "Go back" };
+            int choice = internalMenu(options, "", "1 or 2");
 
             // act according to the action selected by the user
-            int numRecord;
-            bool isSuits;
-            switch (cmd)
+            switch (choice)
             {
-                case "1":
-                    // watch a single record
-                    Console.WriteLine("\n\nPlease type a record number in order to watch it");
-                    Console.Write("\nRecord number: ");
-                    cmd = ReceiveCmd();
-                    isSuits = !Regex.IsMatch(cmd, @"^[0-9]+$");
-                    while (isSuits || int.Parse(cmd) > maxRecord || int.Parse(cmd) == 0) // checks validity of the input
+                // view a single record
+                case 1:
+                    // getting an input from the user
+                    int numRecord;
+                    Object currentRecord;
+                    if (objList.Count == 1)
                     {
-                        if (isSuits)
-                            Console.WriteLine("\nInvalid input! Please type only digits (0-9)");
-                        else
-                            Console.WriteLine("\nInvalid input!\nPlease type an existing record number from {0} to {1}", 1, maxRecord);
-                        Console.Write("\nRecord number: ");
-                        cmd = ReceiveCmd();
-                        isSuits = !Regex.IsMatch(cmd, @"^[0-9]+$");
+                        numRecord = 1;
+                        currentRecord = objList.First();
                     }
-                    numRecord = int.Parse(cmd);
-                    DisplayOneRecord(objList, numRecord);
+                    else
+                    {
+                        Console.WriteLine("\n\nPlease type a record number to view");
+                        numRecord = inputMenuLoop(objList.Count, "Record number", "an existing record number from 1 to " + objList.Count);
+                        // act according to the action selected by the user
+                        currentRecord = objList.ElementAt(numRecord - 1);
+                    }
+                    Console.Clear();
+                    WriteColor("\n--- View " + catsNames[categoryNum] + " no." + numRecord + " ---\n", true, ConsoleColor.DarkGreen);
+                    DisplayRecord(currentRecord, true);
+                    EditOrRemove(categoryNum, currentRecord); //menu for edit or remove or go back
                     break;
 
-                case "2":
-                    Console.Clear(); //clear the screen
-                    ActionMenu(categoryNum); // Action menu
+                // go back
+                case 2:
+                    GoBack(categoryNum); // Action menu
                     break;
             }
         }
 
 
-        private int DisplayResult(List<Object> objList)
+        public void EditOrRemove(int categoryNum, Object currentRecord)
         {
-            int index = 1;
-            foreach (Object obj in objList)
+            // getting an input from the user
+            Console.WriteLine("\n\nPlease select an action:\n");
+            string[] options = new string[] { null, "Edit current record", "Remove current record", "Go back" };
+            int choice = internalMenu(options, "", "1 for EDIT or 2 for REMOVE or 3 to GO BACK");
+
+            // act according to the action selected by the user
+            switch (choice)
             {
-                Console.Write("[{0}]", index);
-                foreach (PropertyInfo field in obj.GetType().GetProperties())
-                    if (field.CanRead)
-                        Console.Write("\t{0}", field.GetValue(obj, null));
-                index++;
+                case 1:
+                    EditRecord(categoryNum, currentRecord);
+                    break;
+                case 2:
+                    {
+                        // getting an input from the user
+                        WriteColor("Are you sure you want to REMOVE this " + catsNames[categoryNum] + "?", true, ConsoleColor.Red);
+                        options = new string[] { null, "YES", "NO" };
+                        choice = internalMenu(options, "", "1 for REMOVE or 2 for CANCEL REMOVAL");
+                        // act according to the action selected by the user
+                        switch (choice)
+                        {
+                            case 1:
+                                Console.Clear();
+                                RemoveRecord(categoryNum, currentRecord);
+                                break;
+                            case 2:
+                                WriteColor("The removal action was canceled", true, ConsoleColor.Blue);
+                                EditOrRemove(categoryNum, currentRecord); //menu for edit or remove or go back
+                                break;
+                        }
+                        break;
+                    }
+                case 3:
+                    Console.Clear(); // clear the screen
+                    ShowAll(categoryNum);
+                    break;
             }
-            return index - 1;
         }
 
 
-        private void DisplayOneRecord(List<Object> objList, int numRecord)
+        private void DisplayResult(int categoryNum, List<Object> objList)
         {
-            Object obj = objList.ElementAt(numRecord - 1);
+            if (!objList.Any<object>())
+            {
+                Console.WriteLine("Sorry, there are no results for {0}s.", catsNames[categoryNum]);
+                PressEnter();
+                GoBack(categoryNum); // Action menu
+            }
+            else
+            {
+                Console.WriteLine("\n---------------------------------------------------------------------------------------------------------------");
+
+                Console.BackgroundColor = ConsoleColor.White;
+                Console.ForegroundColor = ConsoleColor.Black; 
+                Console.Write("Index |");
+                int blankSpace;
+                foreach (PropertyInfo field in objList.First().GetType().GetProperties())
+                {
+                    blankSpace = field.Name.Length + 5;
+                    Console.Write(" {0,-" + blankSpace + "} |", field.Name);
+                }
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("\n---------------------------------------------------------------------------------------------------------------");
+                int index = 1;
+                foreach (Object obj in objList)
+                {
+                    Console.Write("{0,-5} |", index);
+                    DisplayRecord(obj, false);
+                    index++;
+                }
+                Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop - 1);
+                Console.WriteLine("\n---------------------------------------------------------------------------------------------------------------");
+
+            }
+        }
+
+
+        private void DisplayRecord(Object obj, bool alone)
+        {
+            int blankSpace;
             foreach (PropertyInfo field in obj.GetType().GetProperties())
                 if (field.CanRead)
-                    Console.Write("\t{0}", field.GetValue(obj, null));
-
-            /////// edit.....remove......
+                {
+                    if (alone)
+                        Console.Write("\n{0,-12}: {1}", field.Name, field.GetValue(obj, null));
+                    else
+                    {
+                        blankSpace = field.Name.Length + 5;
+                        Console.Write(" {0,-" + blankSpace + "} |", field.GetValue(obj, null));
+                    }
+                }
+            Console.WriteLine();
         }
+
 
         /***************************
          * Editing methods
          ***************************/
 
-        // public void Edit()
-
+        private void EditRecord(int categoryNum, Object currentRecord)
+        {
+            // to be implemented...
+        }
 
 
         /***************************
          * Removing methods
          * ***************************/
 
-        // public void Remove()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /*
-
-        public void test(int categoryNum)
+        private void RemoveRecord(int categoryNum, Object currentRecord)
         {
-            List<Object> objList = new List<Object>();
-            objList.Add(new ClubMember(203608096, "Tomer", "Keizler", new List<Transaction>(), new DateTime(1991, 9, 5), Gender.Male, 0));
+            WriteColor("\n--- Removing a " + catsNames[categoryNum] + " ---", true, ConsoleColor.DarkGreen);
+            try
+            {
+                cats[categoryNum].Remove(currentRecord);
+            }
+            catch (NullReferenceException e)
+            {
+                Console.WriteLine("\n" + e.Message);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("\n" + e.Message);
+            }
+            WriteColor("\n" + catsNames[categoryNum] + " was removed successfully!", true, ConsoleColor.Blue);
+            PressEnter();
+            ShowAll(categoryNum); // Action menu
+        }
 
-            string lstType = objList.GetType().Name;
-            Console.WriteLine(lstType);
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+        public void test()
+        {
+            ClubMember tk = new ClubMember(203608096, "Tomer", "Keizler", new List<Transaction>(), new DateTime(1991, 9, 5), Gender.Male, 0);
+            PropertyInfo[] props = tk.GetType().GetProperties();
+            foreach (PropertyInfo field in props)
+            {
+                //Console.WriteLine(field.ToString());
+                Console.WriteLine(field.GetValue(tk, null));
+                Console.WriteLine(field.Name);
+                Console.WriteLine(field.PropertyType);
+                Console.WriteLine();
+
+            }
             Console.ReadLine();
         }
 

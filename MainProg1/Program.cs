@@ -6,7 +6,6 @@ using PL;
 using BL;
 using DAL;
 
-
 namespace MainProg1
 {
     class Program
@@ -26,9 +25,9 @@ namespace MainProg1
 
             myPl.Run();
 
-            //((PL_CLI)myPl).test(1);
+            //((PL_CLI)myPl).test();
 
-            
+
         }
     }
 }

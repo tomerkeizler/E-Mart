@@ -34,18 +34,22 @@ namespace DAL
         //Behaviour:
         private static byte[] Encrypt(List<object> original)
         {
+            //This is for Encrypt any list with the same class's key
             myRijndael.Key = key;
             myRijndael.IV = iv;
             var mStream = new MemoryStream();
             binFormatter.Serialize(mStream, original);
+            //create the byte array:
             byte[] encrypted = EncryptBytes(myRijndael, mStream.ToArray());
             return encrypted;
         }
         private static List<object> Decrypt(byte[] encrypted)
         {
+            //This is for decrypt any list with the same class's key
             myRijndael.Key = key;
             myRijndael.IV = iv;
             var mStream = new MemoryStream(encrypted);
+            //decrypt the byte array from mem stream:
             byte[] decrypted = DecryptBytes(myRijndael, mStream.ToArray());
             mStream = new MemoryStream(decrypted);
             List<object> list = binFormatter.Deserialize(mStream) as List<object>;
@@ -181,13 +185,18 @@ namespace DAL
             {
                 throw new InvalidDataException("There is nothing to find from.");
             }
-            if (!(type is PType))
-            {
-                throw new System.Data.DataException("Bad Input!");
-            }
-            else
+            if (type is PType)
             {
                 filteredProducts = allProducts.Where(n => n.Type.Equals((PType)type)).Cast<Product>().ToList();
+            }
+            else if (type is PStatus)
+            {
+                filteredProducts = allProducts.Where(n => n.Type.Equals((PStatus)type)).Cast<Product>().ToList();
+            }
+              
+            else
+            {
+                throw new System.Data.DataException("Bad Input!");
             }
             return filteredProducts;
         }
@@ -305,7 +314,7 @@ namespace DAL
             {
                 filteredClubMember = allClubMember.Where(n => n.Id >= minNumber && n.Id <= maxNumber).Cast<ClubMember>().ToList();
             }
-            else if (field == IntFields.transactionID)
+            else if (field == IntFields.tranHistory)
             {
                 filteredClubMember = allClubMember.Where(n => n.TransactionHistory.Any(x => x.Id >= minNumber && x.Id <= maxNumber)).Cast<ClubMember>().ToList();
             }
@@ -386,7 +395,7 @@ namespace DAL
                 {
                     filteredTransaction = allTransaction.Where(n => n.Id >= maxNumber && n.Id <= minNumber).Cast<Transaction>().ToList();
                 }
-                else if (field == IntFields.productID)
+                else if (field == IntFields.receipt)
                 {
                     filteredTransaction = allTransaction.Where(n => n.Receipt.ProductsIDs.Any(x => x >= minNumber && x <= maxNumber)).Cast<Transaction>().ToList();
                 }
