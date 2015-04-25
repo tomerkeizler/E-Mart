@@ -39,7 +39,7 @@ namespace BL
             }
             //Add the new product to the system
             Allprods.Add((Product)p);
-            itsDAL.WriteToFile(Allprods.Cast<object>().ToList());
+            itsDAL.WriteToFile(Allprods.Cast<object>().ToList(), (Product)p);
         }
         public void Remove(object p)
         {
@@ -56,7 +56,7 @@ namespace BL
                         break;
                     }
                 }
-                itsDAL.WriteToFile(Allprods.Cast<object>().ToList());
+                itsDAL.WriteToFile(Allprods.Cast<object>().ToList(), p);
             }
         }
         public void Edit(object oldP, object newP)

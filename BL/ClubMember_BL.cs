@@ -40,7 +40,7 @@ namespace BL
             }
             //Add the new clubmember to the system.
             Allclubmems.Add((ClubMember)cm);
-            itsDAL.WriteToFile(Allclubmems.Cast<object>().ToList());
+            itsDAL.WriteToFile(Allclubmems.Cast<object>().ToList(), (ClubMember)cm);
         }
 
         public void Remove(object cm)
@@ -58,7 +58,7 @@ namespace BL
                         break;
                     }
                 }
-                itsDAL.WriteToFile(Allclubmems.Cast<object>().ToList());
+                itsDAL.WriteToFile(Allclubmems.Cast<object>().ToList(), cm);
             }
         }
 

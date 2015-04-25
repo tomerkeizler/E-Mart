@@ -97,11 +97,11 @@ namespace DAL
         
 
 
-        public void WriteToFile(List<object> list)
+        public void WriteToFile(List<object> list, object obj)
         {
             if (list.ElementAtOrDefault(0) == null)
             {
-                throw new InvalidDataException("Nothing to Write");
+                File.Delete(obj.GetType() + ".xml");
             }
             StreamWriter WriteFileStream = new StreamWriter(list.ElementAtOrDefault(0).GetType() + ".xml");
             byte[] encrypted = Encrypt(list);

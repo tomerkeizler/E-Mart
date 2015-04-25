@@ -27,7 +27,7 @@ namespace BL
             //Add the new user to the system
             List<User> Allusers = itsDAL.ReadFromFile(Elements.User).Cast<User>().ToList();
             Allusers.Add((User)u);
-            itsDAL.WriteToFile(Allusers.Cast<object>().ToList());
+            itsDAL.WriteToFile(Allusers.Cast<object>().ToList(), (User)u);
         }
 
         public void Remove(object u)
@@ -45,7 +45,7 @@ namespace BL
                         break;
                     }
                 }
-                itsDAL.WriteToFile(Allusers.Cast<object>().ToList());
+                itsDAL.WriteToFile(Allusers.Cast<object>().ToList(), (User)u);
             }
         }
 

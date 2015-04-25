@@ -44,8 +44,7 @@ namespace BL
                 }
                 Allemps.Add((Employee)e);
             }
-            itsDAL.WriteToFile(Alldeparts.Cast<object>().ToList());
-            itsDAL.WriteToFile(Allemps.Cast<object>().ToList());
+            itsDAL.WriteToFile(Allemps.Cast<object>().ToList(), (Employee)e);
         }
         public void Remove(object e)
         {
@@ -62,7 +61,7 @@ namespace BL
                         break;
                     }
                 }
-                itsDAL.WriteToFile(Allemps.Cast<object>().ToList());
+                itsDAL.WriteToFile(Allemps.Cast<object>().ToList(), e);
             }
         }
         public void Edit(object oldE, object newE)
