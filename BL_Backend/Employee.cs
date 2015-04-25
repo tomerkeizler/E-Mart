@@ -28,6 +28,7 @@ namespace Backend
             salary = _salary;
             supervisiorID = _supervisiorID;
         }
+        //For Deep Copy
         public Employee(Employee other)
         {
             firstName = other.firstName;

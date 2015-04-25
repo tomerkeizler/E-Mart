@@ -22,6 +22,7 @@ namespace Backend
                 prices.Add(prod.Price);
             }
         }
+        //For Deep Copy
         public Receipt(Receipt other)
         {
             productsIDs = new List<int>(other.productsIDs);

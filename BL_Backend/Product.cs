@@ -30,6 +30,7 @@ namespace Backend
             stockCount = _stockCount;
             price = _price;
         }
+        //For Deep Copy
         public Product(Product other)
         {
             name = other.name;

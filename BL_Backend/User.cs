@@ -19,6 +19,7 @@ namespace Backend
             username = _username;
             password = _password;
         }
+        //For Deep Copy
         public User(User other)
         {
             username = other.username;
