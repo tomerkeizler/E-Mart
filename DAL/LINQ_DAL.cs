@@ -239,15 +239,15 @@ namespace DAL
             {
                 filteredEmployee = allEmployee.Where(n => n.Id >= minNumber && n.Id <= maxNumber).Cast<Employee>().ToList();
             }
-            if (field == IntFields.depID)
+            else if (field == IntFields.depID)
             {
                 filteredEmployee = allEmployee.Where(n => n.DepID >= minNumber && n.DepID <= maxNumber).Cast<Employee>().ToList();
             }
-            if (field == IntFields.salary)
+            else if (field == IntFields.salary)
             {
                 filteredEmployee = allEmployee.Where(n => n.Salary >= minNumber && n.Salary <= maxNumber).Cast<Employee>().ToList();
             }
-            if (field == IntFields.supervisiorID)
+            else if (field == IntFields.supervisiorID)
             {
                 filteredEmployee = allEmployee.Where(n => n.SupervisiorID >= minNumber && n.SupervisiorID <= maxNumber).Cast<Employee>().ToList();
             }
