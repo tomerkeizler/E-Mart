@@ -16,5 +16,6 @@ namespace BL
         List<object> FindByNumber(IntFields field, int minNumber, int maxNumber);
         List<object> FindByType(ValueType type);
         List<object> GetAll();
+        Type GetEntityType();
     }
 }

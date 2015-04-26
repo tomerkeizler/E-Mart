@@ -26,8 +26,8 @@ namespace BL
             int maxID = 0;
             foreach (ClubMember clubmem in Allclubmems)
             {
-                if (clubmem.Id > maxID)
-                    maxID = clubmem.Id;
+                if (clubmem.MemberID > maxID)
+                    maxID = clubmem.MemberID;
                 if (((ClubMember)cm).Id!=0 && ((ClubMember)cm).Id == clubmem.Id)
                 {
                     throw new System.Data.DataException("The ID allready exist in the system");
@@ -36,7 +36,7 @@ namespace BL
             if (((ClubMember)cm).MemberID == 0)
             {
                 //set the new ID
-                ((ClubMember)cm).Id = maxID + 1;
+                ((ClubMember)cm).MemberID = maxID + 1;
             }
             //Add the new clubmember to the system.
             Allclubmems.Add((ClubMember)cm);
@@ -90,6 +90,11 @@ namespace BL
         public List<object> GetAll()
         {
             return itsDAL.ReadFromFile(Elements.ClubMember);
+        }
+
+        public Type GetEntityType()
+        {
+            return typeof(ClubMember);
         }
     }
 }

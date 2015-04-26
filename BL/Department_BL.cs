@@ -27,17 +27,17 @@ namespace BL
              int maxID = 0;
              foreach (Department depart in Alldeparts)
              {
-                 if (depart.Id > maxID)
-                     maxID = depart.Id;
-                 if (((Department)d).Id != 0 && ((Department)d).Id == depart.Id)
+                 if (depart.DepartmentID > maxID)
+                     maxID = depart.DepartmentID;
+                 if (((Department)d).DepartmentID != 0 && ((Department)d).DepartmentID == depart.DepartmentID)
                  {
                      throw new System.Data.DataException("The ID allready exist in the system");
                  }
              }
-             if (((Department)d).Id == 0)
+             if (((Department)d).DepartmentID == 0)
              {
                  //set the new ID
-                 ((Department)d).Id = maxID + 1;
+                 ((Department)d).DepartmentID = maxID + 1;
              }
             //Add the new department to the system
             Alldeparts.Add((Department)d);
@@ -54,7 +54,7 @@ namespace BL
             {
                 foreach (Employee emp in Allemps)
                 {
-                    if (((Department)d).Id == emp.DepID)
+                    if (((Department)d).DepartmentID == emp.DepID)
                         throw new Exception("this department is currently in use!");
                 }
                 foreach (Department depart in Alldeparts)
@@ -72,7 +72,7 @@ namespace BL
 
         public void Edit(object oldD, object newD)
         {
-            ((Department)newD).Id = ((Department)oldD).Id;
+            ((Department)newD).DepartmentID = ((Department)oldD).DepartmentID;
             this.Remove(oldD);
             this.Add(newD);
         }
@@ -98,6 +98,11 @@ namespace BL
         public List<object> GetAll()
         {
             return itsDAL.ReadFromFile(Elements.Department);
+        }
+
+        public Type GetEntityType()
+        {
+            return typeof(Department);
         }
     }
 }

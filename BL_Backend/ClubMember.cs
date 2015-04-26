@@ -78,11 +78,6 @@ namespace Backend
             get { return lastName; }
             set { lastName = value; }
         }
-        public List<Transaction> TransactionHistory
-        {
-            get { return tranHistory; }
-            set { tranHistory = value; }
-        }
         public DateTime DateOfBirth
         {
             get { return dateOfBirth; }
@@ -92,6 +87,11 @@ namespace Backend
         {
             get { return gender; }
             set { gender = value; }
+        }
+        public List<Transaction> TransactionHistory
+        {
+            get { return tranHistory; }
+            set { tranHistory = value; }
         }
 
     }

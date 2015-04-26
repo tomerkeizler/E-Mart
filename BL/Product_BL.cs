@@ -45,7 +45,7 @@ namespace BL
         {
             List<Product> Allprods = itsDAL.ReadFromFile(Elements.Product).Cast<Product>().ToList();
             if (!Allprods.Any())
-                throw new NullReferenceException("No Employees to remove!");
+                throw new NullReferenceException("No Products to remove!");
             else
             {
                 foreach (Product prod in Allprods)
@@ -88,6 +88,11 @@ namespace BL
         public List<object> GetAll()
         {
             return itsDAL.ReadFromFile(Elements.Product);
+        }
+
+        public Type GetEntityType()
+        {
+            return typeof(Product);
         }
     }
 }

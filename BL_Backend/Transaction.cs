@@ -51,7 +51,7 @@ namespace Backend
             return transactionID+"";
         }
         //getters and setters:
-        public int Id
+        public int TransactionID
         {
             get { return transactionID; }
             set { transactionID = value; }
@@ -61,11 +61,6 @@ namespace Backend
             get { return is_a_return; }
             set { is_a_return = value; }
         }
-        public Receipt Receipt
-        {
-            get { return receipt; }
-            set { receipt = value; }
-        }
         public PaymentMethod Payment
         {
             get { return payment; }
@@ -74,6 +69,11 @@ namespace Backend
         public DateTime CurrentDate
         {
             get { return currentDate; }
+        }
+        public Receipt Receipt
+        {
+            get { return receipt; }
+            set { receipt = value; }
         }
     }
 }

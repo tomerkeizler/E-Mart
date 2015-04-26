@@ -26,17 +26,17 @@ namespace BL
             int maxID = 0;
             foreach (Transaction tran in Alltrans)
             {
-                if (tran.Id > maxID)
-                    maxID = tran.Id;
-                if (((Transaction)t).Id != 0 && ((Transaction)t).Id == tran.Id)
+                if (tran.TransactionID > maxID)
+                    maxID = tran.TransactionID;
+                if (((Transaction)t).TransactionID != 0 && ((Transaction)t).TransactionID == tran.TransactionID)
                  {
                      throw new System.Data.DataException("The ID allready exist in the system");
                  }
             }
-            if (((Transaction)t).Id == 0)
+            if (((Transaction)t).TransactionID == 0)
             {
                 //set the new ID
-                ((Transaction)t).Id = maxID + 1;
+                ((Transaction)t).TransactionID = maxID + 1;
             }
             //Add the new transaction to the system
             Alltrans.Add((Transaction)t);
@@ -64,7 +64,7 @@ namespace BL
 
         public void Edit(object oldT, object newT)
         {           
-            ((Transaction)newT).Id = ((Transaction)oldT).Id;
+            ((Transaction)newT).TransactionID = ((Transaction)oldT).TransactionID;
             this.Remove(oldT);
             this.Add(newT);            
         }
@@ -87,6 +87,11 @@ namespace BL
         public List<object> GetAll()
         {
             return itsDAL.ReadFromFile(Elements.Transaction);
+        }
+
+        public Type GetEntityType()
+        {
+            return typeof(Transaction);
         }
     }
 }

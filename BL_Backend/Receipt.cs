@@ -16,7 +16,9 @@ namespace Backend
         //Constructors:
         public Receipt(List<Product> _products)
         {
-            foreach(Product prod in _products)
+            productsIDs = new List<int>();
+            prices = new List<int>();
+            foreach (Product prod in _products)
             {
                 productsIDs.Add(prod.ProductID);
                 prices.Add(prod.Price);
@@ -37,14 +39,24 @@ namespace Backend
         {
             return base.GetHashCode() ^ productsIDs.GetHashCode();
         }
-        public override string ToString()
+
+        public void ShowReceipt()
         {
-            string str = "";
-            for (int i = 0; i < productsIDs.Count; i++ )
+            Console.WriteLine("\n\n---------- Receipt ----------");
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Write(" {0,-12} | {1,-13}", "Product ID", "Price");
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\n-----------------------------");
+            int index = 0;
+            foreach (Object obj in productsIDs)
             {
-                str = str + productsIDs[i] + "    " + prices[i] + "\n";
+                Console.Write("{0,-10} | {0,-10} |", obj, prices.ElementAt(index));
+                index++;
             }
-            return str;
+            Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop - 1);
+            Console.WriteLine("\n-----------------------------");
         }
 
         //getters and setters:
@@ -75,7 +87,7 @@ namespace Backend
             }
             else
             {
-                throw new IndexOutOfRangeException("There is not products like this in the Reciept");
+                throw new IndexOutOfRangeException("There are no products like this in the Reciept");
             }
         }
     }

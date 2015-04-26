@@ -6,7 +6,7 @@ using Backend;
 using BL;
 using System.Text.RegularExpressions;
 using System.Reflection;
-
+using System.IO;
 
 namespace PL
 {
@@ -15,7 +15,9 @@ namespace PL
         // atributes
         private IBL[] cats;
         private string[] catsNames;
-        public static string[][] inputsInfo = new string[11][];
+        public static string[][] inputsInfo = new string[13][];
+        public static Dictionary<string, int> fieldsInfo = new Dictionary<string, int>();
+        public static Dictionary<string, string> fieldsNames = new Dictionary<string, string>();
 
         // static constructor
         static PL_CLI()
@@ -47,7 +49,7 @@ namespace PL
             inputsInfo[7] = new string[2] { "^((a|b|c){1})$", "one of the types: a, b, c" };
 
             // one char of 1,2,3
-            // product status, Payment method
+            // product status
             inputsInfo[8] = new string[2] { "^((1|2|3){1})$", "one of the following:\n\t1 - Empty\n\t2 - LowQuantity\n\t3 - InStock" };
 
             // transaction type - one char of R,r,P,p
@@ -56,6 +58,81 @@ namespace PL
             // at least 6 characters of letters and digits
             // username, password
             inputsInfo[10] = new string[2] { "^[A-Za-z0-9]{6,}$", "at least 6 characters.\nOnly letters (A-Z) or (a-z) and digits (0-9) are allowed" };
+
+            // one char of 1,2,3
+            // Payment method
+            inputsInfo[11] = new string[2] { "^((1|2|3){1})$", "one of the following:\n\t1 - Cash\n\t2 - Check\n\t3 - visa" };
+
+            // one char of 1,2,3
+            // currentDate, dateOfBirth
+            inputsInfo[12] = new string[2] { "^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[012])/((19|20)[0-9][0-9])$", "a date in dd/mm/yyyy format\n\tDay:   a 2-digit number (01-31)\n\tMonth: a 2-digit number (01-12)\n\tYear:  a 4-digit number (19**) or (20**)" };
+
+            //////////////////////////////////////////////////
+
+            fieldsInfo.Add("Id", 0);
+
+            fieldsInfo.Add("FirstName", 1);
+            fieldsInfo.Add("LastName", 1);
+            fieldsInfo.Add("Name", 1);
+
+            fieldsInfo.Add("Day", 2); // only for add
+            fieldsInfo.Add("Month", 3); // only for add
+            fieldsInfo.Add("Year", 4); // only for add
+            fieldsInfo.Add("DateOfBirth", 12);
+
+            fieldsInfo.Add("Gender", 5);
+
+            fieldsInfo.Add("MemberID", 6);
+            fieldsInfo.Add("TransactionID", 6);
+            fieldsInfo.Add("ProductID", 6);
+            fieldsInfo.Add("DepartmentID", 6);
+            fieldsInfo.Add("Price", 6);
+            fieldsInfo.Add("StockCount", 6);
+            fieldsInfo.Add("Location", 6);
+            fieldsInfo.Add("DepID", 6);
+            fieldsInfo.Add("Salary", 6);
+            fieldsInfo.Add("SupervisorID", 6);
+
+            fieldsInfo.Add("Type", 7);
+
+            fieldsInfo.Add("InStock", 8);
+
+            fieldsInfo.Add("Is_a_Return", 9);
+
+            fieldsInfo.Add("UserName", 10);
+            fieldsInfo.Add("Password", 10);
+
+            fieldsInfo.Add("Payment", 11);
+
+            fieldsInfo.Add("CurrentDate", 12);
+
+            //////////////////////////////////////////////////
+
+            fieldsNames.Add("Id", "ID number");
+            fieldsNames.Add("FirstName", "First name");
+            fieldsNames.Add("LastName", "Last name");
+            fieldsNames.Add("Name", "Name");
+            fieldsNames.Add("DateOfBirth", "Date of birth");
+            fieldsNames.Add("Gender", "Gender");
+            fieldsNames.Add("MemberID", "Member ID");
+            fieldsNames.Add("TransactionID", "Transaction ID");
+            fieldsNames.Add("ProductID", "Product ID");
+            fieldsNames.Add("DepartmentID", "Department ID");
+            fieldsNames.Add("Price", "Price");
+            fieldsNames.Add("StockCount", "Stock");
+            fieldsNames.Add("Location", "Department ID");
+            fieldsNames.Add("DepID", "Department ID");
+            fieldsNames.Add("Salary", "Salary");
+            fieldsNames.Add("SupervisorID", "Supervisor ID");
+            fieldsNames.Add("Type", "Product type");
+            fieldsNames.Add("InStock", "Product status");
+            fieldsNames.Add("Is_a_Return", "Transaction type");
+            fieldsNames.Add("UserName", "User name");
+            fieldsNames.Add("Password", "Password");
+            fieldsNames.Add("Payment", "Payment method");
+            fieldsNames.Add("CurrentDate", "Date");
+            fieldsNames.Add("TransactionHistory", "Transaction History");
+            fieldsNames.Add("Receipt", "Receipt");
         }
 
         // constructors
@@ -92,6 +169,15 @@ namespace PL
         {
             Console.Clear(); //clear the screen
             ActionMenu(categoryNum); // Action menu
+        }
+
+
+        public void ShowError(Exception e)
+        {
+            WriteColor("\n----- Error -----", true, ConsoleColor.Red);
+            Console.WriteLine();
+            WriteColor(e.Message, true, ConsoleColor.Red);
+            Console.WriteLine();
         }
 
 
@@ -175,7 +261,7 @@ namespace PL
             while (true)
             {
                 // Check username and password
-                Console.WriteLine("\n--- User Log in ---");
+                WriteColor("\n--- User Log in ---", true, ConsoleColor.DarkGreen);
                 Console.WriteLine("\nPlease enter your Username and Password for logging in the system");
 
                 // information array about the input fields
@@ -193,23 +279,21 @@ namespace PL
                 {
                     login = ((User_BL)cats[6]).isItValidUser(new User(username, password));
                 }
-                catch (NullReferenceException e)
-                {
-                    Console.WriteLine("\n" + e);
-                }
                 catch (System.Data.DataException e)
                 {
-                    Console.WriteLine("\n" + e);
+                    Console.WriteLine("ffffffff");
                 }
+                login = ((User_BL)cats[6]).isItValidUser(new User(username, password));
 
 
                 if (login)
                 {
+                    Console.Clear();
                     MainMenu(); // Main menu
                     break;
                 }
                 else
-                    Console.WriteLine("\nIncorrect username and password\n\nAccess denied! Please try again...");
+                    WriteColor("\nIncorrect username and password\nAccess denied! Please try again...", true, ConsoleColor.Red);
             }
         }
 
@@ -221,7 +305,7 @@ namespace PL
         private void MainMenu()
         {
             WriteColor("\n--- Main menu ---\n", true, ConsoleColor.DarkGreen);
-            Console.WriteLine("Please select a data entity to manage:\n");
+            WriteColor("Please select a data entity to manage:\n", true, ConsoleColor.DarkMagenta);
             string[] options = new string[] { null, "Club member", "Department", "Employee", "Product", "Transaction", "User", "Exit" };
             int categoryNum = internalMenu(options, "", "a data entity (1-6) or Exit (7)");
             if (categoryNum == 7)
@@ -234,7 +318,7 @@ namespace PL
         private void ActionMenu(int categoryNum)
         {
             WriteColor("\n--- " + catsNames[categoryNum] + "s management ---\n", true, ConsoleColor.DarkGreen);
-            Console.WriteLine("Please select an action:\n");
+            WriteColor("Please select an action:\n", true, ConsoleColor.DarkMagenta);
             int numOfOptions = 5;
             string[] options = new string[numOfOptions + 1];
             options[1] = "Run a query for " + catsNames[categoryNum];
@@ -275,84 +359,286 @@ namespace PL
 
         private void RunQuery(int categoryNum)
         {
+            bool error = false;
+            WriteColor("\n--- Running a query for a " + catsNames[categoryNum] + " ---\n", true, ConsoleColor.DarkGreen);
 
-
-
-            ClubMember tk = new ClubMember(203608096, "Tomer", "Keizler", new List<Transaction>(), new DateTime(1991, 9, 5), Gender.Male, 0);
-            PropertyInfo[] props1 = tk.GetType().GetProperties();
-            foreach (PropertyInfo field in props1)
+            // check if are there any recoreds of the current category
+            List<Object> all = cats[categoryNum].GetAll();
+            if (all.Any<object>())
             {
-                //Console.WriteLine(field.ToString());
-                Console.WriteLine(field.GetValue(tk, null));
-                Console.WriteLine(field.Name);
-                Console.WriteLine(field.PropertyType);
-                Console.WriteLine();
+                PropertyInfo[] props = cats[categoryNum].GetEntityType().GetProperties();
+                int numOfProperties = props.Length;
 
-            }
-            Console.ReadLine();
+                // showing the user all of the object properties
+                int index = 1;
+                WriteColor("\nPlease choose one of the following fields:\n", true, ConsoleColor.DarkMagenta);
 
+                foreach (PropertyInfo field in props)
+                    if (field.CanRead)
+                    {
+                        Console.WriteLine("\t{0}. {1}", index, fieldsNames[field.Name]);
+                        index++;
+                    }
 
+                // getting a property number from the user
+                int max = index - 1;
+                int choice = inputMenuLoop(max, "", "a valid property number (1-" + max + ")");
 
-            WriteColor("\n--- Running a query for a " + catsNames[categoryNum] + " ---", true, ConsoleColor.DarkGreen);
-            PropertyInfo[] props = cats[categoryNum].GetType().GetProperties();
-            int numOfProperties = props.Length;
+                // running a suitable query by the user's choice
+                string[][] info = new string[1][];
+                bool foundType = false;
+                PropertyInfo fieldSelected = props[choice - 1];
+                string fieldName = fieldsNames[fieldSelected.Name];
+                List<Object> queryResult = new List<object>();
 
-            // showing the user all of the object properties
-            int index = 1;
-            Console.WriteLine("\nPlease choose one of the following fields:");
-            foreach (PropertyInfo field in props)
-                if (field.CanRead)
-                    Console.WriteLine("\t{0} - {1}", index, field.Name);
-
-            // getting a property number from the user
-            int max = index - 1;
-            int choice = inputMenuLoop(max, "", "a valid property number (1-" + max + ")");
-
-            // running a suitable query by the user's choice
-            bool foundType = false;
-            PropertyInfo fieldSelected = props[choice];
-            List<Object> queryResult = new List<object>();
-            // Name
-            foreach (StringFields stringType in Enum.GetValues(typeof(StringFields)))
-                if (stringType.Equals(fieldSelected.Name))
+                /////////////////////////////////////////////////////////////////////////
+                //////////////////////// findByName /////////////////////////////////////
+                /////////////////////////////////////////////////////////////////////////
+                foreach (int numStringField in Enum.GetValues(typeof(StringFields)))
                 {
-                    foundType = true;
-                    Console.WriteLine("\nPlease type a value for searching by the field selected");
-                    // information array about the input fields
-                    string[][] info = new string[1][];
-                    info[0] = new string[3] { fieldSelected.Name, "1", "" };
-                    // getting inputs from the user
-                    info = getInputsFromUser(info);
-                    string s = fieldSelected.PropertyType.Name;
-                    //queryResult = cats[categoryNum].FindByName(info[0][2], typeof(StringFields).GetProperty(s).PropertyType);
-
-                }
-            // Number
-            if (!foundType)
-            {
-                foreach (IntFields intType in Enum.GetValues(typeof(IntFields)))
-                    if (intType.Equals(fieldSelected.Name))
+                    if (string.Equals(Enum.GetName(typeof(StringFields), numStringField), fieldSelected.Name, StringComparison.CurrentCultureIgnoreCase))
                     {
                         foundType = true;
-                        //
+                        WriteColor("\nPlease type a string to search by " + fieldName, true, ConsoleColor.DarkMagenta);
+                        // information array about the input fields
+                        int inputTestNumber = fieldsInfo[fieldSelected.Name];
+                        info[0] = new string[3] { fieldName, Convert.ToString(inputTestNumber), "" };
+                        // getting a value for search from the user
+                        info = getInputsFromUser(info);
+                        Array enums = Enum.GetValues(typeof(StringFields));
+                        // check for exceptions
+                        error = false;
+                        try
+                        {
+                            queryResult = cats[categoryNum].FindByName(info[0][2], (StringFields)enums.GetValue(numStringField));
+                        }
+                        catch (InvalidDataException e)
+                        {
+                            error = true;
+                            ShowError(e);
+                        }
+                        catch (System.Data.DataException e)
+                        {
+                            error = true;
+                            ShowError(e);
+                        }
+                        catch (ArgumentNullException e)
+                        {
+                            error = true;
+                            ShowError(e);
+                        }
+                        catch (Exception e)
+                        {
+                            error = true;
+                            ShowError(e);
+                        }
+                        break;
                     }
+                }
+                /////////////////////////////////////////////////////////////////////////
+                //////////////////////// findByNumber////////////////////////////////////
+                /////////////////////////////////////////////////////////////////////////
+
+                if (!foundType)
+                {
+                    foreach (int numIntField in Enum.GetValues(typeof(IntFields)))
+                    {
+                        ///////
+                        if (string.Equals("TransactionHistory", fieldSelected.Name) || string.Equals("Receipt", fieldSelected.Name))
+                        {
+                            error = true;
+                            foundType = true;
+                            break;
+                        }
+                        ///////
+
+                        if (string.Equals(Enum.GetName(typeof(IntFields), numIntField), fieldSelected.Name, StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            foundType = true;
+                            // getting the requested search type from the user
+                            if (fieldSelected.Name.Equals("Id")) // no range if this is an id search
+                                choice = 1;
+                            else
+                            {
+                                // showing the user the two options for a number search
+                                WriteColor("\nPlease choose one of the following:\n", true, ConsoleColor.DarkMagenta);
+                                Console.WriteLine("\t1. search for a specific number");
+                                Console.WriteLine("\t2. search for a range of numbers");
+                                choice = inputMenuLoop(2, "", "a valid number (1-2)");
+                            }
+
+                            // information array about the input fields
+                            int inputTestNumber = fieldsInfo[fieldSelected.Name];
+                            info[0] = new string[3] { fieldName, Convert.ToString(inputTestNumber), "" };
+                            int minValue, maxValue;
+
+                            // specific number search
+                            if (choice == 1)
+                            {
+                                WriteColor("\nPlease type a numeric value to search by " + fieldName, true, ConsoleColor.DarkMagenta);
+                                // getting a value for search from the user
+                                info = getInputsFromUser(info);
+                                minValue = int.Parse(info[0][2]);
+                                maxValue = int.Parse(info[0][2]);
+                            }
+
+                                // range of numbers search
+                            else
+                            {
+                                WriteColor("\nPlease type a range of numbers to search by " + fieldName, true, ConsoleColor.DarkMagenta);
+                                // getting a --Mnimum-- value for search from the user
+                                info[0][0] = "Miminum " + fieldName;
+                                info = getInputsFromUser(info);
+                                minValue = int.Parse(info[0][2]);
+                                // getting a --Maximum-- value for search from the user
+                                info[0][0] = "Maximum " + fieldName;
+                                info = getInputsFromUser(info);
+                                maxValue = int.Parse(info[0][2]);
+                            }
+                            Array enums = Enum.GetValues(typeof(IntFields));
+                            // check for exceptions
+                            error = false;
+                            try
+                            {
+                                queryResult = cats[categoryNum].FindByNumber((IntFields)enums.GetValue(numIntField), minValue, maxValue);
+                            }
+                            catch (InvalidDataException e)
+                            {
+                                error = true;
+                                ShowError(e);
+                            }
+                            catch (System.Data.DataException e)
+                            {
+                                error = true;
+                                ShowError(e);
+                            }
+                            catch (ArgumentNullException e)
+                            {
+                                error = true;
+                                ShowError(e);
+                            }
+                            catch (Exception e)
+                            {
+                                error = true;
+                                ShowError(e);
+                            }
+                            break;
+                        }
+                    }
+                }
+                /////////////////////////////////////////////////////////////////////////
+                //////////////////////// findByType /////////////////////////////////////
+                /////////////////////////////////////////////////////////////////////////
+
+                if (!foundType)
+                {
+                    foreach (int numTypeField in Enum.GetValues(typeof(TypeFields)))
+                    {
+                        if (string.Equals(Enum.GetName(typeof(TypeFields), numTypeField), fieldSelected.Name, StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            error = true;
+                            foundType = true;
+                            Console.WriteLine("\nIn the future...");
+                        }
+                    }
+                }
+               
+                /*
+                if (!foundType)
+                {
+                    foreach (int numTypeField in Enum.GetValues(typeof(TypeFields)))
+                    {
+                        if (string.Equals(Enum.GetName(typeof(TypeFields), numTypeField), fieldSelected.Name, StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            foundType = true;
+                            WriteColor("\nPlease type a value to search by " + fieldName, true, ConsoleColor.DarkMagenta);
+                            // information array about the input fields
+                            int inputTestNumber = fieldsInfo[fieldSelected.Name];
+                            info[0] = new string[3] { fieldName, Convert.ToString(inputTestNumber), "" };
+                            // getting a value for search from the user
+                            info = getInputsFromUser(info);
+
+                            //////Console.WriteLine("heyyyyyyyyyyyy" + Enum.GetName(typeof(TypeFields), numTypeField));
+                            Array enums = Enum.GetValues(typeof(TypeFields));
+                            Enum targetEnum = ((TypeFields)enums.GetValue(numTypeField));
+
+                            PType PTypeValue = PType.a;
+
+                            if (Enum.IsDefined(targetEnum.GetType(), info[0][2]))
+                            {
+                                 PTypeValue = (PType)Enum.Parse(typeof(PType), info[0][2]);
+                                //PType PTypeValue = (PType)Enum.Parse(typeof(PType), info[0][2]);
+                                //q = itsBL.FindByType(PTypeValue).Cast<Product>().ToList();
+                            }
+                            //Enum hey = Enum.Parse(typeof(TypeFields), numTypeField);
+                            // (TypeFields)enums.GetValue(numTypeField)
+                            // info[0][2]
+
+                            
+
+                            // check for exceptions
+                            error = false;
+                            try
+                            {
+                                queryResult = cats[categoryNum].FindByType(PTypeValue);
+                            }
+                            catch (InvalidDataException e)
+                            {
+                                error = true;
+                                ShowError(e);
+                            }
+                            catch (System.Data.DataException e)
+                            {
+                                error = true;
+                                ShowError(e);
+                            }
+                            catch (ArgumentNullException e)
+                            {
+                                error = true;
+                                ShowError(e);
+                            }
+                            catch (Exception e)
+                            {
+                                error = true;
+                                ShowError(e);
+                            }
+                            break;
+                        }
+                    }
+                }
+                */
+                /////////////////////////////////////////////////////////////////////////
+
+                // check whether the query succeeded or not
+                if (foundType && !error)
+                {
+                    Console.Clear(); // clear the screen
+                    WriteColor("\n--- Query results for " + catsNames[categoryNum] + "s ---", true, ConsoleColor.DarkGreen);
+                    Console.WriteLine();
+                    WriteColor("Search field: " + fieldName + "\nSearch value: \"" + info[0][2] + "\"", true, ConsoleColor.DarkGreen);
+                    DisplayResult(categoryNum, queryResult);
+                    if (queryResult.Any<object>())
+                        ShowOne(categoryNum, queryResult);
+                    else
+                    {
+                        PressEnter();
+                        GoBack(categoryNum); // Action menu
+                    }
+                }
+                //////////////////////////
+                // if the category is not empty but there was an error in search
+                WriteColor("\nSorry, there are no results for " + catsNames[categoryNum] + "s.", true, ConsoleColor.Red);
+                PressEnter();
+                GoBack(categoryNum); // Action menu
+                //////////////////////////
             }
-            // Type
-            if (!foundType)
+            else // if the category is empty
             {
-                    foundType = true;
-                    //
+                WriteColor("\nSorry, there are no results for " + catsNames[categoryNum] + "s.", true, ConsoleColor.Red); 
+                PressEnter();
+                GoBack(categoryNum); // Action menu
             }
-            
-            
-
-
-
         }
-
-
-
-
 
 
         /***************************
@@ -361,8 +647,8 @@ namespace PL
 
         private void Add(int categoryNum)
         {
-            WriteColor("\n--- Creating a new  " + catsNames[categoryNum] + " ---", true, ConsoleColor.DarkGreen);
-            Console.WriteLine("\nPlease type the following details:");
+            WriteColor("\n--- Creating a new " + catsNames[categoryNum] + " ---", true, ConsoleColor.DarkGreen);
+            WriteColor("\nPlease type the following details:", true, ConsoleColor.DarkMagenta);
             Object newObj = new Object();
             switch (categoryNum)
             {
@@ -385,8 +671,29 @@ namespace PL
                     newObj = CreateUser();
                     break;
             }
-            cats[categoryNum].Add(newObj);
-            WriteColor("\n" + catsNames[categoryNum] + " was added successfully!", true, ConsoleColor.Blue);
+            // check for exceptions
+            bool error = false;
+            try
+            {
+                cats[categoryNum].Add(newObj);
+            }
+            catch (System.Data.DataException e)
+            {
+                error = true;
+                ShowError(e);
+            }
+            catch (ArgumentNullException e)
+            {
+                error = true;
+                ShowError(e);
+            }
+            catch (Exception e)
+            {
+                error = true;
+                ShowError(e);
+            }
+            if (!error)
+                WriteColor("\n" + catsNames[categoryNum] + " was added successfully!", true, ConsoleColor.Blue);
             PressEnter();
             GoBack(categoryNum); // Action menu
         }
@@ -397,39 +704,60 @@ namespace PL
             // getting inputs from the user
             string cmd;
             bool isSuits;
-            int numOfTest, int32Test;
+            int numOfTest;
             for (int i = 0; i < info.Length; i++)
             {
                 numOfTest = int.Parse(info[i][1]); // number of test information in static array inputsInfo
-                Console.Write("\n{0}", inputsInfo[numOfTest][1]);
-                Console.Write("\n{0}: ", info[i][0]);
-                cmd = ReceiveCmd();
+                if (numOfTest != 10)
+                    Console.Write("\n{0}", inputsInfo[numOfTest][1]);
+                cmd = getCmd(info[i][0]);
                 isSuits = Regex.IsMatch(cmd, inputsInfo[numOfTest][0]);
-                /*
-                if (isSuits)
-                {
-                    if (numOfTest == 6) // only digits field
-                        try
-                        {
-                            int32Test = int.Parse(cmd);
-                        }
-                        catch (OverflowException)
-                        {
-                            isSuits = false;
-                            Console.WriteLine("\nToo big number...");
-                        }
-                }
-                */
+                isSuits = inputIsSuits(isSuits, cmd, numOfTest);
+
                 while (!isSuits) // checks validity of the input
                 {
                     WriteColor("\nInvalid input! Please try again", true, ConsoleColor.Red);
                     Console.WriteLine("You should type {0}", inputsInfo[numOfTest][1]);
-                    Console.Write("\n{0}: ", info[i][0]);
-                    cmd = ReceiveCmd();
+                    cmd = getCmd(info[i][0]);
+                    isSuits = Regex.IsMatch(cmd, inputsInfo[numOfTest][0]);
+                    isSuits = inputIsSuits(isSuits, cmd, numOfTest);
                 }
                 info[i][2] = cmd;
             }
             return info;
+        }
+
+
+        public string getCmd(string fieldName)
+        {
+            string cmd;
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Write("\n{0}:", fieldName);
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write(" ");
+            cmd = ReceiveCmd();
+            return cmd;
+        }
+
+
+        // check Overflow Exception
+        public bool inputIsSuits(bool isSuits, string cmd, int numOfTest)
+        {
+            int int32Test;
+            if (isSuits)
+                if (numOfTest == 6 || numOfTest == 0) // only digits field
+                    try
+                    {
+                        int32Test = int.Parse(cmd);
+                    }
+                    catch (OverflowException)
+                    {
+                        isSuits = false;
+                        Console.WriteLine("\nToo big number...");
+                    }
+            return isSuits;
         }
 
 
@@ -558,7 +886,7 @@ namespace PL
             // information array about the input fields
             string[][] info = new string[2][];
             info[0] = new string[3] { "Transaction type", "9", "" };
-            info[1] = new string[3] { "Payment method", "8", "" };
+            info[1] = new string[3] { "Payment method", "11", "" };
             // getting inputs from the user
             info = getInputsFromUser(info);
             ////// creation of fields
@@ -606,18 +934,23 @@ namespace PL
 
         private void ShowAll(int categoryNum)
         {
-            Console.WriteLine("\n--- List of all {0}s ---\n", catsNames[categoryNum]);
+            WriteColor("\n--- List of all " + catsNames[categoryNum] + "s ---\n", true, ConsoleColor.DarkGreen);
             List<Object> objList = cats[categoryNum].GetAll(); // get all the records
             DisplayResult(categoryNum, objList); // displays the records
             if (objList.Any<object>())
                 ShowOne(categoryNum, objList);
+            else
+            {
+                PressEnter();
+                GoBack(categoryNum); // Action menu
+            }
         }
 
 
         private void ShowOne(int categoryNum, List<Object> objList)
         {
             // getting an input from the user
-            Console.WriteLine("\n\nPlease select one of the following:\n");
+            WriteColor("\n\nPlease select one of the following:\n", true, ConsoleColor.DarkMagenta);
             string[] options = new string[] { null, "View a single record", "Go back" };
             int choice = internalMenu(options, "", "1 or 2");
 
@@ -636,7 +969,7 @@ namespace PL
                     }
                     else
                     {
-                        Console.WriteLine("\n\nPlease type a record number to view");
+                        WriteColor("\n\nPlease type a record number to view", true, ConsoleColor.DarkMagenta);
                         numRecord = inputMenuLoop(objList.Count, "Record number", "an existing record number from 1 to " + objList.Count);
                         // act according to the action selected by the user
                         currentRecord = objList.ElementAt(numRecord - 1);
@@ -658,7 +991,7 @@ namespace PL
         public void EditOrRemove(int categoryNum, Object currentRecord)
         {
             // getting an input from the user
-            Console.WriteLine("\n\nPlease select an action:\n");
+            WriteColor("\n\nPlease select an action:\n", true, ConsoleColor.DarkMagenta);
             string[] options = new string[] { null, "Edit current record", "Remove current record", "Go back" };
             int choice = internalMenu(options, "", "1 for EDIT or 2 for REMOVE or 3 to GO BACK");
 
@@ -700,26 +1033,26 @@ namespace PL
         {
             if (!objList.Any<object>())
             {
-                Console.WriteLine("Sorry, there are no results for {0}s.", catsNames[categoryNum]);
-                PressEnter();
-                GoBack(categoryNum); // Action menu
+                WriteColor("\nSorry, there are no results for " + catsNames[categoryNum] + "s.", true, ConsoleColor.Red);
+                //PressEnter();
+                //GoBack(categoryNum); // Action menu
             }
             else
             {
-                Console.WriteLine("\n---------------------------------------------------------------------------------------------------------------");
-
+                Console.WriteLine("\n---------------------------------------------------------------------------------------------------------------------------------------");
                 Console.BackgroundColor = ConsoleColor.White;
                 Console.ForegroundColor = ConsoleColor.Black; 
                 Console.Write("Index |");
                 int blankSpace;
                 foreach (PropertyInfo field in objList.First().GetType().GetProperties())
                 {
-                    blankSpace = field.Name.Length + 5;
-                    Console.Write(" {0,-" + blankSpace + "} |", field.Name);
+                    string fieldName = fieldsNames[field.Name];
+                    blankSpace = AdjustBlankSpace(fieldName.Length);
+                    Console.Write(" {0,-" + blankSpace + "} |", fieldName);
                 }
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("\n---------------------------------------------------------------------------------------------------------------");
+                Console.WriteLine("\n---------------------------------------------------------------------------------------------------------------------------------------");
                 int index = 1;
                 foreach (Object obj in objList)
                 {
@@ -728,27 +1061,76 @@ namespace PL
                     index++;
                 }
                 Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop - 1);
-                Console.WriteLine("\n---------------------------------------------------------------------------------------------------------------");
-
+                Console.WriteLine("\n---------------------------------------------------------------------------------------------------------------------------------------");
             }
         }
 
 
         private void DisplayRecord(Object obj, bool alone)
         {
+            String fieldName;
+            Object value;
+            Type type;
             int blankSpace;
             foreach (PropertyInfo field in obj.GetType().GetProperties())
                 if (field.CanRead)
                 {
-                    if (alone)
-                        Console.Write("\n{0,-12}: {1}", field.Name, field.GetValue(obj, null));
-                    else
+                    fieldName = fieldsNames[field.Name];
+                    value = field.GetValue(obj, null);
+                    type = field.PropertyType;
+                    if (alone) // for a single record view
                     {
-                        blankSpace = field.Name.Length + 5;
-                        Console.Write(" {0,-" + blankSpace + "} |", field.GetValue(obj, null));
+                        // for a Receipt field
+                        if (type.Equals(typeof(Receipt)))
+                            ((Receipt)value).ShowReceipt();
+                        // for a List<Object> field
+                        else if (type.Equals(typeof(List<Transaction>)))
+                        {
+                            if (value.GetType().Equals(typeof(List<Transaction>)))
+                            {
+                                Console.WriteLine("\n\n------------- Transaction History -------------");
+                                List<Object> value1 = ((List<Transaction>)field.GetValue(obj, null)).ConvertAll(x => ((Object)x));
+                                DisplayResult(5, value1);
+                            }
+                        }
+                        else
+                        {
+                            // for a DateTime field
+                            if (type.Equals(typeof(DateTime)))
+                                value = ((DateTime)value).ToShortDateString();
+                            // for all fields
+                            Console.Write("\n{0,-12}: {1}", fieldName, value);
+                        }
+                    }
+                    else // for a single record in a table view
+                    {
+                        blankSpace = AdjustBlankSpace(fieldName.Length);
+                        // for a Receipt field
+                        if (type.Equals(typeof(Receipt)))
+                            value = ((Receipt)value).ProductsIDs.Count();
+                        // for a List<Object> field
+                        else if (type.Equals(typeof(List<Transaction>)))
+                            value = ((List<Transaction>)value).Count();
+                        // for a DateTime field
+                        else if (type.Equals(typeof(DateTime)))
+                            value = ((DateTime)value).ToShortDateString();
+                        // for always
+                        Console.Write(" {0,-" + blankSpace + "} |", value);
                     }
                 }
             Console.WriteLine();
+        }
+
+
+        // adjust the space between each field in the view
+        public int AdjustBlankSpace(int fieldNameLength)
+        {
+            int minimumSpace = 9;
+            int blankSpace;
+            blankSpace = fieldNameLength + 5;
+            if (blankSpace < minimumSpace)
+                blankSpace = minimumSpace;
+            return blankSpace;
         }
 
 
@@ -758,7 +1140,161 @@ namespace PL
 
         private void EditRecord(int categoryNum, Object currentRecord)
         {
-            // to be implemented...
+            Console.Clear(); // clear the screen
+            WriteColor("\n--- Editing a " + catsNames[categoryNum] + " ---\n", true, ConsoleColor.DarkGreen);
+            Object newRecord = new Object();
+            switch (categoryNum)
+            {
+                case 1:
+                    newRecord = new ClubMember((ClubMember)currentRecord);
+                    break;
+                case 2:
+                    newRecord = new Department((Department)currentRecord);
+                    break;
+                case 3:
+                    newRecord = new Employee((Employee)currentRecord);
+                    break;
+                case 4:
+                    newRecord = new Product((Product)currentRecord);
+                    break;
+                case 5:
+                    newRecord = new Transaction((Transaction)currentRecord);
+                    break;
+                case 6:
+                    newRecord = new User((User)currentRecord);
+                    break;
+            }
+
+            string[][] info = new string[1][];
+            Object value;
+            string fieldName;
+            foreach (PropertyInfo field in currentRecord.GetType().GetProperties())
+            {
+                if (field.CanRead)
+                {
+                    if (field.Name != "Receipt" && field.Name != "TransactionHistory" && field.Name != "MemberID" && field.Name != "DepartmentID" && field.Name != "TransactionID" && field.Name != "ProductID")
+                    {
+                        value = field.GetValue(currentRecord, null);
+                        fieldName = fieldsNames[field.Name];
+                        // getting an input from the user
+                        WriteColor("\nDo you want to edit the field of " + fieldName + "?", true, ConsoleColor.DarkMagenta);
+                        Console.WriteLine("Current value: " + field.GetValue(currentRecord, null) + "\n");
+                        string[] options = new string[] { null, "Edit this field", "Skip to the next field" };
+                        int choice = internalMenu(options, "", "1 for EDIT or 2 for SKIP");
+                        if (choice == 1)
+                        {
+                            // information array about the input fields
+                            int inputTestNumber = fieldsInfo[field.Name];
+                            info[0] = new string[3] { fieldName, Convert.ToString(inputTestNumber), "" };
+
+                            // getting a value for search from the user
+                            info = getInputsFromUser(info);
+                            Object newField = info[0][2];
+
+                            // convert the user's input to the type of current field
+                            if (!field.PropertyType.IsEnum) // for no Enums
+                                newField = Convert.ChangeType(newField, field.PropertyType);
+                            else // for Enums
+                            {
+                                // field: Gender
+                                if (field.PropertyType.Equals(typeof(Gender)))
+                                {
+                                    if (newField.Equals("m") || newField.Equals("M"))
+                                        newField = Gender.Male;
+                                    else
+                                        newField = Gender.Female;
+                                }
+
+                                // field: Product status
+                                else if (field.PropertyType.Equals(typeof(PStatus)))
+                                {
+                                    if (newField.Equals("1"))
+                                        newField = PStatus.Empty;
+                                    else if (newField.Equals("2"))
+                                        newField = PStatus.LowQuantity;
+                                    else
+                                        newField = PStatus.InStock;
+                                }
+
+                                // field: Product type
+                                else if (field.PropertyType.Equals(typeof(PType)))
+                                {
+                                    if (newField.Equals("a"))
+                                        newField = PType.a;
+                                    else if (newField.Equals("b"))
+                                        newField = PType.b;
+                                    else
+                                        newField = PType.c;
+                                }
+
+                                // field: Is_a_return
+                                else if (field.PropertyType.Equals(typeof(Is_a_return)))
+                                {
+                                    if (newField.Equals("R") || newField.Equals("r"))
+                                        newField = Is_a_return.Return;
+                                    else
+                                        newField = Is_a_return.Purchase;
+                                }
+
+                                // field: Payment method
+                                else if (field.PropertyType.Equals(typeof(PaymentMethod)))
+                                {
+                                    if (newField.Equals("1"))
+                                        newField = PaymentMethod.Cash;
+                                    else if (newField.Equals("2"))
+                                        newField = PaymentMethod.Check;
+                                    else
+                                        newField = PaymentMethod.Visa;
+                                }
+                            }
+
+                            // update the field value
+                            field.SetValue(newRecord, newField);
+                            WriteColor("\nThe field was edited successfully!\n", true, ConsoleColor.Blue);
+                        }
+                    }
+                }
+            }
+            // check for exceptions
+            bool error = false;
+            try
+            {
+                cats[categoryNum].Edit(currentRecord, newRecord);
+            }
+            catch (NullReferenceException e)
+            {
+                error = true;
+                ShowError(e);
+            }
+            catch (IndexOutOfRangeException e)
+            {
+                error = true;
+                ShowError(e);
+            }
+            catch (ArgumentNullException e)
+            {
+                error = true;
+                ShowError(e);
+            }
+            catch (System.Data.DataException e)
+            {
+                error = true;
+                ShowError(e);
+            }
+            catch (System.InvalidCastException e)
+            {
+                error = true;
+                ShowError(e);
+            }
+            catch (Exception e)
+            {
+                error = true;
+                ShowError(e);
+            }
+            if (!error)
+                WriteColor("\n" + catsNames[categoryNum] + " was edited successfully!", true, ConsoleColor.Blue);
+            PressEnter();
+            ShowAll(categoryNum); // Action menu
         }
 
 
@@ -769,113 +1305,37 @@ namespace PL
         private void RemoveRecord(int categoryNum, Object currentRecord)
         {
             WriteColor("\n--- Removing a " + catsNames[categoryNum] + " ---", true, ConsoleColor.DarkGreen);
+            // check for exceptions
+            bool error = false;
             try
             {
                 cats[categoryNum].Remove(currentRecord);
             }
             catch (NullReferenceException e)
             {
-                Console.WriteLine("\n" + e.Message);
+                error = true;
+                ShowError(e);
+            }
+            catch (IndexOutOfRangeException e)
+            {
+                error = true;
+                ShowError(e);
+            }
+            catch (ArgumentNullException e)
+            {
+                error = true;
+                ShowError(e);
             }
             catch (Exception e)
             {
-                Console.WriteLine("\n" + e.Message);
+                error = true;
+                ShowError(e);
             }
-            WriteColor("\n" + catsNames[categoryNum] + " was removed successfully!", true, ConsoleColor.Blue);
+            if (!error)
+                WriteColor("\n" + catsNames[categoryNum] + " was removed successfully!", true, ConsoleColor.Blue);
             PressEnter();
             ShowAll(categoryNum); // Action menu
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-
-        public void test()
-        {
-            ClubMember tk = new ClubMember(203608096, "Tomer", "Keizler", new List<Transaction>(), new DateTime(1991, 9, 5), Gender.Male, 0);
-            PropertyInfo[] props = tk.GetType().GetProperties();
-            foreach (PropertyInfo field in props)
-            {
-                //Console.WriteLine(field.ToString());
-                Console.WriteLine(field.GetValue(tk, null));
-                Console.WriteLine(field.Name);
-                Console.WriteLine(field.PropertyType);
-                Console.WriteLine();
-
-            }
-            Console.ReadLine();
-        }
-
-
-
-
-
-
-        /*
-        
-        public void Run1()
-        {
-            List<Product> q;
-            string cmd;
-            while (true)
-            {
-                Console.WriteLine("Please select and option:");
-                Console.WriteLine("\t1. Query product by name");
-                Console.WriteLine("\t2. Add product");
-                Console.WriteLine("\t3. Exit");
-                cmd = ReceiveCmd();
-                Console.Clear(); //clear the screen
-                switch (cmd)
-                {
-                    case "1":
-                        Console.WriteLine("Please enter the product name:");
-                        cmd = ReceiveCmd();
-                        q = itsProductBL.FindByName(cmd, StringFields.name).Cast<Product>().ToList();  //************************************ For QueryString!!
-                        //q = itsBL.FindByNumber(Convert.ToInt32(cmd), IntFields.*INTTYPE*).Cast<Product>().ToList(); **************** For QueryInt!!
-                        if (Enum.IsDefined(typeof(PType), cmd))  ******************************************************************* For QueryType!!
-                        {
-                            PType PTypeValue = (PType)Enum.Parse(typeof(PType), cmd);
-                            q = itsBL.FindByType(PTypeValue).Cast<Product>().ToList();
-                            DisplayResult(q);
-                        }
-                         
-                        Console.WriteLine("\nPress any key when ready");
-                        DisplayResult(q); //****************************************************************************************** For Display Result Of Query!!
-                        Console.ReadLine();
-                        break;
-                    case "2":
-                        Product current = new Product("Tomer", PType.a, 2, PStatus.Empty, 2, 12);
-                        itsProductBL.Add(current);
-                        current = new Product("Asaf", PType.b, 3, PStatus.LowQuantity, 10, 300);
-                        itsProductBL.Add(current);
-                        return;
-                    case "3":
-                        return;//quit the program
-                    default:
-                        Console.WriteLine("That was an invalid command, please try again\n\n");
-                        break;
-                }
-
-            }
-        }
-        */
-
-
-
 
 
     }

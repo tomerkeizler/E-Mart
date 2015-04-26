@@ -28,7 +28,7 @@ namespace BL
             bool checkSup = false;
             foreach (Department dep in Alldeparts)
             {
-                if (((Employee)e).DepID == dep.Id)
+                if (((Employee)e).DepID == dep.DepartmentID)
                 {
                     checkID = true;
                     break;
@@ -97,6 +97,11 @@ namespace BL
         public List<object> GetAll()
         {
             return itsDAL.ReadFromFile(Elements.Employee);
+        }
+
+        public Type GetEntityType()
+        {
+            return typeof(Employee);
         }
     }
 }

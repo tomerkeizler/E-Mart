@@ -25,9 +25,6 @@ namespace MainProg1
 
             myPl.Run();
 
-            //((PL_CLI)myPl).test();
-
-
         }
     }
 }

@@ -11,24 +11,24 @@ namespace Backend
     {
         //Fields:
         private string name;
-        private int id;
+        private int departmentID;
 
         //Constructors:
         public Department(string _name, int _id = 0)
         {
             name = _name;
-            id = _id;
+            departmentID = _id;
         }
         public Department(Department other)
         {
             name = other.name;
-            id = other.id;
+            departmentID = other.departmentID;
         }
         public override bool Equals(object _other)
         {
             if (!(_other is Department)) return false;
             Department other = (Department)_other;
-            return (this.id == other.id && this.name.Equals(other.name));
+            return (this.departmentID == other.departmentID && this.name.Equals(other.name));
         }
         public override int GetHashCode()
         {
@@ -44,10 +44,10 @@ namespace Backend
             get { return name; }
             set { name = value; }
         }
-        public int Id
+        public int DepartmentID
         {
-            get { return id; }
-            set { id = value; }
+            get { return departmentID; }
+            set { departmentID = value; }
         }
     }
 }

@@ -312,7 +312,7 @@ namespace DAL
             }
             else if (field == IntFields.tranHistory)
             {
-                filteredClubMember = allClubMember.Where(n => n.TransactionHistory.Any(x => x.Id >= minNumber && x.Id <= maxNumber)).Cast<ClubMember>().ToList();
+                filteredClubMember = allClubMember.Where(n => n.TransactionHistory.Any(x => x.TransactionID >= minNumber && x.TransactionID <= maxNumber)).Cast<ClubMember>().ToList();
             }
             else
             {
@@ -369,11 +369,11 @@ namespace DAL
                 {
                     throw new InvalidDataException("There is nothing to find from.");
                 }
-                if (field != IntFields.id)
+                if (field != IntFields.departmentID)
                 {
                     throw new System.Data.DataException("Bad Input!");
                 }
-                filteredDepartment = allDepartment.Where(n => n.Id >= minNumber && n.Id <= maxNumber).Cast<Department>().ToList();
+                filteredDepartment = allDepartment.Where(n => n.DepartmentID >= minNumber && n.DepartmentID <= maxNumber).Cast<Department>().ToList();
                 return filteredDepartment;
             }
         }
@@ -389,7 +389,7 @@ namespace DAL
                 }
                 if (field == IntFields.transactionID)
                 {
-                    filteredTransaction = allTransaction.Where(n => n.Id >= maxNumber && n.Id <= minNumber).Cast<Transaction>().ToList();
+                    filteredTransaction = allTransaction.Where(n => n.TransactionID >= maxNumber && n.TransactionID <= minNumber).Cast<Transaction>().ToList();
                 }
                 else if (field == IntFields.receipt)
                 {

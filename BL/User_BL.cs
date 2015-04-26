@@ -97,5 +97,10 @@ namespace BL
             }
             return false;
         }
+
+        public Type GetEntityType()
+        {
+            return typeof(User);
+        }
     }
 }
