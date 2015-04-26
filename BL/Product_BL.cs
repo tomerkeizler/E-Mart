@@ -23,6 +23,19 @@ namespace BL
             List<Product> Allprods = itsDAL.ReadFromFile(Elements.Product).Cast<Product>().ToList();
             //Generate the new product ID
             int maxID = 0;
+            List<Department> Alldeparts = itsDAL.ReadFromFile(Elements.Department).Cast<Department>().ToList();
+            bool checkID = false;
+            //check id the product's department accually exists
+            foreach (Department dep in Alldeparts)
+            {
+                if (((Product)p).Location == dep.DepartmentID)
+                {
+                    checkID = true;
+                    break;
+                }
+            }
+            if (!checkID)
+                throw new Exception("department ID doesn't exist!");
             foreach (Product prod in Allprods)
             {
                 if (prod.ProductID > maxID)
@@ -44,10 +57,12 @@ namespace BL
         public void Remove(object p)
         {
             List<Product> Allprods = itsDAL.ReadFromFile(Elements.Product).Cast<Product>().ToList();
+            //check if there are any products to remove
             if (!Allprods.Any())
                 throw new NullReferenceException("No Products to remove!");
             else
             {
+                //find and remove product
                 foreach (Product prod in Allprods)
                 {
                     if (prod.Equals(p))
@@ -61,12 +76,14 @@ namespace BL
         }
         public void Edit(object oldP, object newP)
         {
+            //preserve the id for the edited product
             ((Product)newP).ProductID = ((Product)oldP).ProductID;
             this.Remove(oldP);
             this.Add(newP);
         }
         public List<object> FindByName(string name, StringFields field)
         {
+            //search method by string
             if (name == null)
                 throw new System.Data.DataException("Bad Input!");
             List<object> result = itsDAL.ProductNameQuery(name, field).Cast<object>().ToList();
@@ -76,22 +93,26 @@ namespace BL
 
         public List<object> FindByNumber(IntFields field, int minNumber, int maxNumber)
         {
+            //search method by number
             return itsDAL.ProductNumberQuery(minNumber,maxNumber, field).Cast<object>().ToList();
         }
 
         public List<object> FindByType(ValueType type)
         {
+            //search method by type
             return itsDAL.ProductTypeQuery(type).Cast<object>().ToList();
         }
 
 
         public List<object> GetAll()
         {
+            //return all products
             return itsDAL.ReadFromFile(Elements.Product);
         }
 
         public Type GetEntityType()
         {
+            //return the clubmember type
             return typeof(Product);
         }
     }

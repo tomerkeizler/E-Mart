@@ -48,15 +48,18 @@ namespace BL
         {
             List<Department> Alldeparts = itsDAL.ReadFromFile(Elements.Department).Cast<Department>().ToList();
             List<Employee> Allemps = itsDAL.ReadFromFile(Elements.Employee).Cast<Employee>().ToList();
+            //check if there are any departments to remove
             if (!Alldeparts.Any())
                 throw new NullReferenceException("No Departments to remove!");
             else
             {
+                //check if an employee is under this department
                 foreach (Employee emp in Allemps)
                 {
                     if (((Department)d).DepartmentID == emp.DepID)
                         throw new Exception("this department is currently in use!");
                 }
+                //find and remove department
                 foreach (Department depart in Alldeparts)
                 {
                     if (depart.Equals(d))
@@ -71,6 +74,7 @@ namespace BL
 
         public void Edit(object oldD, object newD)
         {
+            //preserve the id for the edited department
             ((Department)newD).DepartmentID = ((Department)oldD).DepartmentID;
             this.Remove(oldD);
             this.Add(newD);
@@ -78,6 +82,7 @@ namespace BL
 
         public List<object> FindByName(string name, Backend.StringFields field)
         {
+            //search method by string
             if (name == null)
                 throw new System.Data.DataException("Bad Input!");
             List<object> result = itsDAL.DepartmentNameQuery(name, field).Cast<object>().ToList();
@@ -86,21 +91,25 @@ namespace BL
 
         public List<object> FindByNumber(IntFields field, int minNumber, int maxNumber)
         {
+            //search method by number
             return itsDAL.DepartmentNumberQuery(minNumber,maxNumber, field).Cast<object>().ToList();
         }
 
         public List<object> FindByType(ValueType type)
         {
+            //search method by type
             throw new System.Data.DataException("transactions doesn't have types!");
         }
 
         public List<object> GetAll()
         {
+            //return all departments
             return itsDAL.ReadFromFile(Elements.Department);
         }
 
         public Type GetEntityType()
         {
+            //return the department type
             return typeof(Department);
         }
     }

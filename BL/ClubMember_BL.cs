@@ -46,10 +46,12 @@ namespace BL
         public void Remove(object cm)
         {
             List<ClubMember> Allclubmems = itsDAL.ReadFromFile(Elements.ClubMember).Cast<ClubMember>().ToList();
+            //check if there are any clubmembers to remove
             if (!Allclubmems.Any())
                 throw new NullReferenceException("No ClubMembers to remove!");
             else
             {
+                //find and remove clubmember
                 foreach (ClubMember clubmem in Allclubmems)
                 {
                     if (clubmem.Equals(cm))
@@ -64,6 +66,7 @@ namespace BL
 
         public void Edit(object oldCM, object newCM)
         {
+            //preserve the id for the edited clubmember
             ((ClubMember)newCM).MemberID = ((ClubMember)oldCM).MemberID;
             this.Remove(oldCM);
             this.Add(newCM);
@@ -71,6 +74,7 @@ namespace BL
 
         public List<object> FindByName(string name, StringFields field)
         {
+            //search method by string
             if (name == null)
                 throw new System.Data.DataException("Bad Input!");
             List<object> result = itsDAL.ClubMemberNameQuery(name, field).Cast<object>().ToList();
@@ -79,21 +83,25 @@ namespace BL
 
         public List<object> FindByNumber(IntFields field, int minNumber, int maxNumber)
         {
+            //search method by number
             return itsDAL.ClubMemberNumberQuery(minNumber,maxNumber, field).Cast<object>().ToList(); 
         }
 
         public List<object> FindByType(ValueType type)
         {
+            //search method by type
             return itsDAL.ClubMemberTypeQuery(type).Cast<object>().ToList();
         }
 
         public List<object> GetAll()
         {
+            //return all clubmembers
             return itsDAL.ReadFromFile(Elements.ClubMember);
         }
 
         public Type GetEntityType()
         {
+            //return the clubmember type
             return typeof(ClubMember);
         }
     }

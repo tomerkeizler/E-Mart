@@ -91,7 +91,7 @@ namespace PL
             fieldsInfo.Add("Location", 6);
             fieldsInfo.Add("DepID", 6);
             fieldsInfo.Add("Salary", 6);
-            fieldsInfo.Add("SupervisorID", 6);
+            fieldsInfo.Add("SupervisiorID", 6);
 
             fieldsInfo.Add("Type", 7);
 
@@ -123,7 +123,7 @@ namespace PL
             fieldsNames.Add("Location", "Department ID");
             fieldsNames.Add("DepID", "Department ID");
             fieldsNames.Add("Salary", "Salary");
-            fieldsNames.Add("SupervisorID", "Supervisor ID (for CEO choose 0)");
+            fieldsNames.Add("SupervisiorID", "Supervisor ID");
             fieldsNames.Add("Type", "Product type");
             fieldsNames.Add("InStock", "Product status");
             fieldsNames.Add("Is_a_Return", "Transaction type");
@@ -281,7 +281,7 @@ namespace PL
                 }
                 catch (System.Data.DataException e)
                 {
-                    Console.WriteLine("ffffffff");
+                    Console.WriteLine(e.Message);
                 }
                 login = ((User_BL)cats[6]).isItValidUser(new User(username, password));
 
@@ -709,14 +709,14 @@ namespace PL
                                     ShowError(e);
                                 }
                                 catch (Exception e)
-                                {
+                            {
                                     error = true;
                                     ShowError(e);
                                 }
                                 break;
                             }
 
-
+                            
                             else
                             {
                                 if (info[0][2] == "1")
@@ -726,34 +726,34 @@ namespace PL
                                 else
                                     TypeToFind = (PaymentMethod)Enum.Parse(typeof(PaymentMethod), "Visa");
 
-                                // check for exceptions
-                                error = false;
-                                try
-                                {
+                            // check for exceptions
+                            error = false;
+                            try
+                            {
                                     queryResult = cats[categoryNum].FindByType((PaymentMethod)TypeToFind);
-                                }
-                                catch (InvalidDataException e)
-                                {
-                                    error = true;
-                                    ShowError(e);
-                                }
-                                catch (System.Data.DataException e)
-                                {
-                                    error = true;
-                                    ShowError(e);
-                                }
-                                catch (ArgumentNullException e)
-                                {
-                                    error = true;
-                                    ShowError(e);
-                                }
-                                catch (Exception e)
-                                {
-                                    error = true;
-                                    ShowError(e);
-                                }
-                                break;
                             }
+                            catch (InvalidDataException e)
+                            {
+                                error = true;
+                                ShowError(e);
+                            }
+                            catch (System.Data.DataException e)
+                            {
+                                error = true;
+                                ShowError(e);
+                            }
+                            catch (ArgumentNullException e)
+                            {
+                                error = true;
+                                ShowError(e);
+                            }
+                            catch (Exception e)
+                            {
+                                error = true;
+                                ShowError(e);
+                            }
+                            break;
+                        }
 
                             
                             //////

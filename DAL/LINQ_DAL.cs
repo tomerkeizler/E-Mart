@@ -57,16 +57,17 @@ namespace DAL
         }
         private static byte[] EncryptBytes(SymmetricAlgorithm alg, byte[] message)
         {
+            //check if the value to encrypt exist
             if ((message == null) || (message.Length == 0))
             {
                 return message;
             }
-
+            //check if there is valid encrypt algorithm
             if (alg == null)
             {
                 throw new ArgumentNullException("Bad Encrypt Type!");
             }
-
+            
             using (var stream = new MemoryStream())
             using (var encryptor = alg.CreateEncryptor())
             using (var encrypt = new CryptoStream(stream, encryptor, CryptoStreamMode.Write))
@@ -79,11 +80,12 @@ namespace DAL
 
         private static byte[] DecryptBytes(SymmetricAlgorithm alg, byte[] message)
         {
+            //check if the value to encrypt exist
             if ((message == null) || (message.Length == 0))
             {
                 return message;
             }
-
+            //check if there is valid encrypt algorithm
             if (alg == null)
             {
                 throw new ArgumentNullException("alg");
@@ -100,13 +102,15 @@ namespace DAL
         }
         
 
-
+        //This method recieve list of object and create/override its xml file by the runtime types of the objects 
         public void WriteToFile(List<object> list, object obj)
         {
+            //Delete the xml if the list is empty (last object deleted)
             if (list.ElementAtOrDefault(0) == null)
             {
                 File.Delete(obj.GetType() + ".xml");
             }
+            //Perform encryption and write the XML file
             else
             {
                 StreamWriter WriteFileStream = new StreamWriter(list.ElementAtOrDefault(0).GetType() + ".xml");
@@ -116,6 +120,7 @@ namespace DAL
             } 
         }
 
+        //This method recieve element to read and return its list from the XML file with this elements
         public List<object> ReadFromFile(Elements element)
         {
             if (File.Exists("Backend." + element.ToString() + ".xml"))
@@ -127,11 +132,14 @@ namespace DAL
 
                 }
             }
+            //for not exists xml, return empty list
             else
             {
                 return new List<object>();
             }
         }
+
+        //Filter by name for product
         public List<Product> ProductNameQuery(string name, StringFields field)
         {
             List<Product> allProducts = ReadFromFile(Elements.Product).Cast<Product>().ToList();
@@ -148,7 +156,7 @@ namespace DAL
             return filteredProducts;
         }
 
-
+        //Filter by number for product
         public List<Product> ProductNumberQuery(int minNumber, int maxNumber, IntFields field)
         {
             List<Product> allProducts = ReadFromFile(Elements.Product).Cast<Product>().ToList();
@@ -180,6 +188,7 @@ namespace DAL
             return filteredProducts;
         }
 
+        //Filter by type for product
         public List<Product> ProductTypeQuery(ValueType type)
         {
             List<Product> allProducts = ReadFromFile(Elements.Product).Cast<Product>().ToList();
@@ -204,6 +213,7 @@ namespace DAL
             return filteredProducts;
         }
 
+        //Filter by name for employee
         public List<Employee> EmployeeNameQuery(string name, StringFields field)
         {
             List<Employee> allEmployee = ReadFromFile(Elements.Employee).Cast<Employee>().ToList();
@@ -227,6 +237,7 @@ namespace DAL
             return filteredEmployee;
         }
 
+        //Filter by number for employee
         public List<Employee> EmployeeNumberQuery(int minNumber, int maxNumber, IntFields field)
         {
             List<Employee> allEmployee = ReadFromFile(Elements.Employee).Cast<Employee>().ToList();
@@ -239,15 +250,15 @@ namespace DAL
             {
                 filteredEmployee = allEmployee.Where(n => n.Id >= minNumber && n.Id <= maxNumber).Cast<Employee>().ToList();
             }
-            if (field == IntFields.depID)
+            else if (field == IntFields.depID)
             {
                 filteredEmployee = allEmployee.Where(n => n.DepID >= minNumber && n.DepID <= maxNumber).Cast<Employee>().ToList();
             }
-            if (field == IntFields.salary)
+            else if (field == IntFields.salary)
             {
                 filteredEmployee = allEmployee.Where(n => n.Salary >= minNumber && n.Salary <= maxNumber).Cast<Employee>().ToList();
             }
-            if (field == IntFields.supervisiorID)
+            else if (field == IntFields.supervisiorID)
             {
                 filteredEmployee = allEmployee.Where(n => n.SupervisiorID >= minNumber && n.SupervisiorID <= maxNumber).Cast<Employee>().ToList();
             }
@@ -258,6 +269,7 @@ namespace DAL
             return filteredEmployee;
         }
 
+        //Filter by type for employee
         public List<Employee> EmployeeTypeQuery(ValueType type)
         {
             List<Employee> allEmployee = ReadFromFile(Elements.Employee).Cast<Employee>().ToList();
@@ -277,7 +289,7 @@ namespace DAL
             return filteredEmployee;
         }
 
-
+        //Filter by name for club memeber
         public List<ClubMember> ClubMemberNameQuery(string name, StringFields field)
         {
             List<ClubMember> allClubMember = ReadFromFile(Elements.ClubMember).Cast<ClubMember>().ToList();
@@ -301,6 +313,7 @@ namespace DAL
             return filteredClubMember;
         }
 
+        //Filter by number for club member
         public List<ClubMember> ClubMemberNumberQuery(int minNumber, int maxNumber, IntFields field)
         {
             List<ClubMember> allClubMember = ReadFromFile(Elements.ClubMember).Cast<ClubMember>().ToList();
@@ -328,6 +341,7 @@ namespace DAL
             return filteredClubMember;
         }
 
+        //Filter by type for club member
         public List<ClubMember> ClubMemberTypeQuery(ValueType type)
         {
             List<ClubMember> allClubMember = ReadFromFile(Elements.ClubMember).Cast<ClubMember>().ToList();
@@ -351,6 +365,7 @@ namespace DAL
             return filteredClubMember;
         }
 
+        //Filter by name for department
         public List<Department> DepartmentNameQuery(string name, StringFields field)
         {
             List<Department> allDepartment = ReadFromFile(Elements.Department).Cast<Department>().ToList();
@@ -367,6 +382,7 @@ namespace DAL
             return filteredDepartment;
         }
 
+        //Filter by number for department
         public List<Department> DepartmentNumberQuery(int minNumber, int maxNumber, IntFields field)
         {
             {
@@ -385,6 +401,7 @@ namespace DAL
             }
         }
 
+        //Filter by number for transaction
         public List<Transaction> TransactionNumberQuery(int minNumber, int maxNumber, IntFields field)
         {
             {
@@ -410,6 +427,7 @@ namespace DAL
             }
         }
 
+        //Filter by type for transaction
         public List<Transaction> TransactionTypeQuery(ValueType type)
         {
             List<Transaction> allTransaction = ReadFromFile(Elements.Transaction).Cast<Transaction>().ToList();
@@ -437,6 +455,7 @@ namespace DAL
             return filteredTransaction;
         }
 
+        //Filter by name for user
         public List<User> UserNameQuery(string name, StringFields field)
         {
             List<User> allUser = ReadFromFile(Elements.User).Cast<User>().ToList();

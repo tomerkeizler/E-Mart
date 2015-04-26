@@ -26,6 +26,7 @@ namespace BL
             List<Department> Alldeparts = itsDAL.ReadFromFile(Elements.Department).Cast<Department>().ToList();
             bool checkID = false;
             bool checkSup = false;
+            //check id the employee's department accually exists
             foreach (Department dep in Alldeparts)
             {
                 if (((Employee)e).DepID == dep.DepartmentID)
@@ -45,7 +46,7 @@ namespace BL
                     if (((Employee)e).SupervisiorID == emp.SupervisiorID)
                         checkSup = true;
                 }
-                if(checkSup)
+                if (checkSup || ((Employee)e).SupervisiorID == 0)
                 Allemps.Add((Employee)e);
                 else
                     throw new Exception("his supervisor doesn't exists!");
