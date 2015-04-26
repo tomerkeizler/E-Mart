@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+//contains classes fields names for queries in PL
 namespace Backend
 {
     public enum Elements { Product, Employee, Department, ClubMember, Transaction, User };

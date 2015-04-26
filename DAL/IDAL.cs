@@ -9,7 +9,7 @@ namespace DAL
     public interface IDAL
     {
         //For all Types:
-        void WriteToFile(List<object> list);
+        void WriteToFile(List<object> list, object obj);
         List<object> ReadFromFile(Elements element);
 
         //Products:

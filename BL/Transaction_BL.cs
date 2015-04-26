@@ -40,7 +40,7 @@ namespace BL
             }
             //Add the new transaction to the system
             Alltrans.Add((Transaction)t);
-            itsDAL.WriteToFile(Alltrans.Cast<object>().ToList());
+            itsDAL.WriteToFile(Alltrans.Cast<object>().ToList(), (Transaction)t);
         }
 
         public void Remove(object t)
@@ -58,7 +58,7 @@ namespace BL
                         break;
                     }
                 }
-                itsDAL.WriteToFile(Alltrans.Cast<object>().ToList());
+                itsDAL.WriteToFile(Alltrans.Cast<object>().ToList(), t);
             }
         }
 

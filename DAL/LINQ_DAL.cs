@@ -34,18 +34,22 @@ namespace DAL
         //Behaviour:
         private static byte[] Encrypt(List<object> original)
         {
+            //This is for Encrypt any list with the same class's key
             myRijndael.Key = key;
             myRijndael.IV = iv;
             var mStream = new MemoryStream();
             binFormatter.Serialize(mStream, original);
+            //create the byte array:
             byte[] encrypted = EncryptBytes(myRijndael, mStream.ToArray());
             return encrypted;
         }
         private static List<object> Decrypt(byte[] encrypted)
         {
+            //This is for decrypt any list with the same class's key
             myRijndael.Key = key;
             myRijndael.IV = iv;
             var mStream = new MemoryStream(encrypted);
+            //decrypt the byte array from mem stream:
             byte[] decrypted = DecryptBytes(myRijndael, mStream.ToArray());
             mStream = new MemoryStream(decrypted);
             List<object> list = binFormatter.Deserialize(mStream) as List<object>;
@@ -60,7 +64,7 @@ namespace DAL
 
             if (alg == null)
             {
-                throw new ArgumentNullException("alg");
+                throw new ArgumentNullException("Bad Encrypt Type!");
             }
 
             using (var stream = new MemoryStream())
@@ -97,16 +101,19 @@ namespace DAL
         
 
 
-        public void WriteToFile(List<object> list)
+        public void WriteToFile(List<object> list, object obj)
         {
             if (list.ElementAtOrDefault(0) == null)
             {
-                throw new InvalidDataException("Nothing to Write");
+                File.Delete(obj.GetType() + ".xml");
             }
-            StreamWriter WriteFileStream = new StreamWriter(list.ElementAtOrDefault(0).GetType() + ".xml");
-            byte[] encrypted = Encrypt(list);
-            SerializerObj.Serialize(WriteFileStream, encrypted);
-            WriteFileStream.Close();
+            else
+            {
+                StreamWriter WriteFileStream = new StreamWriter(list.ElementAtOrDefault(0).GetType() + ".xml");
+                byte[] encrypted = Encrypt(list);
+                SerializerObj.Serialize(WriteFileStream, encrypted);
+                WriteFileStream.Close();
+            } 
         }
 
         public List<object> ReadFromFile(Elements element)

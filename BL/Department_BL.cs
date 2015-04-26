@@ -41,7 +41,7 @@ namespace BL
              }
             //Add the new department to the system
             Alldeparts.Add((Department)d);
-            itsDAL.WriteToFile(Alldeparts.Cast<object>().ToList());
+            itsDAL.WriteToFile(Alldeparts.Cast<object>().ToList(), (Department)d);
         }
 
         public void Remove(object d)
@@ -65,8 +65,7 @@ namespace BL
                             break;
                     }
                 }
-                itsDAL.WriteToFile(Alldeparts.Cast<object>().ToList());
-                itsDAL.WriteToFile(Allemps.Cast<object>().ToList());
+                itsDAL.WriteToFile(Alldeparts.Cast<object>().ToList(), d);
             }
         }
 

@@ -29,6 +29,7 @@ namespace Backend
             dateOfBirth = dob;
             gender = _gender;
         }
+        //For Deep Copy
         public ClubMember(ClubMember other)
         {
             memberID = other.MemberID;

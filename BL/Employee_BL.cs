@@ -46,11 +46,11 @@ namespace BL
                         checkSup = true;
                 }
                 if(checkSup)
-                    Allemps.Add((Employee)e);
+                Allemps.Add((Employee)e);
                 else
                     throw new Exception("his supervisor doesn't exists!");
             }
-            itsDAL.WriteToFile(Allemps.Cast<object>().ToList());
+            itsDAL.WriteToFile(Allemps.Cast<object>().ToList(), (Employee)e);
         }
         public void Remove(object e)
         {
@@ -67,7 +67,7 @@ namespace BL
                         break;
                     }
                 }
-                itsDAL.WriteToFile(Allemps.Cast<object>().ToList());
+                itsDAL.WriteToFile(Allemps.Cast<object>().ToList(), e);
             }
         }
         public void Edit(object oldE, object newE)

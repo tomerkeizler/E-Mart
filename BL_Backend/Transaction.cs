@@ -27,6 +27,7 @@ namespace Backend
             receipt = _receipt;
             payment = _payment;
         }
+        //For Deep Copy
         public Transaction(Transaction other)
         {
             transactionID = other.transactionID;
