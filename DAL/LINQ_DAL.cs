@@ -413,7 +413,7 @@ namespace DAL
                 }
                 if (field == IntFields.transactionID)
                 {
-                    filteredTransaction = allTransaction.Where(n => n.TransactionID >= maxNumber && n.TransactionID <= minNumber).Cast<Transaction>().ToList();
+                    filteredTransaction = allTransaction.Where(n => n.TransactionID >= minNumber && n.TransactionID <= maxNumber).Cast<Transaction>().ToList();
                 }
                 else if (field == IntFields.receipt)
                 {

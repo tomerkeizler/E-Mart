@@ -7,6 +7,9 @@ using NUnit.Framework;
 using Backend;
 using System.IO;
 
+/*
+ * This class is for Nunit Testing Only for DAL Project!
+ */
 namespace DAL
 {
     [TestFixture]
