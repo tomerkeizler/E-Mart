@@ -123,7 +123,7 @@ namespace PL
             fieldsNames.Add("Location", "Department ID");
             fieldsNames.Add("DepID", "Department ID");
             fieldsNames.Add("Salary", "Salary");
-            fieldsNames.Add("SupervisorID", "Supervisor ID");
+            fieldsNames.Add("SupervisorID", "Supervisor ID (for CEO choose 0)");
             fieldsNames.Add("Type", "Product type");
             fieldsNames.Add("InStock", "Product status");
             fieldsNames.Add("Is_a_Return", "Transaction type");
@@ -530,6 +530,7 @@ namespace PL
                 //////////////////////// findByType /////////////////////////////////////
                 /////////////////////////////////////////////////////////////////////////
 
+                /*
                 if (!foundType)
                 {
                     foreach (int numTypeField in Enum.GetValues(typeof(TypeFields)))
@@ -542,8 +543,9 @@ namespace PL
                         }
                     }
                 }
+                 * */
                
-                /*
+                
                 if (!foundType)
                 {
                     foreach (int numTypeField in Enum.GetValues(typeof(TypeFields)))
@@ -558,55 +560,210 @@ namespace PL
                             // getting a value for search from the user
                             info = getInputsFromUser(info);
 
-                            //////Console.WriteLine("heyyyyyyyyyyyy" + Enum.GetName(typeof(TypeFields), numTypeField));
+
+                            /*
+                            Console.WriteLine("test1:    " + Enum.GetName(typeof(TypeFields), numTypeField));
                             Array enums = Enum.GetValues(typeof(TypeFields));
-                            Enum targetEnum = ((TypeFields)enums.GetValue(numTypeField));
+                            Enum targetEnum = (TypeFields)enums.GetValue(numTypeField);
+                            Console.WriteLine("test2:    " + (TypeFields)enums.GetValue(numTypeField) );
+                            Console.ReadLine();
+                            */
 
-                            PType PTypeValue = PType.a;
 
-                            if (Enum.IsDefined(targetEnum.GetType(), info[0][2]))
+                            ValueType TypeToFind;
+
+                            if (Enum.IsDefined(typeof(PType), info[0][2]))
                             {
-                                 PTypeValue = (PType)Enum.Parse(typeof(PType), info[0][2]);
-                                //PType PTypeValue = (PType)Enum.Parse(typeof(PType), info[0][2]);
-                                //q = itsBL.FindByType(PTypeValue).Cast<Product>().ToList();
+                                TypeToFind = (PType)Enum.Parse(typeof(PType), info[0][2]);
+                                // check for exceptions
+                                error = false;
+                                try
+                                {
+                                    queryResult = cats[categoryNum].FindByType((PType)TypeToFind);
+                                }
+                                catch (InvalidDataException e)
+                                {
+                                    error = true;
+                                    ShowError(e);
+                                }
+                                catch (System.Data.DataException e)
+                                {
+                                    error = true;
+                                    ShowError(e);
+                                }
+                                catch (ArgumentNullException e)
+                                {
+                                    error = true;
+                                    ShowError(e);
+                                }
+                                catch (Exception e)
+                                {
+                                    error = true;
+                                    ShowError(e);
+                                }
+                                break;
                             }
-                            //Enum hey = Enum.Parse(typeof(TypeFields), numTypeField);
-                            // (TypeFields)enums.GetValue(numTypeField)
-                            // info[0][2]
+
+                            else if (Enum.IsDefined(typeof(PStatus), info[0][2]))
+                            {
+                                if (info[0][2] == "1")
+                                    TypeToFind = (PStatus)Enum.Parse(typeof(PStatus), "Empty");
+                                else if (info[0][2] == "2")
+                                    TypeToFind = (PStatus)Enum.Parse(typeof(PStatus), "LowQuantity");
+                                else
+                                    TypeToFind = (PStatus)Enum.Parse(typeof(PStatus), "InStock");
+
+                                // check for exceptions
+                                error = false;
+                                try
+                                {
+                                    queryResult = cats[categoryNum].FindByType((PStatus)TypeToFind);
+                                }
+                                catch (InvalidDataException e)
+                                {
+                                    error = true;
+                                    ShowError(e);
+                                }
+                                catch (System.Data.DataException e)
+                                {
+                                    error = true;
+                                    ShowError(e);
+                                }
+                                catch (ArgumentNullException e)
+                                {
+                                    error = true;
+                                    ShowError(e);
+                                }
+                                catch (Exception e)
+                                {
+                                    error = true;
+                                    ShowError(e);
+                                }
+                                break;
+                            }
+
+
+                            else if (Enum.IsDefined(typeof(Gender), info[0][2]))
+                            {
+                                if (info[0][2] == "m" || info[0][2] == "M")
+                                    TypeToFind = (Gender)Enum.Parse(typeof(Gender), "Male");
+                                else
+                                    TypeToFind = (Gender)Enum.Parse(typeof(Gender), "Female");
+
+                                // check for exceptions
+                                error = false;
+                                try
+                                {
+                                    queryResult = cats[categoryNum].FindByType((Gender)TypeToFind);
+                                }
+                                catch (InvalidDataException e)
+                                {
+                                    error = true;
+                                    ShowError(e);
+                                }
+                                catch (System.Data.DataException e)
+                                {
+                                    error = true;
+                                    ShowError(e);
+                                }
+                                catch (ArgumentNullException e)
+                                {
+                                    error = true;
+                                    ShowError(e);
+                                }
+                                catch (Exception e)
+                                {
+                                    error = true;
+                                    ShowError(e);
+                                }
+                                break;
+                            }
+
+
+                            else if (Enum.IsDefined(typeof(Is_a_return), info[0][2]))
+                            {
+                                if (info[0][2] == "r" || info[0][2] == "R")
+                                    TypeToFind = (Is_a_return)Enum.Parse(typeof(Is_a_return), "Return");
+                                else
+                                    TypeToFind = (Is_a_return)Enum.Parse(typeof(Is_a_return), "Purchase");
+
+                                // check for exceptions
+                                error = false;
+                                try
+                                {
+                                    queryResult = cats[categoryNum].FindByType((Is_a_return)TypeToFind);
+                                }
+                                catch (InvalidDataException e)
+                                {
+                                    error = true;
+                                    ShowError(e);
+                                }
+                                catch (System.Data.DataException e)
+                                {
+                                    error = true;
+                                    ShowError(e);
+                                }
+                                catch (ArgumentNullException e)
+                                {
+                                    error = true;
+                                    ShowError(e);
+                                }
+                                catch (Exception e)
+                                {
+                                    error = true;
+                                    ShowError(e);
+                                }
+                                break;
+                            }
+
+
+                            else
+                            {
+                                if (info[0][2] == "1")
+                                    TypeToFind = (PaymentMethod)Enum.Parse(typeof(PaymentMethod), "Cash");
+                                else if (info[0][2] == "2")
+                                    TypeToFind = (PaymentMethod)Enum.Parse(typeof(PaymentMethod), "Check");
+                                else
+                                    TypeToFind = (PaymentMethod)Enum.Parse(typeof(PaymentMethod), "Visa");
+
+                                // check for exceptions
+                                error = false;
+                                try
+                                {
+                                    queryResult = cats[categoryNum].FindByType((PaymentMethod)TypeToFind);
+                                }
+                                catch (InvalidDataException e)
+                                {
+                                    error = true;
+                                    ShowError(e);
+                                }
+                                catch (System.Data.DataException e)
+                                {
+                                    error = true;
+                                    ShowError(e);
+                                }
+                                catch (ArgumentNullException e)
+                                {
+                                    error = true;
+                                    ShowError(e);
+                                }
+                                catch (Exception e)
+                                {
+                                    error = true;
+                                    ShowError(e);
+                                }
+                                break;
+                            }
 
                             
+                            //////
 
-                            // check for exceptions
-                            error = false;
-                            try
-                            {
-                                queryResult = cats[categoryNum].FindByType(PTypeValue);
-                            }
-                            catch (InvalidDataException e)
-                            {
-                                error = true;
-                                ShowError(e);
-                            }
-                            catch (System.Data.DataException e)
-                            {
-                                error = true;
-                                ShowError(e);
-                            }
-                            catch (ArgumentNullException e)
-                            {
-                                error = true;
-                                ShowError(e);
-                            }
-                            catch (Exception e)
-                            {
-                                error = true;
-                                ShowError(e);
-                            }
-                            break;
+
+
                         }
                     }
                 }
-                */
+
                 /////////////////////////////////////////////////////////////////////////
 
                 // check whether the query succeeded or not
@@ -905,8 +1062,7 @@ namespace PL
             else
                 payment = PaymentMethod.Visa;
             // field: Receipt
-            List<Product> prods = new List<Product>();
-            Receipt receipt = new Receipt(prods);
+            Receipt receipt = CreateReceipt();
             // final creation
             return new Transaction(0, is_a_return, receipt, payment);
         }
@@ -925,6 +1081,41 @@ namespace PL
             string password = info[1][2];
             // final creation
             return new User(username, password);
+        }
+
+
+        private Receipt CreateReceipt()
+        {
+            WriteColor("\n--- Creating a Receipt for the Transaction ---\n", true, ConsoleColor.DarkMagenta);
+            // displays products
+            WriteColor("\n--- List of all products exist ---", true, ConsoleColor.DarkGreen);
+            List<Object> allProds = cats[4].GetAll();
+            DisplayResult(4, allProds);
+
+            // getting an input from the user
+            WriteColor("\n\nPlease add at least one product to the receipt\n", true, ConsoleColor.DarkMagenta);
+            List<Product> requestedProds = new List<Product>();
+            string[] options;
+            int choice = 1;
+            int newProd;
+
+            while (choice == 1)
+            {
+                // user choose a product to add
+                ////////WriteColor("\n\nProduct number to add to the receipt", true, ConsoleColor.DarkMagenta);
+                newProd = inputMenuLoop(allProds.Count, "Product number", "an existing record number from 1 to " + allProds.Count);
+                Product toAdd = (Product)allProds.ElementAt(newProd - 1);
+                requestedProds.Add(toAdd);
+
+                // user choose if he wants to add another producr
+                WriteColor("\nDo you want to add another product to the receipt?\n", true, ConsoleColor.DarkMagenta);
+                options = new string[] { null, "YES", "NO" };
+                choice = internalMenu(options, "", "1 for ADD or 2 for SKIP");
+            }
+
+            WriteColor("\nThe receipr  was created successfully\n", true, ConsoleColor.Blue);
+            // final creation
+            return new Receipt(requestedProds);
         }
 
 
@@ -1263,31 +1454,37 @@ namespace PL
             }
             catch (NullReferenceException e)
             {
+                cats[categoryNum].Add(currentRecord);
                 error = true;
                 ShowError(e);
             }
             catch (IndexOutOfRangeException e)
             {
+                cats[categoryNum].Add(currentRecord);
                 error = true;
                 ShowError(e);
             }
             catch (ArgumentNullException e)
             {
+                cats[categoryNum].Add(currentRecord);
                 error = true;
                 ShowError(e);
             }
             catch (System.Data.DataException e)
             {
+                cats[categoryNum].Add(currentRecord);
                 error = true;
                 ShowError(e);
             }
             catch (System.InvalidCastException e)
             {
+                cats[categoryNum].Add(currentRecord);
                 error = true;
                 ShowError(e);
             }
             catch (Exception e)
             {
+                cats[categoryNum].Add(currentRecord);
                 error = true;
                 ShowError(e);
             }
