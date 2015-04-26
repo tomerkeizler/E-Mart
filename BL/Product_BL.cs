@@ -23,6 +23,18 @@ namespace BL
             List<Product> Allprods = itsDAL.ReadFromFile(Elements.Product).Cast<Product>().ToList();
             //Generate the new product ID
             int maxID = 0;
+            List<Department> Alldeparts = itsDAL.ReadFromFile(Elements.Department).Cast<Department>().ToList();
+            bool checkID = false;
+            foreach (Department dep in Alldeparts)
+            {
+                if (((Product)p).Location == dep.DepartmentID)
+                {
+                    checkID = true;
+                    break;
+                }
+            }
+            if (!checkID)
+                throw new Exception("department ID doesn't exist!");
             foreach (Product prod in Allprods)
             {
                 if (prod.ProductID > maxID)

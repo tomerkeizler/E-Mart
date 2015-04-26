@@ -281,7 +281,7 @@ namespace PL
                 }
                 catch (System.Data.DataException e)
                 {
-                    Console.WriteLine("ffffffff");
+                    Console.WriteLine(e.Message);
                 }
                 login = ((User_BL)cats[6]).isItValidUser(new User(username, password));
 
