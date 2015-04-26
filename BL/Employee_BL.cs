@@ -26,6 +26,7 @@ namespace BL
             List<Department> Alldeparts = itsDAL.ReadFromFile(Elements.Department).Cast<Department>().ToList();
             bool checkID = false;
             bool checkSup = false;
+            //check id the employee's department accually exists
             foreach (Department dep in Alldeparts)
             {
                 if (((Employee)e).DepID == dep.DepartmentID)
