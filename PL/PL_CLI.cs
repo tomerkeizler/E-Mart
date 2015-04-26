@@ -1090,30 +1090,40 @@ namespace PL
             // displays products
             WriteColor("\n--- List of all products exist ---", true, ConsoleColor.DarkGreen);
             List<Object> allProds = cats[4].GetAll();
-            DisplayResult(4, allProds);
+            List<Product> requestedProds;
 
-            // getting an input from the user
-            WriteColor("\n\nPlease add at least one product to the receipt\n", true, ConsoleColor.DarkMagenta);
-            List<Product> requestedProds = new List<Product>();
-            string[] options;
-            int choice = 1;
-            int newProd;
-
-            while (choice == 1)
+            // only if there are products
+            if (allProds.Any<object>())
             {
-                // user choose a product to add
-                ////////WriteColor("\n\nProduct number to add to the receipt", true, ConsoleColor.DarkMagenta);
-                newProd = inputMenuLoop(allProds.Count, "Product number", "an existing record number from 1 to " + allProds.Count);
-                Product toAdd = (Product)allProds.ElementAt(newProd - 1);
-                requestedProds.Add(toAdd);
+                DisplayResult(4, allProds); // displays products
 
-                // user choose if he wants to add another producr
-                WriteColor("\nDo you want to add another product to the receipt?\n", true, ConsoleColor.DarkMagenta);
-                options = new string[] { null, "YES", "NO" };
-                choice = internalMenu(options, "", "1 for ADD or 2 for SKIP");
+                // getting an input from the user
+                WriteColor("\n\nPlease add at least one product to the receipt\n", true, ConsoleColor.DarkMagenta);
+                requestedProds = new List<Product>();
+                string[] options;
+                int choice = 1;
+                int newProd;
+
+                while (choice == 1)
+                {
+                    // user choose a product to add
+                    ////////WriteColor("\n\nProduct number to add to the receipt", true, ConsoleColor.DarkMagenta);
+                    newProd = inputMenuLoop(allProds.Count, "Product number", "an existing record number from 1 to " + allProds.Count);
+                    Product toAdd = (Product)allProds.ElementAt(newProd - 1);
+                    requestedProds.Add(toAdd);
+
+                    // user choose if he wants to add another producr
+                    WriteColor("\nDo you want to add another product to the receipt?\n", true, ConsoleColor.DarkMagenta);
+                    options = new string[] { null, "YES", "NO" };
+                    choice = internalMenu(options, "", "1 for ADD or 2 for SKIP");
+                }
+                WriteColor("\nThe receipt  was created successfully\n", true, ConsoleColor.Blue);
             }
-
-            WriteColor("\nThe receipr  was created successfully\n", true, ConsoleColor.Blue);
+            else
+            {
+                WriteColor("\nThere are no Products to choose!\nAn empty receipt was created successfully\n", true, ConsoleColor.Blue);
+                requestedProds = new List<Product>();
+            }
             // final creation
             return new Receipt(requestedProds);
         }
