@@ -45,7 +45,7 @@ namespace BL
                     if (((Employee)e).SupervisiorID == emp.SupervisiorID)
                         checkSup = true;
                 }
-                if(checkSup)
+                if (checkSup || ((Employee)e).SupervisiorID == 0)
                 Allemps.Add((Employee)e);
                 else
                     throw new Exception("his supervisor doesn't exists!");
