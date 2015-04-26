@@ -530,24 +530,10 @@ namespace PL
                 //////////////////////// findByType /////////////////////////////////////
                 /////////////////////////////////////////////////////////////////////////
 
-                
+                string input;
                 if (!foundType)
                 {
-                    foreach (int numTypeField in Enum.GetValues(typeof(TypeFields)))
-                    {
-                        if (string.Equals(Enum.GetName(typeof(TypeFields), numTypeField), fieldSelected.Name, StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            error = true;
-                            foundType = true;
-                            Console.WriteLine("\nNot available");
-                        }
-                    }
-                }
-                 
-               
-               /* 
-                if (!foundType)
-                {
+                    // getting a value for search from the user
                     foreach (int numTypeField in Enum.GetValues(typeof(TypeFields)))
                     {
                         if (string.Equals(Enum.GetName(typeof(TypeFields), numTypeField), fieldSelected.Name, StringComparison.CurrentCultureIgnoreCase))
@@ -559,251 +545,150 @@ namespace PL
                             info[0] = new string[3] { fieldName, Convert.ToString(inputTestNumber), "" };
                             // getting a value for search from the user
                             info = getInputsFromUser(info);
+                        }
+                    }
+                    input = info[0][2];
 
+                    //////////////////////////////////////////////////////////////////////////
 
-                            /*
-                            Console.WriteLine("test1:    " + Enum.GetName(typeof(TypeFields), numTypeField));
-                            Array enums = Enum.GetValues(typeof(TypeFields));
-                            Enum targetEnum = (TypeFields)enums.GetValue(numTypeField);
-                            Console.WriteLine("test2:    " + (TypeFields)enums.GetValue(numTypeField) );
-                            Console.ReadLine();
-                            
-
-
-                            ValueType TypeToFind;
-
-                            if (Enum.IsDefined(typeof(PType), info[0][2]))
+                    if (foundType) // the user selected one of the 5 enum fields !!
                             {
-                                TypeToFind = (PType)Enum.Parse(typeof(PType), info[0][2]);
-                                // check for exceptions
-                                error = false;
-                                try
+                        Tuple<List<Object>, bool> back = new Tuple<List<object>, bool>(queryResult, error);
+                        // gender
+                        if (fieldSelected.Name.Equals("Gender"))
                                 {
-                                    queryResult = cats[categoryNum].FindByType((PType)TypeToFind);
+                            if (input.Equals("m") || input.Equals("M"))
+                                back = SearchType(categoryNum, Gender.Male);
+                            else
+                                back = SearchType(categoryNum, Gender.Female);
                                 }
-                                catch (InvalidDataException e)
+                        // isStock
+                        else if (fieldSelected.Name.Equals("InStock"))
                                 {
-                                    error = true;
-                                    ShowError(e);
+                            if (input.Equals("1"))
+                                back = SearchType(categoryNum, PStatus.Empty);
+                            else if (input.Equals("2"))
+                                back = SearchType(categoryNum, PStatus.LowQuantity);
+                            else
+                                back = SearchType(categoryNum, PStatus.InStock);
                                 }
-                                catch (System.Data.DataException e)
+                        // type
+                        else if (fieldSelected.Name.Equals("Type"))
                                 {
-                                    error = true;
-                                    ShowError(e);
+                            if (input.Equals("a"))
+                                back = SearchType(categoryNum, PType.a);
+                            else if (input.Equals("b"))
+                                back = SearchType(categoryNum, PType.b);
+                            else
+                                back = SearchType(categoryNum, PType.c);
                                 }
-                                catch (ArgumentNullException e)
+                        // is_a_return
+                        else if (fieldSelected.Name.Equals("Is_a_Return"))
                                 {
-                                    error = true;
-                                    ShowError(e);
+                            if (input.Equals("r") || input.Equals("R"))
+                                back = SearchType(categoryNum, Is_a_return.Return);
+                            else
+                                back = SearchType(categoryNum, Is_a_return.Purchase);
                                 }
-                                catch (Exception e)
+                        // payment
+                        else if (fieldSelected.Name.Equals("Payment"))
                                 {
-                                    error = true;
-                                    ShowError(e);
+                            if (input.Equals("1"))
+                                back = SearchType(categoryNum, PaymentMethod.Cash);
+                            else if (input.Equals("2"))
+                                back = SearchType(categoryNum, PaymentMethod.Check);
+                            else
+                                back = SearchType(categoryNum, PaymentMethod.Visa);
                                 }
-                                break;
+
+                        ////.......try....catch......
+
+                        queryResult = back.Item1;
+                        error = back.Item2;
                             }
+                } //main closer of type search
                                 
 
-                            else if (Enum.IsDefined(typeof(PStatus), info[0][2]))
-                            {
-                                Console.WriteLine("hhhhhhhhhhhh");
-                                Console.ReadLine();
-                                PStatus myPStatus;
-                                if (info[0][2].Equals("Empty"))
-                                    myPStatus = PStatus.Empty;
-                                //myPStatus = (PStatus)Enum.Parse(typeof(PStatus), "Empty");
-                                else if (info[0][2].Equals("LowQuantity"))
-                                    myPStatus = PStatus.LowQuantity;
-                                //myPStatus = (PStatus)Enum.Parse(typeof(PStatus), "LowQuantity");
-                                else
-                                    myPStatus = PStatus.InStock;
-                                    //myPStatus = (PStatus)Enum.Parse(typeof(PStatus), "InStock");
+                ////************************************************
+                ////************************************************
+                ////************************************************
+                ////************************************************
+                ////************************************************
 
 
-                                // check for exceptions
-                                error = false;
-                                try
-                                {
-                                    queryResult = cats[categoryNum].FindByType((PStatus)myPStatus);
-                                }
-                                catch (InvalidDataException e)
-                                {
-                                    error = true;
-                                    ShowError(e);
-                                }
-                                catch (System.Data.DataException e)
-                                {
-                                    error = true;
-                                    ShowError(e);
-                                }
-                                catch (ArgumentNullException e)
-                                {
-                                    error = true;
-                                    ShowError(e);
-                                }
-                                catch (Exception e)
-                                {
-                                    error = true;
-                                    ShowError(e);
-                                }
-                                break;
-                            }
-
-
-                            else if (Enum.IsDefined(typeof(Gender), info[0][2]))
-                            {
-                                if (info[0][2] == "m" || info[0][2] == "M")
-                                    TypeToFind = (Gender)Enum.Parse(typeof(Gender), "Male");
-                                else
-                                    TypeToFind = (Gender)Enum.Parse(typeof(Gender), "Female");
-
-                                // check for exceptions
-                                error = false;
-                                try
-                                {
-                                    queryResult = cats[categoryNum].FindByType((Gender)TypeToFind);
-                                }
-                                catch (InvalidDataException e)
-                                {
-                                    error = true;
-                                    ShowError(e);
-                                }
-                                catch (System.Data.DataException e)
-                                {
-                                    error = true;
-                                    ShowError(e);
-                                }
-                                catch (ArgumentNullException e)
-                                {
-                                    error = true;
-                                    ShowError(e);
-                                }
-                                catch (Exception e)
-                                {
-                                    error = true;
-                                    ShowError(e);
-                                }
-                                break;
-                            }
-
-
-                            else if (Enum.IsDefined(typeof(Is_a_return), info[0][2]))
-                            {
-                                if (info[0][2] == "Return")
-                                    TypeToFind = (Is_a_return)Enum.Parse(typeof(Is_a_return), "Return");
-                                else
-                                    TypeToFind = (Is_a_return)Enum.Parse(typeof(Is_a_return), "Purchase");
-
-                                // check for exceptions
-                                error = false;
-                                try
-                                {
-                                    queryResult = cats[categoryNum].FindByType((Is_a_return)TypeToFind);
-                                }
-                                catch (InvalidDataException e)
-                                {
-                                    error = true;
-                                    ShowError(e);
-                                }
-                                catch (System.Data.DataException e)
-                                {
-                                    error = true;
-                                    ShowError(e);
-                                }
-                                catch (ArgumentNullException e)
-                                {
-                                    error = true;
-                                    ShowError(e);
-                                }
-                                catch (Exception e)
-                            {
-                                    error = true;
-                                    ShowError(e);
-                                }
-                                break;
-                            }
-
-                            
-                            else
-                            {
-                                if (info[0][2] == "1")
-                                    TypeToFind = (PaymentMethod)Enum.Parse(typeof(PaymentMethod), "Cash");
-                                else if (info[0][2] == "2")
-                                    TypeToFind = (PaymentMethod)Enum.Parse(typeof(PaymentMethod), "Check");
-                                else
-                                    TypeToFind = (PaymentMethod)Enum.Parse(typeof(PaymentMethod), "Visa");
-
-                            // check for exceptions
-                            error = false;
-                            try
-                            {
-                                    queryResult = cats[categoryNum].FindByType((PaymentMethod)TypeToFind);
-                            }
-                            catch (InvalidDataException e)
-                            {
-                                error = true;
-                                ShowError(e);
-                            }
-                            catch (System.Data.DataException e)
-                            {
-                                error = true;
-                                ShowError(e);
-                            }
-                            catch (ArgumentNullException e)
-                            {
-                                error = true;
-                                ShowError(e);
-                            }
-                            catch (Exception e)
-                            {
-                                error = true;
-                                ShowError(e);
-                            }
-                            break;
-                        }
-
-                            
-                            //////
-
-
-
-                        }
-                    }
-                }
-                */
-
-                /////////////////////////////////////////////////////////////////////////
 
                 // check whether the query succeeded or not
-                if (foundType && !error)
-                {
-                    Console.Clear(); // clear the screen
-                    WriteColor("\n--- Query results for " + catsNames[categoryNum] + "s ---", true, ConsoleColor.DarkGreen);
-                    Console.WriteLine();
-                    WriteColor("Search field: " + fieldName + "\nSearch value: \"" + info[0][2] + "\"", true, ConsoleColor.DarkGreen);
-                    DisplayResult(categoryNum, queryResult);
-                    if (queryResult.Any<object>())
-                        ShowOne(categoryNum, queryResult);
-                    else
-                    {
+                if (foundType)
+                                {
+                    if (!error) // if the category is not empty and no error in search
+                                {
+                        Console.Clear(); // clear the screen
+                        WriteColor("\n--- Query results for " + catsNames[categoryNum] + "s ---", true, ConsoleColor.DarkGreen);
+                        Console.WriteLine();
+                        WriteColor("Search through field: " + fieldName, true, ConsoleColor.DarkGreen);
+                        DisplayResult(categoryNum, queryResult);
+                        if (queryResult.Any<object>())
+                            ShowOne(categoryNum, queryResult);
+                        else
+                                {
+                            PressEnter();
+                            GoBack(categoryNum); // Action menu
+                                }
+                                }
+                    else // if the category is not empty but there was an error in search
+                                {
+                        WriteColor("\nSorry, there are no results for " + catsNames[categoryNum] + "s.", true, ConsoleColor.Red);
                         PressEnter();
                         GoBack(categoryNum); // Action menu
-                    }
-                }
-                //////////////////////////
-                // if the category is not empty but there was an error in search
-                WriteColor("\nSorry, there are no results for " + catsNames[categoryNum] + "s.", true, ConsoleColor.Red);
-                PressEnter();
-                GoBack(categoryNum); // Action menu
-                //////////////////////////
-            }
-            else // if the category is empty
-            {
+                                }
+                                }
+                                }
+            ///////////////////////////////////
+            else // the category is empty
+                                {
                 WriteColor("\nSorry, there are no results for " + catsNames[categoryNum] + "s.", true, ConsoleColor.Red); 
                 PressEnter();
                 GoBack(categoryNum); // Action menu
-            }
+                                }
+                            }
+
+
+
+
+        public Tuple<List<Object>,bool> SearchType(int categoryNum, ValueType input)
+                            {
+            bool error = false;
+            List<Object> queryResult = new List<object>();
+            Tuple<List<Object>, bool> back;
+                                // check for exceptions
+                                error = false;
+                                try
+                                {
+                queryResult = cats[categoryNum].FindByType(input);
+                                }
+                                catch (InvalidDataException e)
+                                {
+                                    error = true;
+                                    ShowError(e);
+                                }
+                                catch (System.Data.DataException e)
+                                {
+                                    error = true;
+                                    ShowError(e);
+                                }
+                                catch (ArgumentNullException e)
+                                {
+                                    error = true;
+                                    ShowError(e);
+                                }
+                                catch (Exception e)
+                                {
+                                    error = true;
+                                    ShowError(e);
+                                }
+
+            back = new Tuple<List<Object>, bool>(queryResult, error);
+            return back;
         }
 
 
@@ -1471,39 +1356,34 @@ namespace PL
             {
                 cats[categoryNum].Edit(currentRecord, newRecord);
             }
+            // cats[categoryNum].Add(currentRecord);
             catch (NullReferenceException e)
             {
-                cats[categoryNum].Add(currentRecord);
                 error = true;
                 ShowError(e);
             }
             catch (IndexOutOfRangeException e)
             {
-                cats[categoryNum].Add(currentRecord);
                 error = true;
                 ShowError(e);
             }
             catch (ArgumentNullException e)
             {
-                cats[categoryNum].Add(currentRecord);
                 error = true;
                 ShowError(e);
             }
             catch (System.Data.DataException e)
             {
-                cats[categoryNum].Add(currentRecord);
                 error = true;
                 ShowError(e);
             }
             catch (System.InvalidCastException e)
             {
-                cats[categoryNum].Add(currentRecord);
                 error = true;
                 ShowError(e);
             }
             catch (Exception e)
             {
-                cats[categoryNum].Add(currentRecord);
                 error = true;
                 ShowError(e);
             }
@@ -1552,6 +1432,7 @@ namespace PL
             PressEnter();
             ShowAll(categoryNum); // Action menu
         }
+
 
 
     }
