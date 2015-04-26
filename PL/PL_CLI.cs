@@ -530,7 +530,7 @@ namespace PL
                 //////////////////////// findByType /////////////////////////////////////
                 /////////////////////////////////////////////////////////////////////////
 
-                /*
+                
                 if (!foundType)
                 {
                     foreach (int numTypeField in Enum.GetValues(typeof(TypeFields)))
@@ -539,13 +539,13 @@ namespace PL
                         {
                             error = true;
                             foundType = true;
-                            Console.WriteLine("\nIn the future...");
+                            Console.WriteLine("\nNot available");
                         }
                     }
                 }
-                 * */
+                 
                
-                
+               /* 
                 if (!foundType)
                 {
                     foreach (int numTypeField in Enum.GetValues(typeof(TypeFields)))
@@ -567,7 +567,7 @@ namespace PL
                             Enum targetEnum = (TypeFields)enums.GetValue(numTypeField);
                             Console.WriteLine("test2:    " + (TypeFields)enums.GetValue(numTypeField) );
                             Console.ReadLine();
-                            */
+                            
 
 
                             ValueType TypeToFind;
@@ -603,21 +603,29 @@ namespace PL
                                 }
                                 break;
                             }
+                                
 
                             else if (Enum.IsDefined(typeof(PStatus), info[0][2]))
                             {
-                                if (info[0][2] == "1")
-                                    TypeToFind = (PStatus)Enum.Parse(typeof(PStatus), "Empty");
-                                else if (info[0][2] == "2")
-                                    TypeToFind = (PStatus)Enum.Parse(typeof(PStatus), "LowQuantity");
+                                Console.WriteLine("hhhhhhhhhhhh");
+                                Console.ReadLine();
+                                PStatus myPStatus;
+                                if (info[0][2].Equals("Empty"))
+                                    myPStatus = PStatus.Empty;
+                                //myPStatus = (PStatus)Enum.Parse(typeof(PStatus), "Empty");
+                                else if (info[0][2].Equals("LowQuantity"))
+                                    myPStatus = PStatus.LowQuantity;
+                                //myPStatus = (PStatus)Enum.Parse(typeof(PStatus), "LowQuantity");
                                 else
-                                    TypeToFind = (PStatus)Enum.Parse(typeof(PStatus), "InStock");
+                                    myPStatus = PStatus.InStock;
+                                    //myPStatus = (PStatus)Enum.Parse(typeof(PStatus), "InStock");
+
 
                                 // check for exceptions
                                 error = false;
                                 try
                                 {
-                                    queryResult = cats[categoryNum].FindByType((PStatus)TypeToFind);
+                                    queryResult = cats[categoryNum].FindByType((PStatus)myPStatus);
                                 }
                                 catch (InvalidDataException e)
                                 {
@@ -682,7 +690,7 @@ namespace PL
 
                             else if (Enum.IsDefined(typeof(Is_a_return), info[0][2]))
                             {
-                                if (info[0][2] == "r" || info[0][2] == "R")
+                                if (info[0][2] == "Return")
                                     TypeToFind = (Is_a_return)Enum.Parse(typeof(Is_a_return), "Return");
                                 else
                                     TypeToFind = (Is_a_return)Enum.Parse(typeof(Is_a_return), "Purchase");
@@ -763,6 +771,7 @@ namespace PL
                         }
                     }
                 }
+                */
 
                 /////////////////////////////////////////////////////////////////////////
 
