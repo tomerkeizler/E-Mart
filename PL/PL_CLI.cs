@@ -91,7 +91,7 @@ namespace PL
             fieldsInfo.Add("Location", 6);
             fieldsInfo.Add("DepID", 6);
             fieldsInfo.Add("Salary", 6);
-            fieldsInfo.Add("SupervisorID", 6);
+            fieldsInfo.Add("SupervisiorID", 6);
 
             fieldsInfo.Add("Type", 7);
 
@@ -123,7 +123,7 @@ namespace PL
             fieldsNames.Add("Location", "Department ID");
             fieldsNames.Add("DepID", "Department ID");
             fieldsNames.Add("Salary", "Salary");
-            fieldsNames.Add("SupervisorID", "Supervisor ID");
+            fieldsNames.Add("SupervisiorID", "Supervisor ID");
             fieldsNames.Add("Type", "Product type");
             fieldsNames.Add("InStock", "Product status");
             fieldsNames.Add("Is_a_Return", "Transaction type");
