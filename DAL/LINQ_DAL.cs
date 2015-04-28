@@ -306,6 +306,10 @@ namespace DAL
             {
                 filteredClubMember = allClubMember.Where(n => n.LastName.Equals(name)).Cast<ClubMember>().ToList();
             }
+            else if (field == StringFields.dateOfBirth)
+            {
+                filteredClubMember = allClubMember.Where(n => n.DateOfBirth.Equals(name)).Cast<ClubMember>().ToList();
+            }
             else
             {
                 throw new System.Data.DataException("Bad Input!");
@@ -470,6 +474,20 @@ namespace DAL
             }
             filteredUser = allUser.Where(n => n.UserName.Equals(name)).Cast<User>().ToList();
             return filteredUser;
+        }
+
+
+        public List<Transaction> TransactionNameQuery(string name, StringFields field)
+        {
+            List<Transaction> allTrans = ReadFromFile(Elements.Transaction).Cast<Transaction>().ToList();
+            List<Transaction> filteredTrans;
+            if (field != StringFields.currentDate)
+            {
+                throw new System.Data.DataException("Bad Input!");
+            }
+            filteredTrans = allTrans.Where(n => n.CurrentDate.ToString().Equals(name)).Cast<Transaction>().ToList();
+            return filteredTrans;
+
         }
     }
 }
