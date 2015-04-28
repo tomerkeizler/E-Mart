@@ -34,7 +34,7 @@ namespace Backend
         {
             if (!(_other is Receipt)) return false;
             Receipt other = (Receipt)_other;
-            return (productsIDs.Equals(other.productsIDs) && prices.Equals(other.prices));
+            return (productsIDs.SequenceEqual(other.productsIDs) && prices.SequenceEqual(other.prices));
         }
         public override int GetHashCode()
         {
