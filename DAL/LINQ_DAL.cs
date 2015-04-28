@@ -308,7 +308,7 @@ namespace DAL
             }
             else if (field == StringFields.dateOfBirth)
             {
-                filteredClubMember = allClubMember.Where(n => n.DateOfBirth.Equals(name)).Cast<ClubMember>().ToList();
+                filteredClubMember = allClubMember.Where(n => n.DateOfBirth.ToShortDateString().Equals(name)).Cast<ClubMember>().ToList();
             }
             else
             {
@@ -357,10 +357,6 @@ namespace DAL
             if (type is Gender)
             {
                 filteredClubMember = allClubMember.Where(n => n.Gender.Equals((Gender)type)).Cast<ClubMember>().ToList();
-            }
-            else if (type is DateTime)
-            {
-                filteredClubMember = allClubMember.Where(n => n.DateOfBirth.Equals(type)).Cast<ClubMember>().ToList();
             }
             else
             {
@@ -440,11 +436,7 @@ namespace DAL
             {
                 throw new InvalidDataException("There is nothing to find from.");
             }
-            if (type is DateTime)
-            {
-                filteredTransaction = allTransaction.Where(n => n.CurrentDate.Equals(type)).Cast<Transaction>().ToList();
-            }
-            else if (type is Is_a_return)
+            if (type is Is_a_return)
             {
                 filteredTransaction = allTransaction.Where(n => n.Is_a_Return.Equals(type)).Cast<Transaction>().ToList();
             }
@@ -485,7 +477,7 @@ namespace DAL
             {
                 throw new System.Data.DataException("Bad Input!");
             }
-            filteredTrans = allTrans.Where(n => n.CurrentDate.ToString().Equals(name)).Cast<Transaction>().ToList();
+            filteredTrans = allTrans.Where(n => n.CurrentDate.ToShortDateString().Equals(name)).Cast<Transaction>().ToList();
             return filteredTrans;
 
         }
