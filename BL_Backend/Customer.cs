@@ -53,6 +53,21 @@ namespace Backend
             get { return tranHistory; }
             set { tranHistory = value; }
         }
+        public override bool Equals(object _other)
+        {
+            if (!(_other is Customer)) return false;
+            Customer other = (Customer)_other;
+            return (id == other.Id && firstName.Equals(other.firstName) && lastName.Equals(other.lastName)
+                    && tranHistory.SequenceEqual(other.tranHistory));
+        }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode() ^ id.GetHashCode();
+        }
+        public override string ToString()
+        {
+            return id+"";
+        }
 
     }
 }
