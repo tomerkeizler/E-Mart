@@ -108,15 +108,29 @@ namespace DAL
             //Delete the xml if the list is empty (last object deleted)
             if (list.ElementAtOrDefault(0) == null)
             {
-                File.Delete(obj.GetType() + ".xml");
+                try
+                {
+                    File.Delete(obj.GetType() + ".xml");
+                }
+                catch (IOException e)
+                {
+                    throw new IOException("Cannot Clear " + list.ElementAtOrDefault(0).GetType() + ".xml File! Details: " + e.Message);
+                }
             }
             //Perform encryption and write the XML file
             else
             {
-                StreamWriter WriteFileStream = new StreamWriter(list.ElementAtOrDefault(0).GetType() + ".xml");
-                byte[] encrypted = Encrypt(list);
-                SerializerObj.Serialize(WriteFileStream, encrypted);
-                WriteFileStream.Close();
+                try
+                {
+                    StreamWriter WriteFileStream = new StreamWriter(list.ElementAtOrDefault(0).GetType() + ".xml");
+                    byte[] encrypted = Encrypt(list);
+                    SerializerObj.Serialize(WriteFileStream, encrypted);
+                    WriteFileStream.Close();
+                }
+                catch (IOException e)
+                {
+                    throw new IOException("Cannot Write " + list.ElementAtOrDefault(0).GetType() + ".xml File! Details: " + e.Message);
+                }
             } 
         }
 
@@ -125,11 +139,18 @@ namespace DAL
         {
             if (File.Exists("Backend." + element.ToString() + ".xml"))
             {
-                using (FileStream stream = File.OpenRead("Backend." + element.ToString() + ".xml"))
+                try
                 {
-                    byte[] encrypted = SerializerObj.Deserialize(stream) as byte[];
-                    return Decrypt(encrypted);
+                    using (FileStream stream = File.OpenRead("Backend." + element.ToString() + ".xml"))
+                    {
+                        byte[] encrypted = SerializerObj.Deserialize(stream) as byte[];
+                        return Decrypt(encrypted);
 
+                    }
+                }
+                catch (IOException e)
+                {
+                    throw new IOException("Cannot Read " + element.ToString() + ".xml File! Details: " + e.Message);
                 }
             }
             //for not exists xml, return empty list
@@ -336,7 +357,7 @@ namespace DAL
             }
             else if (field == IntFields.tranHistory)
             {
-                filteredClubMember = allClubMember.Where(n => n.TransactionHistory.Any(x => x.TransactionID >= minNumber && x.TransactionID <= maxNumber)).Cast<ClubMember>().ToList();
+                filteredClubMember = allClubMember.Where(n => n.TranHistory.Any(x => x.TransactionID >= minNumber && x.TransactionID <= maxNumber)).Cast<ClubMember>().ToList();
             }
             else
             {
