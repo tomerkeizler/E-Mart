@@ -140,5 +140,13 @@ namespace BL
                 }
             }
         }
+        public List<Product> FilterProducts(List<Product> currentList, List<PType> typelist)
+        {
+            if (currentList == null || typelist == null || typelist.Count > 3)
+            {
+                throw new System.Data.DataException("Bad Input!");
+            }
+            return itsDAL.ProductMulTypeQuery(currentList, typelist);
+        }
     }
 }
