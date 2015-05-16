@@ -16,9 +16,10 @@ namespace Backend
         private int salary;
         private int supervisiorID;
         private Gender gender;
+        private Rank rank;
 
         //Constructors:
-        public Employee(string _firstName, string _lastName, int _id, Gender _gender, int _depID, int _salary, int _supervisiorID)
+        public Employee(string _firstName, string _lastName, int _id, Gender _gender, int _depID, int _salary, int _supervisiorID, Rank _rank)
         {
             firstName = _firstName;
             lastName = _lastName;
@@ -27,17 +28,19 @@ namespace Backend
             depID = _depID;
             salary = _salary;
             supervisiorID = _supervisiorID;
+            rank = _rank;
         }
         //For Deep Copy
         public Employee(Employee other)
         {
-            firstName = other.firstName;
-            lastName = other.lastName;
-            id = other.id;
-            gender = other.gender;
-            depID = other.depID;
-            salary = other.salary;
-            supervisiorID = other.supervisiorID;
+            firstName = other.FirstName;
+            lastName = other.LastName;
+            id = other.Id;
+            gender = other.Gender;
+            depID = other.DepID;
+            salary = other.Salary;
+            supervisiorID = other.SupervisiorID;
+            rank = other.MyRank;
         }
 
         public override string ToString()
@@ -97,5 +100,10 @@ namespace Backend
             set { lastName = value; }
         }
 
+        public Rank MyRank
+        {
+            get { return rank; }
+            set { rank = value; }
+        }
     }
 }

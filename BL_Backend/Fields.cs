@@ -12,6 +12,7 @@ namespace Backend
     public enum StringFields { name, firstName, lastName, dateOfBirth, currentDate, username };
     public enum TypeFields { gender, inStock, type, is_a_return, payment };
     public enum Gender { Male, Female };
+    public enum Rank { Administrator, Manager, Worker, Customer };
     class Fields
     {
     }
