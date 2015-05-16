@@ -34,11 +34,11 @@ namespace Backend
         {
             memberID = other.MemberID;
             id = other.Id;
-            firstName = other.firstName;
-            lastName = other.lastName;
-            tranHistory = other.tranHistory;
-            dateOfBirth = other.dateOfBirth;
-            gender = other.gender;
+            firstName = other.FirstName;
+            lastName = other.LastName;
+            tranHistory = other.TransactionHistory;
+            dateOfBirth = other.DateOfBirth;
+            gender = other.Gender;
         }
 
 

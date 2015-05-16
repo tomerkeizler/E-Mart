@@ -26,9 +26,14 @@ namespace Backend
             type = _type;
             productID = _productID;
             location = _location;
-            inStock = _inStock;
             stockCount = _stockCount;
             price = _price;
+            if(stockCount==0)
+                inStock = PStatus.Empty;
+            else if (stockCount <= 20)
+                inStock = PStatus.LowQuantity;
+            else
+                inStock = PStatus.InStock;
         }
         //For Deep Copy
         public Product(Product other)
@@ -90,7 +95,14 @@ namespace Backend
         public int StockCount
         {
             get { return stockCount; }
-            set { stockCount = value; }
+            set { stockCount = value;
+                if(value==0)
+                    inStock = PStatus.Empty;
+                else if (value <= 20)
+                    inStock = PStatus.LowQuantity;
+                else
+                    inStock = PStatus.InStock;
+            }
         }
 
 

@@ -54,6 +54,7 @@
     <Compile Include="ClubMember.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Customer.cs" />
     <Compile Include="Department.cs" />
     <Compile Include="Employee.cs" />
     <Compile Include="Fields.cs" />
