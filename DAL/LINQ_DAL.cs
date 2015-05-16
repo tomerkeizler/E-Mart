@@ -112,9 +112,9 @@ namespace DAL
                 {
                     File.Delete(obj.GetType() + ".xml");
                 }
-                catch (IOException e)
+                catch (System.IO.IOException e)
                 {
-                    throw new IOException("Cannot Clear " + list.ElementAtOrDefault(0).GetType() + ".xml File! Details: " + e.Message);
+                    throw new System.IO.IOException("Cannot Clear " + list.ElementAtOrDefault(0).GetType() + ".xml File! Details: " + e.Message);
                 }
             }
             //Perform encryption and write the XML file
@@ -127,9 +127,9 @@ namespace DAL
                     SerializerObj.Serialize(WriteFileStream, encrypted);
                     WriteFileStream.Close();
                 }
-                catch (IOException e)
+                catch (System.IO.IOException e)
                 {
-                    throw new IOException("Cannot Write " + list.ElementAtOrDefault(0).GetType() + ".xml File! Details: " + e.Message);
+                    throw new System.IO.IOException("Cannot Write " + list.ElementAtOrDefault(0).GetType() + ".xml File! Details: " + e.Message);
                 }
             } 
         }
@@ -148,9 +148,9 @@ namespace DAL
 
                     }
                 }
-                catch (IOException e)
+                catch (System.IO.IOException e)
                 {
-                    throw new IOException("Cannot Read " + element.ToString() + ".xml File! Details: " + e.Message);
+                    throw new System.IO.IOException("Cannot Read " + element.ToString() + ".xml File! Details: " + e.Message);
                 }
             }
             //for not exists xml, return empty list
