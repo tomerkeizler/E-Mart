@@ -233,6 +233,19 @@ namespace DAL
             }
             return filteredProducts;
         }
+        //Filter by multiply types for product
+        public List<Product> ProductMulTypeQuery(List<Product> currentList, List<PType> typelist)
+        {
+            List<Product> filteredProducts = new List<Product>();
+            if (currentList.ElementAtOrDefault(0) == null)
+            {
+                throw new InvalidDataException("There is nothing to find from.");
+            }
+            foreach (PType type in typelist){
+                filteredProducts.AddRange(currentList.Where(n => n.Type.Equals(type)).Cast<Product>().ToList());
+            }
+            return filteredProducts;
+        }
 
         //Filter by name for employee
         public List<Employee> EmployeeNameQuery(string name, StringFields field)
