@@ -502,5 +502,52 @@ namespace DAL
             return filteredTrans;
 
         }
+        //Filter by name for Customer
+        public List<Customer> CustomerNameQuery(string name, StringFields field)
+        {
+            List<Customer> allCustomer = ReadFromFile(Elements.Customer).Cast<Customer>().ToList();
+            List<Customer> filteredCustomer;
+            if (allCustomer.ElementAtOrDefault(0) == null)
+            {
+                throw new InvalidDataException("There is nothing to find from.");
+            }
+            if (field == StringFields.firstName)
+            {
+                filteredCustomer = allCustomer.Where(n => n.FirstName.Equals(name)).Cast<Customer>().ToList();
+            }
+            else if (field == StringFields.lastName)
+            {
+                filteredCustomer = allCustomer.Where(n => n.LastName.Equals(name)).Cast<Customer>().ToList();
+            }
+            else
+            {
+                throw new System.Data.DataException("Bad Input!");
+            }
+            return filteredCustomer;
+        }
+
+        //Filter by number for Customer
+        public List<Customer> CustomerNumberQuery(int minNumber, int maxNumber, IntFields field)
+        {
+            List<Customer> allCustomer = ReadFromFile(Elements.Customer).Cast<Customer>().ToList();
+            List<Customer> filteredCustomer;
+            if (allCustomer.ElementAtOrDefault(0) == null)
+            {
+                throw new InvalidDataException("There is nothing to find from.");
+            }
+            if (field == IntFields.id)
+            {
+                filteredCustomer = allCustomer.Where(n => n.Id >= minNumber && n.Id <= maxNumber).Cast<Customer>().ToList();
+            }
+            else if (field == IntFields.tranHistory)
+            {
+                filteredCustomer = allCustomer.Where(n => n.TranHistory.Any(x => x.TransactionID >= minNumber && x.TransactionID <= maxNumber)).Cast<Customer>().ToList();
+            }
+            else
+            {
+                throw new System.Data.DataException("Bad Input!");
+            }
+            return filteredCustomer;
+        }
     }
 }
