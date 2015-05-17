@@ -97,7 +97,7 @@ namespace BL
             {
                 if (_user.UserName.Equals(user.UserName) && _user.Password.Equals(user.Password))
                 {
-                    return _user;
+                    return _user.Person;
                 }
             }
             return null;
