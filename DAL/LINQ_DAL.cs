@@ -108,15 +108,29 @@ namespace DAL
             //Delete the xml if the list is empty (last object deleted)
             if (list.ElementAtOrDefault(0) == null)
             {
-                File.Delete(obj.GetType() + ".xml");
+                try
+                {
+                    File.Delete(obj.GetType() + ".xml");
+                }
+                catch (System.IO.IOException e)
+                {
+                    throw new System.IO.IOException("Cannot Clear " + list.ElementAtOrDefault(0).GetType() + ".xml File! Details: " + e.Message);
+                }
             }
             //Perform encryption and write the XML file
             else
             {
-                StreamWriter WriteFileStream = new StreamWriter(list.ElementAtOrDefault(0).GetType() + ".xml");
-                byte[] encrypted = Encrypt(list);
-                SerializerObj.Serialize(WriteFileStream, encrypted);
-                WriteFileStream.Close();
+                try
+                {
+                    StreamWriter WriteFileStream = new StreamWriter(list.ElementAtOrDefault(0).GetType() + ".xml");
+                    byte[] encrypted = Encrypt(list);
+                    SerializerObj.Serialize(WriteFileStream, encrypted);
+                    WriteFileStream.Close();
+                }
+                catch (System.IO.IOException e)
+                {
+                    throw new System.IO.IOException("Cannot Write " + list.ElementAtOrDefault(0).GetType() + ".xml File! Details: " + e.Message);
+                }
             } 
         }
 
@@ -125,11 +139,18 @@ namespace DAL
         {
             if (File.Exists("Backend." + element.ToString() + ".xml"))
             {
-                using (FileStream stream = File.OpenRead("Backend." + element.ToString() + ".xml"))
+                try
                 {
-                    byte[] encrypted = SerializerObj.Deserialize(stream) as byte[];
-                    return Decrypt(encrypted);
+                    using (FileStream stream = File.OpenRead("Backend." + element.ToString() + ".xml"))
+                    {
+                        byte[] encrypted = SerializerObj.Deserialize(stream) as byte[];
+                        return Decrypt(encrypted);
 
+                    }
+                }
+                catch (System.IO.IOException e)
+                {
+                    throw new System.IO.IOException("Cannot Read " + element.ToString() + ".xml File! Details: " + e.Message);
                 }
             }
             //for not exists xml, return empty list
@@ -336,7 +357,7 @@ namespace DAL
             }
             else if (field == IntFields.tranHistory)
             {
-                filteredClubMember = allClubMember.Where(n => n.TransactionHistory.Any(x => x.TransactionID >= minNumber && x.TransactionID <= maxNumber)).Cast<ClubMember>().ToList();
+                filteredClubMember = allClubMember.Where(n => n.TranHistory.Any(x => x.TransactionID >= minNumber && x.TransactionID <= maxNumber)).Cast<ClubMember>().ToList();
             }
             else
             {
@@ -480,6 +501,53 @@ namespace DAL
             filteredTrans = allTrans.Where(n => n.CurrentDate.ToShortDateString().Equals(name)).Cast<Transaction>().ToList();
             return filteredTrans;
 
+        }
+        //Filter by name for Customer
+        public List<Customer> CustomerNameQuery(string name, StringFields field)
+        {
+            List<Customer> allCustomer = ReadFromFile(Elements.Customer).Cast<Customer>().ToList();
+            List<Customer> filteredCustomer;
+            if (allCustomer.ElementAtOrDefault(0) == null)
+            {
+                throw new InvalidDataException("There is nothing to find from.");
+            }
+            if (field == StringFields.firstName)
+            {
+                filteredCustomer = allCustomer.Where(n => n.FirstName.Equals(name)).Cast<Customer>().ToList();
+            }
+            else if (field == StringFields.lastName)
+            {
+                filteredCustomer = allCustomer.Where(n => n.LastName.Equals(name)).Cast<Customer>().ToList();
+            }
+            else
+            {
+                throw new System.Data.DataException("Bad Input!");
+            }
+            return filteredCustomer;
+        }
+
+        //Filter by number for Customer
+        public List<Customer> CustomerNumberQuery(int minNumber, int maxNumber, IntFields field)
+        {
+            List<Customer> allCustomer = ReadFromFile(Elements.Customer).Cast<Customer>().ToList();
+            List<Customer> filteredCustomer;
+            if (allCustomer.ElementAtOrDefault(0) == null)
+            {
+                throw new InvalidDataException("There is nothing to find from.");
+            }
+            if (field == IntFields.id)
+            {
+                filteredCustomer = allCustomer.Where(n => n.Id >= minNumber && n.Id <= maxNumber).Cast<Customer>().ToList();
+            }
+            else if (field == IntFields.tranHistory)
+            {
+                filteredCustomer = allCustomer.Where(n => n.TranHistory.Any(x => x.TransactionID >= minNumber && x.TransactionID <= maxNumber)).Cast<Customer>().ToList();
+            }
+            else
+            {
+                throw new System.Data.DataException("Bad Input!");
+            }
+            return filteredCustomer;
         }
     }
 }

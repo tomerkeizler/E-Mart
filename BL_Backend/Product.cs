@@ -10,6 +10,36 @@ namespace Backend
     [Serializable()]
     public class Product
     {
+        //TopSeller Private Class for Generate the TopSeller Product each month
+        [Serializable()]
+        private class TopSeller
+        {
+            private string productName;
+            private bool isTopSeller = false;
+            private int sellCounter = 0;
+            private int currentMonth;
+            public TopSeller(string _productName)
+            {
+                productName = _productName;
+                currentMonth = DateTime.Today.Month;
+            }
+            public int SellCounter
+            {
+                get { return sellCounter; }
+                set { sellCounter = value; }
+            }
+            public bool IsTopSeller
+            {
+                get { return isTopSeller; }
+                set { isTopSeller = value; }
+            }
+            public int CurrentMonth
+            {
+                get { return currentMonth; }
+                set { currentMonth = value; }
+            }
+        }
+
         //Fields:
         private string name;
         private PType type;
@@ -18,10 +48,13 @@ namespace Backend
         private PStatus inStock;
         private int location;
         private int productID = 0;
+        private TopSeller topSellerStatus;
+
         //Constructors:
         public Product() { }
-        public Product(string _name, PType _type, int _location, PStatus _inStock, int _stockCount, int _price, int _productID = 0)
+        public Product(string _name, PType _type, int _location, int _stockCount, int _price, int _productID = 0)
         {
+            topSellerStatus = new TopSeller(_name);
             name = _name;
             type = _type;
             productID = _productID;
@@ -61,6 +94,21 @@ namespace Backend
         {
             return base.GetHashCode() ^ name.GetHashCode();
         }
+        //Methods
+        public void Buy()
+        {
+            if (this.inStock == PStatus.Empty)
+            {
+                throw new InvalidOperationException("No Product Left to buy!");
+            }
+            this.InStock = this.InStock - 1;
+            this.topSellerStatus.SellCounter = this.topSellerStatus.SellCounter + 1;
+        }
+        public void ResetSells()
+        {
+            topSellerStatus = new TopSeller(name);
+        }
+
         //Getter and Setters:
         public int ProductID
         {
@@ -104,8 +152,20 @@ namespace Backend
                     inStock = PStatus.InStock;
             }
         }
-
-
+        public bool IsTopSeller
+        {
+            get { return topSellerStatus.IsTopSeller; }
+            set { topSellerStatus.IsTopSeller = value; }
+        }
+        public int TopSellerMonth
+        {
+            get { return topSellerStatus.CurrentMonth; }
+            set {topSellerStatus.CurrentMonth = value; }
+        }
+        public int SellCounter
+        {
+            get { return topSellerStatus.SellCounter; }
+        }
         public int Price
         {
             get { return price; }

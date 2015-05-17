@@ -112,8 +112,33 @@ namespace BL
 
         public Type GetEntityType()
         {
-            //return the clubmember type
+            //return the prudct type
             return typeof(Product);
+        }
+
+        public void GenerateTopSeller()
+        {
+            int currMonth = DateTime.Today.Month;
+            List<Product> Allprods = itsDAL.ReadFromFile(Elements.Product).Cast<Product>().ToList();
+            int currMax = 1;
+            foreach (Product prod in Allprods)
+            {
+                if (prod.TopSellerMonth != currMonth)
+                {
+                    prod.ResetSells();
+                }
+                if (prod.SellCounter >= currMax)
+                {
+                    currMax = prod.SellCounter;
+                }
+            }
+            foreach (Product prod in Allprods)
+            {
+                if (prod.SellCounter == currMax)
+                {
+                    prod.IsTopSeller = true;
+                }
+            }
         }
     }
 }

@@ -16,8 +16,8 @@ namespace DAL
     public class DAL_Test
     {
         IDAL linq = new LINQ_DAL();
-        Product a = new Product("first", PType.a, 2, PStatus.InStock, 4, 123, 4);
-        Product b = new Product("second", PType.b, 3, PStatus.InStock, 5, 1213, 5);
+        Product a = new Product("first", PType.a, 2, 4, 123, 4);
+        Product b = new Product("second", PType.b, 3, 5, 1213, 5);
         List<object> list = new List<object>();
         [Test]
         public void WriteToFile()

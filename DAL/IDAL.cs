@@ -27,6 +27,10 @@ namespace DAL
         List<ClubMember> ClubMemberNameQuery(string name, StringFields field);
         List<ClubMember> ClubMemberNumberQuery(int minNumber, int maxNumber, IntFields field);
         List<ClubMember> ClubMemberTypeQuery(ValueType type);
+        
+        //Customer:
+        List<Customer> CustomerNameQuery(string name, StringFields field);
+        List<Customer> CustomerNumberQuery(int minNumber, int maxNumber, IntFields field);
 
         //Department:
         List<Department> DepartmentNameQuery(string name, StringFields field);
