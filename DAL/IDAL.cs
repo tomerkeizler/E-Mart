@@ -16,6 +16,7 @@ namespace DAL
         List<Product> ProductNameQuery(string name, StringFields field);
         List<Product> ProductNumberQuery(int minNumber, int maxNumber, IntFields field);
         List<Product> ProductTypeQuery(ValueType type);
+        List<Product> ProductMulTypeQuery(List<Product> currentList, List<PType> typelist);
 
 
         //Employees:
