@@ -12,12 +12,17 @@ namespace Backend
         //Fields:
         private string username;
         private string password;
+        private Object person;
 
         //Constructors:
-        public User(string _username, string _password)
+        public User(string _username, string _password, Object _person)
         {
             username = _username;
             password = _password;
+            if (_person is Customer)
+                person = (Customer)_person;
+            else
+                person = (Employee)_person;
         }
         //For Deep Copy
         public User(User other)
@@ -39,6 +44,7 @@ namespace Backend
         {
             return username;
         }
+
         //getters and setters:
         public string UserName
         {
@@ -49,6 +55,11 @@ namespace Backend
         {
             get { return password; }
             set { password = value; }
+        }
+        public Object Person
+        {
+            get { return person; }
+            set { person = value; }
         }
     }
 }

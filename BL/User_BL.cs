@@ -26,6 +26,11 @@ namespace BL
         {
             //Add the new user to the system
             List<User> Allusers = itsDAL.ReadFromFile(Elements.User).Cast<User>().ToList();
+                foreach (User user in Allusers)
+                {
+                    if (((User)u).UserName == user.UserName)
+                        throw new ArgumentException("the username is already exists!");
+                }
             Allusers.Add((User)u);
             itsDAL.WriteToFile(Allusers.Cast<object>().ToList(), (User)u);
         }

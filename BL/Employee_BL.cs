@@ -43,33 +43,51 @@ namespace BL
                 {
                     if (emp.Equals(e))
                         throw new Exception("employee is already exists!");
-                    if (((Employee)e).SupervisiorID == emp.SupervisiorID)
+                    if (((Employee)e).SupervisiorID == emp.Id)
+                    {
                         checkSup = true;
+                        emp.MyRank = Rank.Manager;
+                    }
                 }
-                if (checkSup || ((Employee)e).SupervisiorID == 0)
-                Allemps.Add((Employee)e);
-                else
+                if (((Employee)e).SupervisiorID == 0)
+                {
+                    ((Employee)e).MyRank = Rank.Administrator;
+                }
+                if (!checkSup)
+                {
                     throw new Exception("his supervisor doesn't exists!");
+                }
+                Allemps.Add((Employee)e);
             }
             itsDAL.WriteToFile(Allemps.Cast<object>().ToList(), (Employee)e);
         }
         public void Remove(object e)
         {
             List<Employee> Allemps = itsDAL.ReadFromFile(Elements.Employee).Cast<Employee>().ToList();
+            bool hasMoreEmployees = false;
+            Employee temp = new Employee();
             if (!Allemps.Any())
                 throw new NullReferenceException("No Employees to remove!");
-            else
-            {
+             //check if an employee is under this department
+                foreach (Employee emp in Allemps)
+                {
+                    if (((Employee)e).Id == emp.SupervisiorID)
+                        throw new Exception("this employee has worker under him!");
+                }
                 foreach (Employee emp in Allemps)
                 {
                     if (emp.Equals(e))
                     {
                         Allemps.Remove(emp);
-                        break;
                     }
+                    else if (((Employee)e).SupervisiorID == emp.SupervisiorID)
+                        hasMoreEmployees = true;
+                    if (((Employee)e).SupervisiorID == emp.Id)
+                        temp = emp;
                 }
+                if (!hasMoreEmployees)
+                    temp.MyRank = Rank.Worker;
                 itsDAL.WriteToFile(Allemps.Cast<object>().ToList(), e);
-            }
         }
         public void Edit(object oldE, object newE)
         {

@@ -19,7 +19,18 @@ namespace Backend
         private Rank rank;
 
         //Constructors:
-        public Employee(string _firstName, string _lastName, int _id, Gender _gender, int _depID, int _salary, int _supervisiorID, Rank _rank)
+        public Employee()
+        {
+            firstName = "";
+            lastName = "";
+            id = -1;
+            gender = Gender.Male;
+            depID = -1;
+            salary = -1;
+            supervisiorID = -1;
+            rank = Rank.Worker;
+        }
+        public Employee(string _firstName, string _lastName, int _id, Gender _gender, int _depID, int _salary, int _supervisiorID)
         {
             firstName = _firstName;
             lastName = _lastName;
@@ -28,7 +39,7 @@ namespace Backend
             depID = _depID;
             salary = _salary;
             supervisiorID = _supervisiorID;
-            rank = _rank;
+            rank = Rank.Worker;
         }
         //For Deep Copy
         public Employee(Employee other)
