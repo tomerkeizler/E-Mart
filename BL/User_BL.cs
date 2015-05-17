@@ -76,7 +76,7 @@ namespace BL
             return itsDAL.ReadFromFile(Elements.User);
         }
         //Method for User Only
-        public bool isItValidUser(User user)
+        public object isItValidUser(User user)
         {
             List<User> Allusers = itsDAL.ReadFromFile(Elements.User).Cast<User>().ToList();
             if (!Allusers.Any())
@@ -92,10 +92,10 @@ namespace BL
             {
                 if (_user.UserName.Equals(user.UserName) && _user.Password.Equals(user.Password))
                 {
-                    return true;
+                    return _user;
                 }
             }
-            return false;
+            return null;
         }
 
         public Type GetEntityType()
