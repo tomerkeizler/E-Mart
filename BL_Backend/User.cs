@@ -15,26 +15,24 @@ namespace Backend
         private Object person;
 
         //Constructors:
-        public User(string _username, string _password, Object _person)
+        public User(string _username, string _password, Object _person=null)
         {
             username = _username;
             password = _password;
-            if (_person is Customer)
-                person = (Customer)_person;
-            else
-                person = (Employee)_person;
+                person = _person;
         }
         //For Deep Copy
         public User(User other)
         {
             username = other.username;
             password = other.password;
+            person = other.person;
         }
         public override bool Equals(object _other)
         {
             if (!(_other is User)) return false;
             User other = (User)_other;
-            return (username.Equals(other.username) && password.Equals(other.password));
+            return (username.Equals(other.username) && password.Equals(other.password) && person.Equals(other.person));
         }
         public override int GetHashCode()
         {
