@@ -14,15 +14,16 @@ namespace Backend
         private string firstName;
         private string lastName;
         private List<Transaction> tranHistory;
-
+        private CreditCard creditCard;
         
         //Constructors:
-        public Customer(int _id, string _firstName, string _lastName, List<Transaction> _tranHistory)
+        public Customer(int _id, string _firstName, string _lastName, List<Transaction> _tranHistory, CreditCard _creditCard = null)
         {
             id = _id;
             firstName = _firstName;
             lastName = _lastName;
             tranHistory = _tranHistory;
+            creditCard = _creditCard;
         }
         //For Deep Copy
         public Customer(Customer other)
@@ -54,12 +55,17 @@ namespace Backend
             get { return tranHistory; }
             set { tranHistory = value; }
         }
+        internal CreditCard CreditCard
+        {
+            get { return creditCard; }
+            set { creditCard = value; }
+        }
         public override bool Equals(object _other)
         {
             if (!(_other is Customer)) return false;
             Customer other = (Customer)_other;
             return (id == other.Id && firstName.Equals(other.firstName) && lastName.Equals(other.lastName)
-                    && tranHistory.SequenceEqual(other.tranHistory));
+                    && tranHistory.SequenceEqual(other.tranHistory) && creditCard.Equals(other.CreditCard));
         }
         public override int GetHashCode()
         {

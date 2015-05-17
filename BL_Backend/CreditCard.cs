@@ -21,6 +21,17 @@ namespace Backend
             creditNumber = _creditNumber;
             expirationDate = _expirationDate;
         }
+        public override bool Equals(object obj)
+        {
+            if (!(obj is CreditCard)) return false;
+            CreditCard other = (CreditCard)obj;
+            return (firstName.Equals(other.FirstName) && lastName.Equals(other.LastName) && creditNumber == other.CreditNumber
+                    && expirationDate.Equals(other.ExpirationDate));
+        }
+        public override int GetHashCode()
+        {
+            return base.GetHashCode() ^ creditNumber;
+        }
 
         //getters and setters:
         public string FirstName
