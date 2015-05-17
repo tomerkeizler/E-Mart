@@ -15,6 +15,12 @@ namespace Backend
         private Object person;
 
         //Constructors:
+        public User()
+        {
+            username = "";
+            password = "";
+            person = null;
+        }
         public User(string _username, string _password, Object _person=null)
         {
             username = _username;
