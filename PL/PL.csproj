@@ -50,9 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IPL.cs" />
-    <Compile Include="PL_CLI.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="PL_CLI.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

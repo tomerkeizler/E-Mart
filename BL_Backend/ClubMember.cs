@@ -15,14 +15,22 @@ namespace Backend
         private Gender gender;
 
         //Constructors:
-        public ClubMember(int _id, string _firstName, string _lastName, List<Transaction> _tranHistory, DateTime dob, Gender _gender, int _memID=0) : base(_id,_firstName,_lastName,_tranHistory)
+        public ClubMember(int _id, string _firstName, string _lastName, DateTime _dob, Gender _gender, int _memID = 0, CreditCard _creditCard=null)
+            : base(_id, _firstName, _lastName, _creditCard)
         {
             memberID = _memID;
-            dateOfBirth = dob;
+            dateOfBirth = _dob;
+            gender = _gender;
+        }
+        public ClubMember(int _memID, DateTime _dob, Gender _gender, Customer _customer): base(_customer)
+        {
+            memberID = _memID;
+            dateOfBirth = _dob;
             gender = _gender;
         }
         //For Deep Copy
-        public ClubMember(ClubMember other) : base(other.Id,other.FirstName,other.LastName,other.TranHistory)
+        public ClubMember(ClubMember other)
+            : base((Customer)other)
         {
             memberID = other.MemberID;
             dateOfBirth = other.DateOfBirth;

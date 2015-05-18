@@ -10,19 +10,19 @@ namespace Backend
     public class Customer
     {
         //Fields:
-        private int id;
-        private string firstName;
-        private string lastName;
-        private List<Transaction> tranHistory;
-        private CreditCard creditCard;
+        protected int id;
+        protected string firstName;
+        protected string lastName;
+        protected List<Transaction> tranHistory;
+        protected CreditCard creditCard;
         
         //Constructors:
-        public Customer(int _id, string _firstName, string _lastName, List<Transaction> _tranHistory, CreditCard _creditCard = null)
+        public Customer(int _id, string _firstName, string _lastName, CreditCard _creditCard = null)
         {
             id = _id;
             firstName = _firstName;
             lastName = _lastName;
-            tranHistory = _tranHistory;
+            tranHistory = new List<Transaction>();
             creditCard = _creditCard;
         }
         //For Deep Copy
@@ -65,7 +65,7 @@ namespace Backend
             if (!(_other is Customer)) return false;
             Customer other = (Customer)_other;
             return (id == other.Id && firstName.Equals(other.firstName) && lastName.Equals(other.lastName)
-                    && tranHistory.SequenceEqual(other.tranHistory) && creditCard.Equals(other.CreditCard));
+                    && tranHistory.SequenceEqual(other.tranHistory) && creditCard==other.CreditCard);
         }
         public override int GetHashCode()
         {

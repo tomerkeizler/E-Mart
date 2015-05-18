@@ -72,5 +72,16 @@ namespace DAL
             filter.Add(PType.c);
             Assert.AreEqual(3, ProductMulTypeQuery(listp, filter).Count);
         }
+        [Test]
+        public void ClubmemberTest()
+        {
+            ClubMember member1 = new ClubMember(123123, "asaf", "asafaa", new DateTime(2014, 09, 10), Gender.Male);
+            List<object> list = new List<object>();
+            list.Add(member1);
+            linq.WriteToFile(list, member1);
+            List<object> readlist = linq.ReadFromFile(Elements.ClubMember);
+            Assert.Contains(member1, readlist);
+            
+        }
     }
 }

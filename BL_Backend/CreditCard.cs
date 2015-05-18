@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Backend
 {
-    class CreditCard
+    [Serializable()]
+    public class CreditCard
     {
         //fields:
         private string firstName;
