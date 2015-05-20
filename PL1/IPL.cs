@@ -5,9 +5,9 @@ using System.Text;
 using Backend;
 using BL;
 
-namespace PL
+namespace PL1
 {
-    public interface IPL
+    public interface IPL1
     {
         void Run();
     }

@@ -8,9 +8,9 @@ using System.Text.RegularExpressions;
 using System.Reflection;
 using System.IO;
 
-namespace PL
+namespace PL1
 {
-    public class PL_CLI : IPL
+    public class PL_CLI : IPL1
     {
         // atributes
         private IBL[] cats;

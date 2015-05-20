@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using BL;
 using DAL;
 using PL;
+
 namespace MainProg
 {   
     /// <summary>
@@ -34,8 +35,8 @@ namespace MainProg
             IBL employee = new Employee_BL(myDal);
             IBL product = new Product_BL(myDal);
             IBL transaction = new Transaction_BL(myDal);
-            IBL user = new User_BL(myDal);
-
+            IBL user = new User_BL(myDal);  
+            
             IPL myPL = new PL_GUI(clubMember, customer, department, employee, product, transaction, user);
             myPL.Run();
 
