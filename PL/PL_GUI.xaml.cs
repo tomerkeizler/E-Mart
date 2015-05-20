@@ -39,7 +39,7 @@ namespace PL
             //catsNames = new string[7] { "", "Club member", "Department", "Employee", "Product", "Transaction", "User" };
         }
 
-        public void run()
+        public void Run()
         {
             this.Show();
         }

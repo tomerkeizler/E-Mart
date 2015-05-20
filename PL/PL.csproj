@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IPL.cs" />
+    <Compile Include="PL_CLI.cs" />
     <Compile Include="PL_GUI.xaml.cs">
       <DependentUpon>PL_GUI.xaml</DependentUpon>
     </Compile>
