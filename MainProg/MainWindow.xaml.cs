@@ -25,7 +25,6 @@ namespace MainProg
     {
         public MainWindow()
         {
-            InitializeComponent();
 
             IDAL myDal = new LINQ_DAL();
 

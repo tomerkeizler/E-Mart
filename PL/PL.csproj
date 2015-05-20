@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{C4680EAF-0FBD-47DB-9CB4-57DAF660BCEE}</ProjectGuid>
-    <OutputType>library</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PL</RootNamespace>
     <AssemblyName>PL</AssemblyName>
@@ -31,6 +31,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -48,7 +51,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IPL.cs" />
-    <Compile Include="PL_CLI.cs" />
     <Compile Include="PL_GUI.xaml.cs">
       <DependentUpon>PL_GUI.xaml</DependentUpon>
     </Compile>

@@ -18,7 +18,7 @@ namespace PL
     /// <summary>
     /// Interaction logic for Window1.xaml
     /// </summary>
-    public partial class PL_GUI : Window, IPL
+    public partial class PL_GUI : Window,IPL
     {
         // attributes
         private IBL[] cats;
@@ -26,7 +26,6 @@ namespace PL
         // constructors
         public PL_GUI(IBL itsClubMemberBL, IBL itsCustomerBL, IBL itsDepartmentBL, IBL itsEmployeeBL, IBL itsProductBL, IBL itsTransactionBL, IBL itsUserBL)
         {
-            //InitializeComponent();
             cats = new IBL[8];
             cats[0] = null;
             cats[1] = itsClubMemberBL;
@@ -41,6 +40,7 @@ namespace PL
 
         public void Run()
         {
+            InitializeComponent();
             this.Show();
         }
 
