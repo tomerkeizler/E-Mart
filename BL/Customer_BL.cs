@@ -9,7 +9,7 @@ using DAL;
 
 namespace BL
 {
-    public class Customer_BL
+    public class Customer_BL : IBL
     {
          //Fields:
         IDAL itsDAL;
