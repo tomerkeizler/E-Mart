@@ -21,7 +21,8 @@ namespace PL
     {
         public Login()
         {
-            InitializeComponent();
+            //InitializeComponent();
+            //this.Show();
         }
     }
 }

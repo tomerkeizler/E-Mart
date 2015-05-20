@@ -47,6 +47,10 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IPL.cs" />
+    <Compile Include="PL_GUI.xaml.cs">
+      <DependentUpon>PL_GUI.xaml</DependentUpon>
+    </Compile>
     <Compile Include="main.xaml.cs">
       <DependentUpon>main.xaml</DependentUpon>
     </Compile>
@@ -80,6 +84,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="PL_GUI.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="login.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -94,9 +102,13 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PL1\PL1.csproj">
-      <Project>{16c4da8c-6122-4dda-a7e3-9d32026d0bb1}</Project>
-      <Name>PL1</Name>
+    <ProjectReference Include="..\BL\BL.csproj">
+      <Project>{c403a468-20ea-49f9-a0d8-9bb09e492108}</Project>
+      <Name>BL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BL_Backend\Backend.csproj">
+      <Project>{3e97c07e-5545-4cde-bda1-56357be436f0}</Project>
+      <Name>Backend</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

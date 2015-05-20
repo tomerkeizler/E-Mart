@@ -15,7 +15,6 @@ using System.Windows.Shapes;
 using BL;
 using DAL;
 using PL;
-
 namespace MainProg
 {   
     /// <summary>
@@ -30,18 +29,19 @@ namespace MainProg
             IDAL myDal = new LINQ_DAL();
 
             IBL clubMember = new ClubMember_BL(myDal);
-            //IBL customer = new Customer_BL(myDal);
+            IBL customer = new Customer_BL(myDal);
             IBL department = new Department_BL(myDal);
             IBL employee = new Employee_BL(myDal);
             IBL product = new Product_BL(myDal);
             IBL transaction = new Transaction_BL(myDal);
             IBL user = new User_BL(myDal);
 
-            //IPL myPl = new PL_CLI(clubMember, department, employee, product, transaction, user);
-            //myPl.Run();
+            IPL myPL = new PL_GUI(clubMember, customer, department, employee, product, transaction, user);
+            myPL.Run();
 
-            Login lg = new Login();
-            lg.Show();
+            //Login lg = new Login();
+            //lg.Show();
+            
         }
 
 
@@ -51,5 +51,8 @@ namespace MainProg
         {
 
         }
+
+
+
     }
 }
