@@ -49,7 +49,7 @@ namespace MainProg
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            hh.Text = "Hello";
+
         }
     }
 }
