@@ -552,62 +552,62 @@ namespace PL
                     //////////////////////////////////////////////////////////////////////////
 
                     if (foundType) // the user selected one of the 5 enum fields !!
-                            {
+                    {
                         Tuple<List<Object>, bool> back = new Tuple<List<object>, bool>(queryResult, error);
                         // gender
                         if (fieldSelected.Name.Equals("Gender"))
-                                {
+                        {
                             if (input.Equals("m") || input.Equals("M"))
                                 back = SearchType(categoryNum, Gender.Male);
                             else
                                 back = SearchType(categoryNum, Gender.Female);
-                                }
+                        }
                         // isStock
                         else if (fieldSelected.Name.Equals("InStock"))
-                                {
+                        {
                             if (input.Equals("1"))
                                 back = SearchType(categoryNum, PStatus.Empty);
                             else if (input.Equals("2"))
                                 back = SearchType(categoryNum, PStatus.LowQuantity);
                             else
                                 back = SearchType(categoryNum, PStatus.InStock);
-                                }
+                        }
                         // type
                         else if (fieldSelected.Name.Equals("Type"))
-                                {
+                        {
                             if (input.Equals("a"))
                                 back = SearchType(categoryNum, PType.a);
                             else if (input.Equals("b"))
                                 back = SearchType(categoryNum, PType.b);
                             else
                                 back = SearchType(categoryNum, PType.c);
-                                }
+                        }
                         // is_a_return
                         else if (fieldSelected.Name.Equals("Is_a_Return"))
-                                {
+                        {
                             if (input.Equals("r") || input.Equals("R"))
                                 back = SearchType(categoryNum, Is_a_return.Return);
                             else
                                 back = SearchType(categoryNum, Is_a_return.Purchase);
-                                }
+                        }
                         // payment
                         else if (fieldSelected.Name.Equals("Payment"))
-                                {
+                        {
                             if (input.Equals("1"))
                                 back = SearchType(categoryNum, PaymentMethod.Cash);
                             else if (input.Equals("2"))
                                 back = SearchType(categoryNum, PaymentMethod.Check);
                             else
                                 back = SearchType(categoryNum, PaymentMethod.Visa);
-                                }
+                        }
 
                         ////.......try....catch......
 
                         queryResult = back.Item1;
                         error = back.Item2;
-                            }
+                    }
                 } //main closer of type search
-                                
+
 
                 ////************************************************
                 ////************************************************
@@ -619,9 +619,9 @@ namespace PL
 
                 // check whether the query succeeded or not
                 if (foundType)
-                                {
+                {
                     if (!error) // if the category is not empty and no error in search
-                                {
+                    {
                         Console.Clear(); // clear the screen
                         WriteColor("\n--- Query results for " + catsNames[categoryNum] + "s ---", true, ConsoleColor.DarkGreen);
                         Console.WriteLine();
@@ -630,62 +630,62 @@ namespace PL
                         if (queryResult.Any<object>())
                             ShowOne(categoryNum, queryResult);
                         else
-                                {
+                        {
                             PressEnter();
                             GoBack(categoryNum); // Action menu
-                                }
-                                }
+                        }
+                    }
                     else // if the category is not empty but there was an error in search
-                                {
+                    {
                         WriteColor("\nSorry, there are no results for " + catsNames[categoryNum] + "s.", true, ConsoleColor.Red);
                         PressEnter();
                         GoBack(categoryNum); // Action menu
-                                }
-                                }
-                                }
+                    }
+                }
+            }
             ///////////////////////////////////
             else // the category is empty
-                                {
-                WriteColor("\nSorry, there are no results for " + catsNames[categoryNum] + "s.", true, ConsoleColor.Red); 
+            {
+                WriteColor("\nSorry, there are no results for " + catsNames[categoryNum] + "s.", true, ConsoleColor.Red);
                 PressEnter();
                 GoBack(categoryNum); // Action menu
-                                }
-                            }
+            }
+        }
 
 
 
 
-        public Tuple<List<Object>,bool> SearchType(int categoryNum, ValueType input)
-                            {
+        public Tuple<List<Object>, bool> SearchType(int categoryNum, ValueType input)
+        {
             bool error = false;
             List<Object> queryResult = new List<object>();
             Tuple<List<Object>, bool> back;
-                                // check for exceptions
-                                error = false;
-                                try
-                                {
+            // check for exceptions
+            error = false;
+            try
+            {
                 queryResult = cats[categoryNum].FindByType(input);
-                                }
-                                catch (InvalidDataException e)
-                                {
-                                    error = true;
-                                    ShowError(e);
-                                }
-                                catch (System.Data.DataException e)
-                                {
-                                    error = true;
-                                    ShowError(e);
-                                }
-                                catch (ArgumentNullException e)
-                                {
-                                    error = true;
-                                    ShowError(e);
-                                }
-                                catch (Exception e)
-                                {
-                                    error = true;
-                                    ShowError(e);
-                                }
+            }
+            catch (InvalidDataException e)
+            {
+                error = true;
+                ShowError(e);
+            }
+            catch (System.Data.DataException e)
+            {
+                error = true;
+                ShowError(e);
+            }
+            catch (ArgumentNullException e)
+            {
+                error = true;
+                ShowError(e);
+            }
+            catch (Exception e)
+            {
+                error = true;
+                ShowError(e);
+            }
 
             back = new Tuple<List<Object>, bool>(queryResult, error);
             return back;
@@ -1136,7 +1136,7 @@ namespace PL
             {
                 Console.WriteLine("\n---------------------------------------------------------------------------------------------------------------------------------------");
                 Console.BackgroundColor = ConsoleColor.White;
-                Console.ForegroundColor = ConsoleColor.Black; 
+                Console.ForegroundColor = ConsoleColor.Black;
                 Console.Write("Index |");
                 int blankSpace;
                 foreach (PropertyInfo field in objList.First().GetType().GetProperties())
