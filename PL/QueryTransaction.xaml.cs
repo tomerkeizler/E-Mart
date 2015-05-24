@@ -17,11 +17,17 @@ namespace PL
     /// <summary>
     /// Interaction logic for Register.xaml
     /// </summary>
-    public partial class Register : Window
+    public partial class QueryTransaction : Window
     {
-        public Register()
+        public QueryTransaction()
         {
             InitializeComponent();
+        }
+
+        private void ClearForm(object sender, RoutedEventArgs e)
+        {
+            List<Control> lst = new List<Control>() { is_a_return, currentDate, specificTranID, rangeTranID, fromTranID, toTranID, payment, specificPrdID, rangePrdID, fromPrdID, toPrdID };
+            Helper.ClearForm(lst);
         }
     }
 }

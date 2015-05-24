@@ -25,7 +25,6 @@ namespace MainProg
     {
         public MainWindow()
         {
-
             IDAL myDal = new LINQ_DAL();
 
             IBL clubMember = new ClubMember_BL(myDal);
@@ -39,20 +38,23 @@ namespace MainProg
             IPL myPL = new PL_GUI(clubMember, customer, department, employee, product, transaction, user);
             myPL.Run();
 
-            //Login lg = new Login();
-            //lg.Show();
-            
+            Window w1 = new QueryClubMember();
+            w1.Show();
+            Window w2 = new QueryCustomer();
+            w2.Show();
+            Window w3 = new QueryDepartment();
+            w3.Show();
+            Window w4 = new QueryEmployee();
+            w4.Show();
+            Window w5 = new QueryProduct();
+            w5.Show();
+            Window w6 = new QueryTransaction();
+            w6.Show();
+            Window w7 = new QueryUser();
+            w7.Show();
+    
+    
         }
-
-
-
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-
 
     }
 }

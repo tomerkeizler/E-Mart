@@ -15,13 +15,19 @@ using System.Windows.Shapes;
 namespace PL
 {
     /// <summary>
-    /// Interaction logic for main.xaml
+    /// Interaction logic for Register.xaml
     /// </summary>
-    public partial class main : Window
+    public partial class AddDepartment : Window
     {
-        public main()
+        public AddDepartment()
         {
             InitializeComponent();
+        }
+
+        private void ClearForm(object sender, RoutedEventArgs e)
+        {
+            List<Control> lst = new List<Control>() { depName };
+            Helper.ClearForm(lst);
         }
     }
 }

@@ -1,0 +1,46 @@
+﻿<Window x:Class="PL.Login"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="E-MART" Height="400" Width="400">
+    
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="FontWeight" Value="Bold" />
+        </Style>
+    </Window.Resources>
+    
+    <Grid HorizontalAlignment="Center" Height="300" VerticalAlignment="Center" Width="300">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Text="E-MART Log in" FontSize="24" Foreground="#FF2D59EE"/>
+        <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Text="Log in - for existing users" FontSize="14" TextDecorations="Underline"/>
+        
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="User name" FontSize="14"/>
+        <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="23" VerticalAlignment="Center" Width="100"/>
+        
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="Password" FontSize="14"/>
+        <PasswordBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="23" VerticalAlignment="Center" Width="100"/>
+
+        <Button Grid.Row="2" Grid.Column="2" Grid.RowSpan="2" Content="Connect" HorizontalAlignment="Center" VerticalAlignment="Center" Width="90" FontSize="14"/>
+
+        <TextBlock Grid.Row="4" Grid.ColumnSpan="3" Text="Resistration - for new cutomers" FontSize="14" TextDecorations="Underline"/>
+        <Button Grid.Row="5" Grid.ColumnSpan="3" Content="Registration form" HorizontalAlignment="Center" VerticalAlignment="Center" Width="120" FontSize="14"/>
+
+    </Grid>
+
+</Window>
