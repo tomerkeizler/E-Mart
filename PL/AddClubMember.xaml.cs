@@ -47,8 +47,7 @@ namespace PL
                 myGender = Gender.Female;
 
             ClubMember newClubMember = new ClubMember(int.Parse(ID.Text), firstName.Text, lastName.Text, dateOfBirth.SelectedDate.Value, myGender);
-            User newUser = new User(username.Text, password.Password);
-            newUser.Person = newClubMember;
+            User newUser = new User(username.Text, password.Password, newClubMember);
 
             //adding action
             if (parentWindow.AddDataEntity(newClubMember, newUser, 1))

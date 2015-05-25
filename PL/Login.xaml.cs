@@ -46,7 +46,7 @@ namespace PL
             User _user = null;
             try
             {
-                _user = (User)userBL.isItValidUser(new User(username.Text, password.Password));
+                _user = (User)userBL.isItValidUser(new User(username.Text, password.Password, null));
             }
             catch (System.Data.DataException error)
             {
