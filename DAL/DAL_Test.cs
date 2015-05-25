@@ -17,10 +17,10 @@ namespace DAL
     public class DAL_Test
     {
         IDAL linq = new LINQ_DAL();
-        Product a = new Product("first", PType.a, 2, 4, 123, 4);
-        Product b = new Product("second", PType.b, 3, 5, 1213, 5);
-        Product c = new Product("Third", PType.c, 3, 5, 1213, 5);
-        Product d = new Product("Forth", PType.c, 3, 5, 1213, 5);
+        Product a = new Product("first", PType.Clothes, 2, 4, 123, 4);
+        Product b = new Product("second", PType.Food, 3, 5, 1213, 5);
+        Product c = new Product("Third", PType.Electronics, 3, 5, 1213, 5);
+        Product d = new Product("Forth", PType.Electronics, 3, 5, 1213, 5);
         List<object> list = new List<object>();
         public static List<Product> ProductMulTypeQuery(List<Product> currentList, List<PType> typelist)
         {
@@ -68,8 +68,8 @@ namespace DAL
             listp.Add(c);
             listp.Add(d);
             List<PType> filter =  new List<PType>();
-            filter.Add(PType.a);
-            filter.Add(PType.c);
+            filter.Add(PType.Clothes);
+            filter.Add(PType.Food);
             Assert.AreEqual(3, ProductMulTypeQuery(listp, filter).Count);
         }
         [Test]

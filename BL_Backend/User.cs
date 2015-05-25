@@ -21,7 +21,7 @@ namespace Backend
             password = "";
             person = null;
         }
-        public User(string _username, string _password, Object _person=null)
+        public User(string _username, string _password, Object _person)
         {
             username = _username;
             password = _password;
