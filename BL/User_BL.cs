@@ -13,6 +13,7 @@ namespace BL
         //Fields:
         private const string DEFAULT_USER_NAME = "administrator";
         private const string DEFAULT_PASSWORD = "password";
+        private Employee DEFAULT_ADMIN = new Employee();
         IDAL itsDAL;
 
         //Constructors:
@@ -81,12 +82,13 @@ namespace BL
             return itsDAL.ReadFromFile(Elements.User);
         }
         //Method for User Only
-        public object isItValidUser(User user)
+        public User isItValidUser(User user)
         {
             List<User> Allusers = itsDAL.ReadFromFile(Elements.User).Cast<User>().ToList();
             if (!Allusers.Any())
             {
-                User admin = new User(DEFAULT_USER_NAME, DEFAULT_PASSWORD);
+                DEFAULT_ADMIN.MyRank = Rank.Administrator;
+                User admin = new User(DEFAULT_USER_NAME, DEFAULT_PASSWORD,DEFAULT_ADMIN);
                 Allusers.Add(admin);
             }
             if (user.UserName == null || user.Password == null)
@@ -97,10 +99,10 @@ namespace BL
             {
                 if (_user.UserName.Equals(user.UserName) && _user.Password.Equals(user.Password))
                 {
-                    return _user.Person;
+                    return _user;
                 }
             }
-            return null;
+            throw new System.Data.DataException("The user does not exist in the Database!");
         }
 
         public Type GetEntityType()

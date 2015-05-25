@@ -41,8 +41,8 @@ namespace BL
         [Test]
         public void isContainTopSeller()
         {
-            Product prod1 = new Product("Banana", PType.a, 1, 21, 2);
-            Product prod2 = new Product("avocado", PType.b, 1, 21, 5);
+            Product prod1 = new Product("Banana", PType.Electronics, 1, 21, 2);
+            Product prod2 = new Product("avocado", PType.Food, 1, 21, 5);
             prod1.Buy();
             prod1.Buy();
             prod2.Buy();
@@ -60,8 +60,8 @@ namespace BL
         [Test]
         public void isContain2TopSeller()
         {
-            Product prod1 = new Product("Banana", PType.a, 1, 21, 2);
-            Product prod2 = new Product("avocado", PType.b, 1, 21, 5);
+            Product prod1 = new Product("Banana", PType.Electronics, 1, 21, 2);
+            Product prod2 = new Product("avocado", PType.Food, 1, 21, 5);
             prod1.Buy();
             prod1.Buy();
             prod2.Buy();
@@ -79,8 +79,8 @@ namespace BL
         [Test]
         public void isTopSellerRestarted()
         {
-            Product prod1 = new Product("Banana", PType.a, 1, 21, 2);
-            Product prod2 = new Product("avocado", PType.b, 1, 21, 5);
+            Product prod1 = new Product("Banana", PType.Electronics, 1, 21, 2);
+            Product prod2 = new Product("avocado", PType.Food, 1, 21, 5);
             prod1.Buy();
             prod1.Buy();
             prod2.Buy();

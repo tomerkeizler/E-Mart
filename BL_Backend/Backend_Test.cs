@@ -17,27 +17,27 @@ namespace Backend
         [Test]
         public void isCreatedPstatus()
         {
-            Product prod = new Product("Banana", PType.a, 1, 21, 2);
+            Product prod = new Product("Banana", PType.Clothes, 1, 21, 2);
             Assert.AreEqual(PStatus.InStock, prod.InStock);
         }
         [Test]
         public void isChangedPstatus()
         {
-            Product prod = new Product("Banana", PType.a, 1, 21, 2);
+            Product prod = new Product("Banana", PType.Clothes, 1, 21, 2);
             prod.Buy();
             Assert.AreEqual(PStatus.LowQuantity, prod.InStock);
         }
         [Test]
         public void isAddedSellCount()
         {
-            Product prod = new Product("Banana", PType.a, 1, 21, 2);
+            Product prod = new Product("Banana", PType.Clothes, 1, 21, 2);
             prod.Buy();
             Assert.AreEqual(1, prod.SellCounter);
         }
         [Test]
         public void isResetTopSeller()
         {
-            Product prod = new Product("Banana", PType.a, 1, 21, 2);
+            Product prod = new Product("Banana", PType.Clothes, 1, 21, 2);
             prod.Buy();
             prod.ResetSells();
             Assert.AreEqual(0, prod.SellCounter);
