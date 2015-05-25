@@ -31,15 +31,17 @@
         <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Text="Log in - for existing users" FontSize="14" TextDecorations="Underline"/>
         
         <TextBlock Grid.Row="2" Grid.Column="0" Text="User name" FontSize="14"/>
-        <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="23" VerticalAlignment="Center" Width="100"/>
+        <TextBox x:Name="username"  Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="23" VerticalAlignment="Center" Width="100"/>
         
         <TextBlock Grid.Row="3" Grid.Column="0" Text="Password" FontSize="14"/>
-        <PasswordBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="23" VerticalAlignment="Center" Width="100"/>
+        <PasswordBox x:Name="password" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="23" VerticalAlignment="Center" Width="100"/>
 
-        <Button Grid.Row="2" Grid.Column="2" Grid.RowSpan="2" Content="Connect" HorizontalAlignment="Center" VerticalAlignment="Center" Width="90" FontSize="14"/>
+        <Button Grid.Row="2" Grid.Column="2" Grid.RowSpan="2" Content="Connect" HorizontalAlignment="Center" VerticalAlignment="Center" Width="90" FontSize="14" Click="Button_Click"/>
 
+        
         <TextBlock Grid.Row="4" Grid.ColumnSpan="3" Text="Resistration - for new cutomers" FontSize="14" TextDecorations="Underline"/>
-        <Button Grid.Row="5" Grid.ColumnSpan="3" Content="Registration form" HorizontalAlignment="Center" VerticalAlignment="Center" Width="120" FontSize="14"/>
+        <Button Click="ClearForm" Grid.Row="5" Grid.Column="0" Content="Clear all" HorizontalAlignment="Right" VerticalAlignment="Center" Width="100" FontSize="14"/>
+        <Button Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Content="Registration form" HorizontalAlignment="Center" VerticalAlignment="Center" Width="120" FontSize="14" Click="Button_Click_1"/>
 
     </Grid>
 

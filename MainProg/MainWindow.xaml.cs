@@ -37,7 +37,7 @@ namespace MainProg
             
             IPL myPL = new PL_GUI(clubMember, customer, department, employee, product, transaction, user);
             myPL.Run();
-
+            /*
             Window w1 = new QueryClubMember();
             w1.Show();
             Window w2 = new QueryCustomer();
@@ -51,7 +51,7 @@ namespace MainProg
             Window w6 = new QueryTransaction();
             w6.Show();
             Window w7 = new QueryUser();
-            w7.Show();
+            w7.Show();*/
     
     
         }

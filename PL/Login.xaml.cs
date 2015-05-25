@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using BL;
+using Backend;
+using System.IO;
 
 namespace PL
 {
@@ -21,14 +23,92 @@ namespace PL
     public partial class Login : Window
     {
         // attributes
-        private IBL[] cats;
+        private PL_GUI parentWindow;
+        private User_BL userBL;
 
         // constructors
-        public Login()
+        public Login(IBL _userBL, PL_GUI _parentWindow)
         {
             InitializeComponent();
+            parentWindow = _parentWindow;
+            userBL = (User_BL)_userBL;
         }
 
+        private void ClearForm(object sender, RoutedEventArgs e)
+        {
+            List<Control> lst = new List<Control>() { username, password };
+            Helper.ClearForm(lst);
+        }
+
+        // check username and password validity
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            User _user = null;
+            try
+            {
+                _user = (User)userBL.isItValidUser(new User(username.Text, password.Password));
+            }
+            catch (System.Data.DataException error)
+            {
+                MessageBox.Show(error.Message);
+            }
+
+            if (_user != null)
+            {
+                MessageBox.Show("Log in done successfully!\nPlease click OK to continue");
+
+                /////////////////// TO BE REMOVED
+                _user.Person = new Employee();
+                ((Employee)_user.Person).MyRank = Rank.Administrator;
+                /////////////////// TO BE REMOVED
+
+                Rank _rank;
+                if (_user.Person is Customer || _user.Person is ClubMember)
+                    _rank = Rank.Customer;
+                else
+                    _rank = ((Employee)(_user.Person)).MyRank;
+
+                int[] myPermissions = PL_GUI.allPermissions[(int)_rank];
+                bool[] _viewPermissions = new bool[9];
+                bool[] _fullPermissions = new bool[9];
+
+                for (int i = 0; i < 9; i++)
+                {
+                    if (myPermissions[i] > 0)
+                    {
+                        _viewPermissions[i] = true;
+                        if (myPermissions[i] == 1)
+                            _fullPermissions[i] = false;
+                        else
+                            _fullPermissions[i] = true;
+                    }
+                    else
+                    {
+                        _viewPermissions[i] = false;
+                        _fullPermissions[i] = false;
+                    }
+                }
+
+                /////////////////
+                _viewPermissions[1] = false;
+                /////////////////
+                
+                parentWindow.user = _user;
+                parentWindow.rank = _rank;
+                parentWindow.viewPermissions = _viewPermissions;
+                parentWindow.fullPermissions = _fullPermissions;
+                this.Close();
+                parentWindow.Show();
+            }
+        }
+
+        // Open registration window
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+            AddCustomer reg = new AddCustomer(this.parentWindow, true);
+            reg.Show();
+        }
 
 
     }

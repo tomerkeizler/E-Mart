@@ -37,7 +37,7 @@
         <TextBox x:Name="depName" Grid.Row="1" Grid.Column="1" />
 
         <Button Click="ClearForm" Grid.Row="2" Grid.Column="0" Content="Clear all" HorizontalAlignment="Right" VerticalAlignment="Center" Width="100" FontSize="14"/>
-        <Button Grid.Row="2" Grid.Column="1" Content="Add Department" VerticalAlignment="Center" Width="150" FontSize="14"/>
+        <Button Grid.Row="2" Grid.Column="1" Content="Add Department" VerticalAlignment="Center" Width="150" FontSize="14" Click="Button_Click"/>
     </Grid>
     
 </Window>

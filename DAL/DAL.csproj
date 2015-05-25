@@ -51,7 +51,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DAL_Test.cs" />
     <Compile Include="IDAL.cs" />
     <Compile Include="LINQ_DAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

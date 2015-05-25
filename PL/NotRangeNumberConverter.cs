@@ -13,21 +13,15 @@ namespace PL
     {
 
 
-        public object Convert(object value,Type targetType,object parameter,CultureInfo culture)
+        public Object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            bool boolValue = (bool)value;
-            if (boolValue)
-                return String.Empty;
-            else
                 return String.Empty;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public Object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }
-
-
 
 
     }

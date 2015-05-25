@@ -2,36 +2,80 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:PL"
-        Title="E-MART" Height="600" Width="1100">
+        Title="E-MART" Height="600" Width="1000">
 
     <Window.Resources>
         <Style TargetType="DataGrid">
-            <Setter Property="AlternatingRowBackground" Value="azure" />
+            <Setter Property="AlternatingRowBackground" Value="#FFE4E5FF" />
             <Setter Property="SelectionMode" Value="Single" />
             <Setter Property="SelectionUnit" Value="FullRow" />
             <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
-            <Setter Property="Height" Value="300" />
+            <Setter Property="Height" Value="auto" />
+            <Setter Property="MaxHeight" Value="500" />
+            <Setter Property="MinHeight" Value="200" />
+            <Setter Property="Width" Value="auto" />
+            <Setter Property="MaxWidth" Value="800" />
+            <Setter Property="MinWidth" Value="400" />
             <Setter Property="AutoGenerateColumns" Value="False" />
             <Setter Property="IsReadOnly" Value="True" />
-            <Setter Property="CanUserResizeColumns" Value="True" />
+            <Setter Property="CanUserResizeColumns" Value="False" />
             <Setter Property="CanUserAddRows" Value="False" />
             <Setter Property="CanUserSortColumns" Value="True" />
             <Setter Property="HorizontalAlignment" Value="left" />
             <Setter Property="VerticalAlignment" Value="top" />
         </Style>
-        <Style TargetType="TabItem">
-            <Setter Property="FontWeight" Value="Bold" />
-            <Setter Property="Background" Value="LightSkyBlue" />
+
+        <Style TargetType="TabControl">
+            <Setter Property="Margin" Value="10" />
+            <Setter Property="BorderBrush" Value="Gainsboro" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="Height" Value="450" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="Width" Value="800" />
         </Style>
 
-        <Style TargetType="Button">
+        <Style TargetType="TabItem">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border Name="Border" BorderThickness="1,1,1,0" BorderBrush="Gainsboro" CornerRadius="4,4,0,0" Margin="2,0">
+                            <ContentPresenter x:Name="ContentSite" VerticalAlignment="Center" HorizontalAlignment="Center" ContentSource="Header" Margin="10,2"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="#FFD1E0F9" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="False">
+                                <Setter TargetName="Border" Property="Background" Value="GhostWhite" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="FontWeight" Value="Bold" />
+        </Style>
+
+        <Style TargetType="Button" x:Key="button_Style">
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="Background" Value="BlanchedAlmond" />
             <Setter Property="Width" Value="150" />
+            <Setter Property="Height" Value="25" />
             <Setter Property="FontWeight" Value="Bold" />
-            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontSize" Value="14" />
         </Style>
-        
+
+        <Style TargetType="Button" x:Key="account_menu_Style" BasedOn="{StaticResource button_Style}">
+            <Setter Property="Background" Value="#FFD1E0F9"  />
+        </Style>
+
+        <Style TargetType="Button" x:Key="add_menu_Style" BasedOn="{StaticResource button_Style}">
+            <Setter Property="Background" Value="azure" />
+        </Style>
+
+        <Style TargetType="Button" x:Key="search_menu_Style" BasedOn="{StaticResource button_Style}">
+            <Setter Property="Background" Value="BlanchedAlmond" />
+        </Style>
+
         <Style TargetType="TextBox">
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="HorizontalAlignment" Value="Left" />
@@ -39,93 +83,198 @@
             <Setter Property="Height" Value="23" />
             <Setter Property="Width" Value="120" />
         </Style>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="FontWeight" Value="Bold" />
+        </Style>
+        
+        <Style TargetType="Expander">
+            <Setter Property="Width" Value="166"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="IsExpanded" Value="True"/>
+        </Style>
     </Window.Resources>
-    
-    
+
+
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="60" />
             <RowDefinition Height="40" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="3*" />
+            <RowDefinition Height="6*" />
+            <RowDefinition Height="8*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="4*" />
+            <ColumnDefinition Width="5*" />
         </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="Welcome to E-MART" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30" Foreground="#FF2D59EE" FontWeight="Bold"/>
 
+        <TextBlock Grid.Row="0" Grid.Column="1" Text="Welcome to E-MART" FontSize="30" Foreground="#FF2D59EE"/>
 
-        <TextBlock Grid.Row="1" Grid.Column="0" Text="Side menu" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16" FontWeight="Bold"/>
-        
-        <TextBlock Grid.Row="1" Grid.Column="1" Text="Select information to view from the above" VerticalAlignment="Center" FontSize="16" FontWeight="Bold"/>
-
-
-        <StackPanel Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top" Width="200">
-            <Button Content="Add data" />
-            <Button Content="Make a query" />
-
-            <Button Content="Change Password" />
-            <Button Content="View you Propile" />
-            <Button Content="Make a Purhcase" />
-            <Button Content="Exit" />
+        <StackPanel Grid.Row="0" Grid.Column="0" Background="#FFD1E0F9" VerticalAlignment="Top" Margin="7,7,7,7">
+            <TextBlock x:Name="title_name" FontSize="11" HorizontalAlignment="Center"/>
+            <TextBlock x:Name="title_rank" FontSize="11" HorizontalAlignment="Center"/>
         </StackPanel>
 
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Select an action" FontSize="16" TextDecorations="Underline"/>
+        <TextBlock Grid.Row="1" Grid.Column="1" Margin="15,0,0,0" Text="Select information to view from the above" HorizontalAlignment="left" FontSize="16" TextDecorations="Underline" />
 
-        <TabControl Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" Height="800" VerticalAlignment="Top" Width="800">
+        <Button Grid.Row="2" Grid.Column="0" Style="{StaticResource button_Style}" Background="#FFF5CAFF" Content="Make a Purhcase" />
 
-            <TabItem Header="Club Members" >
-                <Grid Background="#FFE5E5E5">
+        <Expander x:Name="account_menu" Grid.Row="3" Grid.Column="0">
+            <Expander.Header>
+                <TextBlock HorizontalAlignment="Left" Grid.Row="1" Grid.Column="0" Text="My account" FontSize="16" TextDecorations="Underline"/>
+            </Expander.Header>
+            <Expander.Content>
+                <StackPanel>
+                    <Button Style="{StaticResource account_menu_Style}" Content="Change Password" />
+                    <Button Style="{StaticResource account_menu_Style}" Content="View you Propile" />
+                </StackPanel>
+            </Expander.Content>
+        </Expander>
 
-                    <DataGrid Name="clubMemberGrid" ItemsSource="{Binding}">
-                        
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Member ID" Binding="{Binding MemberID}"/>
-                            <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
-                            <DataGridTextColumn Header="First name" Binding="{Binding FirstName}"/>
-                            <DataGridTextColumn Header="Last name" Binding="{Binding LastName}"/>
-                            <DataGridTextColumn Header="Gender" Binding="{Binding Gender}"/>
-                            <DataGridTextColumn Header="Date of birth" Binding="{Binding DateOfBirth}"/>
-                            <DataGridTextColumn Header="Transcations" Binding="{Binding TranHistory}"/>
-                            <DataGridTextColumn Header="Credit card" Binding="{Binding CreditCard}"/>
-                        </DataGrid.Columns>
-                        
-                        
-                        
-                        
-                    </DataGrid>
-                </Grid>
+        <Expander x:Name="add_menu" Grid.Row="4" Grid.Column="0">
+            <Expander.Header>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Add items" FontSize="16" TextDecorations="Underline"/>
+            </Expander.Header>
+            <Expander.Content>
+                <StackPanel>
+                    <Button Style="{StaticResource add_menu_Style}" Content="Club member" Click="CallAddClubMember" />
+                    <Button Style="{StaticResource add_menu_Style}" Content="Customer" Click="CallAddCustomer" />
+                    <Button Style="{StaticResource add_menu_Style}" Content="Department" Click="CallAddDepartment" />
+                    <Button Style="{StaticResource add_menu_Style}" Content="Employee" Click="CallAddEmployee" />
+                    <Button Style="{StaticResource add_menu_Style}" Content="Product" Click="CallAddProduct" />
+                </StackPanel>
+            </Expander.Content>
+        </Expander>
+        
+        <Expander x:Name="search_menu" Grid.Row="5" Grid.Column="0">
+            <Expander.Header>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Search items" FontSize="16" TextDecorations="Underline"/>
+            </Expander.Header>
+            <Expander.Content>
+                <StackPanel>
+                    <Button Style="{StaticResource search_menu_Style}" Content="Club member" />
+                    <Button Style="{StaticResource search_menu_Style}" Content="Customer" />
+                    <Button Style="{StaticResource search_menu_Style}" Content="Department" />
+                    <Button Style="{StaticResource search_menu_Style}" Content="Employee" />
+                    <Button Style="{StaticResource search_menu_Style}" Content="Product" />
+                    <Button Style="{StaticResource search_menu_Style}" Content="Transaction" />
+                    <Button Style="{StaticResource search_menu_Style}" Content="User" />
+                </StackPanel>
+            </Expander.Content>
+        </Expander>
 
+        <Button Grid.Row="6" Grid.Column="0" Style="{StaticResource button_Style}" Background="black" Foreground="White" Content="Exit" />
+
+
+        
+        
+        <TabControl Grid.Row="2" Grid.Column="1" Grid.RowSpan="6">
+            
+            <TabItem Header="Club Members" Visibility="{Binding viewPermissions[1]}">
+                <DataGrid Name="clubMemberGrid" ItemsSource="{Binding}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Member ID" Binding="{Binding MemberID}"/>
+                        <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
+                        <DataGridTextColumn Header="First name" Binding="{Binding FirstName}"/>
+                        <DataGridTextColumn Header="Last name" Binding="{Binding LastName}"/>
+                        <DataGridTextColumn Header="Gender" Binding="{Binding Gender}"/>
+                        <DataGridTextColumn Header="Date of birth" Binding="{Binding DateOfBirth}"/>
+                        <DataGridTextColumn Header="Transcations" Binding="{Binding TranHistory}"/>
+                        <DataGridTextColumn Header="Credit card" Binding="{Binding CreditCard}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
             </TabItem>
-            
-            
+
+
             <TabItem Header="Customers">
-                <Grid Background="#FFE5E5E5"/>
+                <DataGrid Name="CustomerGrid" ItemsSource="{Binding}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
+                        <DataGridTextColumn Header="First name" Binding="{Binding FirstName}"/>
+                        <DataGridTextColumn Header="Last name" Binding="{Binding LastName}"/>
+                        <DataGridTextColumn Header="Transcations" Binding="{Binding TranHistory}"/>
+                        <DataGridTextColumn Header="Credit card" Binding="{Binding CreditCard}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
             </TabItem>
 
+
+            <TabItem Header="Departments" Height="21" VerticalAlignment="Bottom" >
+                <DataGrid Name="DepartmentGrid" ItemsSource="{Binding}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Department ID" Binding="{Binding DepartmentID}"/>
+                        <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+
+            <TabItem Header="Employees">
+                <DataGrid Name="EmployeeGrid" ItemsSource="{Binding}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
+                        <DataGridTextColumn Header="FirstName" Binding="{Binding FirstName}"/>
+                        <DataGridTextColumn Header="LastName" Binding="{Binding LastName}"/>
+                        <DataGridTextColumn Header="Department ID" Binding="{Binding DepID}"/>
+                        <DataGridTextColumn Header="Supervisior ID" Binding="{Binding SupervisiorID}"/>
+                        <DataGridTextColumn Header="Gender" Binding="{Binding Gender}"/>
+                        <DataGridTextColumn Header="Salary" Binding="{Binding Salary}"/>
+                        <DataGridTextColumn Header="Rank" Binding="{Binding MyRank}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
             
-            <TabItem Header="Departments" >
-                <Grid Background="#FFE5E5E5"/>
-            </TabItem>
-
             
             <TabItem Header="Products">
-                <Grid Background="#FFE5E5E5"/>
-            </TabItem>
-            
-            
-            <TabItem Header="Transactions" >
-                <Grid Background="#FFE5E5E5"/>
+                <DataGrid Name="ProductGrid" ItemsSource="{Binding}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Product ID" Binding="{Binding ProductID}"/>
+                        <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+                        <DataGridTextColumn Header="Type" Binding="{Binding Type}"/>
+                        <DataGridTextColumn Header="Department ID" Binding="{Binding Location}"/>
+                        <DataGridTextColumn Header="Stock count" Binding="{Binding StockCount}"/>
+                        <DataGridTextColumn Header="Product status" Binding="{Binding InStock}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
             </TabItem>
 
-            
+
+            <TabItem Header="Transactions" >
+                <DataGrid Name="TransactionGrid" ItemsSource="{Binding}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Transaction ID" Binding="{Binding TransactionID}"/>
+                        <DataGridTextColumn Header="Transaction type" Binding="{Binding Is_a_Return}"/>
+                        <DataGridTextColumn Header="Payment method" Binding="{Binding Payment}"/>
+                        <DataGridTextColumn Header="Date of transcation" Binding="{Binding CurrentDate}"/>
+                        <DataGridTextColumn Header="Receipt" Binding="{Binding Receipt}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+
             <TabItem Header="Users">
-                <Grid Background="#FFE5E5E5"/>
+                <DataGrid Name="UserGrid" ItemsSource="{Binding}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="User name" Binding="{Binding UserName}"/>
+                        <DataGridTextColumn Header="Person" Binding="{Binding Person}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
             </TabItem>
         </TabControl>
-       
+
+
 
 
     </Grid>
-    
+
 </Window>

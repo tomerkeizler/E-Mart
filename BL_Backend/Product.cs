@@ -5,7 +5,8 @@ using System.Text;
 
 namespace Backend
 {
-    public enum PType {a, b ,c};
+    //public enum PType {a, b ,c};
+            public enum PType { Electronics, Clothes, Food };
     public enum PStatus {Empty, LowQuantity, InStock};
     [Serializable()]
     public class Product

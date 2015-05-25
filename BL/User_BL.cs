@@ -97,10 +97,12 @@ namespace BL
             {
                 if (_user.UserName.Equals(user.UserName) && _user.Password.Equals(user.Password))
                 {
-                    return _user.Person;
+                    //return _user.Person;
+                                    return _user;
                 }
             }
-            return null;
+                                    throw new System.Data.DataException("Incorrect username or password");
+            //return null;
         }
 
         public Type GetEntityType()
