@@ -60,9 +60,7 @@
         <TextBox x:Name="stockcount" Grid.Row="4" Grid.Column="1" />
 
         <TextBlock Grid.Row="5" Grid.Column="0" Text="Department ID" FontSize="14"/>
-        <ComboBox Grid.Row="5" Grid.Column="1" x:Name="depID">
-            <ComboBoxItem Content="dep" />
-        </ComboBox>
+        <ComboBox Grid.Row="5" Grid.Column="1" Width="80" x:Name="depID" DisplayMemberPath="DepartmentID" />
 
         <Button Click="ClearForm" Grid.Row="6" Grid.Column="0" Content="Clear all" HorizontalAlignment="Right" VerticalAlignment="Center" Width="100" FontSize="14"/>
         <Button Grid.Row="6" Grid.Column="1" Content="Add Product" VerticalAlignment="Center" Width="150" FontSize="14" Click="Button_Click"/>

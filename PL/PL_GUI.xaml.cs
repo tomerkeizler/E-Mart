@@ -73,24 +73,7 @@ namespace PL
 
 
 
-            /*
-            String myName;
-            if (user.Person is Customer)
-                myName = ((Customer)user.Person).FirstName;
-            if (user.Person is ClubMember)
-                myName = ((ClubMember)user.Person).FirstName;
-            else
-                myName = ((Employee)user.Person).FirstName;
 
-            title_name.Text = "Hey " + myName + "!";
-            title_rank.Text = "Logged in as " + rank.ToString();
-            */
-
-            /*
-             List<Object> objList = new List<Object>();
-            for (int i = 0; i < 10; i++)
-                objList.Add(new ClubMember(203608096, "Tomer", "Keizler", new DateTime(1991, 9, 5), Gender.Male, 0, null));
-            */
 
 
             // generate all lists of data entities
@@ -119,7 +102,58 @@ namespace PL
 
 
         }
-       
+
+
+        ////////////////////
+        // Search methods //
+        ////////////////////
+        private void CallSearchClubMember(object sender, RoutedEventArgs e)
+        {
+            Window addForm = new QueryClubMember(this, cats[1]);
+            addForm.ShowDialog();
+        }
+
+        private void CallSearchCustomer(object sender, RoutedEventArgs e)
+        {
+            Window addForm = new QueryCustomer(this, cats[2]);
+            addForm.ShowDialog();
+        }
+
+        private void CallSearchDepartment(object sender, RoutedEventArgs e)
+        {
+            Window addForm = new QueryDepartment(this, cats[3]);
+            addForm.ShowDialog();
+        }
+
+        private void CallSearchEmployee(object sender, RoutedEventArgs e)
+        {
+            Window addForm = new QueryEmployee(this, cats[4]);
+            addForm.ShowDialog();
+        }
+
+        private void CallSearchProduct(object sender, RoutedEventArgs e)
+        {
+            Window addForm = new QueryProduct(this, cats[5]);
+            addForm.ShowDialog();
+        }
+        private void CallSearchTransaction(object sender, RoutedEventArgs e)
+        {
+            Window addForm = new QueryTransaction(this, cats[6]);
+            addForm.ShowDialog();
+        }
+        private void CallSearchUser(object sender, RoutedEventArgs e)
+        {
+            Window addForm = new QueryUser(this, cats[7]);
+            addForm.ShowDialog();
+        }
+
+
+
+
+
+
+
+
         /////////////////
         // Add methods //
         /////////////////
@@ -149,7 +183,7 @@ namespace PL
 
         private void CallAddProduct(object sender, RoutedEventArgs e)
         {
-            Window addForm = new AddProduct(this);
+            Window addForm = new AddProduct(this, cats[3]);
             addForm.ShowDialog();
         }
 
@@ -184,6 +218,82 @@ namespace PL
 
 
 
+        /////////////////
+        // Edit methods //
+        /////////////////
+        public bool EditDataEntity(Object oldObj, User newObj, int categoryNum)
+        {
+            bool done = true;
+            try
+            {
+                cats[categoryNum].Edit(oldObj, newObj);
+
+                ///////////////////////////////////////
+                // need to check if this is a ClubMember/Customer/Employee and edit its user also
+                ///////////////////////////////////////
+
+            }
+
+            catch (ArgumentNullException e)
+            {
+                done = false;
+                MessageBox.Show(e.Message);
+            }
+            catch (ArgumentException e)
+            {
+                done = false;
+                MessageBox.Show(e.Message);
+            }
+            catch (NullReferenceException e)
+            {
+                done = false;
+                MessageBox.Show(e.Message);
+            }
+            catch (IndexOutOfRangeException e)
+            {
+                done = false;
+                MessageBox.Show(e.Message);
+            }
+            catch (System.InvalidCastException e)
+            {
+                done = false;
+                MessageBox.Show(e.Message);
+            }
+            catch (System.Data.DataException e)
+            {
+                done = false;
+                MessageBox.Show(e.Message);
+            }
+            catch (Exception e)
+            {
+                done = false;
+                MessageBox.Show(e.Message);
+            }
+            if (done)
+                MessageBox.Show(catsNames[categoryNum] + " was edited successfully!\nPlease click OK to continue");
+            return done;
+        }
+
+
+
+
+
+
+
+
+
+
+
+        private void Exit(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        private void ChangePassword(object sender, RoutedEventArgs e)
+        {
+            Window changePass = new ChangePassword(this, user);
+            changePass.ShowDialog();
+        }
 
 
 

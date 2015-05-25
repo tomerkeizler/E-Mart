@@ -26,11 +26,11 @@ namespace BL
         {
             //Add the new user to the system
             List<User> Allusers = itsDAL.ReadFromFile(Elements.User).Cast<User>().ToList();
-                foreach (User user in Allusers)
-                {
-                    if (((User)u).UserName == user.UserName)
-                        throw new ArgumentException("the username is already exists!");
-                }
+            foreach (User user in Allusers)
+            {
+                if (((User)u).UserName == user.UserName)
+                    throw new ArgumentException("the username is already exists!");
+            }
             Allusers.Add((User)u);
             itsDAL.WriteToFile(Allusers.Cast<object>().ToList(), (User)u);
         }
@@ -57,7 +57,7 @@ namespace BL
         public void Edit(object oldU, object newU)
         {
             this.Remove(oldU);
-            this.Add(newU);            
+            this.Add(newU);
         }
 
         public List<object> FindByName(string name, Backend.StringFields field)
@@ -97,12 +97,10 @@ namespace BL
             {
                 if (_user.UserName.Equals(user.UserName) && _user.Password.Equals(user.Password))
                 {
-                    //return _user.Person;
-                                    return _user;
+                    return _user.Person;
                 }
             }
-                                    throw new System.Data.DataException("Incorrect username or password");
-            //return null;
+            return null;
         }
 
         public Type GetEntityType()

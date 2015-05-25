@@ -1357,6 +1357,8 @@ namespace PL
                 cats[categoryNum].Edit(currentRecord, newRecord);
             }
             // cats[categoryNum].Add(currentRecord);
+
+
             catch (NullReferenceException e)
             {
                 error = true;

@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using BL;
 
 namespace PL
 {
@@ -19,9 +20,16 @@ namespace PL
     /// </summary>
     public partial class QueryEmployee : Window
     {
-        public QueryEmployee()
+        // attributes
+        private PL_GUI parentWindow;
+        private IBL itsEmployeeBL;
+
+        //constructor
+        public QueryEmployee(PL_GUI _parentWindow, IBL _itsEmployeeBL)
         {
             InitializeComponent();
+            parentWindow = _parentWindow;
+            itsEmployeeBL = _itsEmployeeBL;
         }
 
         private void ClearForm(object sender, RoutedEventArgs e)

@@ -57,11 +57,6 @@ namespace PL
             {
                 MessageBox.Show("Log in done successfully!\nPlease click OK to continue");
 
-                /////////////////// TO BE REMOVED
-                _user.Person = new Employee();
-                ((Employee)_user.Person).MyRank = Rank.Administrator;
-                /////////////////// TO BE REMOVED
-
                 Rank _rank;
                 if (_user.Person is Customer || _user.Person is ClubMember)
                     _rank = Rank.Customer;
@@ -92,11 +87,16 @@ namespace PL
                 /////////////////
                 _viewPermissions[1] = false;
                 /////////////////
-                
+
                 parentWindow.user = _user;
                 parentWindow.rank = _rank;
                 parentWindow.viewPermissions = _viewPermissions;
                 parentWindow.fullPermissions = _fullPermissions;
+
+                // display the username and permission in the main Window at the upper left square
+                parentWindow.title_name.Text = "Hey " + _user.ToString() + "!";
+                parentWindow.title_rank.Text = "Logged in as " + _rank.ToString();
+
                 this.Close();
                 parentWindow.Show();
             }

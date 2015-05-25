@@ -50,6 +50,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChangePassword.xaml.cs">
+      <DependentUpon>ChangePassword.xaml</DependentUpon>
+    </Compile>
     <Compile Include="NotRangeNumberConverter.cs" />
     <Compile Include="QueryUser.xaml.cs">
       <DependentUpon>QueryUser.xaml</DependentUpon>
@@ -122,6 +125,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="ChangePassword.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="QueryUser.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

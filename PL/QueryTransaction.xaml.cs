@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using BL;
 
 namespace PL
 {
@@ -19,9 +20,16 @@ namespace PL
     /// </summary>
     public partial class QueryTransaction : Window
     {
-        public QueryTransaction()
+        // attributes
+        private PL_GUI parentWindow;
+        private IBL itsTransactionBL;
+
+        //constructor
+        public QueryTransaction(PL_GUI _parentWindow, IBL _itsTransactionBL)
         {
             InitializeComponent();
+            parentWindow = _parentWindow;
+            itsTransactionBL = _itsTransactionBL;
         }
 
         private void ClearForm(object sender, RoutedEventArgs e)

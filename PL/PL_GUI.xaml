@@ -25,6 +25,17 @@
             <Setter Property="VerticalAlignment" Value="top" />
         </Style>
 
+        <Style TargetType="DataGridCell">
+            <Setter Property="TextBlock.TextAlignment" Value="Center" />
+        </Style>
+
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="Background" Value="#FFD1E0F9" />
+            <Setter Property="Padding" Value="3" />
+            <Setter Property="Margin" Value="0" />
+        </Style>
+
         <Style TargetType="TabControl">
             <Setter Property="Margin" Value="10" />
             <Setter Property="BorderBrush" Value="Gainsboro" />
@@ -119,7 +130,7 @@
 
         <TextBlock Grid.Row="0" Grid.Column="1" Text="Welcome to E-MART" FontSize="30" Foreground="#FF2D59EE"/>
 
-        <StackPanel Grid.Row="0" Grid.Column="0" Background="#FFD1E0F9" VerticalAlignment="Top" Margin="7,7,7,7">
+        <StackPanel Grid.Row="0" Grid.Column="0" Background="#FFD1E0F9" VerticalAlignment="Top" Margin="5,5,5,5">
             <TextBlock x:Name="title_name" FontSize="11" HorizontalAlignment="Center"/>
             <TextBlock x:Name="title_rank" FontSize="11" HorizontalAlignment="Center"/>
         </StackPanel>
@@ -135,7 +146,7 @@
             </Expander.Header>
             <Expander.Content>
                 <StackPanel>
-                    <Button Style="{StaticResource account_menu_Style}" Content="Change Password" />
+                    <Button Style="{StaticResource account_menu_Style}" Content="Change Password" Click="ChangePassword" />
                     <Button Style="{StaticResource account_menu_Style}" Content="View you Propile" />
                 </StackPanel>
             </Expander.Content>
@@ -162,18 +173,18 @@
             </Expander.Header>
             <Expander.Content>
                 <StackPanel>
-                    <Button Style="{StaticResource search_menu_Style}" Content="Club member" />
-                    <Button Style="{StaticResource search_menu_Style}" Content="Customer" />
-                    <Button Style="{StaticResource search_menu_Style}" Content="Department" />
-                    <Button Style="{StaticResource search_menu_Style}" Content="Employee" />
-                    <Button Style="{StaticResource search_menu_Style}" Content="Product" />
-                    <Button Style="{StaticResource search_menu_Style}" Content="Transaction" />
-                    <Button Style="{StaticResource search_menu_Style}" Content="User" />
+                    <Button Style="{StaticResource search_menu_Style}" Content="Club member" Click="CallSearchClubMember" />
+                    <Button Style="{StaticResource search_menu_Style}" Content="Customer" Click="CallSearchCustomer" />
+                    <Button Style="{StaticResource search_menu_Style}" Content="Department" Click="CallSearchDepartment" />
+                    <Button Style="{StaticResource search_menu_Style}" Content="Employee" Click="CallSearchEmployee" />
+                    <Button Style="{StaticResource search_menu_Style}" Content="Product" Click="CallSearchProduct" />
+                    <Button Style="{StaticResource search_menu_Style}" Content="Transaction" Click="CallSearchTransaction" />
+                    <Button Style="{StaticResource search_menu_Style}" Content="User" Click="CallSearchUser" />
                 </StackPanel>
             </Expander.Content>
         </Expander>
 
-        <Button Grid.Row="6" Grid.Column="0" Style="{StaticResource button_Style}" Background="black" Foreground="White" Content="Exit" />
+        <Button Grid.Row="6" Grid.Column="0" Style="{StaticResource button_Style}" Background="black" Foreground="White" Content="Exit" Click="Exit" />
 
 
         
@@ -266,7 +277,8 @@
                 <DataGrid Name="UserGrid" ItemsSource="{Binding}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="User name" Binding="{Binding UserName}"/>
-                        <DataGridTextColumn Header="Person" Binding="{Binding Person}"/>
+                        <DataGridTextColumn Header="Password" Binding="{Binding Password}"/>
+                        <DataGridTextColumn Header="Person" x:Name="rankPerson" Binding="{Binding Person}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>

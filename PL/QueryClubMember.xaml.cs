@@ -11,19 +11,27 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using BL;
 
 namespace PL
 {
     /// <summary>
     /// Interaction logic for Register.xaml
     /// </summary>
+
     public partial class QueryClubMember : Window
     {
-        public QueryClubMember()
+        // attributes
+        private PL_GUI parentWindow;
+        private IBL itsClubMemberBL;
+
+        //constructor
+        public QueryClubMember(PL_GUI _parentWindow, IBL _itsClubMemberBL)
         {
             InitializeComponent();
+            parentWindow = _parentWindow;
+            itsClubMemberBL = _itsClubMemberBL;
         }
-
 
         private void ClearForm(object sender, RoutedEventArgs e)
         {
