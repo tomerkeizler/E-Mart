@@ -65,6 +65,12 @@
       <DependentUpon>ChangePassword.xaml</DependentUpon>
     </Compile>
     <Compile Include="NotRangeNumberConverter.cs" />
+    <Compile Include="QueryClubMember.xaml.cs">
+      <DependentUpon>QueryClubMember.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="QueryCustomer.xaml.cs">
+      <DependentUpon>QueryCustomer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="QueryUser.xaml.cs">
       <DependentUpon>QueryUser.xaml</DependentUpon>
     </Compile>
@@ -79,12 +85,6 @@
     </Compile>
     <Compile Include="QueryDepartment.xaml.cs">
       <DependentUpon>QueryDepartment.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="QueryCustomer.xaml.cs">
-      <DependentUpon>QueryCustomer.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="QueryClubMember.xaml.cs">
-      <DependentUpon>QueryClubMember.xaml</DependentUpon>
     </Compile>
     <Compile Include="AddEditClubMember.xaml.cs">
       <DependentUpon>AddEditClubMember.xaml</DependentUpon>
@@ -141,12 +141,20 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="AddEditUser.xaml">
-      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ChangePassword.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="QueryClubMember.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="QueryCustomer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="QueryUser.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -165,14 +173,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="QueryDepartment.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="QueryCustomer.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="QueryClubMember.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
