@@ -66,6 +66,7 @@ namespace BL
                 }
             }
             itsDAL.WriteToFile(Allclubmems.Cast<object>().ToList(), cm);
+            itsDAL.WriteToFile(Allusers.Cast<object>().ToList(), new User());
         }
 
         public void Edit(object oldCM, object newCM)

@@ -96,6 +96,7 @@ namespace BL
                 if (!hasMoreEmployees)
                     temp.Rank = Rank.Worker;
                 itsDAL.WriteToFile(Allemps.Cast<object>().ToList(), e);
+                itsDAL.WriteToFile(Allusers.Cast<object>().ToList(), new User());
         }
         public void Edit(object oldE, object newE)
         {
