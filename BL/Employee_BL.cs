@@ -43,7 +43,7 @@ namespace BL
                 {
                     if (emp.Equals(e))
                         throw new Exception("employee is already exists!");
-                    if (((Employee)e).SupervisiorID == emp.Id)
+                    if ((emp.Id != 0) && ((Employee)e).SupervisiorID == emp.Id)
                     {
                         checkSup = true;
                         emp.Rank = Rank.Manager;
