@@ -68,10 +68,6 @@
       <DependentUpon>ChangePassword.xaml</DependentUpon>
     </Compile>
     <Compile Include="NotRangeNumberConverter.cs" />
-    <Compile Include="Purchase.xaml.cs">
-      <DependentUpon>Purchase.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="QueryClubMember.xaml.cs">
       <DependentUpon>QueryClubMember.xaml</DependentUpon>
     </Compile>
@@ -155,10 +151,6 @@
     <Page Include="ChangePassword.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Purchase.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="QueryClubMember.xaml">
       <SubType>Designer</SubType>

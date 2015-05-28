@@ -55,7 +55,7 @@ namespace Backend
             get { return tranHistory; }
             set { tranHistory = value; }
         }
-        internal CreditCard CreditCard
+        public CreditCard CreditCard
         {
             get { return creditCard; }
             set { creditCard = value; }
