@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data;
 
 namespace Backend
 {
@@ -55,11 +56,12 @@ namespace Backend
             get { return tranHistory; }
             set { tranHistory = value; }
         }
-        internal CreditCard CreditCard
+        public CreditCard CreditCard
         {
             get { return creditCard; }
             set { creditCard = value; }
         }
+
         public override bool Equals(object _other)
         {
             if (!(_other is Customer)) return false;
@@ -73,8 +75,7 @@ namespace Backend
         }
         public override string ToString()
         {
-            return id+"";
+            return "Customer -" + firstName + " " + lastName;
         }
-
     }
 }

@@ -224,7 +224,7 @@ namespace DAL
             }
             else if (type is PStatus)
             {
-                filteredProducts = allProducts.Where(n => n.Type.Equals((PStatus)type)).Cast<Product>().ToList();
+                filteredProducts = allProducts.Where(n => n.InStock.Equals((PStatus)type)).Cast<Product>().ToList();
             }
               
             else
@@ -312,13 +312,17 @@ namespace DAL
             {
                 throw new InvalidDataException("There is nothing to find from.");
             }
-            if (!(type is Gender))
+            if (type is Gender)
             {
-                throw new System.Data.DataException("Bad Input!");
+                filteredEmployee = allEmployee.Where(n => n.Gender.Equals((Gender)type)).Cast<Employee>().ToList(); 
+            }
+            else if (type is Rank)
+            {
+                filteredEmployee = allEmployee.Where(n => n.Rank.Equals((Rank)type)).Cast<Employee>().ToList(); 
             }
             else
             {
-                filteredEmployee = allEmployee.Where(n => n.Gender.Equals((Gender)type)).Cast<Employee>().ToList();
+                throw new System.Data.DataException("Bad Input!");
             }
             return filteredEmployee;
         }
@@ -499,6 +503,39 @@ namespace DAL
                 throw new System.Data.DataException("Bad Input!");
             }
             filteredUser = allUser.Where(n => n.UserName.Equals(name)).Cast<User>().ToList();
+            return filteredUser;
+        }
+        public List<User> UserTypeQuery(ValueType type)
+        {
+            List<User> allUser = ReadFromFile(Elements.User).Cast<User>().ToList();
+            List<User> filteredUser;
+            if (allUser.ElementAtOrDefault(0) == null)
+            {
+                throw new InvalidDataException("There is nothing to find from.");
+            }
+            if (type is Rank)
+            {
+                filteredUser = allUser.Where(n => (n.Person is Employee) && ((Employee)n.Person).Rank.Equals((Rank)type)).Cast<User>().ToList();
+            }
+            else
+            {
+                throw new System.Data.DataException("Bad Input!");
+            }
+            return filteredUser;
+        }
+        public List<User> UserPersonQuery(object person)
+        {
+            List<User> allUser = ReadFromFile(Elements.User).Cast<User>().ToList();
+            List<User> filteredUser;
+            if (allUser.ElementAtOrDefault(0) == null)
+            {
+                throw new InvalidDataException("There is nothing to find from.");
+            }
+            if (person == null)
+            {
+                throw new System.Data.DataException("Bad Input!");
+            }
+            filteredUser = allUser.Where(n => n.Person.Equals(person)).Cast<User>().ToList();
             return filteredUser;
         }
 

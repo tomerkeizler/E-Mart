@@ -46,28 +46,43 @@ namespace BL
         public void Remove(object cm)
         {
             List<ClubMember> Allclubmems = itsDAL.ReadFromFile(Elements.ClubMember).Cast<ClubMember>().ToList();
+            List<User> Allusers = itsDAL.ReadFromFile(Elements.User).Cast<User>().ToList();
             //check if there are any clubmembers to remove
             if (!Allclubmems.Any())
                 throw new NullReferenceException("No ClubMembers to remove!");
-            else
+            //find and remove clubmember
+            foreach (ClubMember clubmem in Allclubmems)
             {
-                //find and remove clubmember
-                foreach (ClubMember clubmem in Allclubmems)
+                if (clubmem.Equals(cm))
                 {
-                    if (clubmem.Equals(cm))
+                    Allclubmems.Remove(clubmem);
+                    foreach (User user in Allusers)
                     {
-                        Allclubmems.Remove(clubmem);
+                        if (user.Person.Equals(cm))
+                            Allusers.Remove(user);
                         break;
                     }
+                    break;
                 }
-                itsDAL.WriteToFile(Allclubmems.Cast<object>().ToList(), cm);
             }
+            itsDAL.WriteToFile(Allclubmems.Cast<object>().ToList(), cm);
+            itsDAL.WriteToFile(Allusers.Cast<object>().ToList(), new User());
         }
 
         public void Edit(object oldCM, object newCM)
         {
             //preserve the id for the edited clubmember
             ((ClubMember)newCM).MemberID = ((ClubMember)oldCM).MemberID;
+            List<User> oldUserList = itsDAL.UserPersonQuery(oldCM);
+            User oldUser = oldUserList.ElementAtOrDefault(0);
+            if (oldUser == null)
+            {
+                throw new NullReferenceException("The customer does not exist!");
+            }
+            User_BL itsUserBL = new User_BL(itsDAL);
+            User newUser = new User(oldUser);
+            newUser.Person = newCM;
+            itsUserBL.Edit(oldUser, newUser);
             this.Remove(oldCM);
             this.Add(newCM);
         }

@@ -43,15 +43,16 @@ namespace BL
                 {
                     if (emp.Equals(e))
                         throw new Exception("employee is already exists!");
-                    if (((Employee)e).SupervisiorID == emp.Id)
+                    if ((emp.Id != 0) && ((Employee)e).SupervisiorID == emp.Id)
                     {
                         checkSup = true;
-                        emp.MyRank = Rank.Manager;
+                        emp.Rank = Rank.Manager;
                     }
                 }
                 if (((Employee)e).SupervisiorID == 0)
                 {
-                    ((Employee)e).MyRank = Rank.Administrator;
+                    ((Employee)e).Rank = Rank.Administrator;
+                    checkSup = true;
                 }
                 if (!checkSup)
                 {
@@ -64,6 +65,7 @@ namespace BL
         public void Remove(object e)
         {
             List<Employee> Allemps = itsDAL.ReadFromFile(Elements.Employee).Cast<Employee>().ToList();
+            List<User> Allusers = itsDAL.ReadFromFile(Elements.User).Cast<User>().ToList();
             bool hasMoreEmployees = false;
             Employee temp = new Employee();
             if (!Allemps.Any())
@@ -79,6 +81,12 @@ namespace BL
                     if (emp.Equals(e))
                     {
                         Allemps.Remove(emp);
+                        foreach (User user in Allusers)
+                        {
+                            if (user.Person.Equals(e))
+                                Allusers.Remove(user);
+                            break;
+                        }
                     }
                     else if (((Employee)e).SupervisiorID == emp.SupervisiorID)
                         hasMoreEmployees = true;
@@ -86,11 +94,22 @@ namespace BL
                         temp = emp;
                 }
                 if (!hasMoreEmployees)
-                    temp.MyRank = Rank.Worker;
+                    temp.Rank = Rank.Worker;
                 itsDAL.WriteToFile(Allemps.Cast<object>().ToList(), e);
+                itsDAL.WriteToFile(Allusers.Cast<object>().ToList(), new User());
         }
         public void Edit(object oldE, object newE)
         {
+            List<User> oldUserList = itsDAL.UserPersonQuery(oldE);
+            User oldUser = oldUserList.ElementAtOrDefault(0);
+            if (oldUser == null)
+            {
+                throw new NullReferenceException("The customer does not exist!");
+            }
+            User_BL itsUserBL = new User_BL(itsDAL);
+            User newUser = new User(oldUser);
+            newUser.Person = newE;
+            itsUserBL.Edit(oldUser, newUser);
             this.Remove(oldE);
             this.Add(newE);            
         }

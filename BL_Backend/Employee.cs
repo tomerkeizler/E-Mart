@@ -51,19 +51,19 @@ namespace Backend
             depID = other.DepID;
             salary = other.Salary;
             supervisiorID = other.SupervisiorID;
-            rank = other.MyRank;
+            rank = other.Rank;
         }
 
         public override string ToString()
         {
-            return firstName + " " + lastName;
+            return this.rank.ToString() + " -" + firstName + " " + lastName;
         }
         public override bool Equals(object _other)
         {
             if (!(_other is Employee)) return false;
             Employee other = (Employee)_other;
             return (firstName.Equals(other.firstName) && lastName.Equals(other.lastName) && id == other.id && gender.Equals(other.gender)
-                    && depID == other.depID && salary == other.salary && supervisiorID == other.supervisiorID);
+                    && depID == other.depID && salary == other.salary && supervisiorID == other.supervisiorID && rank == other.Rank);
         }
         public override int GetHashCode()
         {
@@ -110,8 +110,7 @@ namespace Backend
             get { return lastName; }
             set { lastName = value; }
         }
-
-        public Rank MyRank
+        public Rank Rank
         {
             get { return rank; }
             set { rank = value; }

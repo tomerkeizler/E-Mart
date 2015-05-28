@@ -13,7 +13,7 @@ namespace Backend
         private string username;
         private string password;
         private Object person;
-
+        
         //Constructors:
         public User()
         {
@@ -25,7 +25,7 @@ namespace Backend
         {
             username = _username;
             password = _password;
-                person = _person;
+            person = _person;
         }
         //For Deep Copy
         public User(User other)
