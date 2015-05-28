@@ -57,9 +57,9 @@
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Text="Search for Product" HorizontalAlignment="Center"  FontSize="24" Foreground="#FF2D59EE"/>
+        <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Text="Make a purchase at E-MART" HorizontalAlignment="Center"  FontSize="24" Foreground="#FF2D59EE"/>
 
-        <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Text="Search by one of the following:" FontSize="14" TextDecorations="Underline"/>
+        <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Text="Drag products into the shopping cart" FontSize="14" TextDecorations="Underline"/>
 
         <TextBlock Grid.Row="2" Grid.Column="0" Text="Product name" FontSize="14"/>
         <TextBox x:Name="name" Grid.Row="2" Grid.Column="1" />
@@ -73,110 +73,6 @@
         </ComboBox>
         <Button Grid.Row="3" Grid.Column="2" Content="Search" Click="SearchByPType"/>
 
-
-        <TextBlock Grid.Row="4" Grid.Column="0" Grid.RowSpan="2" Text="Department ID" FontSize="14"/>
-        <Grid Grid.Row="4" Grid.Column="1" Width="200" HorizontalAlignment="Left" VerticalAlignment="Center">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <RadioButton Grid.Column="0" GroupName="SearchDepID" x:Name="specificDepID" Content="specific search"/>
-            <RadioButton Grid.Column="1" GroupName="SearchDepID" x:Name="rangeDepID" Content="range search"/>
-        </Grid>
-        <Grid Grid.Row="5" Grid.Column="1" Width="220" HorizontalAlignment="Left" VerticalAlignment="Center">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="4*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="4*"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Text="From" FontSize="14" />
-            <TextBox x:Name="fromDepID" Grid.Column="1" Width="60" />
-            <TextBlock Grid.Column="2" Text="To" FontSize="14" />
-            <TextBox x:Name="toDepID" Text="{Binding ElementName=rangeDepID, Path=IsChecked, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, Converter={StaticResource notRangeNumberConverter}}" IsEnabled="{Binding ElementName=rangeDepID, Path=IsChecked, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Grid.Column="3" Width="60" />
-        </Grid>
-        <Button Grid.Row="4" Grid.Column="2" Grid.RowSpan="2" Content="Search" Click="SearchByDepID"/>
-
-
-        <TextBlock Grid.Row="6" Grid.Column="0" Grid.RowSpan="2" Text="Product ID" FontSize="14"/>
-        <Grid Grid.Row="6" Grid.Column="1" Width="200" HorizontalAlignment="Left" VerticalAlignment="Center">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <RadioButton Grid.Column="0" GroupName="SearchPrdID" x:Name="specificPrdID" Content="specific search"/>
-            <RadioButton Grid.Column="1" GroupName="SearchPrdID" x:Name="rangePrdID" Content="range search"/>
-        </Grid>
-        <Grid Grid.Row="7" Grid.Column="1" Width="220" HorizontalAlignment="Left" VerticalAlignment="Center">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="4*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="4*"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Text="From" FontSize="14" />
-            <TextBox x:Name="fromPrdID" Grid.Column="1" Width="60" />
-            <TextBlock Grid.Column="2" Text="To" FontSize="14" />
-            <TextBox x:Name="toPrdID" Text="{Binding ElementName=rangePrdID, Path=IsChecked, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, Converter={StaticResource notRangeNumberConverter}}" IsEnabled="{Binding ElementName=rangePrdID, Path=IsChecked, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Grid.Column="3" Width="60" />
-        </Grid>
-        <Button Grid.Row="6" Grid.Column="2" Grid.RowSpan="2" Content="Search" Click="SearchByProductID"/>
-
-
-        <TextBlock Grid.Row="8" Grid.Column="0" Grid.RowSpan="2" Text="Price" FontSize="14"/>
-        <Grid Grid.Row="8" Grid.Column="1" Width="200" HorizontalAlignment="Left" VerticalAlignment="Center">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <RadioButton Grid.Column="0" GroupName="SearchPrice" x:Name="specificPrice" Content="specific search"/>
-            <RadioButton Grid.Column="1" GroupName="SearchPrice" x:Name="rangePrice" Content="range search"/>
-        </Grid>
-        <Grid Grid.Row="9" Grid.Column="1" Width="220" HorizontalAlignment="Left" VerticalAlignment="Center">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="4*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="4*"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Text="From" FontSize="14" />
-            <TextBox x:Name="fromPrice" Grid.Column="1" Width="60" />
-            <TextBlock Grid.Column="2" Text="To" FontSize="14" />
-            <TextBox x:Name="toPrice" Text="{Binding ElementName=rangePrice, Path=IsChecked, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, Converter={StaticResource notRangeNumberConverter}}" IsEnabled="{Binding ElementName=rangePrice, Path=IsChecked, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Grid.Column="3" Width="60" />
-        </Grid>
-        <Button Grid.Row="8" Grid.Column="2" Grid.RowSpan="2" Content="Search" Click="SearchByPrice"/>
-
-
-        <TextBlock Grid.Row="10" Grid.Column="0" Text="Product status" FontSize="14"/>
-        <ComboBox Grid.Row="10" Grid.Column="1" x:Name="pStatus" >
-            <ComboBoxItem Content="in stock" />
-            <ComboBoxItem Content="low quantity" />
-            <ComboBoxItem Content="empty" />
-        </ComboBox>
-        <Button Grid.Row="10" Grid.Column="2" Content="Search" Click="SearchByPStatus"/>
-
-
-        <TextBlock Grid.Row="11" Grid.Column="0" Grid.RowSpan="2" Text="Stock Count" FontSize="14"/>
-        <Grid Grid.Row="11" Grid.Column="1" Width="200" HorizontalAlignment="Left" VerticalAlignment="Center">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <RadioButton Grid.Column="0" GroupName="SearchStockCount" x:Name="specificStockCount" Content="specific search"/>
-            <RadioButton Grid.Column="1" GroupName="SearchStockCount" x:Name="rangeStockCount" Content="range search"/>
-        </Grid>
-        <Grid Grid.Row="12" Grid.Column="1" Width="220" HorizontalAlignment="Left" VerticalAlignment="Center">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="4*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="4*"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Text="From" FontSize="14" />
-            <TextBox x:Name="fromStockCount" Grid.Column="1" Width="60" />
-            <TextBlock Grid.Column="2" Text="To" FontSize="14" />
-            <TextBox x:Name="toStockCount" Text="{Binding ElementName=rangeStockCount, Path=IsChecked, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, Converter={StaticResource notRangeNumberConverter}}" IsEnabled="{Binding ElementName=rangeStockCount, Path=IsChecked, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Grid.Column="3" Width="60" />
-        </Grid>
-        <Button Grid.Row="11" Grid.Column="2" Grid.RowSpan="2" Content="Search" Click="SearchByStockCount"/>
 
 
         <Button Click="ClearForm" Grid.Row="13" Grid.Column="0" Grid.ColumnSpan="3" Content="Clear all" Width="100"/>
