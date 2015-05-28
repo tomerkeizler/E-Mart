@@ -56,7 +56,7 @@ namespace Backend
 
         public override string ToString()
         {
-            return firstName + " " + lastName;
+            return this.rank.ToString() + " -" + firstName + " " + lastName;
         }
         public override bool Equals(object _other)
         {

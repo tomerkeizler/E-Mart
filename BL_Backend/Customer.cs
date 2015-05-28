@@ -73,7 +73,7 @@ namespace Backend
         }
         public override string ToString()
         {
-            return id+"";
+            return "Customer -" + firstName + " " + lastName;
         }
 
     }

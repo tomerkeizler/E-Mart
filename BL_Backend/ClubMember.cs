@@ -40,7 +40,7 @@ namespace Backend
 
         public override string ToString()
         {
-            return memberID+"";
+            return "ClubMember -" + firstName + " " + lastName;
         }
         public override bool Equals(object _other)
         {
