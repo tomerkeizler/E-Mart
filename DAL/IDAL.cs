@@ -44,6 +44,7 @@ namespace DAL
 
         //User:
         List<User> UserNameQuery(string name, StringFields field);
+        List<User> UserTypeQuery(ValueType type);
         List<User> UserPersonQuery(object person);
     }
 }

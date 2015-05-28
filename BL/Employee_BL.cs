@@ -46,12 +46,12 @@ namespace BL
                     if (((Employee)e).SupervisiorID == emp.Id)
                     {
                         checkSup = true;
-                        emp.MyRank = Rank.Manager;
+                        emp.Rank = Rank.Manager;
                     }
                 }
                 if (((Employee)e).SupervisiorID == 0)
                 {
-                    ((Employee)e).MyRank = Rank.Administrator;
+                    ((Employee)e).Rank = Rank.Administrator;
                 }
                 if (!checkSup)
                 {
@@ -86,7 +86,7 @@ namespace BL
                         temp = emp;
                 }
                 if (!hasMoreEmployees)
-                    temp.MyRank = Rank.Worker;
+                    temp.Rank = Rank.Worker;
                 itsDAL.WriteToFile(Allemps.Cast<object>().ToList(), e);
         }
         public void Edit(object oldE, object newE)
