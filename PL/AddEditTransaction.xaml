@@ -1,4 +1,4 @@
-﻿<Window x:Class="PL.AddProduct"
+﻿<Window x:Class="PL.AddEditTransaction"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="E-MART" Height="300" Width="400">
@@ -32,8 +32,6 @@
             <RowDefinition Height="2*"/>
             <RowDefinition Height="2*"/>
             <RowDefinition Height="2*"/>
-            <RowDefinition Height="2*"/>
-            <RowDefinition Height="2*"/>
             <RowDefinition Height="3*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -41,29 +39,30 @@
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="Add Product" HorizontalAlignment="Center"  FontSize="24" Foreground="#FF2D59EE"/>
-
-        <TextBlock Grid.Row="1" Grid.Column="0" Text="Product name" FontSize="14"/>
-        <TextBox x:Name="productName" Grid.Row="1" Grid.Column="1" />
-
-        <TextBlock Grid.Row="2" Grid.Column="0" Text="Product type" FontSize="14"/>
-        <ComboBox Grid.Row="2" Grid.Column="1" x:Name="ProductType">
-            <ComboBoxItem Content="Electronics" />
-            <ComboBoxItem Content="Clothes " />
-            <ComboBoxItem Content="Food" />
-        </ComboBox>
+        <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="Edit Transaction" HorizontalAlignment="Center"  FontSize="24" Foreground="#FF2D59EE"/>
         
-        <TextBlock Grid.Row="3" Grid.Column="0" Text="Product price" FontSize="14"/>
-        <TextBox x:Name="price" Grid.Row="3" Grid.Column="1" />
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Transaction type" FontSize="14"/>
+        <Grid Grid.Row="1" Grid.Column="1" Width="160" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <RadioButton Grid.Column="0" GroupName="is_a_return" x:Name="purchaseType" Content="Purchase"/>
+            <RadioButton Grid.Column="1" GroupName="is_a_return" x:Name="returnType" Content="Return"/>
+        </Grid>
 
-        <TextBlock Grid.Row="4" Grid.Column="0" Text="Stock count" FontSize="14"/>
-        <TextBox x:Name="stockcount" Grid.Row="4" Grid.Column="1" />
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Transaction ID" FontSize="14"/>
+        <TextBox x:Name="tranID" Grid.Row="2" Grid.Column="1" />
+   
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="Payment Method" FontSize="14"/>
+        <ComboBox Grid.Row="3" Grid.Column="1" x:Name="payment">
+            <ComboBoxItem Content="Cash" />
+            <ComboBoxItem Content="Check" />
+            <ComboBoxItem Content="Visa" />
+        </ComboBox>
 
-        <TextBlock Grid.Row="5" Grid.Column="0" Text="Department ID" FontSize="14"/>
-        <ComboBox Grid.Row="5" Grid.Column="1" Width="80" x:Name="depID" DisplayMemberPath="DepartmentID" />
-
-        <Button Click="ClearForm" Grid.Row="6" Grid.Column="0" Content="Clear all" HorizontalAlignment="Right" VerticalAlignment="Center" Width="100" FontSize="14"/>
-        <Button Grid.Row="6" Grid.Column="1" Content="Add Product" VerticalAlignment="Center" Width="150" FontSize="14" Click="Button_Click"/>
+        <Button Click="ResetForm" Grid.Row="4" Grid.Column="0" Content="Reset all" HorizontalAlignment="Right" VerticalAlignment="Center" Width="100" FontSize="14"/>
+        <Button Grid.Row="4" Grid.Column="1" Content="Edit Transaction" VerticalAlignment="Center" Width="150" FontSize="14" Click="AddOrEdit"/>
     </Grid>
 
 </Window>

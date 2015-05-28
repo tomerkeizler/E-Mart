@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using BL;
+using Backend;
 
 namespace PL
 {
@@ -22,20 +23,34 @@ namespace PL
     {
         // attributes
         private PL_GUI parentWindow;
-        private IBL itsDepartmentBL;
 
         //constructor
-        public QueryDepartment(PL_GUI _parentWindow, IBL _itsDepartmentBL)
+        public QueryDepartment(PL_GUI _parentWindow)
         {
             InitializeComponent();
             parentWindow = _parentWindow;
-            itsDepartmentBL = _itsDepartmentBL;
         }
 
         private void ClearForm(object sender, RoutedEventArgs e)
         {
             List<Control> lst = new List<Control>() { depName, specificDepID, rangeDepID, fromDepID, toDepID };
-            Helper.ClearForm(lst);
+            PL_GUI.ClearForm(lst);
         }
+
+        private void SearchByDepName(object sender, RoutedEventArgs e)
+        {
+            if (parentWindow.SearchDataEntity(StringFields.name, depName.Text, null, 3))
+                this.Close();
+        }
+
+        private void SearchByDepID(object sender, RoutedEventArgs e)
+        {
+            int min = int.Parse(fromDepID.Text);
+            String max = toDepID.Text;
+            if (parentWindow.SearchDataEntity(IntFields.departmentID, min, (max.Equals(String.Empty)) ? (min) : (int.Parse(max)), 3))
+            this.Close();
+        }
+
+
     }
 }

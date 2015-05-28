@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using BL;
+using Backend;
 
 namespace PL
 {
@@ -22,20 +23,41 @@ namespace PL
     {
         // attributes
         private PL_GUI parentWindow;
-        private IBL itsUserBL;
 
         //constructor
-        public QueryUser(PL_GUI _parentWindow, IBL _itsUserBL)
+        public QueryUser(PL_GUI _parentWindow)
         {
             InitializeComponent();
             parentWindow = _parentWindow;
-            itsUserBL = _itsUserBL;
         }
 
         private void ClearForm(object sender, RoutedEventArgs e)
         {
             List<Control> lst = new List<Control>() { username, rank };
-            Helper.ClearForm(lst);
+            PL_GUI.ClearForm(lst);
         }
+
+
+        private void SearchByUserame(object sender, RoutedEventArgs e)
+        {
+            if (parentWindow.SearchDataEntity(StringFields.username, username.Text, null, 7))
+                this.Close();
+        }
+
+        private void SearchByRank(object sender, RoutedEventArgs e)
+        {
+            Rank rnk;
+            if (rank.Text.Equals("Administrator"))
+                rnk = Rank.Administrator;
+            else if (rank.Text.Equals("Manager"))
+                rnk = Rank.Manager;
+            else if (rank.Text.Equals("Worker"))
+                rnk = Rank.Worker;
+            else
+                rnk = Rank.Customer;
+            if (parentWindow.SearchDataEntity(TypeFields.rank, rnk, null, 7))
+                this.Close();
+        }
+
     }
 }

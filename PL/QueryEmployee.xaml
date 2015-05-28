@@ -65,15 +65,15 @@
 
         <TextBlock Grid.Row="2" Grid.Column="0" Text="First name" FontSize="14"/>
         <TextBox x:Name="firstName" Grid.Row="2" Grid.Column="1" />
-        <Button Grid.Row="2" Grid.Column="2" Content="Search"/>
+        <Button Grid.Row="2" Grid.Column="2" Content="Search" Click="SearchByFirstName"/>
 
         <TextBlock Grid.Row="3" Grid.Column="0" Text="Last name" FontSize="14"/>
         <TextBox x:Name="lastName" Grid.Row="3" Grid.Column="1" />
-        <Button Grid.Row="3" Grid.Column="2" Content="Search"/>
+        <Button Grid.Row="3" Grid.Column="2" Content="Search" Click="SearchByLastName"/>
 
         <TextBlock Grid.Row="4" Grid.Column="0" Text="ID number" FontSize="14"/>
         <TextBox x:Name="ID" Grid.Row="4" Grid.Column="1" />
-        <Button Grid.Row="4" Grid.Column="2" Content="Search"/>
+        <Button Grid.Row="4" Grid.Column="2" Content="Search" Click="SearchByID"/>
 
         
         <TextBlock Grid.Row="5" Grid.Column="0" Grid.RowSpan="2" Text="Department ID" FontSize="14"/>
@@ -97,7 +97,7 @@
             <TextBlock Grid.Column="2" Text="To" FontSize="14" />
             <TextBox x:Name="toDepID" Text="{Binding ElementName=rangeDepID, Path=IsChecked, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, Converter={StaticResource notRangeNumberConverter}}" IsEnabled="{Binding ElementName=rangeDepID, Path=IsChecked, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Grid.Column="3" Width="60" />
         </Grid>
-        <Button Grid.Row="5" Grid.Column="2" Grid.RowSpan="2" Content="Search"/>
+        <Button Grid.Row="5" Grid.Column="2" Grid.RowSpan="2" Content="Search" Click="SearchByDepID"/>
 
         
         <TextBlock Grid.Row="7" Grid.Column="0" Grid.RowSpan="2" Text="Salary" FontSize="14"/>
@@ -121,7 +121,7 @@
             <TextBlock Grid.Column="2" Text="To" FontSize="14" />
             <TextBox x:Name="toSalary" Text="{Binding ElementName=rangeSalary, Path=IsChecked, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, Converter={StaticResource notRangeNumberConverter}}" IsEnabled="{Binding ElementName=rangeSalary, Path=IsChecked, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Grid.Column="3" Width="60" />
         </Grid>
-        <Button Grid.Row="7" Grid.Column="2" Grid.RowSpan="2" Content="Search"/>
+        <Button Grid.Row="7" Grid.Column="2" Grid.RowSpan="2" Content="Search" Click="SearchBySalary"/>
 
 
         <TextBlock Grid.Row="9" Grid.Column="0" Grid.RowSpan="2" Text="Supervisor ID" FontSize="14"/>
@@ -145,7 +145,7 @@
             <TextBlock Grid.Column="2" Text="To" FontSize="14" />
             <TextBox x:Name="toSupID" Text="{Binding ElementName=rangeSupID, Path=IsChecked, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, Converter={StaticResource notRangeNumberConverter}}" IsEnabled="{Binding ElementName=rangeSupID, Path=IsChecked, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Grid.Column="3" Width="60" />
         </Grid>
-        <Button Grid.Row="9" Grid.Column="2" Grid.RowSpan="2" Content="Search"/>
+        <Button Grid.Row="9" Grid.Column="2" Grid.RowSpan="2" Content="Search" Click="SearchBySupID"/>
         
         
         <TextBlock Grid.Row="11" Grid.Column="0" Text="Gender" FontSize="14"/>
@@ -157,16 +157,16 @@
             <RadioButton Grid.Column="0" GroupName="gender" x:Name="male" Content="Male"/>
             <RadioButton Grid.Column="1" GroupName="gender" x:Name="female" Content="Female"/>
         </Grid>
-        <Button Grid.Row="11" Grid.Column="2" Content="Search"/>
+        <Button Grid.Row="11" Grid.Column="2" Content="Search" Click="SearchByGender"/>
 
         <TextBlock Grid.Row="12" Grid.Column="0" Text="Rank" FontSize="14"/>
         <ComboBox Grid.Row="12" Grid.Column="1" x:Name="rank">
-            <ComboBoxItem Content="Admin" />
+            <ComboBoxItem Content="Administrator" />
             <ComboBoxItem Content="Manager" />
             <ComboBoxItem Content="Worker" />
             <ComboBoxItem Content="Customer" />
         </ComboBox>
-        <Button Grid.Row="12" Grid.Column="2" Content="Search"/>
+        <Button Grid.Row="12" Grid.Column="2" Content="Search" Click="SearchByRank"/>
 
         <Button Click="ClearForm" Grid.Row="13" Grid.Column="0" Grid.ColumnSpan="3" Content="Clear all" Width="100"/>
     </Grid>

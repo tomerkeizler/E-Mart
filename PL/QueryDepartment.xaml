@@ -51,7 +51,7 @@
 
         <TextBlock Grid.Row="2" Grid.Column="0" Text="Department name" FontSize="14"/>
         <TextBox x:Name="depName" Grid.Row="2" Grid.Column="1" />
-        <Button Grid.Row="2" Grid.Column="2" Content="Search"/>
+        <Button Grid.Row="2" Grid.Column="2" Content="Search" Click="SearchByDepName"/>
 
         <TextBlock Grid.Row="3" Grid.Column="0" Grid.RowSpan="2" Text="Department ID" FontSize="14"/>
         <Grid Grid.Row="3" Grid.Column="1" Width="200" HorizontalAlignment="Left" VerticalAlignment="Center">
@@ -74,7 +74,7 @@
             <TextBlock Grid.Column="2" Text="To" FontSize="14" />
             <TextBox x:Name="toDepID" Text="{Binding ElementName=rangeDepID, Path=IsChecked, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, Converter={StaticResource notRangeNumberConverter}}" IsEnabled="{Binding ElementName=rangeDepID, Path=IsChecked, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Grid.Column="3" Width="60" />
         </Grid>
-        <Button Grid.Row="3" Grid.Column="2" Grid.RowSpan="2" Content="Search"/>
+        <Button Grid.Row="3" Grid.Column="2" Grid.RowSpan="2" Content="Search" Click="SearchByDepID"/>
 
         <Button Click="ClearForm" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Content="Clear all" Width="100"/>
     </Grid>

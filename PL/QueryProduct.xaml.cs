@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using BL;
+using Backend;
 
 namespace PL
 {
@@ -22,20 +23,84 @@ namespace PL
     {
         // attributes
         private PL_GUI parentWindow;
-        private IBL itsProductBL;
 
         //constructor
-        public QueryProduct(PL_GUI _parentWindow, IBL _itsProductBL)
+        public QueryProduct(PL_GUI _parentWindow)
         {
             InitializeComponent();
             parentWindow = _parentWindow;
-            itsProductBL = _itsProductBL;
         }
 
         private void ClearForm(object sender, RoutedEventArgs e)
         {
-            List<Control> lst = new List<Control>() { name, PType, specificDepID, rangeDepID, fromDepID, toDepID, specificPrice, rangePrice, fromPrice, toPrice, specificPrdID, rangePrdID, fromPrdID, toPrdID, PStatus, specificStockCount, rangeStockCount, fromStockCount, toStockCount };
-            Helper.ClearForm(lst);
+            List<Control> lst = new List<Control>() { name, pType, specificDepID, rangeDepID, fromDepID, toDepID, specificPrice, rangePrice, fromPrice, toPrice, specificPrdID, rangePrdID, fromPrdID, toPrdID, pStatus, specificStockCount, rangeStockCount, fromStockCount, toStockCount };
+            PL_GUI.ClearForm(lst);
         }
+
+        private void SearchByName(object sender, RoutedEventArgs e)
+        {
+            if (parentWindow.SearchDataEntity(StringFields.name, name.Text, null, 5))
+                this.Close();
+        }
+
+        private void SearchByPType(object sender, RoutedEventArgs e)
+        {
+            PType type;
+            if (pType.Text.Equals("Electronics"))
+                type = PType.Electronics;
+            else if (pType.Text.Equals("Food"))
+                type = PType.Food;
+            else
+                type = PType.Clothes;
+            if (parentWindow.SearchDataEntity(TypeFields.type, type, null, 5))
+                this.Close();
+        }
+
+        private void SearchByDepID(object sender, RoutedEventArgs e)
+        {
+            int min = int.Parse(fromDepID.Text);
+            String max = toDepID.Text;
+            if (parentWindow.SearchDataEntity(IntFields.location, min, (max.Equals(String.Empty)) ? (min) : (int.Parse(max)), 5))
+                this.Close();
+        }
+
+        private void SearchByProductID(object sender, RoutedEventArgs e)
+        {
+            int min = int.Parse(fromPrdID.Text);
+            String max = toPrdID.Text;
+            if (parentWindow.SearchDataEntity(IntFields.productID, min, (max.Equals(String.Empty)) ? (min) : (int.Parse(max)), 5))
+                this.Close();
+        }
+
+        private void SearchByPrice(object sender, RoutedEventArgs e)
+        {
+            int min = int.Parse(fromPrice.Text);
+            String max = toPrice.Text;
+            if (parentWindow.SearchDataEntity(IntFields.price, min, (max.Equals(String.Empty)) ? (min) : (int.Parse(max)), 5))
+                this.Close();
+        }
+
+        private void SearchByPStatus(object sender, RoutedEventArgs e)
+        {
+            PStatus sta;
+            if (pStatus.Text.Equals("in stock"))
+                sta = PStatus.InStock;
+            else if (pStatus.Text.Equals("low quantity"))
+                sta = PStatus.LowQuantity;
+            else
+                sta = PStatus.Empty;
+            if (parentWindow.SearchDataEntity(TypeFields.inStock, sta, null, 5))
+                this.Close();
+        }
+
+        private void SearchByStockCount(object sender, RoutedEventArgs e)
+        {
+            int min = int.Parse(fromStockCount.Text);
+            String max = toStockCount.Text;
+            if (parentWindow.SearchDataEntity(IntFields.stockCount, min, (max.Equals(String.Empty)) ? (min) : (int.Parse(max)), 5))
+                this.Close();
+        }
+
+
     }
 }

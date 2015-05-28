@@ -37,7 +37,7 @@ namespace PL
         private void ClearForm(object sender, RoutedEventArgs e)
         {
             List<Control> lst = new List<Control>() { username, password };
-            Helper.ClearForm(lst);
+            PL_GUI.ClearForm(lst);
         }
 
         // check username and password validity
@@ -106,7 +106,7 @@ namespace PL
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             this.Close();
-            AddCustomer reg = new AddCustomer(this.parentWindow, true);
+            AddEditCustomer reg = new AddEditCustomer(this.parentWindow, true, true, null);
             reg.Show();
         }
 

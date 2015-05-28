@@ -36,7 +36,7 @@ namespace PL
         private void ClearForm(object sender, RoutedEventArgs e)
         {
             List<Control> lst = new List<Control>() { newPass };
-            Helper.ClearForm(lst);
+            PL_GUI.ClearForm(lst);
         }
 
 

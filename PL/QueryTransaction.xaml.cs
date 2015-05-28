@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using BL;
+using Backend;
 
 namespace PL
 {
@@ -22,20 +23,65 @@ namespace PL
     {
         // attributes
         private PL_GUI parentWindow;
-        private IBL itsTransactionBL;
 
         //constructor
-        public QueryTransaction(PL_GUI _parentWindow, IBL _itsTransactionBL)
+        public QueryTransaction(PL_GUI _parentWindow)
         {
             InitializeComponent();
             parentWindow = _parentWindow;
-            itsTransactionBL = _itsTransactionBL;
         }
 
         private void ClearForm(object sender, RoutedEventArgs e)
         {
-            List<Control> lst = new List<Control>() { is_a_return, currentDate, specificTranID, rangeTranID, fromTranID, toTranID, payment, specificPrdID, rangePrdID, fromPrdID, toPrdID };
-            Helper.ClearForm(lst);
+            List<Control> lst = new List<Control>() { purchaseType, returnType, currentDate, specificTranID, rangeTranID, fromTranID, toTranID, payment, specificPrdID, rangePrdID, fromPrdID, toPrdID };
+            PL_GUI.ClearForm(lst);
         }
+
+        private void SearchByTranType(object sender, RoutedEventArgs e)
+        {
+            Is_a_return tranType;
+            if (purchaseType.IsChecked == true)
+                tranType = Is_a_return.Purchase;
+            else
+                tranType = Is_a_return.Return;
+            if (parentWindow.SearchDataEntity(TypeFields.is_a_return, tranType, null, 6))
+                this.Close();
+        }
+
+        private void SearchByDate(object sender, RoutedEventArgs e)
+        {
+            if (parentWindow.SearchDataEntity(StringFields.currentDate, ((DateTime)currentDate.SelectedDate).ToShortDateString(), null, 6))
+                this.Close();
+        }
+
+        private void SearchByTranID(object sender, RoutedEventArgs e)
+        {
+            int min = int.Parse(fromTranID.Text);
+            String max = toTranID.Text;
+            if (parentWindow.SearchDataEntity(IntFields.tranHistory, min, (max.Equals(String.Empty)) ? (min) : (int.Parse(max)), 6))
+                this.Close();
+        }
+
+        private void SearchByPayment(object sender, RoutedEventArgs e)
+        {
+            PaymentMethod pay;
+            if (payment.Text.Equals("Cash"))
+                pay = PaymentMethod.Cash;
+            else if (payment.Text.Equals("Visa"))
+                pay = PaymentMethod.Visa;
+            else
+                pay = PaymentMethod.Check;
+            if (parentWindow.SearchDataEntity(TypeFields.payment, pay, null, 6))
+                this.Close();
+        }
+
+        private void SearchByProductID(object sender, RoutedEventArgs e)
+        {
+            int min = int.Parse(fromPrdID.Text);
+            String max = toPrdID.Text;
+            if (parentWindow.SearchDataEntity(IntFields.productID, min, (max.Equals(String.Empty)) ? (min) : (int.Parse(max)), 6))
+                this.Close();
+        }
+
     }
 }
