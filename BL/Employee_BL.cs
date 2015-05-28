@@ -52,6 +52,7 @@ namespace BL
                 if (((Employee)e).SupervisiorID == 0)
                 {
                     ((Employee)e).Rank = Rank.Administrator;
+                    checkSup = true;
                 }
                 if (!checkSup)
                 {
