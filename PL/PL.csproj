@@ -54,6 +54,9 @@
       <DependentUpon>AddEditEmployee.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="AddEditProduct.xaml.cs">
+      <DependentUpon>AddEditProduct.xaml</DependentUpon>
+    </Compile>
     <Compile Include="AddEditTransaction.xaml.cs">
       <DependentUpon>AddEditTransaction.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -88,9 +91,6 @@
     </Compile>
     <Compile Include="AddEditClubMember.xaml.cs">
       <DependentUpon>AddEditClubMember.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="AddEditProduct.xaml.cs">
-      <DependentUpon>AddEditProduct.xaml</DependentUpon>
     </Compile>
     <Compile Include="IPL.cs" />
     <Compile Include="Login.xaml.cs">
@@ -133,6 +133,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="AddEditEmployee.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AddEditProduct.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -179,10 +183,6 @@
     <Page Include="AddEditClubMember.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="AddEditProduct.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Login.xaml">
       <Generator>MSBuild:Compile</Generator>
