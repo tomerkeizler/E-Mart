@@ -91,6 +91,16 @@ namespace BL
         }
         public void Edit(object oldE, object newE)
         {
+            List<User> oldUserList = itsDAL.UserPersonQuery(oldE);
+            User oldUser = oldUserList.ElementAtOrDefault(0);
+            if (oldUser == null)
+            {
+                throw new NullReferenceException("The customer does not exist!");
+            }
+            User_BL itsUserBL = new User_BL(itsDAL);
+            User newUser = new User(oldUser);
+            newUser.Person = newE;
+            itsUserBL.Edit(oldUser, newUser);
             this.Remove(oldE);
             this.Add(newE);            
         }

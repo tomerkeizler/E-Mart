@@ -501,6 +501,21 @@ namespace DAL
             filteredUser = allUser.Where(n => n.UserName.Equals(name)).Cast<User>().ToList();
             return filteredUser;
         }
+        public List<User> UserPersonQuery(object person)
+        {
+            List<User> allUser = ReadFromFile(Elements.User).Cast<User>().ToList();
+            List<User> filteredUser;
+            if (allUser.ElementAtOrDefault(0) == null)
+            {
+                throw new InvalidDataException("There is nothing to find from.");
+            }
+            if (person == null)
+            {
+                throw new System.Data.DataException("Bad Input!");
+            }
+            filteredUser = allUser.Where(n => n.Person.Equals(person)).Cast<User>().ToList();
+            return filteredUser;
+        }
 
 
         public List<Transaction> TransactionNameQuery(string name, StringFields field)
