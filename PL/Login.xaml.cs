@@ -61,7 +61,7 @@ namespace PL
                 if (_user.Person is Customer || _user.Person is ClubMember)
                     _rank = Rank.Customer;
                 else
-                    _rank = ((Employee)(_user.Person)).MyRank;
+                    _rank = ((Employee)(_user.Person)).Rank;
 
                 int[] myPermissions = PL_GUI.allPermissions[(int)_rank];
                 bool[] _viewPermissions = new bool[9];

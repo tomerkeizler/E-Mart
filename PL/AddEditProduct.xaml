@@ -52,7 +52,7 @@
             <ComboBoxItem Name="Clothes" Content="Clothes " />
             <ComboBoxItem Name="Food" Content="Food" />
         </ComboBox>
-        
+
         <TextBlock Grid.Row="3" Grid.Column="0" Text="Product price" FontSize="14"/>
         <TextBox x:Name="price" Grid.Row="3" Grid.Column="1" />
 

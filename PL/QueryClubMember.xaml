@@ -1,0 +1,138 @@
+﻿<Window x:Class="PL.QueryClubMember"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:PL"
+
+        Title="E-MART" Height="500" Width="500">
+
+    <Window.Resources>
+        <local:NotRangeNumberConverter x:Key="notRangeNumberConverter" />
+
+        <Style TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="FontWeight" Value="Bold" />
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Width" Value="60" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="Height" Value="23" />
+            <Setter Property="Width" Value="120" />
+        </Style>
+    </Window.Resources>
+
+    <Grid HorizontalAlignment="Center" Height="450" VerticalAlignment="Center" Width="450">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="3*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Text="Search for Club Membner" HorizontalAlignment="Center"  FontSize="24" Foreground="#FF2D59EE"/>
+
+        <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Text="Search by one of the following:" FontSize="14" TextDecorations="Underline"/>
+
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="First name" FontSize="14"/>
+        <TextBox x:Name="firstName" Grid.Row="2" Grid.Column="1" />
+        <Button Grid.Row="2" Grid.Column="2" Content="Search" Click="SearchByFirstName"/>
+
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="Last name" FontSize="14"/>
+        <TextBox x:Name="lastName" Grid.Row="3" Grid.Column="1" />
+        <Button Grid.Row="3" Grid.Column="2" Content="Search" Click="SearchByLastName"/>
+
+        <TextBlock Grid.Row="4" Grid.Column="0" Text="ID number" FontSize="14"/>
+        <TextBox x:Name="ID" Grid.Row="4" Grid.Column="1" />
+        <Button Grid.Row="4" Grid.Column="2" Content="Search" Click="SearchByID"/>
+
+
+        <TextBlock Grid.Row="5" Grid.Column="0" Grid.RowSpan="2" Text="Member ID" FontSize="14"/>
+        <Grid Grid.Row="5" Grid.Column="1" Width="200" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <RadioButton Grid.Column="0" GroupName="SearchMemberID" x:Name="specificMemberID" Content="specific search"/>
+            <RadioButton Grid.Column="1" GroupName="SearchMemberID" x:Name="rangeMemberID" Content="range search"/>
+        </Grid>
+        <Grid Grid.Row="6" Grid.Column="1" Width="220" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="4*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="From" FontSize="14" />
+            <TextBox x:Name="fromMemberID" Grid.Column="1" Width="60" />
+            <TextBlock Grid.Column="2" Text="To" FontSize="14" />
+            <TextBox x:Name="toMemberID" Text="{Binding ElementName=rangeMemberID, Path=IsChecked, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, Converter={StaticResource notRangeNumberConverter}}" IsEnabled="{Binding ElementName=rangeMemberID, Path=IsChecked, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Grid.Column="3" Width="60" />
+        </Grid>
+        <Button Grid.Row="5" Grid.Column="2" Grid.RowSpan="2" Content="Search" Click="SearchByMemberID"/>
+
+
+        <TextBlock Grid.Row="7" Grid.Column="0" Grid.RowSpan="2" Text="Transaction ID" FontSize="14"/>
+        <Grid Grid.Row="7" Grid.Column="1" Width="200" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <RadioButton Grid.Column="0" GroupName="SearchTranID" x:Name="specificTranID" Content="specific search"/>
+            <RadioButton Grid.Column="1" GroupName="SearchTranID" x:Name="rangeTranID" Content="range search"/>
+        </Grid>
+        <Grid Grid.Row="8" Grid.Column="1" Width="220" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="4*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="From" FontSize="14" />
+            <TextBox x:Name="fromTranID" Grid.Column="1" Width="60" />
+            <TextBlock Grid.Column="2" Text="To" FontSize="14" />
+            <TextBox x:Name="toTranID" Text="{Binding ElementName=rangeTranID, Path=IsChecked, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, Converter={StaticResource notRangeNumberConverter}}" IsEnabled="{Binding ElementName=rangeTranID, Path=IsChecked, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Grid.Column="3" Width="60" />
+        </Grid>
+        <Button Grid.Row="7" Grid.Column="2" Grid.RowSpan="2" Content="Search" Click="SearchByTranID"/>
+
+
+        <TextBlock Grid.Row="9" Grid.Column="0" Text="Gender" FontSize="14"/>
+        <Grid Grid.Row="9" Grid.Column="1" Width="120" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <RadioButton Grid.Column="0" GroupName="gender" x:Name="male" Content="Male"/>
+            <RadioButton Grid.Column="1" GroupName="gender" x:Name="female" Content="Female"/>
+        </Grid>
+        <Button Grid.Row="9" Grid.Column="2" Content="Search" Click="SearchByGender"/>
+
+        <TextBlock Grid.Row="10" Grid.Column="0" Text="Date of birth" FontSize="14"/>
+        <DatePicker x:Name="dateOfBirth" Grid.Row="10" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <Button Grid.Row="10" Grid.Column="2" Content="Search" Click="SearchByDateOfBirth"/>
+
+        <Button Click="ClearForm" Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="3" Content="Clear all" Width="100"/>
+    </Grid>
+
+</Window>

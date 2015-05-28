@@ -56,7 +56,7 @@ namespace Backend
             get { return tranHistory; }
             set { tranHistory = value; }
         }
-        internal CreditCard CreditCard
+        public CreditCard CreditCard
         {
             get { return creditCard; }
             set { creditCard = value; }
@@ -75,7 +75,7 @@ namespace Backend
         }
         public override string ToString()
         {
-            return id+"";
+            return "Customer -" + firstName + " " + lastName;
         }
     }
 }

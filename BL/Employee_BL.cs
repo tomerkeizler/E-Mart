@@ -43,15 +43,16 @@ namespace BL
                 {
                     if (emp.Equals(e))
                         throw new Exception("employee is already exists!");
-                    if (((Employee)e).SupervisiorID == emp.Id)
+                    if ((emp.Id != 0) && ((Employee)e).SupervisiorID == emp.Id)
                     {
                         checkSup = true;
-                        emp.MyRank = Rank.Manager;
+                        emp.Rank = Rank.Manager;
                     }
                 }
                 if (((Employee)e).SupervisiorID == 0)
                 {
-                    ((Employee)e).MyRank = Rank.Administrator;
+                    ((Employee)e).Rank = Rank.Administrator;
+                    checkSup = true;
                 }
                 if (!checkSup)
                 {
@@ -93,11 +94,21 @@ namespace BL
                         temp = emp;
                 }
                 if (!hasMoreEmployees)
-                    temp.MyRank = Rank.Worker;
+                    temp.Rank = Rank.Worker;
                 itsDAL.WriteToFile(Allemps.Cast<object>().ToList(), e);
         }
         public void Edit(object oldE, object newE)
         {
+            List<User> oldUserList = itsDAL.UserPersonQuery(oldE);
+            User oldUser = oldUserList.ElementAtOrDefault(0);
+            if (oldUser == null)
+            {
+                throw new NullReferenceException("The customer does not exist!");
+            }
+            User_BL itsUserBL = new User_BL(itsDAL);
+            User newUser = new User(oldUser);
+            newUser.Person = newE;
+            itsUserBL.Edit(oldUser, newUser);
             this.Remove(oldE);
             this.Add(newE);            
         }

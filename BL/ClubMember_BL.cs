@@ -72,6 +72,16 @@ namespace BL
         {
             //preserve the id for the edited clubmember
             ((ClubMember)newCM).MemberID = ((ClubMember)oldCM).MemberID;
+            List<User> oldUserList = itsDAL.UserPersonQuery(oldCM);
+            User oldUser = oldUserList.ElementAtOrDefault(0);
+            if (oldUser == null)
+            {
+                throw new NullReferenceException("The customer does not exist!");
+            }
+            User_BL itsUserBL = new User_BL(itsDAL);
+            User newUser = new User(oldUser);
+            newUser.Person = newCM;
+            itsUserBL.Edit(oldUser, newUser);
             this.Remove(oldCM);
             this.Add(newCM);
         }
