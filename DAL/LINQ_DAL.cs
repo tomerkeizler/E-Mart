@@ -224,7 +224,7 @@ namespace DAL
             }
             else if (type is PStatus)
             {
-                filteredProducts = allProducts.Where(n => n.Type.Equals((PStatus)type)).Cast<Product>().ToList();
+                filteredProducts = allProducts.Where(n => n.InStock.Equals((PStatus)type)).Cast<Product>().ToList();
             }
               
             else
