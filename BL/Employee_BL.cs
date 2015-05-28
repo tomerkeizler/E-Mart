@@ -64,6 +64,7 @@ namespace BL
         public void Remove(object e)
         {
             List<Employee> Allemps = itsDAL.ReadFromFile(Elements.Employee).Cast<Employee>().ToList();
+            List<User> Allusers = itsDAL.ReadFromFile(Elements.User).Cast<User>().ToList();
             bool hasMoreEmployees = false;
             Employee temp = new Employee();
             if (!Allemps.Any())
@@ -79,6 +80,12 @@ namespace BL
                     if (emp.Equals(e))
                     {
                         Allemps.Remove(emp);
+                        foreach (User user in Allusers)
+                        {
+                            if (user.Person.Equals(e))
+                                Allusers.Remove(user);
+                            break;
+                        }
                     }
                     else if (((Employee)e).SupervisiorID == emp.SupervisiorID)
                         hasMoreEmployees = true;

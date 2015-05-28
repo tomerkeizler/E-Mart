@@ -46,22 +46,26 @@ namespace BL
         public void Remove(object cm)
         {
             List<ClubMember> Allclubmems = itsDAL.ReadFromFile(Elements.ClubMember).Cast<ClubMember>().ToList();
+            List<User> Allusers = itsDAL.ReadFromFile(Elements.User).Cast<User>().ToList();
             //check if there are any clubmembers to remove
             if (!Allclubmems.Any())
                 throw new NullReferenceException("No ClubMembers to remove!");
-            else
+            //find and remove clubmember
+            foreach (ClubMember clubmem in Allclubmems)
             {
-                //find and remove clubmember
-                foreach (ClubMember clubmem in Allclubmems)
+                if (clubmem.Equals(cm))
                 {
-                    if (clubmem.Equals(cm))
+                    Allclubmems.Remove(clubmem);
+                    foreach (User user in Allusers)
                     {
-                        Allclubmems.Remove(clubmem);
+                        if (user.Person.Equals(cm))
+                            Allusers.Remove(user);
                         break;
                     }
+                    break;
                 }
-                itsDAL.WriteToFile(Allclubmems.Cast<object>().ToList(), cm);
             }
+            itsDAL.WriteToFile(Allclubmems.Cast<object>().ToList(), cm);
         }
 
         public void Edit(object oldCM, object newCM)

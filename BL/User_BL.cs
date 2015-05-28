@@ -41,18 +41,25 @@ namespace BL
             List<User> Allusers = itsDAL.ReadFromFile(Elements.User).Cast<User>().ToList();
             if (!Allusers.Any())
                 throw new NullReferenceException("No Users to remove!");
-            else
-            {
-                foreach (User user in Allusers)
+
+            List<object> Allpersons = itsDAL.ReadFromFile(Elements.ClubMember).ToList();
+            Allpersons.AddRange(itsDAL.ReadFromFile(Elements.Customer).ToList());
+            Allpersons.AddRange(itsDAL.ReadFromFile(Elements.Employee).ToList());
+            foreach (object person in Allpersons)
+                if (person.Equals(((User)u).Person))
                 {
-                    if (user.Equals(u))
-                    {
-                        Allusers.Remove(user);
-                        break;
-                    }
+                    Allpersons.Remove(person);
+                    break;
                 }
-                itsDAL.WriteToFile(Allusers.Cast<object>().ToList(), (User)u);
+            foreach (User user in Allusers)
+            {
+                if (user.Equals(u))
+                {
+                    Allusers.Remove(user);
+                    break;
+                }
             }
+            itsDAL.WriteToFile(Allusers.Cast<object>().ToList(), (User)u);
         }
 
         public void Edit(object oldU, object newU)
