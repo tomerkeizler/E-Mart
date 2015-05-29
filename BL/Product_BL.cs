@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Backend;
 using DAL;
+using System.Collections.ObjectModel;
 
 namespace BL
 {
@@ -140,13 +141,13 @@ namespace BL
                 }
             }
         }
-        public List<Product> FilterProducts(List<Product> currentList, List<PType> typelist)
+        public void FilterProducts(ObservableCollection<Product> currentList, PType type, bool isAdd)
         {
-            if (currentList == null || typelist == null || typelist.Count > 3)
+            if (currentList == null)
             {
                 throw new System.Data.DataException("Bad Input!");
             }
-            return itsDAL.ProductMulTypeQuery(currentList, typelist);
+            itsDAL.FilterProducts(currentList, type, isAdd);
         }
     }
 }
