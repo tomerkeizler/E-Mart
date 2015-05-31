@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Backend;
 using BL;
+using System.Text.RegularExpressions;
 
 namespace PL
 {
@@ -79,27 +80,68 @@ namespace PL
         // Add or edit
         private void AddOrEdit(object sender, RoutedEventArgs e)
         {
-            Gender myGender;
-            if (male.IsChecked == true)
-                myGender = Gender.Male;
-            else
-                myGender = Gender.Female;
-
-            Employee newObj = new Employee(firstName.Text, lastName.Text, int.Parse(ID.Text), myGender, int.Parse(depID.Text), int.Parse(salary.Text), int.Parse(supID.Text));
-            User newUser = new User(username.Text, password.Password, newObj);
-
-            //adding action
-            if (isAdd)
+            if (IsValid())
             {
-                if (parentWindow.AddDataEntity(newObj, newUser, 4))
-                    this.Close();
+                Gender myGender;
+                if (male.IsChecked == true)
+                    myGender = Gender.Male;
+                else
+                    myGender = Gender.Female;
+
+                Employee newObj = new Employee(firstName.Text, lastName.Text, int.Parse(ID.Text), myGender, int.Parse(depID.Text), int.Parse(salary.Text), int.Parse(supID.Text));
+                User newUser = new User(username.Text, password.Password, newObj);
+
+                //adding action
+                if (isAdd)
+                {
+                    if (parentWindow.AddDataEntity(newObj, newUser, 4))
+                        this.Close();
+                }
+                //editing action
+                else
+                {
+                    if (parentWindow.EditDataEntity(oldObj, newObj, 4))
+                        this.Close();
+                }
             }
-            //editing action
-            else
-            {
-                if (parentWindow.EditDataEntity(oldObj, newObj, 4))
-                    this.Close();
-            }
+        }
+
+
+
+
+        private bool IsValid()
+        {
+            bool flag = true;
+            flag = PL_GUI.RegExp(username.Text, "Username", 3);
+            if (flag)
+                flag = PL_GUI.RegExp(password.Password, "Password", 3);
+            if (flag)
+                flag = PL_GUI.RegExp(firstName.Text, "First name", 1);
+            if (flag)
+                flag = PL_GUI.RegExp(lastName.Text, "Last name", 1);
+            if (flag)
+                flag = PL_GUI.RegExp(ID.Text, "ID", 0);
+            if (flag)
+                if (male.IsChecked == false && female.IsChecked == false)
+                {
+                    MessageBox.Show("Gender must be selected");
+                    flag = false;
+                }
+            if (flag)
+                if (depID.SelectedIndex == -1)
+                {
+                    MessageBox.Show("Department ID must be selected");
+                    flag = false;
+                }
+            if (flag)
+                if (supID.SelectedIndex == -1)
+                {
+                    MessageBox.Show("Supervisor ID must be selected");
+                    flag = false;
+                }
+            if (flag)
+                flag = PL_GUI.RegExp(salary.Text, "Salary", 2);
+            return flag;
         }
 
 

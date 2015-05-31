@@ -40,9 +40,9 @@
 
 
         <TextBox x:Name="username" Grid.Row="1" Grid.Column="1" />
-        <TextBox x:Name="password" Grid.Row="2" Grid.Column="1" />
+        <PasswordBox x:Name="password" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Height="23" VerticalAlignment="Center" Width="120"/>
 
-        
+
         <Button Click="ResetForm" Grid.Row="3" Grid.Column="0" Content="Reset all" HorizontalAlignment="Right" VerticalAlignment="Center" Width="100" FontSize="14"/>
         <Button Grid.Row="3" Grid.Column="1" Content="Edit User" VerticalAlignment="Center" Width="150" FontSize="14" Click="AddOrEdit"/>
     </Grid>

@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using BL;
 using Backend;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace PL
 {
@@ -43,62 +44,65 @@ namespace PL
         // check username and password validity
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            User _user = null;
-            try
+            if (IsValid())
             {
-                _user = (User)userBL.isItValidUser(new User(username.Text, password.Password, null));
-            }
-            catch (System.Data.DataException error)
-            {
-                MessageBox.Show(error.Message);
-            }
-
-            if (_user != null)
-            {
-                MessageBox.Show("Log in done successfully!\nPlease click OK to continue");
-
-                Rank _rank;
-                if (_user.Person is Customer || _user.Person is ClubMember)
-                    _rank = Rank.Customer;
-                else
-                    _rank = ((Employee)(_user.Person)).Rank;
-
-                int[] myPermissions = PL_GUI.allPermissions[(int)_rank];
-                bool[] _viewPermissions = new bool[9];
-                bool[] _fullPermissions = new bool[9];
-
-                for (int i = 0; i < 9; i++)
+                User _user = null;
+                try
                 {
-                    if (myPermissions[i] > 0)
-                    {
-                        _viewPermissions[i] = true;
-                        if (myPermissions[i] == 1)
-                            _fullPermissions[i] = false;
-                        else
-                            _fullPermissions[i] = true;
-                    }
-                    else
-                    {
-                        _viewPermissions[i] = false;
-                        _fullPermissions[i] = false;
-                    }
+                    _user = (User)userBL.isItValidUser(new User(username.Text, password.Password, null));
+                }
+                catch (System.Data.DataException error)
+                {
+                    MessageBox.Show(error.Message);
                 }
 
-                /////////////////
-                _viewPermissions[1] = false;
-                /////////////////
+                if (_user != null)
+                {
+                    MessageBox.Show("Log in done successfully!\nPlease click OK to continue");
 
-                parentWindow.user = _user;
-                parentWindow.rank = _rank;
-                parentWindow.viewPermissions = _viewPermissions;
-                parentWindow.fullPermissions = _fullPermissions;
+                    Rank _rank;
+                    if (_user.Person is Customer || _user.Person is ClubMember)
+                        _rank = Rank.Customer;
+                    else
+                        _rank = ((Employee)(_user.Person)).Rank;
 
-                // display the username and permission in the main Window at the upper left square
-                parentWindow.title_name.Text = "Hey " + _user.ToString() + "!";
-                parentWindow.title_rank.Text = "Logged in as " + _rank.ToString();
+                    int[] myPermissions = PL_GUI.allPermissions[(int)_rank];
+                    bool[] _viewPermissions = new bool[9];
+                    bool[] _fullPermissions = new bool[9];
 
-                this.Close();
-                parentWindow.Show();
+                    for (int i = 0; i < 9; i++)
+                    {
+                        if (myPermissions[i] > 0)
+                        {
+                            _viewPermissions[i] = true;
+                            if (myPermissions[i] == 1)
+                                _fullPermissions[i] = false;
+                            else
+                                _fullPermissions[i] = true;
+                        }
+                        else
+                        {
+                            _viewPermissions[i] = false;
+                            _fullPermissions[i] = false;
+                        }
+                    }
+
+                    /////////////////
+                    _viewPermissions[1] = false;
+                    /////////////////
+
+                    parentWindow.user = _user;
+                    parentWindow.rank = _rank;
+                    parentWindow.viewPermissions = _viewPermissions;
+                    parentWindow.fullPermissions = _fullPermissions;
+
+                    // display the username and permission in the main Window at the upper left square
+                    parentWindow.title_name.Text = "Hey " + _user.ToString() + "!";
+                    parentWindow.title_rank.Text = "Logged in as " + _rank.ToString();
+
+                    this.Close();
+                    parentWindow.Show();
+                }
             }
         }
 
@@ -108,6 +112,16 @@ namespace PL
             this.Close();
             AddEditCustomer reg = new AddEditCustomer(this.parentWindow, true, true, null);
             reg.Show();
+        }
+
+
+        private bool IsValid()
+        {
+            bool flag = true;
+            flag = PL_GUI.RegExp(username.Text, "Username", 3);
+            if (flag)
+                flag = PL_GUI.RegExp(password.Password, "Password", 3);
+            return flag;
         }
 
 

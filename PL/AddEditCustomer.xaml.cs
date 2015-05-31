@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Backend;
+using System.Text.RegularExpressions;
 
 namespace PL
 {
@@ -71,66 +72,84 @@ namespace PL
         // Add or edit
         private void AddOrEdit(object sender, RoutedEventArgs e)
         {
-            Customer newObj = new Customer(int.Parse(ID.Text), firstName.Text, lastName.Text);
-            User newUser = new User(username.Text, password.Password, newObj);
-
-            //adding action
-            if (isAdd)
+            if (IsValid())
             {
-                if (parentWindow.AddDataEntity(newObj, newUser, 2))
+                Customer newObj = new Customer(int.Parse(ID.Text), firstName.Text, lastName.Text);
+                User newUser = new User(username.Text, password.Password, newObj);
+
+                //adding action
+                if (isAdd)
                 {
-                    this.Close();
-
-                    MessageBox.Show("Registration to E-MART done successfully!\nPlease click OK to continue");
-
-                    // if this is a self registration - then send the user to the main window as a customer
-                    if (isRegister)
+                    if (parentWindow.AddDataEntity(newObj, newUser, 2))
                     {
-                        Rank _rank = Rank.Customer;
-                        int[] myPermissions = PL_GUI.allPermissions[3];
-                        bool[] _viewPermissions = new bool[9];
-                        bool[] _fullPermissions = new bool[9];
+                        this.Close();
 
-                        for (int i = 0; i < 9; i++)
+                        MessageBox.Show("Registration to E-MART done successfully!\nPlease click OK to continue");
+
+                        // if this is a self registration - then send the user to the main window as a customer
+                        if (isRegister)
                         {
-                            if (myPermissions[i] > 0)
+                            Rank _rank = Rank.Customer;
+                            int[] myPermissions = PL_GUI.allPermissions[3];
+                            bool[] _viewPermissions = new bool[9];
+                            bool[] _fullPermissions = new bool[9];
+
+                            for (int i = 0; i < 9; i++)
                             {
-                                _viewPermissions[i] = true;
-                                if (myPermissions[i] == 1)
-                                    _fullPermissions[i] = false;
+                                if (myPermissions[i] > 0)
+                                {
+                                    _viewPermissions[i] = true;
+                                    if (myPermissions[i] == 1)
+                                        _fullPermissions[i] = false;
+                                    else
+                                        _fullPermissions[i] = true;
+                                }
                                 else
-                                    _fullPermissions[i] = true;
+                                {
+                                    _viewPermissions[i] = false;
+                                    _fullPermissions[i] = false;
+                                }
                             }
-                            else
-                            {
-                                _viewPermissions[i] = false;
-                                _fullPermissions[i] = false;
-                            }
+
+                            parentWindow.user = newUser;
+                            parentWindow.rank = _rank;
+                            parentWindow.viewPermissions = _viewPermissions;
+                            parentWindow.fullPermissions = _fullPermissions;
+
+                            // display the username and permission in the main Window at the upper left square
+                            parentWindow.title_name.Text = "Hey " + newUser.UserName + "!";
+                            parentWindow.title_rank.Text = "Logged in as " + Rank.Customer;
+
+                            parentWindow.Show();
                         }
-
-                        parentWindow.user = newUser;
-                        parentWindow.rank = _rank;
-                        parentWindow.viewPermissions = _viewPermissions;
-                        parentWindow.fullPermissions = _fullPermissions;
-
-                        // display the username and permission in the main Window at the upper left square
-                        parentWindow.title_name.Text = "Hey " + newUser.UserName + "!";
-                        parentWindow.title_rank.Text = "Logged in as " + Rank.Customer;
-
-                        parentWindow.Show();
                     }
                 }
-            }
-            //editing action
-            else
-            {
-                newObj.CreditCard = ((Customer)oldObj).CreditCard;
-                newObj.TranHistory = ((Customer)oldObj).TranHistory;
-                if (parentWindow.EditDataEntity(oldObj, newObj, 2))
-                    this.Close();
+                //editing action
+                else
+                {
+                    newObj.CreditCard = ((Customer)oldObj).CreditCard;
+                    newObj.TranHistory = ((Customer)oldObj).TranHistory;
+                    if (parentWindow.EditDataEntity(oldObj, newObj, 2))
+                        this.Close();
+                }
             }
         }
 
+
+        private bool IsValid()
+        {
+            bool flag = true;
+            flag = PL_GUI.RegExp(username.Text, "Username", 3);
+            if (flag)
+                flag = PL_GUI.RegExp(password.Password, "Password", 3);
+            if (flag)
+                flag = PL_GUI.RegExp(firstName.Text, "First name", 1);
+            if (flag)
+                flag = PL_GUI.RegExp(lastName.Text, "Last name", 1);
+            if (flag)
+                flag = PL_GUI.RegExp(ID.Text, "ID", 0);
+            return flag;
+        }
 
 
 

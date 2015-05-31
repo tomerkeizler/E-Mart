@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Backend;
+using System.Text.RegularExpressions;
 
 namespace PL
 {
@@ -38,7 +39,7 @@ namespace PL
         public void ResetToDefault()
         {
             username.Text = ((User)oldObj).UserName;
-            password.Text = ((User)oldObj).Password;
+            password.Password = ((User)oldObj).Password;
         }
 
         // Clear form if adding or Resetting to default if editing
@@ -51,10 +52,23 @@ namespace PL
         // Add or edit
         private void AddOrEdit(object sender, RoutedEventArgs e)
         {
-            User newObj = new User(username.Text, password.Text, ((User)oldObj).Person);
-            //editing action
-            if (parentWindow.EditDataEntity(oldObj, newObj, 7))
-                this.Close();
+            if (IsValid())
+            {
+                User newObj = new User(username.Text, password.Password, ((User)oldObj).Person);
+                //editing action
+                if (parentWindow.EditDataEntity(oldObj, newObj, 7))
+                    this.Close();
+            }
+        }
+
+
+        private bool IsValid()
+        {
+            bool flag = true;
+            flag = PL_GUI.RegExp(username.Text, "Username", 3);
+            if (flag)
+                flag = PL_GUI.RegExp(password.Password, "Password", 3);
+            return flag;
         }
 
 

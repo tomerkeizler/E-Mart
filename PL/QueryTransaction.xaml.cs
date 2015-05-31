@@ -33,7 +33,7 @@ namespace PL
 
         private void ClearForm(object sender, RoutedEventArgs e)
         {
-            List<Control> lst = new List<Control>() { purchaseType, returnType, currentDate, specificTranID, rangeTranID, fromTranID, toTranID, payment, specificPrdID, rangePrdID, fromPrdID, toPrdID };
+            List<Control> lst = new List<Control>() { purchaseType, returnType, fromCurrentDate, toCurrentDate, specificCurrentDate, rangeCurrentDate, specificTranID, rangeTranID, fromTranID, toTranID, payment, specificPrdID, rangePrdID, fromPrdID, toPrdID };
             PL_GUI.ClearForm(lst);
         }
 
@@ -50,7 +50,9 @@ namespace PL
 
         private void SearchByDate(object sender, RoutedEventArgs e)
         {
-            if (parentWindow.SearchDataEntity(StringFields.currentDate, ((DateTime)currentDate.SelectedDate).ToShortDateString(), null, 6))
+            int min = (int)(((DateTime)(fromCurrentDate.SelectedDate)).Ticks);
+            String max = toCurrentDate.Text;
+            if (parentWindow.SearchDataEntity(IntFields.currentDate, min, (max.Equals(String.Empty)) ? (min) : ((int)(((DateTime)(toCurrentDate.SelectedDate)).Ticks)), 6))
                 this.Close();
         }
 

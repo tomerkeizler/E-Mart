@@ -146,7 +146,7 @@
 
             <TextBlock Text="Select an action" FontSize="16" TextDecorations="Underline"/>
 
-            <Button Style="{StaticResource button_Style}" Background="#FFF5CAFF" Content="Make a Purhcase" />
+            <Button Style="{StaticResource button_Style}" Background="#FFF5CAFF" Content="Make a Purhcase" Click="CallPurchase" />
 
             <Expander x:Name="account_menu">
                 <Expander.Header>

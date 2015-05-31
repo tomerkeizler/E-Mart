@@ -331,10 +331,10 @@ namespace DAL
             {
                 filteredClubMember = allClubMember.Where(n => n.LastName.Equals(name)).Cast<ClubMember>().ToList();
             }
-            else if (field == StringFields.dateOfBirth)
-            {
-                filteredClubMember = allClubMember.Where(n => n.DateOfBirth.ToShortDateString().Equals(name)).Cast<ClubMember>().ToList();
-            }
+            //else if (field == StringFields.dateOfBirth)
+            //{
+            //    filteredClubMember = allClubMember.Where(n => n.DateOfBirth.ToShortDateString().Equals(name)).Cast<ClubMember>().ToList();
+            //}
             else
             {
                 throw new System.Data.DataException("Bad Input!");
@@ -363,6 +363,12 @@ namespace DAL
             {
                 filteredClubMember = allClubMember.Where(n => n.TranHistory.Any(x => x.TransactionID >= minNumber && x.TransactionID <= maxNumber)).Cast<ClubMember>().ToList();
             }
+                //////////////////////////////
+            else if (field == IntFields.dateOfBirth)
+            {
+                filteredClubMember = allClubMember.Where(n => n.DateOfBirth.Ticks >= minNumber && n.DateOfBirth.Ticks <= maxNumber).Cast<ClubMember>().ToList();
+            }
+                //////////////////////////////
             else
             {
                 throw new System.Data.DataException("Bad Input!");
@@ -444,6 +450,12 @@ namespace DAL
                 {
                     filteredTransaction = allTransaction.Where(n => n.Receipt.ProductsIDs.Any(x => x >= minNumber && x <= maxNumber)).Cast<Transaction>().ToList();
                 }
+                    //////////////////////////
+                else if (field == IntFields.currentDate)
+                {
+                    filteredTransaction = allTransaction.Where(n => n.CurrentDate.Ticks >= minNumber && n.CurrentDate.Ticks <= maxNumber).Cast<Transaction>().ToList();
+                }
+                    ///////////////////////////
                 else
                 {
                     throw new System.Data.DataException("Bad Input!");
@@ -527,7 +539,7 @@ namespace DAL
         }
 
 
-        public List<Transaction> TransactionNameQuery(string name, StringFields field)
+        /*public List<Transaction> TransactionNameQuery(string name, StringFields field)
         {
             List<Transaction> allTrans = ReadFromFile(Elements.Transaction).Cast<Transaction>().ToList();
             List<Transaction> filteredTrans;
@@ -538,7 +550,7 @@ namespace DAL
             filteredTrans = allTrans.Where(n => n.CurrentDate.ToShortDateString().Equals(name)).Cast<Transaction>().ToList();
             return filteredTrans;
 
-        }
+        }*/
         //Filter by name for Customer
         public List<Customer> CustomerNameQuery(string name, StringFields field)
         {
@@ -601,6 +613,7 @@ namespace DAL
             }
             else
             {
+
                 foreach (Product p in currentList)
                 {
                     if (p.Type.Equals(type))
@@ -610,5 +623,8 @@ namespace DAL
                 }
             }
         }
+
+
+
     }
 }

@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Backend;
+using System.Text.RegularExpressions;
+
 
 namespace PL
 {
@@ -68,31 +70,61 @@ namespace PL
         // Add or edit
         private void AddOrEdit(object sender, RoutedEventArgs e)
         {
-            Gender myGender;
-            if (male.IsChecked == true)
-                myGender = Gender.Male;
-            else
-                myGender = Gender.Female;
-
-            ClubMember newObj = new ClubMember(int.Parse(ID.Text), firstName.Text, lastName.Text, dateOfBirth.SelectedDate.Value, myGender);
-            User newUser = new User(username.Text, password.Password, newObj);
-
-            //adding action
-            if (isAdd)
+            if (IsValid())
             {
-                if (parentWindow.AddDataEntity(newObj, newUser, 1))
-                    this.Close();
-            }
-            //editing action
-            else
-            {
-                newObj.CreditCard = ((ClubMember)oldObj).CreditCard;
-                newObj.TranHistory = ((ClubMember)oldObj).TranHistory;
-                if (parentWindow.EditDataEntity(oldObj, newObj, 1))
-                    this.Close();
+                Gender myGender;
+                if (male.IsChecked == true)
+                    myGender = Gender.Male;
+                else
+                    myGender = Gender.Female;
+
+                ClubMember newObj = new ClubMember(int.Parse(ID.Text), firstName.Text, lastName.Text, dateOfBirth.SelectedDate.Value, myGender);
+                User newUser = new User(username.Text, password.Password, newObj);
+
+                //adding action
+                if (isAdd)
+                {
+                    if (parentWindow.AddDataEntity(newObj, newUser, 1))
+                        this.Close();
+                }
+                //editing action
+                else
+                {
+                    newObj.CreditCard = ((ClubMember)oldObj).CreditCard;
+                    newObj.TranHistory = ((ClubMember)oldObj).TranHistory;
+                    if (parentWindow.EditDataEntity(oldObj, newObj, 1))
+                        this.Close();
+                }
             }
         }
 
+
+        private bool IsValid()
+        {
+            bool flag = true;
+            flag = PL_GUI.RegExp(username.Text, "Username", 3);
+            if (flag)
+                flag = PL_GUI.RegExp(password.Password, "Password", 3);
+            if (flag)
+                flag = PL_GUI.RegExp(firstName.Text, "First name", 1);
+            if (flag)
+                flag = PL_GUI.RegExp(lastName.Text, "Last name", 1);
+            if (flag)
+                flag = PL_GUI.RegExp(ID.Text, "ID", 0);
+            if (flag)
+                if (male.IsChecked == false && female.IsChecked == false)
+                {
+                    MessageBox.Show("Gender must be selected");
+                    flag = false;
+                }
+            if (flag)
+                if (dateOfBirth.Text.Equals(""))
+                {
+                    MessageBox.Show("Date of birth must be selected");
+                    flag = false;
+                }
+            return flag;
+        }
 
 
     }

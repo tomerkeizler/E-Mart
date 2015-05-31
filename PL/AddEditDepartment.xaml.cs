@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Backend;
+using System.Text.RegularExpressions;
 
 namespace PL
 {
@@ -60,20 +61,28 @@ namespace PL
         // Add or edit
         private void AddOrEdit(object sender, RoutedEventArgs e)
         {
-            Department newObj = new Department(depName.Text);
+            if (IsValid())
+            {
+                Department newObj = new Department(depName.Text);
 
-            //adding action
-            if (isAdd)
-            {
-                if (parentWindow.AddDataEntity(newObj, null, 3))
-                    this.Close();
+                //adding action
+                if (isAdd)
+                {
+                    if (parentWindow.AddDataEntity(newObj, null, 3))
+                        this.Close();
+                }
+                //editing action
+                else
+                {
+                    if (parentWindow.EditDataEntity(oldObj, newObj, 3))
+                        this.Close();
+                }
             }
-            //editing action
-            else
-            {
-                if (parentWindow.EditDataEntity(oldObj, newObj, 3))
-                    this.Close();
-            }
+        }
+
+        private bool IsValid()
+        {
+            return PL_GUI.RegExp(depName.Text, "Department name", 1);
         }
 
 

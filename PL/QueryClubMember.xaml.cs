@@ -34,7 +34,7 @@ namespace PL
 
         private void ClearForm(object sender, RoutedEventArgs e)
         {
-            List<Control> lst = new List<Control>() { firstName, lastName, ID, specificMemberID, rangeMemberID, fromMemberID, toMemberID, specificTranID, rangeTranID, fromTranID, toTranID, male, female, dateOfBirth };
+            List<Control> lst = new List<Control>() { firstName, lastName, ID, specificMemberID, rangeMemberID, fromMemberID, toMemberID, specificTranID, rangeTranID, fromTranID, toTranID, male, female, fromDateOfBirth, toDateOfBirth, specificDateOfBirth, rangeDateOfBirth };
             PL_GUI.ClearForm(lst);
         }
 
@@ -85,7 +85,9 @@ namespace PL
 
         private void SearchByDateOfBirth(object sender, RoutedEventArgs e)
         {
-            if (parentWindow.SearchDataEntity(StringFields.dateOfBirth, ((DateTime)dateOfBirth.SelectedDate).ToShortDateString(), null, 1))
+            int min = (int)(((DateTime)(fromDateOfBirth.SelectedDate)).Ticks);
+            String max = toDateOfBirth.Text;
+            if (parentWindow.SearchDataEntity(IntFields.dateOfBirth, min, (max.Equals(String.Empty)) ? (min) : ((int)(((DateTime)(toDateOfBirth.SelectedDate)).Ticks)), 1))
                 this.Close();
         }
 

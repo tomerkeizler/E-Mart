@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Backend;
 using BL;
+using System.Text.RegularExpressions;
 
 namespace PL
 {
@@ -43,11 +44,19 @@ namespace PL
         // perform the password change
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            User newUser = new User(oldUser);
-            newUser.Password = newPass.Password;
-            // editing action
-            if (parentWindow.EditDataEntity(oldUser, newUser, 7))
-                this.Close();
+            if (IsValid())
+            {
+                User newUser = new User(oldUser);
+                newUser.Password = newPass.Password;
+                // editing action
+                if (parentWindow.EditDataEntity(oldUser, newUser, 7))
+                    this.Close();
+            }
+        }
+
+        private bool IsValid()
+        {
+            return PL_GUI.RegExp(newPass.Password, "Password", 3);
         }
 
 

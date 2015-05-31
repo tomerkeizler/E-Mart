@@ -15,6 +15,8 @@ using BL;
 using Backend;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Text.RegularExpressions;
+
 
 namespace PL
 {
@@ -22,6 +24,7 @@ namespace PL
     {
         // static attributes
         public static int[][] allPermissions = new int[4][];
+        public static string[][] inputsInfo = new string[4][];
 
         // static constructor
         static PL_GUI()
@@ -34,6 +37,21 @@ namespace PL
             allPermissions[1] = new int[9] { 0, 2, 2, 0, 2, 2, 2, 0, 1 }; // Manager
             allPermissions[2] = new int[9] { 0, 1, 1, 0, 0, 0, 1, 0, 1 }; // Worker
             allPermissions[3] = new int[9] { 0, 0, 0, 0, 0, 1, 1, 0, 1 }; // Customer
+
+            //////////// regular expressions - used for user-input validation
+            // ID - 9 digits
+            inputsInfo[0] = new string[2] { "^[0-9]{9}$", "exactly 9 digits (0-9)" };
+
+            // only letters and possibly more than one word
+            // firstName, lastName, Product - name, Department - name
+            inputsInfo[1] = new string[2] { "^[A-Za-z]{2,}(( )[A-Za-z]{2,})*$", "only letters (A-Z) or (a-z)" };
+
+            // Number - unlimited digits
+            inputsInfo[2] = new string[2] { "^[0-9]+$", "only digits (0-9)" };
+
+            // at least 6 characters of letters and digits
+            // username, password
+            inputsInfo[3] = new string[2] { "^[A-Za-z0-9]{6,}$", "at least 6 characters.\nOnly letters (A-Z) or (a-z) and digits (0-9) are allowed" };
         }
 
         // static methods
@@ -78,6 +96,17 @@ namespace PL
         {
             foreach (Control control in lst)
                 control.IsEnabled = toEnable;
+        }
+
+        public static bool RegExp(String txt, String field, int check)
+        {
+            if (!Regex.IsMatch(txt, inputsInfo[check][0]))
+            {
+                MessageBox.Show(field + " must be " + inputsInfo[check][1]);
+                return false;
+            }
+            else
+                return true;
         }
 
         // attributes
@@ -526,6 +555,12 @@ namespace PL
             Application.Current.Shutdown();
         }
 
+        private void CallPurchase(object sender, RoutedEventArgs e)
+        {
+            Window purchase = new PurchaseWindow(cats[5]);
+            purchase.ShowDialog();
+        }
+        
         private void ChangePassword(object sender, RoutedEventArgs e)
         {
             Window changePass = new ChangePassword(this, user);
@@ -574,6 +609,7 @@ namespace PL
         {
             add_menu.IsExpanded = false;
         }
+
 
 
 

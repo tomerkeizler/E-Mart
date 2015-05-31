@@ -38,7 +38,7 @@ namespace DAL
         List<Department> DepartmentNumberQuery(int minNumber, int maxNumber, IntFields field);
 
         //Transaction:
-        List<Transaction> TransactionNameQuery(string name, StringFields field);
+        /////////List<Transaction> TransactionNameQuery(string name, StringFields field);
         List<Transaction> TransactionNumberQuery(int minNumber, int maxNumber, IntFields field);
         List<Transaction> TransactionTypeQuery(ValueType type);
 

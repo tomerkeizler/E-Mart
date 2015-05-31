@@ -44,6 +44,7 @@
             <RowDefinition Height="2*"/>
             <RowDefinition Height="2*"/>
             <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
             <RowDefinition Height="3*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -128,11 +129,33 @@
         </Grid>
         <Button Grid.Row="9" Grid.Column="2" Content="Search" Click="SearchByGender"/>
 
+
+
         <TextBlock Grid.Row="10" Grid.Column="0" Text="Date of birth" FontSize="14"/>
-        <DatePicker x:Name="dateOfBirth" Grid.Row="10" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <Grid Grid.Row="10" Grid.Column="1" Width="200" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <RadioButton Grid.Column="0" GroupName="SearchDateOfBirth" x:Name="specificDateOfBirth" Content="specific search"/>
+            <RadioButton Grid.Column="1" GroupName="SearchDateOfBirth" x:Name="rangeDateOfBirth" Content="range search"/>
+        </Grid>
+        <Grid Grid.Row="11" Grid.Column="1" Width="220" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="4*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="From" FontSize="14" />
+            <DatePicker x:Name="fromDateOfBirth" Grid.Column="1" VerticalAlignment="Center"/>
+            <TextBlock Grid.Column="2" Text="To" FontSize="14" />
+            <DatePicker x:Name="toDateOfBirth" Text="{Binding ElementName=rangeDateOfBirth, Path=IsChecked, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, Converter={StaticResource notRangeNumberConverter}}" IsEnabled="{Binding ElementName=rangeDateOfBirth, Path=IsChecked, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Grid.Column="3"/>
+        </Grid>
         <Button Grid.Row="10" Grid.Column="2" Content="Search" Click="SearchByDateOfBirth"/>
 
-        <Button Click="ClearForm" Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="3" Content="Clear all" Width="100"/>
+
+        <Button Click="ClearForm" Grid.Row="12" Grid.Column="0" Grid.ColumnSpan="3" Content="Clear all" Width="100"/>
     </Grid>
 
 </Window>

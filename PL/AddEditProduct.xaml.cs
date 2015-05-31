@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Backend;
 using BL;
+using System.Text.RegularExpressions;
 
 namespace PL
 {
@@ -73,28 +74,55 @@ namespace PL
         // Add or edit
         private void AddOrEdit(object sender, RoutedEventArgs e)
         {
-            PType myPType;
-            var selectedItem = productType.SelectedItem as ComboBoxItem;
-            if (selectedItem.Name.Equals("Clothes"))
-                myPType = PType.Clothes;
-            else if (selectedItem.Name.Equals("Electronics"))
-                myPType = PType.Electronics;
-            else
-                myPType = PType.Food;
-            Product newObj = new Product(productName.Text, myPType, int.Parse(depID.Text), int.Parse(stockcount.Text), int.Parse(price.Text));
+            if (IsValid())
+            {
+                PType myPType;
+                var selectedItem = productType.SelectedItem as ComboBoxItem;
+                if (selectedItem.Name.Equals("Clothes"))
+                    myPType = PType.Clothes;
+                else if (selectedItem.Name.Equals("Electronics"))
+                    myPType = PType.Electronics;
+                else
+                    myPType = PType.Food;
+                Product newObj = new Product(productName.Text, myPType, int.Parse(depID.Text), int.Parse(stockcount.Text), int.Parse(price.Text));
 
-            //adding action
-            if (isAdd)
-            {
-                if (parentWindow.AddDataEntity(newObj, null, 5))
-                    this.Close();
+                //adding action
+                if (isAdd)
+                {
+                    if (parentWindow.AddDataEntity(newObj, null, 5))
+                        this.Close();
+                }
+                //editing action
+                else
+                {
+                    if (parentWindow.EditDataEntity(oldObj, newObj, 5))
+                        this.Close();
+                }
             }
-            //editing action
-            else
-            {
-                if (parentWindow.EditDataEntity(oldObj, newObj, 5))
-                    this.Close();
-            }
+        }
+
+
+        private bool IsValid()
+        {
+            bool flag = true;
+            flag = PL_GUI.RegExp(productName.Text, "Product name", 1);
+            if (flag)
+                if (productType.SelectedIndex == -1)
+                {
+                    MessageBox.Show("Product type must be selected");
+                    flag = false;
+                }
+            if (flag)
+                flag = PL_GUI.RegExp(price.Text, "Price", 2);
+            if (flag)
+                flag = PL_GUI.RegExp(stockcount.Text, "Stock count", 2);
+            if (flag)
+                if (depID.SelectedIndex == -1)
+                {
+                    MessageBox.Show("Department ID must be selected");
+                    flag = false;
+                }
+            return flag;
         }
 
 

@@ -47,6 +47,7 @@
             <RowDefinition Height="2*"/>
             <RowDefinition Height="2*"/>
             <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
             <RowDefinition Height="3*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -70,13 +71,34 @@
         </Grid>
         <Button Grid.Row="2" Grid.Column="2" Content="Search" Click="SearchByTranType"/>
 
+                
         <TextBlock Grid.Row="3" Grid.Column="0" Text="Transaction date" FontSize="14"/>
-        <DatePicker x:Name="currentDate" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <Grid Grid.Row="3" Grid.Column="1" Width="200" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <RadioButton Grid.Column="0" GroupName="SearchCurrentDate" x:Name="specificCurrentDate" Content="specific search"/>
+            <RadioButton Grid.Column="1" GroupName="SearchCurrentDate" x:Name="rangeCurrentDate" Content="range search"/>
+        </Grid>
+        <Grid Grid.Row="4" Grid.Column="1" Width="220" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="4*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="From" FontSize="14" />
+            <DatePicker x:Name="fromCurrentDate" Grid.Column="1" VerticalAlignment="Center"/>
+            <TextBlock Grid.Column="2" Text="To" FontSize="14" />
+            <DatePicker x:Name="toCurrentDate" Text="{Binding ElementName=rangeCurrentDate, Path=IsChecked, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, Converter={StaticResource notRangeNumberConverter}}" IsEnabled="{Binding ElementName=rangeCurrentDate, Path=IsChecked, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Grid.Column="3"/>
+        </Grid>
         <Button Grid.Row="3" Grid.Column="2" Content="Search" Click="SearchByDate"/>
+        
+        
 
-
-        <TextBlock Grid.Row="4" Grid.Column="0" Grid.RowSpan="2" Text="Transaction ID" FontSize="14"/>
-        <Grid Grid.Row="4" Grid.Column="1" Width="200" HorizontalAlignment="Left" VerticalAlignment="Center">
+        <TextBlock Grid.Row="5" Grid.Column="0" Grid.RowSpan="2" Text="Transaction ID" FontSize="14"/>
+        <Grid Grid.Row="5" Grid.Column="1" Width="200" HorizontalAlignment="Left" VerticalAlignment="Center">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
@@ -84,7 +106,7 @@
             <RadioButton Grid.Column="0" GroupName="SearchTranID" x:Name="specificTranID" Content="specific search"/>
             <RadioButton Grid.Column="1" GroupName="SearchTranID" x:Name="rangeTranID" Content="range search"/>
         </Grid>
-        <Grid Grid.Row="5" Grid.Column="1" Width="220" HorizontalAlignment="Left" VerticalAlignment="Center">
+        <Grid Grid.Row="6" Grid.Column="1" Width="220" HorizontalAlignment="Left" VerticalAlignment="Center">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="4*"/>
@@ -96,20 +118,20 @@
             <TextBlock Grid.Column="2" Text="To" FontSize="14" />
             <TextBox x:Name="toTranID" Text="{Binding ElementName=rangeTranID, Path=IsChecked, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, Converter={StaticResource notRangeNumberConverter}}" IsEnabled="{Binding ElementName=rangeTranID, Path=IsChecked, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Grid.Column="3" Width="60" />
         </Grid>
-        <Button Grid.Row="4" Grid.Column="2" Grid.RowSpan="2" Content="Search" Click="SearchByTranID"/>
+        <Button Grid.Row="5" Grid.Column="2" Grid.RowSpan="2" Content="Search" Click="SearchByTranID"/>
 
 
-        <TextBlock Grid.Row="6" Grid.Column="0" Text="Payment Method" FontSize="14"/>
-        <ComboBox Grid.Row="6" Grid.Column="1" x:Name="payment">
+        <TextBlock Grid.Row="7" Grid.Column="0" Text="Payment Method" FontSize="14"/>
+        <ComboBox Grid.Row="7" Grid.Column="1" x:Name="payment">
             <ComboBoxItem Content="Cash" />
             <ComboBoxItem Content="Check" />
             <ComboBoxItem Content="Visa" />
         </ComboBox>
-        <Button Grid.Row="6" Grid.Column="2" Content="Search" Click="SearchByPayment"/>
+        <Button Grid.Row="7" Grid.Column="2" Content="Search" Click="SearchByPayment"/>
         
 
-        <TextBlock Grid.Row="7" Grid.Column="0" Grid.RowSpan="2" Text="Product ID" FontSize="14"/>
-        <Grid Grid.Row="7" Grid.Column="1" Width="200" HorizontalAlignment="Left" VerticalAlignment="Center">
+        <TextBlock Grid.Row="8" Grid.Column="0" Grid.RowSpan="2" Text="Product ID" FontSize="14"/>
+        <Grid Grid.Row="8" Grid.Column="1" Width="200" HorizontalAlignment="Left" VerticalAlignment="Center">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
@@ -117,7 +139,7 @@
             <RadioButton Grid.Column="0" GroupName="SearchPrdID" x:Name="specificPrdID" Content="specific search"/>
             <RadioButton Grid.Column="1" GroupName="SearchPrdID" x:Name="rangePrdID" Content="range search"/>
         </Grid>
-        <Grid Grid.Row="8" Grid.Column="1" Width="220" HorizontalAlignment="Left" VerticalAlignment="Center">
+        <Grid Grid.Row="9" Grid.Column="1" Width="220" HorizontalAlignment="Left" VerticalAlignment="Center">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="4*"/>
@@ -129,10 +151,10 @@
             <TextBlock Grid.Column="2" Text="To" FontSize="14" />
             <TextBox x:Name="toPrdID" Text="{Binding ElementName=rangePrdID, Path=IsChecked, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, Converter={StaticResource notRangeNumberConverter}}" IsEnabled="{Binding ElementName=rangePrdID, Path=IsChecked, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" Grid.Column="3" Width="60" />
         </Grid>
-        <Button Grid.Row="7" Grid.Column="2" Grid.RowSpan="2" Content="Search" Click="SearchByProductID"/>
+        <Button Grid.Row="8" Grid.Column="2" Grid.RowSpan="2" Content="Search" Click="SearchByProductID"/>
 
 
-        <Button Click="ClearForm" Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3" Content="Clear all" Width="100"/>
+        <Button Click="ClearForm" Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="3" Content="Clear all" Width="100"/>
     </Grid>
     
 </Window>
