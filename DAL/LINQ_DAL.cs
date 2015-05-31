@@ -374,7 +374,7 @@ namespace DAL
             }
             else if (field == IntFields.dateOfBirth)
             {
-                filteredClubMember = allClubMember.Where(n => n.DateOfBirth.Ticks >= minNumber && n.DateOfBirth.Ticks <= maxNumber).Cast<ClubMember>().ToList();
+                filteredClubMember = allClubMember.Where(n => int.Parse(n.DateOfBirth.ToString("yyyyMMdd")) >= minNumber && int.Parse(n.DateOfBirth.ToString("yyyyMMdd")) <= maxNumber).Cast<ClubMember>().ToList();
             }
             else
             {
@@ -459,7 +459,7 @@ namespace DAL
                 }
                 else if (field == IntFields.currentDate)
                 {
-                    filteredTransaction = allTransaction.Where(n => n.CurrentDate.Ticks >= minNumber && n.CurrentDate.Ticks <= maxNumber).Cast<Transaction>().ToList();
+                    filteredTransaction = allTransaction.Where(n => int.Parse(n.CurrentDate.ToString("yyyyMMdd")) >= minNumber && int.Parse(n.CurrentDate.ToString("yyyyMMdd")) <= maxNumber).Cast<Transaction>().ToList();
                 }
                 else
                 {
