@@ -58,15 +58,18 @@
         
         <TextBlock Grid.Row="2" Grid.ColumnSpan="2" Text="Personal details" FontSize="14" TextDecorations="Underline"/>
 
+        
         <TextBlock Grid.Row="3" Grid.Column="0" Text="First name" FontSize="14"/>
-        <TextBox x:Name="firstName" Grid.Row="3" Grid.Column="1" />
-
         <TextBlock Grid.Row="4" Grid.Column="0" Text="Last name" FontSize="14"/>
-        <TextBox x:Name="lastName" Grid.Row="4" Grid.Column="1" />
-
         <TextBlock Grid.Row="5" Grid.Column="0" Text="ID number" FontSize="14"/>
+
+
+
+        <TextBox x:Name="firstName" Grid.Row="3" Grid.Column="1" />
+        <TextBox x:Name="lastName" Grid.Row="4" Grid.Column="1" />
         <TextBox x:Name="ID" Grid.Row="5" Grid.Column="1" />
 
+        
         <Button Click="ResetForm" Grid.Row="6" Grid.Column="0" Content="Reset all" HorizontalAlignment="Right" VerticalAlignment="Center" Width="100" FontSize="14"/>
         <Button x:Name="AddEditButton" Grid.Row="6" Grid.Column="1" Content="{Binding}" VerticalAlignment="Center" Width="150" FontSize="14" Click="AddOrEdit"/>
     </Grid>

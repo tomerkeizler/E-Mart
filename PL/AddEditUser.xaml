@@ -34,12 +34,15 @@
 
         <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="Edit User" HorizontalAlignment="Center"  FontSize="24" Foreground="#FF2D59EE"/>
 
+        
         <TextBlock Grid.Row="1" Grid.Column="0" Text="Username" FontSize="14"/>
-        <TextBox x:Name="username" Grid.Row="1" Grid.Column="1" />
-
         <TextBlock Grid.Row="2" Grid.Column="0" Text="Password" FontSize="14"/>
+
+
+        <TextBox x:Name="username" Grid.Row="1" Grid.Column="1" />
         <TextBox x:Name="password" Grid.Row="2" Grid.Column="1" />
 
+        
         <Button Click="ResetForm" Grid.Row="3" Grid.Column="0" Content="Reset all" HorizontalAlignment="Right" VerticalAlignment="Center" Width="100" FontSize="14"/>
         <Button Grid.Row="3" Grid.Column="1" Content="Edit User" VerticalAlignment="Center" Width="150" FontSize="14" Click="AddOrEdit"/>
     </Grid>

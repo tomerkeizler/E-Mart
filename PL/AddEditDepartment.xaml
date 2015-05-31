@@ -34,6 +34,8 @@
         <TextBlock x:Name="AddEditTitle" Grid.Row="0" Grid.ColumnSpan="2" Text="Add Department" HorizontalAlignment="Center"  FontSize="24" Foreground="#FF2D59EE"/>
 
         <TextBlock Grid.Row="1" Grid.Column="0" Text="Department name" FontSize="14"/>
+        
+        
         <TextBox x:Name="depName" Grid.Row="1" Grid.Column="1" />
 
         <Button Click="ResetForm" Grid.Row="2" Grid.Column="0" Content="Reset all" HorizontalAlignment="Right" VerticalAlignment="Center" Width="100" FontSize="14"/>

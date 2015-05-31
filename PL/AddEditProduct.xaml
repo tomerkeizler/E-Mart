@@ -43,25 +43,26 @@
 
         <TextBlock x:Name="AddEditTitle" Grid.Row="0" Grid.ColumnSpan="2" Text="Add Product" HorizontalAlignment="Center"  FontSize="24" Foreground="#FF2D59EE"/>
 
+        
         <TextBlock Grid.Row="1" Grid.Column="0" Text="Product name" FontSize="14"/>
-        <TextBox x:Name="productName" Grid.Row="1" Grid.Column="1" />
-
         <TextBlock Grid.Row="2" Grid.Column="0" Text="Product type" FontSize="14"/>
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="Product price" FontSize="14"/>
+        <TextBlock Grid.Row="4" Grid.Column="0" Text="Stock count" FontSize="14"/>
+        <TextBlock Grid.Row="5" Grid.Column="0" Text="Department ID" FontSize="14"/>
+
+
+
+        <TextBox x:Name="productName" Grid.Row="1" Grid.Column="1" />
         <ComboBox Grid.Row="2" Grid.Column="1" x:Name="productType">
             <ComboBoxItem Name="Electronics" Content="Electronics" />
             <ComboBoxItem Name="Clothes" Content="Clothes " />
             <ComboBoxItem Name="Food" Content="Food" />
         </ComboBox>
-
-        <TextBlock Grid.Row="3" Grid.Column="0" Text="Product price" FontSize="14"/>
         <TextBox x:Name="price" Grid.Row="3" Grid.Column="1" />
-
-        <TextBlock Grid.Row="4" Grid.Column="0" Text="Stock count" FontSize="14"/>
         <TextBox x:Name="stockcount" Grid.Row="4" Grid.Column="1" />
-
-        <TextBlock Grid.Row="5" Grid.Column="0" Text="Department ID" FontSize="14"/>
         <ComboBox Grid.Row="5" Grid.Column="1" Width="80" x:Name="depID" DisplayMemberPath="DepartmentID" />
 
+        
         <Button Click="ResetForm" Grid.Row="6" Grid.Column="0" Content="Reset all" HorizontalAlignment="Right" VerticalAlignment="Center" Width="100" FontSize="14"/>
         <Button x:Name="AddEditButton" Grid.Row="6" Grid.Column="1" Content="Add Product" VerticalAlignment="Center" Width="150" FontSize="14" Click="AddOrEdit"/>
     </Grid>

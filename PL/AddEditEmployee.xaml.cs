@@ -37,9 +37,8 @@ namespace PL
             List<Object> allEmployees = itsEmployeeBL.GetAll();
             Employee def = new Employee();
             def.Id = 0;
-            allEmployees.Add(def);
+            allEmployees.Add(def); // gives an option to be an administrator
             supID.ItemsSource = allEmployees;
-
             isAdd = _isAdd;
             if (!isAdd)
             {
@@ -47,6 +46,7 @@ namespace PL
                 AddEditTitle.Text = "Edit Employee";
                 AddEditButton.Content = "Edit Employee";
                 oldObj = _oldObj;
+                allEmployees.Remove(((Employee)oldObj)); // prevents an option of employee being his own supervisor
                 ResetToDefault();
             }
         }

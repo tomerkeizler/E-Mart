@@ -22,7 +22,6 @@ namespace PL
     {
         // static attributes
         public static int[][] allPermissions = new int[4][];
-        public static String[] usersTypes = new String[4];
 
         // static constructor
         static PL_GUI()
@@ -35,8 +34,6 @@ namespace PL
             allPermissions[1] = new int[9] { 0, 2, 2, 0, 2, 2, 2, 0, 1 }; // Manager
             allPermissions[2] = new int[9] { 0, 1, 1, 0, 0, 0, 1, 0, 1 }; // Worker
             allPermissions[3] = new int[9] { 0, 0, 0, 0, 0, 1, 1, 0, 1 }; // Customer
-            // User types  array
-            usersTypes = new String[4] { "Administrator", "Manager", "Worker", "Customer" };
         }
 
         // static methods
@@ -77,12 +74,18 @@ namespace PL
             }
         }
 
+        public static void EnableOrDisableForm(List<Control> lst, bool toEnable)
+        {
+            foreach (Control control in lst)
+                control.IsEnabled = toEnable;
+        }
+
         // attributes
-        private IBL[] cats;
+        public IBL[] cats;
         private string[] catsNames;
         private DataGrid[] grids;
-        private ObservableCollection<Object>[] data;
-        
+        private List<Object>[] data;
+
         public User user;
         public Rank rank;
         public bool[] viewPermissions;
@@ -96,15 +99,14 @@ namespace PL
             cats = new IBL[8] { null, itsClubMemberBL, itsCustomerBL, itsDepartmentBL, itsEmployeeBL, itsProductBL, itsTransactionBL, itsUserBL };
             catsNames = new string[8] { "", "Club member", "Customer", "Department", "Employee", "Product", "Transaction", "User" };
             grids = new DataGrid[8] { null, clubMemberGrid, CustomerGrid, DepartmentGrid, EmployeeGrid, ProductGrid, TransactionGrid, UserGrid };
-            data = new ObservableCollection<Object>[8];
-            // generate all lists of data entities
-            for (int i = 1; i < 8; i++)
-                data[i] = new ObservableCollection<Object>(cats[i].GetAll());
-            // bind datagrids to lists
-            for (int i = 1; i < 8; i++)
-                grids[i].DataContext = data[i];
+            data = new List<Object>[8];
+
             // default category is ClubMember = 1
             currentCategory = 1;
+
+            // generate all lists of data entities and bind datagrids to lists
+            for (int i = 1; i < 8; i++)
+                DisplayData(new List<Object>(cats[i].GetAll()), i);
         }
 
         // Main method
@@ -124,78 +126,99 @@ namespace PL
             //viewPermissions[1] = false;
             /////////////
 
-   
 
-   
 
         }
-
-
 
         /////////////////////
         // Display methods //
         /////////////////////
 
+        public void showHideEmptyTitle()
+        {
+            if (cats[currentCategory].GetAll().Any())
+            {
+                categoryEmpty.Visibility = Visibility.Collapsed;
+                grids[currentCategory].Visibility = Visibility.Visible;
+            }
+            else
+            {
+                grids[currentCategory].Visibility = Visibility.Collapsed;
+                categoryEmpty.Text = "There are no " + catsNames[currentCategory] + "s";
+                categoryEmpty.Visibility = Visibility.Visible;
+            }
+        }
+
         private void DisplayData(List<Object> results, int categoryNum)
         {
-            // generate a list of data 
-            data[categoryNum] = new ObservableCollection<Object>(results);
+            showHideEmptyTitle();
+            // generate a list of data
+            data[categoryNum] = new List<Object>(results);
             // bind datagrid to list
             grids[categoryNum].DataContext = data[categoryNum];
         }
 
-        private void ResetRecords(object sender, RoutedEventArgs e)
+        private void CallReset(object sender, RoutedEventArgs e)
         {
-            // generate a list of data 
-            data[currentCategory] = new ObservableCollection<Object>(cats[currentCategory].GetAll());
-            // bind datagrid to list
-            grids[currentCategory].DataContext = data[currentCategory];
+            ResetRecords();
         }
 
+        private void ResetRecords()
+        {
+            DisplayData(new List<Object>(cats[currentCategory].GetAll()), currentCategory);
+        }
+
+        private void CallView(object sender, RoutedEventArgs e)
+        {
+            Object selectedRow = grids[currentCategory].SelectedItem;
+            if (selectedRow != null)
+            {
+                Window viewWindow = new View(this, selectedRow, currentCategory);
+                viewWindow.ShowDialog();
+            }
+            else
+                MessageBox.Show("You must choose a " + catsNames[currentCategory] + " first");
+        }
+    
 
         ////////////////////
         // Search methods //
         ////////////////////
-        private void CallSearchClubMember(object sender, RoutedEventArgs e)
-        {
-            Window addForm = new QueryClubMember(this);
-            addForm.ShowDialog();
-        }
 
-        private void CallSearchCustomer(object sender, RoutedEventArgs e)
+        private void CallSearch(object sender, RoutedEventArgs e)
         {
-            Window addForm = new QueryCustomer(this);
-            addForm.ShowDialog();
-        }
-
-        private void CallSearchDepartment(object sender, RoutedEventArgs e)
-        {
-            Window addForm = new QueryDepartment(this);
-            addForm.ShowDialog();
-        }
-
-        private void CallSearchEmployee(object sender, RoutedEventArgs e)
-        {
-            Window addForm = new QueryEmployee(this);
-            addForm.ShowDialog();
-        }
-
-        private void CallSearchProduct(object sender, RoutedEventArgs e)
-        {
-            Window addForm = new QueryProduct(this);
-            addForm.ShowDialog();
-        }
-
-        private void CallSearchTransaction(object sender, RoutedEventArgs e)
-        {
-            Window addForm = new QueryTransaction(this);
-            addForm.ShowDialog();
-        }
-
-        private void CallSearchUser(object sender, RoutedEventArgs e)
-        {
-            Window addForm = new QueryUser(this);
-            addForm.ShowDialog();
+            int catToSearch = int.Parse(((Button)sender).Uid);
+            if (cats[catToSearch].GetAll().Any())
+            {
+                Window searchForm = null;
+                switch (catToSearch)
+                {
+                    case 1:
+                        searchForm = new QueryClubMember(this);
+                        break;
+                    case 2:
+                        searchForm = new QueryCustomer(this);
+                        break;
+                    case 3:
+                        searchForm = new QueryDepartment(this);
+                        break;
+                    case 4:
+                        searchForm = new QueryEmployee(this);
+                        break;
+                    case 5:
+                        searchForm = new QueryProduct(this);
+                        break;
+                    case 6:
+                        searchForm = new QueryTransaction(this);
+                        break;
+                    case 7:
+                        searchForm = new QueryUser(this);
+                        break;
+                }
+                searchForm.ShowDialog();
+            }
+            else
+                MessageBox.Show("There are no " + catsNames[catToSearch] + "s to serach for");
         }
 
         public bool SearchDataEntity(Object field, Object value1, Object value2, int categoryNum)
@@ -241,41 +264,53 @@ namespace PL
             {
                 MessageBox.Show("Search of " + catsNames[categoryNum] + " was done successfully!\nPlease click OK to view the results");
                 DisplayData(results, categoryNum);
+                currentCategory = categoryNum;
+                // update the tab that is selected
+                allTabs.SelectedIndex = categoryNum - 1;
             }
             return done;
         }
 
-
         /////////////////
         // Add methods //
         /////////////////
-        private void CallAddClubMember(object sender, RoutedEventArgs e)
+
+        public bool AreThereDepartments()
         {
-            Window addForm = new AddEditClubMember(this, true, null);
-            addForm.ShowDialog();
+            if (cats[3].GetAll().Any())
+                return true;
+            else
+                return false;
         }
 
-        private void CallAddCustomer(object sender, RoutedEventArgs e)
+        private void CallAdd(object sender, RoutedEventArgs e)
         {
-            Window addForm = new AddEditCustomer(this, false, true, null);
-            addForm.ShowDialog();
-        }
-
-        private void CallAddDepartment(object sender, RoutedEventArgs e)
-        {
-            Window addForm = new AddEditDepartment(this, true, null);
-            addForm.ShowDialog();
-        }
-
-        private void CallAddEmployee(object sender, RoutedEventArgs e)
-        {
-            Window addForm = new AddEditEmployee(this, cats[3], cats[4], true, null);
-            addForm.ShowDialog();
-        }
-
-        private void CallAddProduct(object sender, RoutedEventArgs e)
-        {
-            Window addForm = new AddEditProduct(this, cats[3], true, null);
+            int catToAdd = int.Parse(((Button)sender).Uid);
+            Window addForm = null;
+            switch (catToAdd)
+            {
+                case 1:
+                    addForm = new AddEditClubMember(this, true, null);
+                    break;
+                case 2:
+                    addForm = new AddEditCustomer(this, false, true, null);
+                    break;
+                case 3:
+                    addForm = new AddEditDepartment(this, true, null);
+                    break;
+                case 4:
+                    if (AreThereDepartments())
+                        addForm = new AddEditEmployee(this, cats[3], cats[4], true, null);
+                    else
+                        MessageBox.Show("You cannot add a employee since there are no departments");
+                    break;
+                case 5:
+                    if (AreThereDepartments())
+                        addForm = new AddEditProduct(this, cats[3], true, null);
+                    else
+                        MessageBox.Show("You cannot add a product since there are no departments");
+                    break;
+            }
             addForm.ShowDialog();
         }
 
@@ -285,8 +320,6 @@ namespace PL
             try
             {
                 cats[categoryNum].Add(newObj);
-                if (newUser != null)
-                    cats[7].Add(newUser);
             }
             catch (System.Data.DataException e)
             {
@@ -303,15 +336,49 @@ namespace PL
                 done = false;
                 MessageBox.Show(e.Message);
             }
+
             if (done)
+            {
+                try
+                {
+                    if (newUser != null)
+                        cats[7].Add(newUser);
+                }
+                catch (System.Data.DataException e)
+                {
+                    done = false;
+                    MessageBox.Show(e.Message);
+                }
+                catch (ArgumentNullException e)
+                {
+                    done = false;
+                    MessageBox.Show(e.Message);
+                }
+                catch (Exception e)
+                {
+                    done = false;
+                    MessageBox.Show(e.Message);
+                }
+
+                if (!done)
+                    cats[categoryNum].Remove(newObj);
+            }
+                
+            if (done)
+            {
                 MessageBox.Show(catsNames[categoryNum] + " was added successfully!\nPlease click OK to continue");
+                currentCategory = categoryNum;
+                ResetRecords();
+                // update the tab that is selected
+                allTabs.SelectedIndex = categoryNum - 1;
+            }
             return done;
         }
-
 
         //////////////////
         // Edit methods //
         //////////////////
+
         private void CallEdit(object sender, RoutedEventArgs e)
         {
             Object selectedRow = grids[currentCategory].SelectedItem;
@@ -329,12 +396,10 @@ namespace PL
                     editForm = new AddEditEmployee(this, cats[3], cats[4], false, selectedRow);
                 else if (type.Equals(typeof(Product)))
                     editForm = new AddEditProduct(this, cats[3], false, selectedRow);
-                /*
-            else if (type.Equals(typeof(Transaction)))
-                editForm = new AddEditTransaction(this, false, selectedRow);
-            else (type.Equals(typeof(User)))
-                editForm = new AddEditUser(this, false, selectedRow);
-                 * */
+                else if (type.Equals(typeof(Transaction)))
+                    editForm = new AddEditTransaction(this, selectedRow);
+                else
+                    editForm = new AddEditUser(this, selectedRow);
                 editForm.ShowDialog();
             }
             else
@@ -347,9 +412,6 @@ namespace PL
             try
             {
                 cats[categoryNum].Edit(oldObj, newObj);
-                ///////////////////////////////////////
-                // need to check if this is a ClubMember/Customer/Employee and edit its user also
-                ///////////////////////////////////////
             }
             catch (ArgumentNullException e)
             {
@@ -377,7 +439,7 @@ namespace PL
                 MessageBox.Show(e.Message);
             }
             catch (System.Data.DataException e)
-            {   
+            {
                 done = false;
                 MessageBox.Show(e.Message);
             }
@@ -387,16 +449,18 @@ namespace PL
                 MessageBox.Show(e.Message);
             }
             if (done)
+            {
                 MessageBox.Show(catsNames[categoryNum] + " was edited successfully!\nPlease click OK to continue");
+                ResetRecords();
+            }
             return done;
         }
-
-
 
         ////////////////////
         // Remove methods //
         ////////////////////
-        public void CallRemoveFromDatagrid(object sender, RoutedEventArgs e)
+
+        public void CallRemove(object sender, RoutedEventArgs e)
         {
             Object selectedRow = grids[currentCategory].SelectedItem;
             if (selectedRow != null)
@@ -405,12 +469,7 @@ namespace PL
                 MessageBox.Show("You must choose a " + catsNames[currentCategory] + " first");
         }
 
-        public void CallRemoveFromWindow(object sender, RoutedEventArgs e)
-        {
-            //RemoveDataEntity();
-        }
-
-        public void RemoveDataEntity(Object _objToDelete)
+        public bool RemoveDataEntity(Object _objToDelete)
         {
             bool done = true;
             MessageBoxResult result = MessageBox.Show("Are you sure you want to remove the selected " + catsNames[currentCategory], "Remove" + catsNames[currentCategory], MessageBoxButton.YesNo);
@@ -446,17 +505,21 @@ namespace PL
                             MessageBox.Show(error.Message);
                         }
                         if (done)
+                        {
                             MessageBox.Show(catsNames[currentCategory] + " was removed successfully!\nPlease click OK to continue");
+                            ResetRecords();
+                        }
                         break;
                     }
                 case MessageBoxResult.No:
                     break;
             }
+            return done;
         }
 
-
-
-
+        /////////////////////
+        // General methods //
+        /////////////////////
 
         private void Exit(object sender, RoutedEventArgs e)
         {
@@ -498,7 +561,20 @@ namespace PL
                 default:
                     return;
             }
+            ResetRecords();
+            showHideEmptyTitle();
         }
+
+        private void add_menu_Expanded(object sender, RoutedEventArgs e)
+        {
+            search_menu.IsExpanded = false;
+        }
+
+        private void search_menu_Expanded(object sender, RoutedEventArgs e)
+        {
+            add_menu.IsExpanded = false;
+        }
+
 
 
     }

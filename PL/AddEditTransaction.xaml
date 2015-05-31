@@ -41,7 +41,15 @@
 
         <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="Edit Transaction" HorizontalAlignment="Center"  FontSize="24" Foreground="#FF2D59EE"/>
         
+        
+        
         <TextBlock Grid.Row="1" Grid.Column="0" Text="Transaction type" FontSize="14"/>
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Transaction ID" FontSize="14"/>
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="Payment Method" FontSize="14"/>
+
+        
+        
+        
         <Grid Grid.Row="1" Grid.Column="1" Width="160" HorizontalAlignment="Left" VerticalAlignment="Center">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -50,17 +58,14 @@
             <RadioButton Grid.Column="0" GroupName="is_a_return" x:Name="purchaseType" Content="Purchase"/>
             <RadioButton Grid.Column="1" GroupName="is_a_return" x:Name="returnType" Content="Return"/>
         </Grid>
-
-        <TextBlock Grid.Row="2" Grid.Column="0" Text="Transaction ID" FontSize="14"/>
         <TextBox x:Name="tranID" Grid.Row="2" Grid.Column="1" />
-   
-        <TextBlock Grid.Row="3" Grid.Column="0" Text="Payment Method" FontSize="14"/>
         <ComboBox Grid.Row="3" Grid.Column="1" x:Name="payment">
             <ComboBoxItem Content="Cash" />
             <ComboBoxItem Content="Check" />
             <ComboBoxItem Content="Visa" />
         </ComboBox>
 
+        
         <Button Click="ResetForm" Grid.Row="4" Grid.Column="0" Content="Reset all" HorizontalAlignment="Right" VerticalAlignment="Center" Width="100" FontSize="14"/>
         <Button Grid.Row="4" Grid.Column="1" Content="Edit Transaction" VerticalAlignment="Center" Width="150" FontSize="14" Click="AddOrEdit"/>
     </Grid>

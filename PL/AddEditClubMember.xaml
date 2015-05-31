@@ -10,7 +10,7 @@
             <Setter Property="TextWrapping" Value="Wrap" />
             <Setter Property="FontWeight" Value="Bold" />
         </Style>
-        
+
         <Style TargetType="TextBox">
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="HorizontalAlignment" Value="Left" />
@@ -57,19 +57,20 @@
             <TextBlock Grid.Row="2" Grid.Column="0" Text="Password" FontSize="14"/>
             <PasswordBox x:Name="password" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="23" VerticalAlignment="Center" Width="120"/>
         </Grid>
-        
+
         <TextBlock Grid.Row="2" Grid.ColumnSpan="2" Text="Personal details" FontSize="14" TextDecorations="Underline"/>
-
+        
         <TextBlock Grid.Row="3" Grid.Column="0" Text="First name" FontSize="14"/>
-        <TextBox x:Name="firstName" Grid.Row="3" Grid.Column="1" />
-
         <TextBlock Grid.Row="4" Grid.Column="0" Text="Last name" FontSize="14"/>
-        <TextBox x:Name="lastName" Grid.Row="4" Grid.Column="1" />
-
         <TextBlock Grid.Row="5" Grid.Column="0" Text="ID number" FontSize="14"/>
-        <TextBox x:Name="ID" Grid.Row="5" Grid.Column="1" />
-
         <TextBlock Grid.Row="6" Grid.Column="0" Text="Gender" FontSize="14"/>
+        <TextBlock Grid.Row="7" Grid.Column="0" Text="Date of birth" FontSize="14"/>
+
+        
+        
+        <TextBox x:Name="firstName" Grid.Row="3" Grid.Column="1" />
+        <TextBox x:Name="lastName" Grid.Row="4" Grid.Column="1" />
+        <TextBox x:Name="ID" Grid.Row="5" Grid.Column="1" />
         <Grid Grid.Row="6" Grid.Column="1" Width="120" HorizontalAlignment="Left" VerticalAlignment="Center">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -78,12 +79,10 @@
             <RadioButton Grid.Column="0" GroupName="gender" x:Name="male" Content="Male"/>
             <RadioButton Grid.Column="1" GroupName="gender" x:Name="female" Content="Female"/>
         </Grid>
-        
-        <TextBlock Grid.Row="7" Grid.Column="0" Text="Date of birth" FontSize="14"/>
         <DatePicker x:Name="dateOfBirth" Grid.Row="7" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" />
 
         <Button Click="ResetForm" Grid.Row="8" Grid.Column="0" Content="Reset all" HorizontalAlignment="Right" VerticalAlignment="Center" Width="100" FontSize="14"/>
         <Button x:Name="AddEditButton" Grid.Row="8" Grid.Column="1" Content="Add Club Membner" VerticalAlignment="Center" Width="150" FontSize="14" Click="AddOrEdit"/>
     </Grid>
-    
+
 </Window>
