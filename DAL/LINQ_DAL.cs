@@ -233,19 +233,6 @@ namespace DAL
             }
             return filteredProducts;
         }
-        //Filter by multiply types for product
-        public List<Product> ProductMulTypeQuery(List<Product> currentList, List<PType> typelist)
-        {
-            List<Product> filteredProducts = new List<Product>();
-            if (currentList.ElementAtOrDefault(0) == null)
-            {
-                throw new InvalidDataException("There is nothing to find from.");
-            }
-            foreach (PType type in typelist){
-                filteredProducts.AddRange(currentList.Where(n => n.Type.Equals(type)).Cast<Product>().ToList());
-            }
-            return filteredProducts;
-        }
 
         //Filter by name for employee
         public List<Employee> EmployeeNameQuery(string name, StringFields field)
@@ -598,6 +585,30 @@ namespace DAL
                 throw new System.Data.DataException("Bad Input!");
             }
             return filteredCustomer;
+        }
+
+        //Filter by types for product in data grid
+        public void FilterProducts(System.Collections.ObjectModel.ObservableCollection<Product> currentList, PType type, bool isAdd)
+        {
+            if (isAdd)
+            {
+                List<Product> filteredProducts = this.ProductTypeQuery(type);
+                filteredProducts = filteredProducts.Where(n => !(n.InStock.Equals(PStatus.Empty))).Cast<Product>().ToList();
+                foreach (Product p in filteredProducts)
+                {
+                    currentList.Add(p);
+                }
+            }
+            else
+            {
+                foreach (Product p in currentList)
+                {
+                    if (p.Type.Equals(type))
+                    {
+                        currentList.Remove(p);
+                    }
+                }
+            }
         }
     }
 }

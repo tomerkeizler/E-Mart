@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Backend;
-
+using System.Collections.ObjectModel;
 namespace DAL
 {
     public interface IDAL
@@ -16,7 +16,7 @@ namespace DAL
         List<Product> ProductNameQuery(string name, StringFields field);
         List<Product> ProductNumberQuery(int minNumber, int maxNumber, IntFields field);
         List<Product> ProductTypeQuery(ValueType type);
-        List<Product> ProductMulTypeQuery(List<Product> currentList, List<PType> typelist);
+        void FilterProducts(ObservableCollection<Product> currentList, PType type, bool isAdd);
 
 
         //Employees:
