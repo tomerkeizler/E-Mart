@@ -23,7 +23,7 @@ namespace PL
     public partial class PL_GUI : Window, IPL
     {
         // static attributes
-        public static int[][] allPermissions = new int[4][];
+        public static int[][] allPermissions = new int[5][];
         public static string[][] inputsInfo = new string[5][];
 
         // static constructor
@@ -35,8 +35,9 @@ namespace PL
              * 0=no permission || 1=view only || 2=full permission */
             allPermissions[0] = new int[9] { 0, 2, 2, 2, 2, 2, 2, 2, 2 }; // Admin
             allPermissions[1] = new int[9] { 0, 2, 2, 0, 2, 2, 2, 0, 1 }; // Manager
-            allPermissions[2] = new int[9] { 0, 1, 1, 0, 0, 0, 1, 0, 1 }; // Worker
+            allPermissions[2] = new int[9] { 0, 1, 1, 0, 0, 1, 1, 0, 1 }; // Worker
             allPermissions[3] = new int[9] { 0, 0, 0, 0, 0, 1, 1, 0, 1 }; // Customer
+            allPermissions[4] = new int[9] { 0, 0, 0, 0, 0, 1, 0, 0, 0 }; // guest
 
             ////////// regular expressions - used for user-input validation
 
@@ -151,9 +152,7 @@ namespace PL
         private List<Object>[] data;
 
         public User user;
-        public Rank rank;
-        public bool[] viewPermissions;
-        public bool[] fullPermissions;
+        public int rank;
         private int currentCategory;
 
         // constructor
@@ -176,8 +175,6 @@ namespace PL
         // Main method
         public void Run()
         {
-            InitializeComponent();
-
             // Login
             // the main window is being opened by the Login window when logging in succeeds
             Window login = new Login(cats[7], this);
@@ -186,9 +183,54 @@ namespace PL
             // resetting selling quantities
             ((Product_BL)cats[5]).GenerateTopSeller();
 
-            /////////////
-            //viewPermissions[1] = false;
-            /////////////
+            // for anonymous guests
+            if (user == null)
+            {
+                rank = 4; // guest
+                title_name.Text = "Hey guest!";
+                title_rank.Text = "Enjoy the store!";
+
+                account_menu.Visibility = Visibility.Collapsed;
+
+                search_menu.IsExpanded = true;
+
+                allTabs.SelectedIndex = 5;
+            }
+
+            // hide addition menu and edit/remove buttons from workers, customers, guests
+            if (rank > 1)
+            {
+                add_menu.Visibility = Visibility.Collapsed;
+                editButton.Visibility = Visibility.Collapsed;
+                removeButton.Visibility = Visibility.Collapsed;
+            }
+
+            ///////////////////////////////////////////////////////////
+            //////////////////////  permissions  //////////////////////
+            ///////////////////////////////////////////////////////////
+            List<Button> addButtons = new List<Button>() { null, addClubmemberButton, addCustomerButton, addDepartmentButton, addEmployeeButton, addProductButton };
+            List<Button> searchButtons = new List<Button>() { null, searchClubmemberButton, searchCustomerButton, searchDepartmentButton, searchEmployeeButton, searchProductButton, searchTransactionButton, searchUserButton };
+            
+            for (int i = 1; i < 8; i++)
+                if (allPermissions[rank][i] < 2)
+                {
+                    // permissions - add buttons
+                    if (i < 6) // there are no windows for adding transactions and users
+                        addButtons[i].Visibility = Visibility.Collapsed;
+
+                    // permissions - view records
+                    if (allPermissions[rank][i] == 0)
+                    {
+                        // permissions - tabs
+                        (allTabs.Items.GetItemAt(i - 1) as TabItem).Visibility = Visibility.Collapsed;
+                        //permissions - search buttons
+                        searchButtons[i].Visibility = Visibility.Collapsed;
+                    }
+                }
+            ///////////////////////////////////////////////////////////
+
+
+
 
 
 
@@ -204,20 +246,33 @@ namespace PL
             {
                 categoryEmpty.Visibility = Visibility.Collapsed;
                 grids[currentCategory].Visibility = Visibility.Visible;
+                actionButtons.Visibility = Visibility.Visible;
             }
             else
             {
                 grids[currentCategory].Visibility = Visibility.Collapsed;
                 categoryEmpty.Text = "There are no " + catsNames[currentCategory] + "s";
                 categoryEmpty.Visibility = Visibility.Visible;
+                actionButtons.Visibility = Visibility.Collapsed;
             }
         }
 
         private void DisplayData(List<Object> results, int categoryNum)
         {
+            // a manager can manage only his workers
+            if (rank == 2 && currentCategory == 4)
+                results = cats[4].FindByNumber(IntFields.supervisiorID, ((Employee)user.Person).Id, ((Employee)user.Person).Id);
+
+            // a Customer/ClubMember can only see his personal transactions
+            else if (rank == 3 && currentCategory == 6)
+                results = ((Customer)user.Person).TranHistory.Cast<Object>().ToList();
+
+            // check if there are any records
             showHideEmptyTitle();
+
             // generate a list of data
             data[categoryNum] = new List<Object>(results);
+
             // bind datagrid to list
             grids[categoryNum].DataContext = data[categoryNum];
         }
@@ -335,6 +390,7 @@ namespace PL
             return done;
         }
 
+
         /////////////////
         // Add methods //
         /////////////////
@@ -375,7 +431,8 @@ namespace PL
                         MessageBox.Show("You cannot add a product since there are no departments");
                     break;
             }
-            addForm.ShowDialog();
+            if (addForm != null)
+                addForm.ShowDialog();
         }
 
         public bool AddDataEntity(Object newObj, User newUser, int categoryNum)
@@ -544,9 +601,6 @@ namespace PL
                         try
                         {
                             cats[currentCategory].Remove(_objToDelete);
-                            ///////////////////////////////////////
-                            // need to check if this is a ClubMember/Customer/Employee and remove its user also
-                            ///////////////////////////////////////
                         }
                         catch (ArgumentNullException error)
                         {
@@ -632,7 +686,26 @@ namespace PL
                     return;
             }
             ResetRecords();
-            showHideEmptyTitle();
+
+
+            ///////////////////////////////////////////////////////////
+            //////////////////////  permissions  //////////////////////
+            ///////////////////////////////////////////////////////////
+
+            // permissions - edit and remove buttons
+            if (allPermissions[rank][currentCategory] < 2)
+            {
+                editButton.Visibility = Visibility.Collapsed;
+                removeButton.Visibility = Visibility.Collapsed;
+
+                // permissions - view windo
+                if (allPermissions[rank][currentCategory] == 0)
+                {
+                    viewButton.Visibility = Visibility.Collapsed;
+                    resetButton.Visibility = Visibility.Collapsed;
+                }
+            }
+            ///////////////////////////////////////////////////////////
         }
 
         private void add_menu_Expanded(object sender, RoutedEventArgs e)
@@ -645,7 +718,17 @@ namespace PL
             add_menu.IsExpanded = false;
         }
 
+        public void EmphasizeBestSellers(object sender, DataGridRowEventArgs e)
+        {
+            LinearGradientBrush myBrush = new LinearGradientBrush();
+            myBrush.GradientStops.Add(new GradientStop(Colors.Yellow, 0.0));
+            myBrush.GradientStops.Add(new GradientStop(Colors.Orange, 0.5));
+            myBrush.GradientStops.Add(new GradientStop(Colors.Red, 1.0));
 
+            Product p = e.Row.DataContext as Product;
+            if (p.IsTopSeller)
+                e.Row.Background = myBrush;
+        }
 
 
     }

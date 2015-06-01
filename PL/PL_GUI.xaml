@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:PL"
-        Title="E-MART" MinHeight="450" MinWidth="530" Height="480" Width="800">
+        Title="E-MART" MinHeight="450" MinWidth="530" Height="600" Width="1000">
 
     <Window.Resources>
         <Style TargetType="DataGrid">
@@ -10,7 +10,6 @@
             <Setter Property="SelectionMode" Value="Single" />
             <Setter Property="SelectionUnit" Value="FullRow" />
             <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
-            <Setter Property="Height" Value="200" />
             <Setter Property="MaxHeight" Value="450" />
             <Setter Property="MinHeight" Value="100" />
             <Setter Property="AutoGenerateColumns" Value="False" />
@@ -90,7 +89,7 @@
 
         <Style TargetType="Button" x:Key="Table_menu_Style" BasedOn="{StaticResource button_Style}">
             <Setter Property="Background" Value="#FFD1E0F9" />
-            <Setter Property="Margin" Value="0,0,10,0" />
+            <Setter Property="Margin" Value="0,10,10,0" />
             <Setter Property="Width" Value="120" />
         </Style>
         
@@ -155,7 +154,7 @@
                 <Expander.Content>
                     <StackPanel>
                         <Button Style="{StaticResource account_menu_Style}" Content="Change Password" Click="ChangePassword" />
-                        <Button Style="{StaticResource account_menu_Style}" Content="View you Propile" />
+                        <Button x:Name="watchProfileButton" Style="{StaticResource account_menu_Style}" Content="View you Propile" />
                     </StackPanel>
                 </Expander.Content>
             </Expander>
@@ -166,11 +165,11 @@
                 </Expander.Header>
                 <Expander.Content>
                     <StackPanel>
-                        <Button Style="{StaticResource add_menu_Style}" x:Uid="1" Click="CallAdd" Content="Club member" />
-                        <Button Style="{StaticResource add_menu_Style}" x:Uid="2" Click="CallAdd" Content="Customer" />
-                        <Button Style="{StaticResource add_menu_Style}" x:Uid="3" Click="CallAdd" Content="Department" />
-                        <Button Style="{StaticResource add_menu_Style}" x:Uid="4" Click="CallAdd" Content="Employee" />
-                        <Button Style="{StaticResource add_menu_Style}" x:Uid="5" Click="CallAdd" Content="Product" />
+                        <Button x:Name="addClubmemberButton" Style="{StaticResource add_menu_Style}" x:Uid="1" Click="CallAdd" Content="Club member" />
+                        <Button x:Name="addCustomerButton" Style="{StaticResource add_menu_Style}" x:Uid="2" Click="CallAdd" Content="Customer" />
+                        <Button x:Name="addDepartmentButton" Style="{StaticResource add_menu_Style}" x:Uid="3" Click="CallAdd" Content="Department" />
+                        <Button x:Name="addEmployeeButton" Style="{StaticResource add_menu_Style}" x:Uid="4" Click="CallAdd" Content="Employee" />
+                        <Button x:Name="addProductButton" Style="{StaticResource add_menu_Style}" x:Uid="5" Click="CallAdd" Content="Product" />
                     </StackPanel>
                 </Expander.Content>
             </Expander>
@@ -181,13 +180,13 @@
                 </Expander.Header>
                 <Expander.Content>
                     <StackPanel>
-                        <Button Style="{StaticResource search_menu_Style}" x:Uid="1" Click="CallSearch" Content="Club member" />
-                        <Button Style="{StaticResource search_menu_Style}" x:Uid="2" Click="CallSearch" Content="Customer" />
-                        <Button Style="{StaticResource search_menu_Style}" x:Uid="3" Click="CallSearch" Content="Department" />
-                        <Button Style="{StaticResource search_menu_Style}" x:Uid="4" Click="CallSearch" Content="Employee" />
-                        <Button Style="{StaticResource search_menu_Style}" x:Uid="5" Click="CallSearch" Content="Product" />
-                        <Button Style="{StaticResource search_menu_Style}" x:Uid="6" Click="CallSearch" Content="Transaction" />
-                        <Button Style="{StaticResource search_menu_Style}" x:Uid="7" Click="CallSearch" Content="User" />
+                        <Button x:Name="searchClubmemberButton" Style="{StaticResource search_menu_Style}" x:Uid="1" Click="CallSearch" Content="Club member" />
+                        <Button x:Name="searchCustomerButton" Style="{StaticResource search_menu_Style}" x:Uid="2" Click="CallSearch" Content="Customer" />
+                        <Button x:Name="searchDepartmentButton" Style="{StaticResource search_menu_Style}" x:Uid="3" Click="CallSearch" Content="Department" />
+                        <Button x:Name="searchEmployeeButton" Style="{StaticResource search_menu_Style}" x:Uid="4" Click="CallSearch" Content="Employee" />
+                        <Button x:Name="searchProductButton" Style="{StaticResource search_menu_Style}" x:Uid="5" Click="CallSearch" Content="Product" />
+                        <Button x:Name="searchTransactionButton" Style="{StaticResource search_menu_Style}" x:Uid="6" Click="CallSearch" Content="Transaction" />
+                        <Button x:Name="searchUserButton" Style="{StaticResource search_menu_Style}" x:Uid="7" Click="CallSearch" Content="User" />
                     </StackPanel>
                 </Expander.Content>
             </Expander>
@@ -252,14 +251,14 @@
                         <DataGridTextColumn Header="Supervisior ID" Binding="{Binding SupervisiorID}"/>
                         <DataGridTextColumn Header="Gender" Binding="{Binding Gender}"/>
                         <DataGridTextColumn Header="Salary" Binding="{Binding Salary}"/>
-                        <DataGridTextColumn Header="Rank" Binding="{Binding MyRank}"/>
+                        <DataGridTextColumn Header="Rank" Binding="{Binding Rank}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>
 
 
             <TabItem Header="Products">
-                <DataGrid Name="ProductGrid" ItemsSource="{Binding}">
+                    <DataGrid Name="ProductGrid" ItemsSource="{Binding}" LoadingRow="EmphasizeBestSellers">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Product ID" Binding="{Binding ProductID}"/>
                         <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
@@ -268,7 +267,8 @@
                         <DataGridTextColumn Header="Department ID" Binding="{Binding Location}"/>
                         <DataGridTextColumn Header="Stock count" Binding="{Binding StockCount}"/>
                         <DataGridTextColumn Header="Product status" Binding="{Binding InStock}"/>
-                    </DataGrid.Columns>
+                        <DataGridTextColumn Header="Sells this month " Binding="{Binding SellCounter}"/>
+                        </DataGrid.Columns>
                 </DataGrid>
             </TabItem>
 
@@ -300,13 +300,13 @@
             <TextBlock Panel.ZIndex="1" Visibility="Collapsed" HorizontalAlignment="Center" FontSize="22" x:Name="categoryEmpty" />
 
 
-            <WrapPanel Grid.Row="2" MinHeight="30" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Style="{StaticResource Table_menu_Style}" Content="Reset records" Click="CallReset" />
-            <Button Style="{StaticResource Table_menu_Style}" Content="View selected" Click="CallView" />
-            <Button Style="{StaticResource Table_menu_Style}" Content="Edit selected" Click="CallEdit"  />
-            <Button Style="{StaticResource Table_menu_Style}" Content="Delete selected" Click="CallRemove" />
-        </WrapPanel>
-            
+            <WrapPanel MinHeight="30" Orientation="Horizontal" HorizontalAlignment="Center" x:Name="actionButtons">
+                <Button x:Name="resetButton" Style="{StaticResource Table_menu_Style}" Content="Reset records" Click="CallReset" />
+                <Button x:Name="viewButton" Style="{StaticResource Table_menu_Style}" Content="View selected" Click="CallView" />
+                <Button x:Name="editButton" Style="{StaticResource Table_menu_Style}" Content="Edit selected" Click="CallEdit"  />
+                <Button x:Name="removeButton" Style="{StaticResource Table_menu_Style}" Content="Delete selected" Click="CallRemove" />
+            </WrapPanel>
+
         </StackPanel>
 
     </Grid>
