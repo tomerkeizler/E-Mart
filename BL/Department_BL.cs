@@ -112,5 +112,10 @@ namespace BL
             //return the department type
             return typeof(Department);
         }
+        public string GetEntityName()
+        {
+            //return the Department type as a string
+            return "Department";
+        }
     }
 }

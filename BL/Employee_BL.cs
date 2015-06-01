@@ -141,5 +141,10 @@ namespace BL
         {
             return typeof(Employee);
         }
+        public string GetEntityName()
+        {
+            //return the Employee type as a string
+            return "Employee";
+        }
     }
 }

@@ -146,5 +146,10 @@ namespace BL
         {
             return typeof(User);
         }
+        public string GetEntityName()
+        {
+            //return the User type as a string
+            return "User";
+        }
     }
 }

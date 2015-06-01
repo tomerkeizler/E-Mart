@@ -119,5 +119,10 @@ namespace BL
             //return the clubmember type
             return typeof(ClubMember);
         }
+        public string GetEntityName()
+        {
+            //return the clubmember type as a string
+            return "ClubMember";
+        }
     }
 }

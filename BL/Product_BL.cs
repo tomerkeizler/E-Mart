@@ -116,6 +116,11 @@ namespace BL
             //return the prudct type
             return typeof(Product);
         }
+        public string GetEntityName()
+        {
+            //return the Product type as a string
+            return "Product";
+        }
 
         public void GenerateTopSeller()
         {
