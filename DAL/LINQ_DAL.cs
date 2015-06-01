@@ -590,30 +590,30 @@ namespace DAL
             return filteredCustomer;
         }
           //Filter by types for product in data grid
--        public void FilterProducts(System.Collections.ObjectModel.ObservableCollection<Product> currentList, PType type, bool isAdd)
--        {
--            if (isAdd)
--            {
--                List<Product> filteredProducts = this.ProductTypeQuery(type);
--                filteredProducts = filteredProducts.Where(n => !(n.InStock.Equals(PStatus.Empty))).Cast<Product>().ToList();
--                foreach (Product p in filteredProducts)
--                {
--                    currentList.Add(p);
--                }
--            }
--            else
--            {
--
--                foreach (Product p in currentList)
--                {
--                    if (p.Type.Equals(type))
--                    {
--                        currentList.Remove(p);
--                    }
--                }
--            }
--        }
--
+        public void FilterProducts(System.Collections.ObjectModel.ObservableCollection<Product> currentList, PType type, bool isAdd)
+        {
+            if (isAdd)
+            {
+                List<Product> filteredProducts = this.ProductTypeQuery(type);
+                filteredProducts = filteredProducts.Where(n => !(n.InStock.Equals(PStatus.Empty))).Cast<Product>().ToList();
+                foreach (Product p in filteredProducts)
+                {
+                    currentList.Add(p);
+                }
+            }
+            else
+            {
+
+                foreach (Product p in currentList)
+                {
+                    if (p.Type.Equals(type))
+                    {
+                        currentList.Remove(p);
+                    }
+                }
+            }
+        }
+
 
     }
 }
