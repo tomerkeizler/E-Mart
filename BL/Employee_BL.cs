@@ -43,10 +43,12 @@ namespace BL
                 {
                     if (emp.Equals(e))
                         throw new Exception("employee is already exists!");
-                    if ((emp.Id != 0) && ((Employee)e).SupervisiorID == emp.Id)
+                    if ((emp.SupervisiorID != 0) && ((Employee)e).SupervisiorID == emp.Id)
                     {
                         checkSup = true;
+                        Employee temp = new Employee(emp);
                         emp.Rank = Rank.Manager;
+                        itsDAL.UserPersonQuery(temp).ElementAt(0).Person = emp;
                     }
                 }
                 if (((Employee)e).SupervisiorID == 0)
