@@ -79,11 +79,11 @@ namespace PL
                     myGender = Gender.Female;
 
                 ClubMember newObj = new ClubMember(int.Parse(ID.Text), firstName.Text, lastName.Text, dateOfBirth.SelectedDate.Value, myGender);
-                User newUser = new User(username.Text, password.Password, newObj);
 
                 //adding action
                 if (isAdd)
                 {
+                    User newUser = new User(username.Text, password.Password, newObj);
                     if (parentWindow.AddDataEntity(newObj, newUser, 1))
                         this.Close();
                 }
@@ -101,8 +101,10 @@ namespace PL
 
         private bool IsValid()
         {
-            bool flag = PL_GUI.RegExp(username.Text, "User name", 3);
-            if (flag)
+            bool flag = true;
+            if (isAdd)
+                flag = PL_GUI.RegExp(username.Text, "User name", 3);
+            if (flag && isAdd)
                 flag = PL_GUI.RegExp(password.Password, "Password", 3);
             if (flag)
                 flag = PL_GUI.RegExp(firstName.Text, "First name", 1);

@@ -26,7 +26,7 @@
         </Style>
     </Window.Resources>
 
-    <Grid HorizontalAlignment="Center" Height="250" VerticalAlignment="Center" Width="350">
+    <Grid HorizontalAlignment="Left" Height="250" VerticalAlignment="Top" Width="350" Margin="10,10,10,10">
         <Grid.RowDefinitions>
             <RowDefinition Height="3*"/>
             <RowDefinition Height="2*"/>

@@ -36,6 +36,13 @@ namespace PL
             currentCategory = _currentCategory;
             allViews = new Grid[8] { null, clubMemberView, customerView, departmentView, employeeView, productView, transactionView, userView };
             allViews[currentCategory].Visibility = Visibility.Visible;
+
+            ///////////////////////////////////////////////////////////
+            //////////////////////  permissions  //////////////////////
+            ///////////////////////////////////////////////////////////
+            // forbid edit/remove if there is no permission
+            if (PL_GUI.allPermissions[parentWindow.rank][currentCategory] != 2)
+                editRemoveButtons.Visibility = Visibility.Collapsed;
         }
 
         private void CallEdit(object sender, RoutedEventArgs e)
