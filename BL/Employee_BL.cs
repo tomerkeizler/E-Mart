@@ -137,6 +137,17 @@ namespace BL
             return itsDAL.ReadFromFile(Elements.Employee);
         }
 
+        public List<Employee> GetAllWorkers(List<Employee> emps, int supervisorId)
+        {
+            List<Employee> allWorkers = new List<Employee>();
+            foreach (Employee e in emps)
+            {
+                if (e.SupervisiorID == supervisorId)
+                    allWorkers.Add(e);
+            }
+            return allWorkers;
+        }
+
         public Type GetEntityType()
         {
             return typeof(Employee);
