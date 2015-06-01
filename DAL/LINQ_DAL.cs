@@ -67,7 +67,7 @@ namespace DAL
             {
                 throw new ArgumentNullException("Bad Encrypt Type!");
             }
-            
+
             using (var stream = new MemoryStream())
             using (var encryptor = alg.CreateEncryptor())
             using (var encrypt = new CryptoStream(stream, encryptor, CryptoStreamMode.Write))
@@ -100,7 +100,7 @@ namespace DAL
                 return stream.ToArray();
             }
         }
-        
+
 
         //This method recieve list of object and create/override its xml file by the runtime types of the objects 
         public void WriteToFile(List<object> list, object obj)
@@ -131,7 +131,7 @@ namespace DAL
                 {
                     throw new System.IO.IOException("Cannot Write " + list.ElementAtOrDefault(0).GetType() + ".xml File! Details: " + e.Message);
                 }
-            } 
+            }
         }
 
         //This method recieve element to read and return its list from the XML file with this elements
@@ -226,7 +226,7 @@ namespace DAL
             {
                 filteredProducts = allProducts.Where(n => n.InStock.Equals((PStatus)type)).Cast<Product>().ToList();
             }
-              
+
             else
             {
                 throw new System.Data.DataException("Bad Input!");
@@ -301,11 +301,11 @@ namespace DAL
             }
             if (type is Gender)
             {
-                filteredEmployee = allEmployee.Where(n => n.Gender.Equals((Gender)type)).Cast<Employee>().ToList(); 
+                filteredEmployee = allEmployee.Where(n => n.Gender.Equals((Gender)type)).Cast<Employee>().ToList();
             }
             else if (type is Rank)
             {
-                filteredEmployee = allEmployee.Where(n => n.Rank.Equals((Rank)type)).Cast<Employee>().ToList(); 
+                filteredEmployee = allEmployee.Where(n => n.Rank.Equals((Rank)type)).Cast<Employee>().ToList();
             }
             else
             {
@@ -331,10 +331,6 @@ namespace DAL
             {
                 filteredClubMember = allClubMember.Where(n => n.LastName.Equals(name)).Cast<ClubMember>().ToList();
             }
-            //else if (field == StringFields.dateOfBirth)
-            //{
-            //    filteredClubMember = allClubMember.Where(n => n.DateOfBirth.ToShortDateString().Equals(name)).Cast<ClubMember>().ToList();
-            //}
             else
             {
                 throw new System.Data.DataException("Bad Input!");
@@ -363,12 +359,10 @@ namespace DAL
             {
                 filteredClubMember = allClubMember.Where(n => n.TranHistory.Any(x => x.TransactionID >= minNumber && x.TransactionID <= maxNumber)).Cast<ClubMember>().ToList();
             }
-                //////////////////////////////
             else if (field == IntFields.dateOfBirth)
             {
-                filteredClubMember = allClubMember.Where(n => n.DateOfBirth.Ticks >= minNumber && n.DateOfBirth.Ticks <= maxNumber).Cast<ClubMember>().ToList();
+                filteredClubMember = allClubMember.Where(n => int.Parse(n.DateOfBirth.ToString("yyyyMMdd")) >= minNumber && int.Parse(n.DateOfBirth.ToString("yyyyMMdd")) <= maxNumber).Cast<ClubMember>().ToList();
             }
-                //////////////////////////////
             else
             {
                 throw new System.Data.DataException("Bad Input!");
@@ -450,12 +444,10 @@ namespace DAL
                 {
                     filteredTransaction = allTransaction.Where(n => n.Receipt.ProductsIDs.Any(x => x >= minNumber && x <= maxNumber)).Cast<Transaction>().ToList();
                 }
-                    //////////////////////////
                 else if (field == IntFields.currentDate)
                 {
-                    filteredTransaction = allTransaction.Where(n => n.CurrentDate.Ticks >= minNumber && n.CurrentDate.Ticks <= maxNumber).Cast<Transaction>().ToList();
+                    filteredTransaction = allTransaction.Where(n => int.Parse(n.CurrentDate.ToString("yyyyMMdd")) >= minNumber && int.Parse(n.CurrentDate.ToString("yyyyMMdd")) <= maxNumber).Cast<Transaction>().ToList();
                 }
-                    ///////////////////////////
                 else
                 {
                     throw new System.Data.DataException("Bad Input!");
@@ -538,19 +530,6 @@ namespace DAL
             return filteredUser;
         }
 
-
-        /*public List<Transaction> TransactionNameQuery(string name, StringFields field)
-        {
-            List<Transaction> allTrans = ReadFromFile(Elements.Transaction).Cast<Transaction>().ToList();
-            List<Transaction> filteredTrans;
-            if (field != StringFields.currentDate)
-            {
-                throw new System.Data.DataException("Bad Input!");
-            }
-            filteredTrans = allTrans.Where(n => n.CurrentDate.ToShortDateString().Equals(name)).Cast<Transaction>().ToList();
-            return filteredTrans;
-
-        }*/
         //Filter by name for Customer
         public List<Customer> CustomerNameQuery(string name, StringFields field)
         {

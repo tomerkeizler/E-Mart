@@ -137,6 +137,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <Resource Include="Resources\shoppingCart.png" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="AddEditEmployee.xaml">
@@ -229,9 +230,6 @@
       <Project>{3e97c07e-5545-4cde-bda1-56357be436f0}</Project>
       <Name>Backend</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\shoppingCart.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

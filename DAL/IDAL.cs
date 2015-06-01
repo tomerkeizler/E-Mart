@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Backend;
 using System.Collections.ObjectModel;
+using Backend;
+
 namespace DAL
 {
     public interface IDAL
@@ -28,7 +29,7 @@ namespace DAL
         List<ClubMember> ClubMemberNameQuery(string name, StringFields field);
         List<ClubMember> ClubMemberNumberQuery(int minNumber, int maxNumber, IntFields field);
         List<ClubMember> ClubMemberTypeQuery(ValueType type);
-        
+
         //Customer:
         List<Customer> CustomerNameQuery(string name, StringFields field);
         List<Customer> CustomerNumberQuery(int minNumber, int maxNumber, IntFields field);
@@ -38,7 +39,6 @@ namespace DAL
         List<Department> DepartmentNumberQuery(int minNumber, int maxNumber, IntFields field);
 
         //Transaction:
-        /////////List<Transaction> TransactionNameQuery(string name, StringFields field);
         List<Transaction> TransactionNumberQuery(int minNumber, int maxNumber, IntFields field);
         List<Transaction> TransactionTypeQuery(ValueType type);
 

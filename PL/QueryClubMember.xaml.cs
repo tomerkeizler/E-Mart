@@ -61,7 +61,7 @@ namespace PL
 
         private void SearchByMemberID(object sender, RoutedEventArgs e)
         {
-            if (PL_GUI.RegExp(ID.Text, "ID", 0))
+            if (PL_GUI.RangeSearchRegExp(fromMemberID.Text, toMemberID.Text, "Member ID", rangeMemberID, 2))
             {
                 int min = int.Parse(fromMemberID.Text);
                 String max = toMemberID.Text;
@@ -72,31 +72,39 @@ namespace PL
 
         private void SearchByTranID(object sender, RoutedEventArgs e)
         {
-            int min = int.Parse(fromTranID.Text);
-            String max = toTranID.Text;
-            if (parentWindow.SearchDataEntity(IntFields.tranHistory, min, (max.Equals(String.Empty)) ? (min) : (int.Parse(max)), 1))
-                this.Close();
+            if (PL_GUI.RangeSearchRegExp(fromTranID.Text, toTranID.Text, "Transaction ID", rangeTranID, 2))
+            {
+                int min = int.Parse(fromTranID.Text);
+                String max = toTranID.Text;
+                if (parentWindow.SearchDataEntity(IntFields.tranHistory, min, (max.Equals(String.Empty)) ? (min) : (int.Parse(max)), 1))
+                    this.Close();
+            }
         }
 
         private void SearchByGender(object sender, RoutedEventArgs e)
         {
-            Gender gen;
-            if (male.IsChecked == true)
-                gen = Gender.Male;
-            else
-                gen = Gender.Female;
-            if (parentWindow.SearchDataEntity(TypeFields.gender, gen, null, 1))
-                this.Close();
+            if (PL_GUI.DoubleRadioValidate(male, female, "Gender"))
+            {
+                Gender gen;
+                if (male.IsChecked == true)
+                    gen = Gender.Male;
+                else
+                    gen = Gender.Female;
+                if (parentWindow.SearchDataEntity(TypeFields.gender, gen, null, 1))
+                    this.Close();
+            }
         }
 
         private void SearchByDateOfBirth(object sender, RoutedEventArgs e)
         {
-            int min = (int)(((DateTime)(fromDateOfBirth.SelectedDate)).Ticks);
-            String max = toDateOfBirth.Text;
-            if (parentWindow.SearchDataEntity(IntFields.dateOfBirth, min, (max.Equals(String.Empty)) ? (min) : ((int)(((DateTime)(toDateOfBirth.SelectedDate)).Ticks)), 1))
-                this.Close();
+            if (PL_GUI.RangeSearchRegExp(fromDateOfBirth.Text, toDateOfBirth.Text, "Date of birth", rangeDateOfBirth, 4))
+            {
+                int min = int.Parse(((DateTime)fromDateOfBirth.SelectedDate).ToString("yyyyMMdd"));
+                String max = toDateOfBirth.Text;
+                if (parentWindow.SearchDataEntity(IntFields.dateOfBirth, min, (max.Equals(String.Empty)) ? (min) : int.Parse(((DateTime)toDateOfBirth.SelectedDate).ToString("yyyyMMdd")), 1))
+                    this.Close();
+            }
         }
-
 
 
     }

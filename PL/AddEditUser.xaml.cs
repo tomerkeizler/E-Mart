@@ -64,8 +64,7 @@ namespace PL
 
         private bool IsValid()
         {
-            bool flag = true;
-            flag = PL_GUI.RegExp(username.Text, "Username", 3);
+            bool flag = PL_GUI.RegExp(username.Text, "User name", 3);
             if (flag)
                 flag = PL_GUI.RegExp(password.Password, "Password", 3);
             return flag;

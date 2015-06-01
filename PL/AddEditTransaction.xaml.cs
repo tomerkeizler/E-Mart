@@ -89,17 +89,9 @@ namespace PL
 
         private bool IsValid()
         {
-            bool flag = true;
-            if (purchaseType.IsChecked == false && returnType.IsChecked == false)
-            {
-                MessageBox.Show("Transaction type must be selected");
-                flag = false;
-            }
-            else if (payment.SelectedIndex == -1)
-            {
-                MessageBox.Show("Payment method must be selected");
-                flag = false;
-            }
+            bool flag = PL_GUI.ComboboxValidate(payment, "Payment method");
+            if (flag)
+                flag = PL_GUI.DoubleRadioValidate(purchaseType, returnType, "Transaction type");
             return flag;
         }
 

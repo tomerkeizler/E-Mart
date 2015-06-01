@@ -39,51 +39,67 @@ namespace PL
 
         private void SearchByTranType(object sender, RoutedEventArgs e)
         {
-            Is_a_return tranType;
-            if (purchaseType.IsChecked == true)
-                tranType = Is_a_return.Purchase;
-            else
-                tranType = Is_a_return.Return;
-            if (parentWindow.SearchDataEntity(TypeFields.is_a_return, tranType, null, 6))
-                this.Close();
+            if (PL_GUI.DoubleRadioValidate(purchaseType, returnType, "Gender"))
+            {
+                Is_a_return tranType;
+                if (purchaseType.IsChecked == true)
+                    tranType = Is_a_return.Purchase;
+                else
+                    tranType = Is_a_return.Return;
+                if (parentWindow.SearchDataEntity(TypeFields.is_a_return, tranType, null, 6))
+                    this.Close();
+            }
         }
 
         private void SearchByDate(object sender, RoutedEventArgs e)
         {
-            int min = (int)(((DateTime)(fromCurrentDate.SelectedDate)).Ticks);
-            String max = toCurrentDate.Text;
-            if (parentWindow.SearchDataEntity(IntFields.currentDate, min, (max.Equals(String.Empty)) ? (min) : ((int)(((DateTime)(toCurrentDate.SelectedDate)).Ticks)), 6))
-                this.Close();
+            if (PL_GUI.RangeSearchRegExp(fromCurrentDate.Text, toCurrentDate.Text, "Date of transaction", rangeCurrentDate, 4))
+            {
+                int min = int.Parse(((DateTime)fromCurrentDate.SelectedDate).ToString("yyyyMMdd"));
+                String max = toCurrentDate.Text;
+                if (parentWindow.SearchDataEntity(IntFields.currentDate, min, (max.Equals(String.Empty)) ? (min) : int.Parse(((DateTime)toCurrentDate.SelectedDate).ToString("yyyyMMdd")), 1))
+                    this.Close();
+            }
         }
 
         private void SearchByTranID(object sender, RoutedEventArgs e)
         {
-            int min = int.Parse(fromTranID.Text);
-            String max = toTranID.Text;
-            if (parentWindow.SearchDataEntity(IntFields.tranHistory, min, (max.Equals(String.Empty)) ? (min) : (int.Parse(max)), 6))
-                this.Close();
+            if (PL_GUI.RangeSearchRegExp(fromTranID.Text, toTranID.Text, "Transaction ID", rangeTranID, 2))
+            {
+                int min = int.Parse(fromTranID.Text);
+                String max = toTranID.Text;
+                if (parentWindow.SearchDataEntity(IntFields.tranHistory, min, (max.Equals(String.Empty)) ? (min) : (int.Parse(max)), 6))
+                    this.Close();
+            }
         }
 
         private void SearchByPayment(object sender, RoutedEventArgs e)
         {
-            PaymentMethod pay;
-            if (payment.Text.Equals("Cash"))
-                pay = PaymentMethod.Cash;
-            else if (payment.Text.Equals("Visa"))
-                pay = PaymentMethod.Visa;
-            else
-                pay = PaymentMethod.Check;
-            if (parentWindow.SearchDataEntity(TypeFields.payment, pay, null, 6))
-                this.Close();
+            if (PL_GUI.ComboboxValidate(payment, "Payment method"))
+            {
+                PaymentMethod pay;
+                if (payment.Text.Equals("Cash"))
+                    pay = PaymentMethod.Cash;
+                else if (payment.Text.Equals("Visa"))
+                    pay = PaymentMethod.Visa;
+                else
+                    pay = PaymentMethod.Check;
+                if (parentWindow.SearchDataEntity(TypeFields.payment, pay, null, 6))
+                    this.Close();
+            }
         }
 
         private void SearchByProductID(object sender, RoutedEventArgs e)
         {
-            int min = int.Parse(fromPrdID.Text);
-            String max = toPrdID.Text;
-            if (parentWindow.SearchDataEntity(IntFields.productID, min, (max.Equals(String.Empty)) ? (min) : (int.Parse(max)), 6))
-                this.Close();
+            if (PL_GUI.RangeSearchRegExp(fromPrdID.Text, toPrdID.Text, "Product ID", rangePrdID, 2))
+            {
+                int min = int.Parse(fromPrdID.Text);
+                String max = toPrdID.Text;
+                if (parentWindow.SearchDataEntity(IntFields.productID, min, (max.Equals(String.Empty)) ? (min) : (int.Parse(max)), 6))
+                    this.Close();
+            }
         }
+
 
     }
 }

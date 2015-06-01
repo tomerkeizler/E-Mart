@@ -111,8 +111,7 @@ namespace PL
 
         private bool IsValid()
         {
-            bool flag = true;
-            flag = PL_GUI.RegExp(username.Text, "Username", 3);
+            bool flag = PL_GUI.RegExp(username.Text, "User name", 3);
             if (flag)
                 flag = PL_GUI.RegExp(password.Password, "Password", 3);
             if (flag)
@@ -122,23 +121,11 @@ namespace PL
             if (flag)
                 flag = PL_GUI.RegExp(ID.Text, "ID", 0);
             if (flag)
-                if (male.IsChecked == false && female.IsChecked == false)
-                {
-                    MessageBox.Show("Gender must be selected");
-                    flag = false;
-                }
+                flag = PL_GUI.DoubleRadioValidate(male, female, "Gender");
             if (flag)
-                if (depID.SelectedIndex == -1)
-                {
-                    MessageBox.Show("Department ID must be selected");
-                    flag = false;
-                }
+                flag = PL_GUI.ComboboxValidate(depID, "Department ID");
             if (flag)
-                if (supID.SelectedIndex == -1)
-                {
-                    MessageBox.Show("Supervisor ID must be selected");
-                    flag = false;
-                }
+                flag = PL_GUI.ComboboxValidate(supID, "Supervisor ID");
             if (flag)
                 flag = PL_GUI.RegExp(salary.Text, "Salary", 2);
             return flag;

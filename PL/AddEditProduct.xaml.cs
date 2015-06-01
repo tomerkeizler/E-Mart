@@ -104,24 +104,15 @@ namespace PL
 
         private bool IsValid()
         {
-            bool flag = true;
-            flag = PL_GUI.RegExp(productName.Text, "Product name", 1);
+            bool flag = PL_GUI.RegExp(productName.Text, "Product name", 1);
             if (flag)
-                if (productType.SelectedIndex == -1)
-                {
-                    MessageBox.Show("Product type must be selected");
-                    flag = false;
-                }
+                flag = PL_GUI.ComboboxValidate(productType, "Product type");
             if (flag)
                 flag = PL_GUI.RegExp(price.Text, "Price", 2);
             if (flag)
                 flag = PL_GUI.RegExp(stockcount.Text, "Stock count", 2);
             if (flag)
-                if (depID.SelectedIndex == -1)
-                {
-                    MessageBox.Show("Department ID must be selected");
-                    flag = false;
-                }
+                flag = PL_GUI.ComboboxValidate(depID, "Department ID");
             return flag;
         }
 

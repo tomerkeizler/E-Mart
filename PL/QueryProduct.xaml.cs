@@ -39,66 +39,86 @@ namespace PL
 
         private void SearchByName(object sender, RoutedEventArgs e)
         {
-            if (parentWindow.SearchDataEntity(StringFields.name, name.Text, null, 5))
-                this.Close();
+            if (PL_GUI.RegExp(name.Text, "Product name", 1))
+                if (parentWindow.SearchDataEntity(StringFields.name, name.Text, null, 5))
+                    this.Close();
         }
 
         private void SearchByPType(object sender, RoutedEventArgs e)
         {
-            PType type;
-            if (pType.Text.Equals("Electronics"))
-                type = PType.Electronics;
-            else if (pType.Text.Equals("Food"))
-                type = PType.Food;
-            else
-                type = PType.Clothes;
-            if (parentWindow.SearchDataEntity(TypeFields.type, type, null, 5))
-                this.Close();
+            if (PL_GUI.ComboboxValidate(pType, "Product type"))
+            {
+                PType type;
+                if (pType.Text.Equals("Electronics"))
+                    type = PType.Electronics;
+                else if (pType.Text.Equals("Food"))
+                    type = PType.Food;
+                else
+                    type = PType.Clothes;
+                if (parentWindow.SearchDataEntity(TypeFields.type, type, null, 5))
+                    this.Close();
+            }
         }
+
 
         private void SearchByDepID(object sender, RoutedEventArgs e)
         {
-            int min = int.Parse(fromDepID.Text);
-            String max = toDepID.Text;
-            if (parentWindow.SearchDataEntity(IntFields.location, min, (max.Equals(String.Empty)) ? (min) : (int.Parse(max)), 5))
-                this.Close();
+            if (PL_GUI.RangeSearchRegExp(fromDepID.Text, toDepID.Text, "Department ID", rangeDepID, 2))
+            {
+                int min = int.Parse(fromDepID.Text);
+                String max = toDepID.Text;
+                if (parentWindow.SearchDataEntity(IntFields.location, min, (max.Equals(String.Empty)) ? (min) : (int.Parse(max)), 5))
+                    this.Close();
+            }
         }
 
         private void SearchByProductID(object sender, RoutedEventArgs e)
         {
-            int min = int.Parse(fromPrdID.Text);
-            String max = toPrdID.Text;
-            if (parentWindow.SearchDataEntity(IntFields.productID, min, (max.Equals(String.Empty)) ? (min) : (int.Parse(max)), 5))
-                this.Close();
+            if (PL_GUI.RangeSearchRegExp(fromPrdID.Text, toPrdID.Text, "Product ID", rangePrdID, 2))
+            {
+                int min = int.Parse(fromPrdID.Text);
+                String max = toPrdID.Text;
+                if (parentWindow.SearchDataEntity(IntFields.productID, min, (max.Equals(String.Empty)) ? (min) : (int.Parse(max)), 5))
+                    this.Close();
+            }
         }
 
         private void SearchByPrice(object sender, RoutedEventArgs e)
         {
-            int min = int.Parse(fromPrice.Text);
-            String max = toPrice.Text;
-            if (parentWindow.SearchDataEntity(IntFields.price, min, (max.Equals(String.Empty)) ? (min) : (int.Parse(max)), 5))
-                this.Close();
+            if (PL_GUI.RangeSearchRegExp(fromPrice.Text, toPrice.Text, "Price", rangePrice, 2))
+            {
+                int min = int.Parse(fromPrice.Text);
+                String max = toPrice.Text;
+                if (parentWindow.SearchDataEntity(IntFields.price, min, (max.Equals(String.Empty)) ? (min) : (int.Parse(max)), 5))
+                    this.Close();
+            }
         }
 
         private void SearchByPStatus(object sender, RoutedEventArgs e)
         {
-            PStatus sta;
-            if (pStatus.Text.Equals("in stock"))
-                sta = PStatus.InStock;
-            else if (pStatus.Text.Equals("low quantity"))
-                sta = PStatus.LowQuantity;
-            else
-                sta = PStatus.Empty;
-            if (parentWindow.SearchDataEntity(TypeFields.inStock, sta, null, 5))
-                this.Close();
+            if (PL_GUI.ComboboxValidate(pStatus, "Product status"))
+            {
+                PStatus sta;
+                if (pStatus.Text.Equals("in stock"))
+                    sta = PStatus.InStock;
+                else if (pStatus.Text.Equals("low quantity"))
+                    sta = PStatus.LowQuantity;
+                else
+                    sta = PStatus.Empty;
+                if (parentWindow.SearchDataEntity(TypeFields.inStock, sta, null, 5))
+                    this.Close();
+            }
         }
 
         private void SearchByStockCount(object sender, RoutedEventArgs e)
         {
-            int min = int.Parse(fromStockCount.Text);
-            String max = toStockCount.Text;
-            if (parentWindow.SearchDataEntity(IntFields.stockCount, min, (max.Equals(String.Empty)) ? (min) : (int.Parse(max)), 5))
-                this.Close();
+            if (PL_GUI.RangeSearchRegExp(fromStockCount.Text, toStockCount.Text, "Stock count", rangeStockCount, 2))
+            {
+                int min = int.Parse(fromStockCount.Text);
+                String max = toStockCount.Text;
+                if (parentWindow.SearchDataEntity(IntFields.stockCount, min, (max.Equals(String.Empty)) ? (min) : (int.Parse(max)), 5))
+                    this.Close();
+            }
         }
 
 

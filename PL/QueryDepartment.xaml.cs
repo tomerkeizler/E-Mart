@@ -39,16 +39,20 @@ namespace PL
 
         private void SearchByDepName(object sender, RoutedEventArgs e)
         {
-            if (parentWindow.SearchDataEntity(StringFields.name, depName.Text, null, 3))
-                this.Close();
+            if (PL_GUI.RegExp(depName.Text, "Department name", 1))
+                if (parentWindow.SearchDataEntity(StringFields.name, depName.Text, null, 3))
+                    this.Close();
         }
 
         private void SearchByDepID(object sender, RoutedEventArgs e)
         {
-            int min = int.Parse(fromDepID.Text);
-            String max = toDepID.Text;
-            if (parentWindow.SearchDataEntity(IntFields.departmentID, min, (max.Equals(String.Empty)) ? (min) : (int.Parse(max)), 3))
-            this.Close();
+            if (PL_GUI.RangeSearchRegExp(fromDepID.Text, toDepID.Text, "Department ID", rangeDepID, 2))
+            {
+                int min = int.Parse(fromDepID.Text);
+                String max = toDepID.Text;
+                if (parentWindow.SearchDataEntity(IntFields.departmentID, min, (max.Equals(String.Empty)) ? (min) : (int.Parse(max)), 3))
+                    this.Close();
+            }
         }
 
 

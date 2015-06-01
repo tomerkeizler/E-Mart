@@ -24,7 +24,7 @@ namespace PL
     {
         // static attributes
         public static int[][] allPermissions = new int[4][];
-        public static string[][] inputsInfo = new string[4][];
+        public static string[][] inputsInfo = new string[5][];
 
         // static constructor
         static PL_GUI()
@@ -38,7 +38,8 @@ namespace PL
             allPermissions[2] = new int[9] { 0, 1, 1, 0, 0, 0, 1, 0, 1 }; // Worker
             allPermissions[3] = new int[9] { 0, 0, 0, 0, 0, 1, 1, 0, 1 }; // Customer
 
-            //////////// regular expressions - used for user-input validation
+            ////////// regular expressions - used for user-input validation
+
             // ID - 9 digits
             inputsInfo[0] = new string[2] { "^[0-9]{9}$", "exactly 9 digits (0-9)" };
 
@@ -52,6 +53,9 @@ namespace PL
             // at least 6 characters of letters and digits
             // username, password
             inputsInfo[3] = new string[2] { "^[A-Za-z0-9]{6,}$", "at least 6 characters.\nOnly letters (A-Z) or (a-z) and digits (0-9) are allowed" };
+
+            // not empty
+            inputsInfo[4] = new string[2] { "^.+$", "selected" };
         }
 
         // static methods
@@ -103,6 +107,37 @@ namespace PL
             if (!Regex.IsMatch(txt, inputsInfo[check][0]))
             {
                 MessageBox.Show(field + " must be " + inputsInfo[check][1]);
+                return false;
+            }
+            else
+                return true;
+        }
+
+        public static bool RangeSearchRegExp(String txtMin, String txtMax, String field, RadioButton isRangeSearch, int check)
+        {
+            bool flag = PL_GUI.RegExp(txtMin, field, check);
+            if (flag)
+                if (isRangeSearch.IsChecked == true)
+                    flag = PL_GUI.RegExp(txtMax, "MAX " + field, check);
+            return flag;
+        }
+
+        public static bool ComboboxValidate(ComboBox cmb, String field)
+        {
+            if (cmb.SelectedIndex == -1)
+            {
+                MessageBox.Show(field + " must be selected");
+                return false;
+            }
+            else
+                return true;
+        }
+
+        public static bool DoubleRadioValidate(RadioButton opt1, RadioButton opt2, String field)
+        {
+            if (opt1.IsChecked == false && opt2.IsChecked == false)
+            {
+                MessageBox.Show(field + " must be selected");
                 return false;
             }
             else
