@@ -106,5 +106,10 @@ namespace BL
             //return the Customer type
             return typeof(Customer);
         }
+        public string GetEntityName()
+        {
+            //return the Customer type as a string
+            return "Customer";
+        }
     }
 }

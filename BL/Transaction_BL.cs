@@ -93,5 +93,10 @@ namespace BL
         {
             return typeof(Transaction);
         }
+        public string GetEntityName()
+        {
+            //return the Transaction type as a string
+            return "Transaction";
+        }
     }
 }

@@ -33,6 +33,10 @@ namespace Backend
         {
             return base.GetHashCode() ^ creditNumber;
         }
+        public override string ToString()
+        {
+            return "Credit Number: " + creditNumber.ToString() + "Expiration Date: " + expirationDate;
+        }
 
         //getters and setters:
         public string FirstName
