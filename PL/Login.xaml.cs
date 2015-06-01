@@ -66,35 +66,8 @@ namespace PL
                     else
                         _rank = ((Employee)(_user.Person)).Rank;
 
-                    int[] myPermissions = PL_GUI.allPermissions[(int)_rank];
-                    bool[] _viewPermissions = new bool[9];
-                    bool[] _fullPermissions = new bool[9];
-
-                    for (int i = 0; i < 9; i++)
-                    {
-                        if (myPermissions[i] > 0)
-                        {
-                            _viewPermissions[i] = true;
-                            if (myPermissions[i] == 1)
-                                _fullPermissions[i] = false;
-                            else
-                                _fullPermissions[i] = true;
-                        }
-                        else
-                        {
-                            _viewPermissions[i] = false;
-                            _fullPermissions[i] = false;
-                        }
-                    }
-
-                    /////////////////
-                    _viewPermissions[1] = false;
-                    /////////////////
-
                     parentWindow.user = _user;
-                    parentWindow.rank = _rank;
-                    parentWindow.viewPermissions = _viewPermissions;
-                    parentWindow.fullPermissions = _fullPermissions;
+                    parentWindow.rank = (int)_rank;
 
                     // display the username and permission in the main Window at the upper left square
                     parentWindow.title_name.Text = "Hey " + _user.ToString() + "!";
@@ -107,13 +80,21 @@ namespace PL
         }
 
         // Open registration window
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void Register(object sender, RoutedEventArgs e)
         {
             this.Close();
             AddEditCustomer reg = new AddEditCustomer(this.parentWindow, true, true, null);
             reg.Show();
         }
 
+        // Go to E-MART as a guest
+        private void BeMyGuest(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+            parentWindow.user = null;
+            parentWindow.Show();
+        }
+        
 
         private bool IsValid()
         {

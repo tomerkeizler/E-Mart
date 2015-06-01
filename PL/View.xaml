@@ -29,8 +29,9 @@
         </Style>
         
         <Style TargetType="Grid">
-            <Setter Property="HorizontalAlignment" Value="Center"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Margin" Value="10,10,10,10"/>
             <Setter Property="Width" Value="350"/>
             <Setter Property="Height" Value="auto"/>
             <Setter Property="Visibility" Value="Collapsed"/>
@@ -290,7 +291,7 @@
 
 
 
-        <StackPanel Height="60" Orientation="Horizontal" HorizontalAlignment="Center">
+        <StackPanel Height="60" Orientation="Horizontal" HorizontalAlignment="Center" x:Name="editRemoveButtons">
             <Button Click="Remove" Content="Remove" Height="25" Width="80" FontSize="14" Margin="0,0,20,0"/>
             <Button Click="CallEdit" Content="go to Edit mode" Height="25" Width="130" FontSize="14"/>
         </StackPanel>

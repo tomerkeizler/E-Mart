@@ -32,14 +32,16 @@ namespace PL
         {
             InitializeComponent();
             parentWindow = _parentWindow;
+
             // Create departments list for choosing depID
             depID.ItemsSource = itsDepartmentBL.GetAll();
+
             // Create Employees list for choosing supID
             List<Object> allEmployees = itsEmployeeBL.GetAll();
             Employee def = new Employee();
             def.Id = 0;
             allEmployees.Add(def); // gives an option to be an administrator
-            supID.ItemsSource = allEmployees;
+
             isAdd = _isAdd;
             if (!isAdd)
             {
@@ -50,6 +52,7 @@ namespace PL
                 allEmployees.Remove(((Employee)oldObj)); // prevents an option of employee being his own supervisor
                 ResetToDefault();
             }
+            supID.ItemsSource = allEmployees;
         }
 
         // Reset the form to the old object details
@@ -89,17 +92,18 @@ namespace PL
                     myGender = Gender.Female;
 
                 Employee newObj = new Employee(firstName.Text, lastName.Text, int.Parse(ID.Text), myGender, int.Parse(depID.Text), int.Parse(salary.Text), int.Parse(supID.Text));
-                User newUser = new User(username.Text, password.Password, newObj);
 
                 //adding action
                 if (isAdd)
                 {
+                    User newUser = new User(username.Text, password.Password, newObj);
                     if (parentWindow.AddDataEntity(newObj, newUser, 4))
                         this.Close();
                 }
                 //editing action
                 else
                 {
+                    newObj.Rank = ((Employee)oldObj).Rank;
                     if (parentWindow.EditDataEntity(oldObj, newObj, 4))
                         this.Close();
                 }
@@ -111,8 +115,10 @@ namespace PL
 
         private bool IsValid()
         {
-            bool flag = PL_GUI.RegExp(username.Text, "User name", 3);
-            if (flag)
+            bool flag = true;
+            if (isAdd)
+                flag = PL_GUI.RegExp(username.Text, "User name", 3);
+            if (flag && isAdd)
                 flag = PL_GUI.RegExp(password.Password, "Password", 3);
             if (flag)
                 flag = PL_GUI.RegExp(firstName.Text, "First name", 1);

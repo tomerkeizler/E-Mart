@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:PL"
 
-        Title="E-MART" Height="500" Width="500">
+        Title="E-MART" Height="500" Width="480">
 
     <Window.Resources>
         <local:NotRangeNumberConverter x:Key="notRangeNumberConverter" />
@@ -31,7 +31,7 @@
         </Style>
     </Window.Resources>
 
-    <Grid HorizontalAlignment="Center" Height="450" VerticalAlignment="Center" Width="450">
+    <Grid HorizontalAlignment="Left" Height="450" VerticalAlignment="Top" Width="450" Margin="10,10,10,10">
         <Grid.RowDefinitions>
             <RowDefinition Height="3*"/>
             <RowDefinition Height="2*"/>

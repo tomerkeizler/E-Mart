@@ -90,6 +90,18 @@ namespace PL
         }
 
 
+        public void EmphasizeBestSellers(object sender, DataGridRowEventArgs e)
+        {
+            LinearGradientBrush myBrush = new LinearGradientBrush();
+            myBrush.GradientStops.Add(new GradientStop(Colors.Yellow, 0.0));
+            myBrush.GradientStops.Add(new GradientStop(Colors.Orange, 0.5));
+            myBrush.GradientStops.Add(new GradientStop(Colors.Red, 1.0));
+            
+            Product p = e.Row.DataContext as Product;
+            if (p.IsTopSeller)
+                e.Row.Background = myBrush;
+        }
+
 
     }
 }
