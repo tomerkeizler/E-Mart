@@ -78,20 +78,20 @@ namespace BL
             }
             foreach (Employee emp in Allemps)
             {
-                if (emp.Equals(e))
+                if (emp.Equals((Employee)e))
                 {
                     Allemps.Remove(emp);
-                    foreach (User user in Allusers)
-                    {
-                        if (user.Person.Equals(e))
-                            Allusers.Remove(user);
-                        break;
-                    }
                 }
                 else if (((Employee)e).SupervisiorID == emp.SupervisiorID)
                     hasMoreEmployees = true;
                 if (((Employee)e).SupervisiorID == emp.Id)
                     temp = emp;
+            }
+            foreach (User user in Allusers)
+            {
+                if (user.Person.Equals(e))
+                    Allusers.Remove(user);
+                break;
             }
             if (!hasMoreEmployees)
                 temp.Rank = Rank.Worker;
