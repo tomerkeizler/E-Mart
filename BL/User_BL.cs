@@ -42,23 +42,46 @@ namespace BL
             if (!Allusers.Any())
                 throw new NullReferenceException("No Users to remove!");
 
-            List<object> Allpersons = itsDAL.ReadFromFile(Elements.ClubMember).ToList();
-            Allpersons.AddRange(itsDAL.ReadFromFile(Elements.Customer).ToList());
-            Allpersons.AddRange(itsDAL.ReadFromFile(Elements.Employee).ToList());
-            foreach (object person in Allpersons)
-                if (person.Equals(((User)u).Person))
-                {
-                    Allpersons.Remove(person);
-                    break;
-                }
-            foreach (User user in Allusers)
+            List<object> Allclubmembers = itsDAL.ReadFromFile(Elements.ClubMember).ToList();
+            List<object> Allcustomers = itsDAL.ReadFromFile(Elements.Customer).ToList();
+            List<object> Allemployees = itsDAL.ReadFromFile(Elements.Employee).ToList();
+            if (((User)u).Person is ClubMember)
             {
-                if (user.Equals(u))
-                {
-                    Allusers.Remove(user);
-                    break;
-                }
+                foreach (object cm in Allclubmembers)
+                    if (cm.Equals(((User)u).Person))
+                    {
+                        Allclubmembers.Remove(cm);
+                        itsDAL.WriteToFile(Allclubmembers.Cast<object>().ToList(), (ClubMember)cm);
+                        break;
+                    }
             }
+            else if (((User)u).Person is Customer) {
+                foreach (object c in Allcustomers)
+                    if (c.Equals(((User)u).Person))
+                    {
+                        Allcustomers.Remove(c);
+                        itsDAL.WriteToFile(Allcustomers.Cast<object>().ToList(), (Customer)c);
+                        break;
+                    }
+            }
+            else if(((User)u).Person is Employee)
+            {
+                foreach (object e in Allemployees)
+                    if (e.Equals(((User)u).Person))
+                    {
+                        Allemployees.Remove(e);
+                        itsDAL.WriteToFile(Allemployees.Cast<object>().ToList(), (Employee)e);
+                        break;
+                    }
+            }
+                foreach (User user in Allusers)
+                {
+                    if (user.Equals(u))
+                    {
+                        Allusers.Remove(user);
+                        break;
+                    }
+                }
             itsDAL.WriteToFile(Allusers.Cast<object>().ToList(), (User)u);
         }
 
