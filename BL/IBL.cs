@@ -17,6 +17,5 @@ namespace BL
         List<object> FindByType(ValueType type);
         List<object> GetAll();
         Type GetEntityType();
-        string GetEntityName(); /////////////////////
     }
 }
