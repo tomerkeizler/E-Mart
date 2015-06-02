@@ -31,6 +31,10 @@ namespace BL
                 {
                     throw new DataException("customer is already exists!");
                 }
+                if (customer.Id == ((Customer)c).Id)
+                {
+                    throw new Exception("This customer have duplicate ID with another customer!");
+                }
             }
             Allcustomers.Add((Customer)c);
             itsDAL.WriteToFile(Allcustomers.Cast<object>().ToList(), (Customer)c);
