@@ -45,6 +45,10 @@ namespace BL
                 {
                     if (emp.Equals(e))
                         throw new Exception("employee is already exists!");
+                    if (emp.Id == ((Employee)e).Id)
+                    {
+                        throw new Exception("This employee have duplicate ID with another employee!");
+                    }
                     if (((Employee)e).SupervisiorID == emp.Id)
                     {
                         checkSup = true;
