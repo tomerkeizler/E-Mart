@@ -45,14 +45,17 @@ namespace BL
                 {
                     if (emp.Equals(e))
                         throw new Exception("employee is already exists!");
-                    if ((emp.SupervisiorID != 0) && ((Employee)e).SupervisiorID == emp.Id)
+                    if (((Employee)e).SupervisiorID == emp.Id)
                     {
                         checkSup = true;
-                        User oldUsr = itsDAL.UserPersonQuery(emp).ElementAt(0);
-                        emp.Rank = Rank.Manager;
-                        User newUser = new User(oldUsr);
-                        newUser.Person = emp;
-                        itsUserBL.Edit(oldUsr, newUser);
+                        if ((emp.SupervisiorID != 0))
+                        {
+                            User oldUsr = itsDAL.UserPersonQuery(emp).ElementAt(0);
+                            emp.Rank = Rank.Manager;
+                            User newUser = new User(oldUsr);
+                            newUser.Person = emp;
+                            itsUserBL.Edit(oldUsr, newUser);
+                        }
                     }
                 }
                 if (((Employee)e).SupervisiorID == 0)
