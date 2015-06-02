@@ -30,6 +30,7 @@ namespace PL
         private IBL itsProductBL;
         private Dictionary<ComboBox, int> currentTypes;
         private ObservableCollection<Product> currentList;
+        private ObservableCollection<Product> purchasesList;
 
         // constructor
         public PurchaseWindow(IBL _itsProductBL)
@@ -46,6 +47,9 @@ namespace PL
             // bind the datagrid to currentList
             currentList = new ObservableCollection<Product>();
             ProductGrid.DataContext = currentList;
+
+            purchasesList = new ObservableCollection<Product>();
+            purchaseGrid.DataContext = purchasesList;
         }
 
 
@@ -53,7 +57,7 @@ namespace PL
         {
             bool areAllNull = true;
             foreach (var comboBox in currentTypes.Keys)
-                if (comboBox.SelectedItem != null)
+                if (comboBox.SelectedItem != null && comboBox.SelectedIndex != 3)
                     areAllNull = false;
             if (areAllNull)
                 currentList.Clear();
@@ -63,22 +67,27 @@ namespace PL
                 int TypesInStore = Enum.GetNames(typeof(PType)).Length;
                 int previousChoice = currentTypes[selectedComboBox];
                 if (!previousChoice.Equals(TypesInStore))
-                    ((Product_BL)itsProductBL).FilterProducts(currentList, typeIndex[previousChoice], false);
+                    if (!isDuplicate(selectedComboBox, previousChoice))
+                        ((Product_BL)itsProductBL).FilterProducts(currentList, typeIndex[previousChoice], false);
 
                 int newChoice = selectedComboBox.SelectedIndex;
                 if (!newChoice.Equals(TypesInStore))
-                {
-                    bool isDuplicate = false;
-                    foreach (KeyValuePair<ComboBox, int> pairComboboxType in currentTypes)
-                        if (!pairComboboxType.Key.Equals(selectedComboBox))
-                            if (pairComboboxType.Value.Equals(newChoice))
-                                isDuplicate = true;
-                    if (!isDuplicate)
+                    if (!isDuplicate(selectedComboBox, newChoice))
                         ((Product_BL)itsProductBL).FilterProducts(currentList, typeIndex[newChoice], true);
-                }
 
                 currentTypes[selectedComboBox] = newChoice;
             }
+        }
+
+
+        private bool isDuplicate(ComboBox cmb, int choice)
+        {
+            bool isDuplicate = false;
+            foreach (KeyValuePair<ComboBox, int> pairComboboxType in currentTypes)
+                if (!pairComboboxType.Key.Equals(cmb))
+                    if (pairComboboxType.Value.Equals(choice))
+                        isDuplicate = true;
+            return isDuplicate;
         }
 
 

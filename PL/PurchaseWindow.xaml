@@ -10,9 +10,6 @@
             <Setter Property="SelectionUnit" Value="FullRow" />
             <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
             <Setter Property="Height" Value="auto" />
-            <Setter Property="MaxHeight" Value="500" />
-            <Setter Property="MinHeight" Value="200" />
-            <Setter Property="Width" Value="400" />
             <Setter Property="AutoGenerateColumns" Value="False" />
             <Setter Property="IsReadOnly" Value="True" />
             <Setter Property="CanUserResizeColumns" Value="True" />
@@ -78,7 +75,7 @@
         <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="Drag products into the shopping cart below:" FontSize="14" TextDecorations="Underline"/>
         <TextBlock Grid.Row="1" Grid.Column="2" Text="Select product types to view:" FontSize="14" TextDecorations="Underline"/>
 
-        <!--<Image Grid.Row="2" Grid.Column="0" Source="shoppingCart.png" />-->
+        <Image Grid.Row="2" Grid.Column="1" Source="Resources\shoppingCart.png" />
 
 
 
@@ -118,7 +115,19 @@
 
 
 
-        <DataGrid Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Name="ProductGrid" ItemsSource="{Binding}" LoadingRow="EmphasizeBestSellers">
+        <DataGrid MinHeight="200" MaxHeight="330" Width="200" Grid.Row="2" Grid.Column="0" Grid.RowSpan="2" Name="purchaseGrid" ItemsSource="{Binding}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding PrdID}"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding PrdName}"/>
+                <DataGridTextColumn Header="Price" Binding="{Binding Price}"/>
+                <DataGridTextColumn Header="Amount" Binding="{Binding Amount}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+
+
+
+        <DataGrid MinHeight="100" MaxHeight="230" Width="400" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Name="ProductGrid" ItemsSource="{Binding}" LoadingRow="EmphasizeBestSellers">
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn Header=""/>
                 <DataGridCheckBoxColumn Header="amount to buy"/>

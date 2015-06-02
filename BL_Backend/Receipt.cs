@@ -41,25 +41,7 @@ namespace Backend
             return base.GetHashCode() ^ productsIDs.GetHashCode();
         }
 
-        public void ShowReceipt()
-        {
-            Console.WriteLine("\n\n---------- Receipt ----------");
-            Console.BackgroundColor = ConsoleColor.White;
-            Console.ForegroundColor = ConsoleColor.Black;
-            Console.Write(" {0,-12} | {1,-13}", "Product ID", "Price");
-            Console.BackgroundColor = ConsoleColor.Black;
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("\n-----------------------------");
-            int index = 0;
-            foreach (Object obj in productsIDs)
-            {
-                Console.Write("{0,-10} | {0,-10} |", obj, prices.ElementAt(index));
-                index++;
-            }
-            Console.SetCursorPosition(Console.CursorLeft, Console.CursorTop - 1);
-            Console.WriteLine("\n-----------------------------");
-        }
-
+      
         //getters and setters:
         public List<int> ProductsIDs
         {
