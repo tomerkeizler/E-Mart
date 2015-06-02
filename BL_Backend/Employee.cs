@@ -39,7 +39,14 @@ namespace Backend
             depID = _depID;
             salary = _salary;
             supervisiorID = _supervisiorID;
-            rank = Rank.Worker;
+            if (SupervisiorID == 0)
+            {
+                rank = Rank.Administrator;
+            }
+            else
+            {
+                rank = Rank.Worker;
+            }
         }
         //For Deep Copy
         public Employee(Employee other)

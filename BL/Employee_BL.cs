@@ -11,11 +11,13 @@ namespace BL
     {
         //Fields:
         IDAL itsDAL;
+        User_BL itsUserBL;
 
         //Constructors:
         public Employee_BL(IDAL dal)
         {
             itsDAL = dal;
+            itsUserBL = new User_BL(itsDAL);
         }
 
         //Methods:
@@ -43,17 +45,21 @@ namespace BL
                 {
                     if (emp.Equals(e))
                         throw new Exception("employee is already exists!");
-                    if ((emp.SupervisiorID != 0) && ((Employee)e).SupervisiorID == emp.Id)
+                    if (((Employee)e).SupervisiorID == emp.Id)
                     {
                         checkSup = true;
-                        Employee temp = new Employee(emp);
-                        emp.Rank = Rank.Manager;
-                        itsDAL.UserPersonQuery(temp).ElementAt(0).Person = emp;
+                        if ((emp.SupervisiorID != 0))
+                        {
+                            User oldUsr = itsDAL.UserPersonQuery(emp).ElementAt(0);
+                            emp.Rank = Rank.Manager;
+                            User newUser = new User(oldUsr);
+                            newUser.Person = emp;
+                            itsUserBL.Edit(oldUsr, newUser);
+                        }
                     }
                 }
                 if (((Employee)e).SupervisiorID == 0)
                 {
-                    ((Employee)e).Rank = Rank.Administrator;
                     checkSup = true;
                 }
                 if (!checkSup)
@@ -112,7 +118,6 @@ namespace BL
             {
                 throw new NullReferenceException("The employee does not exist!");
             }
-            User_BL itsUserBL = new User_BL(itsDAL);
             User newUser = new User(oldUser);
             newUser.Person = newE;
             this.Remove(oldE);
