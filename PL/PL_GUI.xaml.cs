@@ -147,7 +147,6 @@ namespace PL
 
         // attributes
         public IBL[] cats;
-        private string[] catsNames;
         private DataGrid[] grids;
         private List<Object>[] data;
 
@@ -160,7 +159,6 @@ namespace PL
         {
             InitializeComponent();
             cats = new IBL[8] { null, itsClubMemberBL, itsCustomerBL, itsDepartmentBL, itsEmployeeBL, itsProductBL, itsTransactionBL, itsUserBL };
-            catsNames = new string[8] { "", "Club member", "Customer", "Department", "Employee", "Product", "Transaction", "User" };
             grids = new DataGrid[8] { null, clubMemberGrid, CustomerGrid, DepartmentGrid, EmployeeGrid, ProductGrid, TransactionGrid, UserGrid };
             data = new List<Object>[8];
 
@@ -194,7 +192,9 @@ namespace PL
 
                 search_menu.IsExpanded = true;
 
+                currentCategory = 5;
                 allTabs.SelectedIndex = 5;
+                showHideEmptyTitle();
             }
 
             // hide addition menu and edit/remove buttons from workers, customers, guests
@@ -251,7 +251,7 @@ namespace PL
             else
             {
                 grids[currentCategory].Visibility = Visibility.Collapsed;
-                categoryEmpty.Text = "There are no " + catsNames[currentCategory] + "s";
+                categoryEmpty.Text = "There are no " + cats[currentCategory].GetEntityName() + "s";
                 categoryEmpty.Visibility = Visibility.Visible;
                 actionButtons.Visibility = Visibility.Collapsed;
             }
@@ -296,7 +296,7 @@ namespace PL
                 viewWindow.ShowDialog();
             }
             else
-                MessageBox.Show("You must choose a " + catsNames[currentCategory] + " first");
+                MessageBox.Show("You must choose a " + cats[currentCategory].GetEntityName() + " first");
         }
     
 
@@ -337,7 +337,7 @@ namespace PL
                 searchForm.ShowDialog();
             }
             else
-                MessageBox.Show("There are no " + catsNames[catToSearch] + "s to serach for");
+                MessageBox.Show("There are no " + cats[catToSearch].GetEntityName() + "s to serach for");
         }
 
         public bool SearchDataEntity(Object field, Object value1, Object value2, int categoryNum)
@@ -381,7 +381,7 @@ namespace PL
 
             if (done) // Search was successful
             {
-                MessageBox.Show("Search of " + catsNames[categoryNum] + " was done successfully!\nPlease click OK to view the results");
+                MessageBox.Show("Search of " + cats[categoryNum].GetEntityName() + " was done successfully!\nPlease click OK to view the results");
                 DisplayData(results, categoryNum);
                 currentCategory = categoryNum;
                 // update the tab that is selected
@@ -487,7 +487,7 @@ namespace PL
                 
             if (done)
             {
-                MessageBox.Show(catsNames[categoryNum] + " was added successfully!\nPlease click OK to continue");
+                MessageBox.Show(cats[categoryNum].GetEntityName() + " was added successfully!\nPlease click OK to continue");
                 currentCategory = categoryNum;
                 ResetRecords();
                 // update the tab that is selected
@@ -524,7 +524,7 @@ namespace PL
                 editForm.ShowDialog();
             }
             else
-                MessageBox.Show("You must choose a " + catsNames[currentCategory] + " first");
+                MessageBox.Show("You must choose a " + cats[currentCategory].GetEntityName() + " first");
         }
 
         public bool EditDataEntity(Object oldObj, Object newObj, int categoryNum)
@@ -571,7 +571,7 @@ namespace PL
             }
             if (done)
             {
-                MessageBox.Show(catsNames[categoryNum] + " was edited successfully!\nPlease click OK to continue");
+                MessageBox.Show(cats[categoryNum].GetEntityName() + " was edited successfully!\nPlease click OK to continue");
                 ResetRecords();
             }
             return done;
@@ -587,13 +587,13 @@ namespace PL
             if (selectedRow != null)
                 RemoveDataEntity(selectedRow);
             else
-                MessageBox.Show("You must choose a " + catsNames[currentCategory] + " first");
+                MessageBox.Show("You must choose a " + cats[currentCategory].GetEntityName() + " first");
         }
 
         public bool RemoveDataEntity(Object _objToDelete)
         {
             bool done = true;
-            MessageBoxResult result = MessageBox.Show("Are you sure you want to remove the selected " + catsNames[currentCategory], "Remove" + catsNames[currentCategory], MessageBoxButton.YesNo);
+            MessageBoxResult result = MessageBox.Show("Are you sure you want to remove the selected " + cats[currentCategory].GetEntityName(), "Remove" + cats[currentCategory].GetEntityName(), MessageBoxButton.YesNo);
             switch (result)
             {
                 case MessageBoxResult.Yes:
@@ -624,7 +624,7 @@ namespace PL
                         }
                         if (done)
                         {
-                            MessageBox.Show(catsNames[currentCategory] + " was removed successfully!\nPlease click OK to continue");
+                            MessageBox.Show(cats[currentCategory].GetEntityName() + " was removed successfully!\nPlease click OK to continue");
                             ResetRecords();
                         }
                         break;
