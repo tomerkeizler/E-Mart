@@ -83,7 +83,7 @@ namespace PL
         // Open registration window
         private void Register(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            this.Hide();
             AddEditCustomer reg = new AddEditCustomer(this, this.parentWindow, true, true, null);
             reg.Show();
         }

@@ -101,6 +101,8 @@ namespace PL
 
                             parentWindow.Permissions(); // activate permissions control
                             parentWindow.Show();
+
+                            login.Close();
                         }
                         else
                             MessageBox.Show("Customer was added successfully!\nPlease click OK to continue");
