@@ -52,13 +52,7 @@ namespace PL
             price.Text = Convert.ToString(((Product)oldObj).Price);
             stockcount.Text = Convert.ToString(((Product)oldObj).StockCount);
             depID.Text = Convert.ToString(((Product)oldObj).Location);
-
-            if (((Product)oldObj).Type.Equals(PType.Electronics))
-                productType.Text = "Electronics";
-            else if (((Product)oldObj).Type.Equals(PType.Food))
-                productType.Text = "Food";
-            else
-                productType.Text = "Clothes";
+            productType.SelectedIndex = (int)(((Product)oldObj).Type);
         }
 
         // Clear form if adding or Resetting to default if editing
