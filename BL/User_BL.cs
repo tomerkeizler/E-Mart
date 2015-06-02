@@ -87,6 +87,8 @@ namespace BL
 
         public void Edit(object oldU, object newU)
         {
+            if (((Employee)((User)oldU).Person).Id == -1)
+                throw new UnauthorizedAccessException("can't edit default administrator");
             this.Remove(oldU);
             this.Add(newU);
         }

@@ -106,6 +106,8 @@ namespace BL
         }   
         public void Edit(object oldE, object newE)
         {
+            if (((Employee)oldE).Id == -1)
+                throw new UnauthorizedAccessException("can't edit default administrator");
             List<User> oldUserList = itsDAL.UserPersonQuery(oldE);
             User oldUser = oldUserList.ElementAtOrDefault(0);
             if (oldUser == null)
