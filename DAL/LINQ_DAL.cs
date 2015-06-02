@@ -67,7 +67,7 @@ namespace DAL
             {
                 throw new ArgumentNullException("Bad Encrypt Type!");
             }
-
+            
             using (var stream = new MemoryStream())
             using (var encryptor = alg.CreateEncryptor())
             using (var encrypt = new CryptoStream(stream, encryptor, CryptoStreamMode.Write))
@@ -100,7 +100,7 @@ namespace DAL
                 return stream.ToArray();
             }
         }
-
+        
 
         //This method recieve list of object and create/override its xml file by the runtime types of the objects 
         public void WriteToFile(List<object> list, object obj)
@@ -131,7 +131,7 @@ namespace DAL
                 {
                     throw new System.IO.IOException("Cannot Write " + list.ElementAtOrDefault(0).GetType() + ".xml File! Details: " + e.Message);
                 }
-            }
+            } 
         }
 
         //This method recieve element to read and return its list from the XML file with this elements
@@ -226,10 +226,23 @@ namespace DAL
             {
                 filteredProducts = allProducts.Where(n => n.InStock.Equals((PStatus)type)).Cast<Product>().ToList();
             }
-
+              
             else
             {
                 throw new System.Data.DataException("Bad Input!");
+            }
+            return filteredProducts;
+        }
+        //Filter by multiply types for product
+        public List<Product> ProductMulTypeQuery(List<Product> currentList, List<PType> typelist)
+        {
+            List<Product> filteredProducts = new List<Product>();
+            if (currentList.ElementAtOrDefault(0) == null)
+            {
+                throw new InvalidDataException("There is nothing to find from.");
+            }
+            foreach (PType type in typelist){
+                filteredProducts.AddRange(currentList.Where(n => n.Type.Equals(type)).Cast<Product>().ToList());
             }
             return filteredProducts;
         }
@@ -301,11 +314,11 @@ namespace DAL
             }
             if (type is Gender)
             {
-                filteredEmployee = allEmployee.Where(n => n.Gender.Equals((Gender)type)).Cast<Employee>().ToList();
+                filteredEmployee = allEmployee.Where(n => n.Gender.Equals((Gender)type)).Cast<Employee>().ToList(); 
             }
             else if (type is Rank)
             {
-                filteredEmployee = allEmployee.Where(n => n.Rank.Equals((Rank)type)).Cast<Employee>().ToList();
+                filteredEmployee = allEmployee.Where(n => n.Rank.Equals((Rank)type)).Cast<Employee>().ToList(); 
             }
             else
             {
@@ -529,7 +542,6 @@ namespace DAL
             filteredUser = allUser.Where(n => n.Person.Equals(person)).Cast<User>().ToList();
             return filteredUser;
         }
-
         //Filter by name for Customer
         public List<Customer> CustomerNameQuery(string name, StringFields field)
         {
@@ -577,8 +589,7 @@ namespace DAL
             }
             return filteredCustomer;
         }
-
-        //Filter by types for product in data grid
+          //Filter by types for product in data grid
         public void FilterProducts(System.Collections.ObjectModel.ObservableCollection<Product> currentList, PType type, bool isAdd)
         {
             if (isAdd)
@@ -602,7 +613,6 @@ namespace DAL
                 }
             }
         }
-
 
 
     }

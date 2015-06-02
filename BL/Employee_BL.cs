@@ -43,10 +43,12 @@ namespace BL
                 {
                     if (emp.Equals(e))
                         throw new Exception("employee is already exists!");
-                    if ((emp.Id != 0) && ((Employee)e).SupervisiorID == emp.Id)
+                    if ((emp.SupervisiorID != 0) && ((Employee)e).SupervisiorID == emp.Id)
                     {
                         checkSup = true;
+                        Employee temp = new Employee(emp);
                         emp.Rank = Rank.Manager;
+                        itsDAL.UserPersonQuery(temp).ElementAt(0).Person = emp;
                     }
                 }
                 if (((Employee)e).SupervisiorID == 0)
@@ -78,20 +80,24 @@ namespace BL
             }
             foreach (Employee emp in Allemps)
             {
-                if (emp.Equals(e))
-                {
-                    Allemps.Remove(emp);
-                    foreach (User user in Allusers)
-                    {
-                        if (user.Person.Equals(e))
-                            Allusers.Remove(user);
-                        break;
-                    }
-                }
-                else if (((Employee)e).SupervisiorID == emp.SupervisiorID)
+                if (((Employee)e).SupervisiorID == emp.SupervisiorID)
                     hasMoreEmployees = true;
                 if (((Employee)e).SupervisiorID == emp.Id)
                     temp = emp;
+            }
+            foreach (User user in Allusers)
+            {
+                if (user.Person.Equals(e))
+                    Allusers.Remove(user);
+                break;
+            }
+            foreach (Employee emp in Allemps)
+            {
+                if (emp.Equals((Employee)e))
+                {
+                    Allemps.Remove(emp);
+                    break;
+                }
             }
             if (!hasMoreEmployees)
                 temp.Rank = Rank.Worker;
@@ -109,9 +115,9 @@ namespace BL
             User_BL itsUserBL = new User_BL(itsDAL);
             User newUser = new User(oldUser);
             newUser.Person = newE;
-            itsUserBL.Edit(oldUser, newUser);
             this.Remove(oldE);
-            this.Add(newE);            
+            this.Add(newE);
+            itsUserBL.Add(newUser);
         }
 
         public List<object> FindByName(string name, StringFields field)
@@ -135,6 +141,17 @@ namespace BL
         public List<object> GetAll()
         {
             return itsDAL.ReadFromFile(Elements.Employee);
+        }
+
+        public List<Employee> GetAllWorkers(List<Employee> emps, int supervisorId)
+        {
+            List<Employee> allWorkers = new List<Employee>();
+            foreach (Employee e in emps)
+            {
+                if (e.SupervisiorID == supervisorId)
+                    allWorkers.Add(e);
+            }
+            return allWorkers;
         }
 
         public Type GetEntityType()

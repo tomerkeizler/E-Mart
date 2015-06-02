@@ -122,7 +122,7 @@ namespace BL
         public string GetEntityName()
         {
             //return the clubmember type as a string
-            return "ClubMember";
+            return "Club Member";
         }
     }
 }
