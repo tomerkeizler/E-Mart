@@ -59,8 +59,10 @@ namespace BL
                     foreach (User user in Allusers)
                     {
                         if (user.Person.Equals(cm))
+                        {
                             Allusers.Remove(user);
-                        break;
+                            break;
+                        }
                     }
                     break;
                 }

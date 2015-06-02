@@ -84,6 +84,22 @@ namespace BL
                 if (((Employee)e).Id == emp.SupervisiorID)
                     throw new Exception("this employee has worker under him!");
             }
+            foreach (User user in Allusers)
+            {
+                if (user.Person.Equals(e))
+                {
+                    Allusers.Remove(user);
+                    break;
+                }
+            }
+            foreach (Employee emp in Allemps)
+            {
+                if (emp.Equals(e))
+                {
+                    Allemps.Remove(emp);
+                    break;
+                }
+            }
             foreach (Employee emp in Allemps)
             {
                 if (((Employee)e).SupervisiorID == emp.SupervisiorID)
@@ -91,21 +107,7 @@ namespace BL
                 if (((Employee)e).SupervisiorID == emp.Id)
                     temp = emp;
             }
-            foreach (User user in Allusers)
-            {
-                if (user.Person.Equals(e))
-                    Allusers.Remove(user);
-                break;
-            }
-            foreach (Employee emp in Allemps)
-            {
-                if (emp.Equals((Employee)e))
-                {
-                    Allemps.Remove(emp);
-                    break;
-                }
-            }
-            if (!hasMoreEmployees)
+            if (!hasMoreEmployees && temp.SupervisiorID != 0)
                 temp.Rank = Rank.Worker;
             itsDAL.WriteToFile(Allemps.Cast<object>().ToList(), (Employee)e);
             itsDAL.WriteToFile(Allusers.Cast<object>().ToList(), new User());
