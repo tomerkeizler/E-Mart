@@ -84,7 +84,7 @@ namespace PL
         private void Register(object sender, RoutedEventArgs e)
         {
             this.Close();
-            AddEditCustomer reg = new AddEditCustomer(this.parentWindow, true, true, null);
+            AddEditCustomer reg = new AddEditCustomer(this, this.parentWindow, true, true, null);
             reg.Show();
         }
 

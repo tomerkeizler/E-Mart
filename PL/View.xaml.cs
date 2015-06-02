@@ -78,7 +78,7 @@ namespace PL
                     editForm = new AddEditClubMember(parentWindow, false, oldObj);
                     break;
                 case 2:
-                    editForm = new AddEditCustomer(parentWindow, false, false, oldObj);
+                    editForm = new AddEditCustomer(null, parentWindow, false, false, oldObj);
                     break;
                 case 3:
                     editForm = new AddEditDepartment(parentWindow, false, oldObj);

@@ -156,7 +156,7 @@
                 <Expander.Content>
                     <StackPanel>
                         <Button Style="{StaticResource account_menu_Style}" Content="Change Password" Click="ChangePassword" />
-                        <Button Style="{StaticResource account_menu_Style}" Content="View you Propile" Click="ViewProfile" />
+                        <Button Style="{StaticResource account_menu_Style}" Content="View you Profile" Click="ViewProfile" />
                     </StackPanel>
                 </Expander.Content>
             </Expander>

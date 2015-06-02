@@ -22,6 +22,7 @@ namespace PL
     public partial class AddEditCustomer : Window
     {
         // attributes
+        private Login login;
         private PL_GUI parentWindow;
         private bool isRegister;
         private string title;
@@ -29,9 +30,10 @@ namespace PL
         private Object oldObj;
 
         // constructor
-        public AddEditCustomer(PL_GUI _parentWindow, bool _isRegister, bool _isAdd, Object _oldObj)
+        public AddEditCustomer(Login _login, PL_GUI _parentWindow, bool _isRegister, bool _isAdd, Object _oldObj)
         {
             InitializeComponent();
+            login = _login;
             parentWindow = _parentWindow;
             isRegister = _isRegister;
             if (_isRegister)
@@ -49,6 +51,8 @@ namespace PL
                 oldObj = _oldObj;
                 ResetToDefault();
             }
+            if (isRegister)
+                backButton.Visibility = Visibility.Visible;
         }
 
         // Reset the form to the old object details
@@ -130,6 +134,12 @@ namespace PL
             return flag;
         }
 
+
+        private void backToLogIn(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+            login.Show();
+        }
 
 
     }

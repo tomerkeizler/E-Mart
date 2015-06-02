@@ -417,7 +417,7 @@ namespace PL
                     addForm = new AddEditClubMember(this, true, null);
                     break;
                 case 2:
-                    addForm = new AddEditCustomer(this, false, true, null);
+                    addForm = new AddEditCustomer(null, this, false, true, null);
                     break;
                 case 3:
                     addForm = new AddEditDepartment(this, true, null);
@@ -516,7 +516,7 @@ namespace PL
                 if (type.Equals(typeof(ClubMember)))
                     editForm = new AddEditClubMember(this, false, selectedRow);
                 else if (type.Equals(typeof(Customer)))
-                    editForm = new AddEditCustomer(this, false, false, selectedRow);
+                    editForm = new AddEditCustomer(null, this, false, false, selectedRow);
                 else if (type.Equals(typeof(Department)))
                     editForm = new AddEditDepartment(this, false, selectedRow);
                 else if (type.Equals(typeof(Employee)))
