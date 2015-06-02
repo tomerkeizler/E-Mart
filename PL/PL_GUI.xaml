@@ -5,6 +5,8 @@
         Title="E-MART" MinHeight="450" MinWidth="530" Height="600" Width="1000">
 
     <Window.Resources>
+        <local:PropertyValueStringConverter x:Key="propertyValueStringConverter" />
+
         <Style TargetType="DataGrid">
             <Setter Property="AlternatingRowBackground" Value="#FFE4E5FF" />
             <Setter Property="SelectionMode" Value="Single" />
@@ -154,7 +156,7 @@
                 <Expander.Content>
                     <StackPanel>
                         <Button Style="{StaticResource account_menu_Style}" Content="Change Password" Click="ChangePassword" />
-                        <Button x:Name="watchProfileButton" Style="{StaticResource account_menu_Style}" Content="View you Propile" />
+                        <Button Style="{StaticResource account_menu_Style}" Content="View you Propile" Click="ViewProfile" />
                     </StackPanel>
                 </Expander.Content>
             </Expander>

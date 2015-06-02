@@ -6,13 +6,10 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Globalization;
 
-
 namespace PL
 {
     public class NotRangeNumberConverter : IValueConverter
     {
-
-
         public Object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
                 return String.Empty;
@@ -22,7 +19,5 @@ namespace PL
         {
             throw new NotImplementedException();
         }
-
-
     }
 }

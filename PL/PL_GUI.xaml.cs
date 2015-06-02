@@ -169,32 +169,39 @@ namespace PL
             for (int i = 1; i < 8; i++)
                 DisplayData(new List<Object>(cats[i].GetAll()), i);
         }
-
         // Main method
         public void Run()
         {
-            // Login
-            // the main window is being opened by the Login window when logging in succeeds
+            // Login - the main window is being opened by the Login window when logging in succeeds
             Window login = new Login(cats[7], this);
             login.ShowDialog();
 
-            // resetting selling quantities
+            // resetting selling counters
             ((Product_BL)cats[5]).GenerateTopSeller();
 
-            // for anonymous guests
-            if (user == null)
+            Permissions();
+        }
+
+        public void Permissions()
+        {
+            ///////////////////////////////////////////////////////////
+            //////////////////////  permissions  //////////////////////
+            ///////////////////////////////////////////////////////////
+
+            // for anonymous guests and customers
+            if (rank == 3 || rank == 4)
             {
-                rank = 4; // guest
-                title_name.Text = "Hey guest!";
-                title_rank.Text = "Enjoy the store!";
-
-                account_menu.Visibility = Visibility.Collapsed;
-
-                search_menu.IsExpanded = true;
-
+                // anonymous guests and customers - both start with watching products
                 currentCategory = 5;
-                allTabs.SelectedIndex = 5;
-                showHideEmptyTitle();
+                (allTabs as TabControl).SelectedIndex = currentCategory - 1;
+                ResetRecords();
+
+                // for anonymous guests only
+                if (rank == 4)
+                {
+                    account_menu.Visibility = Visibility.Collapsed; // anonymous guests have no account
+                    search_menu.IsExpanded = true; // anonymous guests can anyway watch only products so expand it..
+                }
             }
 
             // hide addition menu and edit/remove buttons from workers, customers, guests
@@ -205,12 +212,9 @@ namespace PL
                 removeButton.Visibility = Visibility.Collapsed;
             }
 
-            ///////////////////////////////////////////////////////////
-            //////////////////////  permissions  //////////////////////
-            ///////////////////////////////////////////////////////////
             List<Button> addButtons = new List<Button>() { null, addClubmemberButton, addCustomerButton, addDepartmentButton, addEmployeeButton, addProductButton };
             List<Button> searchButtons = new List<Button>() { null, searchClubmemberButton, searchCustomerButton, searchDepartmentButton, searchEmployeeButton, searchProductButton, searchTransactionButton, searchUserButton };
-            
+
             for (int i = 1; i < 8; i++)
                 if (allPermissions[rank][i] < 2)
                 {
@@ -227,14 +231,8 @@ namespace PL
                         searchButtons[i].Visibility = Visibility.Collapsed;
                     }
                 }
-            ///////////////////////////////////////////////////////////
-
-
-
-
-
-
         }
+
 
         /////////////////////
         // Display methods //
@@ -247,13 +245,17 @@ namespace PL
                 categoryEmpty.Visibility = Visibility.Collapsed;
                 grids[currentCategory].Visibility = Visibility.Visible;
                 actionButtons.Visibility = Visibility.Visible;
+                viewButton.Visibility = Visibility.Visible;
+                resetButton.Visibility = Visibility.Visible;
             }
             else
             {
-                grids[currentCategory].Visibility = Visibility.Collapsed;
                 categoryEmpty.Text = "There are no " + cats[currentCategory].GetEntityName() + "s";
                 categoryEmpty.Visibility = Visibility.Visible;
+                grids[currentCategory].Visibility = Visibility.Collapsed;
                 actionButtons.Visibility = Visibility.Collapsed;
+                viewButton.Visibility = Visibility.Collapsed;
+                resetButton.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -261,8 +263,10 @@ namespace PL
         {
             // a manager can manage only his workers
             if (rank == 2 && currentCategory == 4)
-                results = cats[4].FindByNumber(IntFields.supervisiorID, ((Employee)user.Person).Id, ((Employee)user.Person).Id);
-
+            {
+                List<Employee> onlyMyWorkers = ((Employee_BL)cats[4]).GetAllWorkers(results.Cast<Employee>().ToList(), ((Employee)(user.Person)).Id);
+                results = onlyMyWorkers.Cast<Object>().ToList();
+            }
             // a Customer/ClubMember can only see his personal transactions
             else if (rank == 3 && currentCategory == 6)
                 results = ((Customer)user.Person).TranHistory.Cast<Object>().ToList();
@@ -271,7 +275,7 @@ namespace PL
             showHideEmptyTitle();
 
             // generate a list of data
-            data[categoryNum] = new List<Object>(results);
+            data[categoryNum] = results;
 
             // bind datagrid to list
             grids[categoryNum].DataContext = data[categoryNum];
@@ -292,7 +296,7 @@ namespace PL
             Object selectedRow = grids[currentCategory].SelectedItem;
             if (selectedRow != null)
             {
-                Window viewWindow = new View(this, selectedRow, currentCategory);
+                Window viewWindow = new View(this, selectedRow, currentCategory, false);
                 viewWindow.ShowDialog();
             }
             else
@@ -422,7 +426,7 @@ namespace PL
                     if (AreThereDepartments())
                         addForm = new AddEditEmployee(this, cats[3], cats[4], true, null);
                     else
-                        MessageBox.Show("You cannot add a employee since there are no departments");
+                        MessageBox.Show("You cannot add an employee since there are no departments");
                     break;
                 case 5:
                     if (AreThereDepartments())
@@ -440,7 +444,8 @@ namespace PL
             bool done = true;
             try
             {
-                cats[categoryNum].Add(newObj);
+                if (newUser != null)
+                    cats[7].Add(newUser);
             }
             catch (System.Data.DataException e)
             {
@@ -462,8 +467,7 @@ namespace PL
             {
                 try
                 {
-                    if (newUser != null)
-                        cats[7].Add(newUser);
+                    cats[categoryNum].Add(newObj);
                 }
                 catch (System.Data.DataException e)
                 {
@@ -482,12 +486,14 @@ namespace PL
                 }
 
                 if (!done)
-                    cats[categoryNum].Remove(newObj);
+                    if (newUser != null)
+                        cats[7].Remove(newUser);
             }
-                
+
             if (done)
             {
-                MessageBox.Show(cats[categoryNum].GetEntityName() + " was added successfully!\nPlease click OK to continue");
+                if (categoryNum != 2) // don't display a message for customers because it's displayed from AddEditCustomer window
+                    MessageBox.Show(cats[categoryNum].GetEntityName() + " was added successfully!\nPlease click OK to continue");
                 currentCategory = categoryNum;
                 ResetRecords();
                 // update the tab that is selected
@@ -584,10 +590,15 @@ namespace PL
         public void CallRemove(object sender, RoutedEventArgs e)
         {
             Object selectedRow = grids[currentCategory].SelectedItem;
-            if (selectedRow != null)
-                RemoveDataEntity(selectedRow);
+            if (user.Person.Equals(selectedRow))
+                MessageBox.Show("You cannot delete yourself!");
             else
-                MessageBox.Show("You must choose a " + cats[currentCategory].GetEntityName() + " first");
+            {
+                if (selectedRow != null)
+                    RemoveDataEntity(selectedRow);
+                else
+                    MessageBox.Show("You must choose a " + cats[currentCategory].GetEntityName() + " first");
+            }
         }
 
         public bool RemoveDataEntity(Object _objToDelete)
@@ -649,11 +660,43 @@ namespace PL
             Window purchase = new PurchaseWindow(cats[5]);
             purchase.ShowDialog();
         }
-        
+
         private void ChangePassword(object sender, RoutedEventArgs e)
         {
-            Window changePass = new ChangePassword(this, user);
-            changePass.ShowDialog();
+            if (!isDefaultAdmin())
+            {
+                Window changePass = new ChangePassword(this, user);
+                changePass.ShowDialog();
+            }
+        }
+
+        private bool isDefaultAdmin()
+        {
+            if (user.UserName.Equals("administrator") && user.Password.Equals("password"))
+            {
+                MessageBox.Show("No can do...\nYou are a default administrator!");
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private void ViewProfile(object sender, RoutedEventArgs e)
+        {
+            if (!isDefaultAdmin())
+            {
+                Object myPerson = user.Person;
+                int myCategory;
+                if (myPerson.GetType().Equals(typeof(ClubMember)))
+                    myCategory = 1;
+                else if (myPerson.GetType().Equals(typeof(Customer)))
+                    myCategory = 2;
+                else // so this is an Employee
+                    myCategory = 4;
+
+                Window profileWindow = new View(this, myPerson, myCategory, true);
+                profileWindow.ShowDialog();
+            }
         }
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -692,18 +735,23 @@ namespace PL
             //////////////////////  permissions  //////////////////////
             ///////////////////////////////////////////////////////////
 
-            // permissions - edit and remove buttons
             if (allPermissions[rank][currentCategory] < 2)
             {
+                // permissions - view window and reset button
+                if (allPermissions[rank][currentCategory] == 0)
+                    actionButtons.Visibility = Visibility.Collapsed;
+                else
+                    actionButtons.Visibility = Visibility.Visible;
+
+                // permissions - edit and remove buttons
                 editButton.Visibility = Visibility.Collapsed;
                 removeButton.Visibility = Visibility.Collapsed;
-
-                // permissions - view windo
-                if (allPermissions[rank][currentCategory] == 0)
-                {
-                    viewButton.Visibility = Visibility.Collapsed;
-                    resetButton.Visibility = Visibility.Collapsed;
-                }
+            }
+            else
+            {
+                // permissions - edit and remove buttons
+                editButton.Visibility = Visibility.Visible;
+                removeButton.Visibility = Visibility.Visible;
             }
             ///////////////////////////////////////////////////////////
         }

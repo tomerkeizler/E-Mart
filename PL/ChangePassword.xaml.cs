@@ -50,7 +50,10 @@ namespace PL
                 newUser.Password = newPass.Password;
                 // editing action
                 if (parentWindow.EditDataEntity(oldUser, newUser, 7))
+                {
+                    parentWindow.user = newUser;
                     this.Close();
+                }
             }
         }
 

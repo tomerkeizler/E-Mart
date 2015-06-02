@@ -25,24 +25,48 @@ namespace PL
         private Object oldObj;
         private int currentCategory;
         private Grid[] allViews;
+        private bool isProfileWatch;
 
         // constructor
-        public View(PL_GUI _parentWindow, Object _oldObj, int _currentCategory)
+        public View(PL_GUI _parentWindow, Object _oldObj, int _currentCategory, bool _isProfileWatch)
         {
             InitializeComponent();
             parentWindow = _parentWindow;
             oldObj = _oldObj;
             viewMode.DataContext = oldObj;
             currentCategory = _currentCategory;
+            isProfileWatch = _isProfileWatch;
             allViews = new Grid[8] { null, clubMemberView, customerView, departmentView, employeeView, productView, transactionView, userView };
             allViews[currentCategory].Visibility = Visibility.Visible;
 
             ///////////////////////////////////////////////////////////
             //////////////////////  permissions  //////////////////////
             ///////////////////////////////////////////////////////////
-            // forbid edit/remove if there is no permission
-            if (PL_GUI.allPermissions[parentWindow.rank][currentCategory] != 2)
-                editRemoveButtons.Visibility = Visibility.Collapsed;
+
+            // self profile mode
+            if (isProfileWatch)
+            {
+                // update headlines
+                customerHeader.Text = "Customer - View your profile";
+                clubMemberHeader.Text = "Club Member - View your profile";
+                employeeHeader.Text = "Employee - View your profile";
+
+                // only administrator which can edit his own profile
+                if (parentWindow.rank != 0)
+                    editButton.Visibility = Visibility.Collapsed;
+                // nobody can remove himself
+                removeButton.Visibility = Visibility.Collapsed;
+            }
+
+            // watch record mode
+            else
+                // forbid edit/remove if there is no permission
+                if (PL_GUI.allPermissions[parentWindow.rank][currentCategory] != 2)
+                {
+                    editButton.Visibility = Visibility.Collapsed;
+                    removeButton.Visibility = Visibility.Collapsed;
+                }
+            ///////////////////////////////////////////////////////////
         }
 
         private void CallEdit(object sender, RoutedEventArgs e)

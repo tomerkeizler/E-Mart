@@ -69,6 +69,7 @@
       <DependentUpon>ChangePassword.xaml</DependentUpon>
     </Compile>
     <Compile Include="NotRangeNumberConverter.cs" />
+    <Compile Include="PropertyValueStringConverter.cs" />
     <Compile Include="PurchaseWindow.xaml.cs">
       <DependentUpon>PurchaseWindow.xaml</DependentUpon>
     </Compile>

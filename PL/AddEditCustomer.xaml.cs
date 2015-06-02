@@ -78,28 +78,28 @@ namespace PL
 
                 //adding action
                 if (isAdd)
-                {                
+                {
                     User newUser = new User(username.Text, password.Password, newObj);
                     if (parentWindow.AddDataEntity(newObj, newUser, 2))
                     {
                         this.Close();
                         if (isRegister)
+                        {
                             MessageBox.Show("Registration to E-MART done successfully!\nPlease click OK to continue");
 
-                        // if this is a self registration - then send the user to the main window as a customer
-                        if (isRegister)
-                        {
-                            Rank _rank = Rank.Customer;
-
+                            // if this is a self registration - then send the user to the main window as a customer
                             parentWindow.user = newUser;
-                            parentWindow.rank = (int)_rank;
+                            parentWindow.rank = (int)Rank.Customer;
 
                             // display the username and permission in the main Window at the upper left square
                             parentWindow.title_name.Text = "Hey " + newUser.UserName + "!";
                             parentWindow.title_rank.Text = "Logged in as " + Rank.Customer;
 
+                            parentWindow.Permissions(); // activate permissions control
                             parentWindow.Show();
                         }
+                        else
+                            MessageBox.Show("Customer was added successfully!\nPlease click OK to continue");
                     }
                 }
                 //editing action

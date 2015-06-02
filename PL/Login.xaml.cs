@@ -71,8 +71,9 @@ namespace PL
 
                     // display the username and permission in the main Window at the upper left square
                     parentWindow.title_name.Text = "Hey " + _user.ToString() + "!";
-                    parentWindow.title_rank.Text = "Logged in as " + _rank.ToString();
+                    parentWindow.title_rank.Text = "Logged in as " + ((_user.Person is ClubMember) ? ("Club Member") : (_rank.ToString()));
 
+                    parentWindow.Permissions(); // activate permissions control
                     this.Close();
                     parentWindow.Show();
                 }
@@ -90,8 +91,14 @@ namespace PL
         // Go to E-MART as a guest
         private void BeMyGuest(object sender, RoutedEventArgs e)
         {
-            this.Close();
             parentWindow.user = null;
+            parentWindow.rank = 4;
+
+            parentWindow.title_name.Text = "Hey guest!";
+            parentWindow.title_rank.Text = "Enjoy the store!";
+
+            parentWindow.Permissions(); // activate permissions control
+            this.Close();
             parentWindow.Show();
         }
         
