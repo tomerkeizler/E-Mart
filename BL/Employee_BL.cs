@@ -85,7 +85,7 @@ namespace BL
             //check if this employee has workers under him
             foreach (Employee emp in Allemps)
             {
-                if (((Employee)e).Id == emp.SupervisiorID)
+                if (((Employee)e).Id == emp.SupervisiorID && ((Employee)e).Rank == Rank.Manager)
                     throw new Exception("this employee has worker under him!");
             }
             foreach (User user in Allusers)
@@ -109,7 +109,17 @@ namespace BL
                 if (((Employee)e).SupervisiorID == emp.SupervisiorID)
                     hasMoreEmployees = true;
                 if (((Employee)e).SupervisiorID == emp.Id)
+                {
                     temp = emp;
+                    foreach (User user in Allusers)
+                    {
+                        if (user.Person.Equals(emp))
+                        {
+                            user.Person = temp;
+                            break;
+                        }
+                    }
+                }
             }
             if (!hasMoreEmployees && temp.SupervisiorID != 0)
                 temp.Rank = Rank.Worker;
@@ -128,6 +138,8 @@ namespace BL
             }
             User newUser = new User(oldUser);
             newUser.Person = newE;
+            ((Employee)newE).Rank = ((Employee)oldE).Rank;
+            ((Employee)oldE).Rank = Rank.Worker;
             this.Remove(oldE);
             this.Add(newE);
             itsUserBL.Add(newUser);
