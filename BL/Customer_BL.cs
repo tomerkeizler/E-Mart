@@ -21,7 +21,7 @@ namespace BL
         }
 
         //Methods:
-        public void Add(object c)
+        public object Add(object c)
         {
             //Add the new employee to the system
             List<Customer> Allcustomers = itsDAL.ReadFromFile(Elements.Customer).Cast<Customer>().ToList();
@@ -38,9 +38,10 @@ namespace BL
             }
             Allcustomers.Add((Customer)c);
             itsDAL.WriteToFile(Allcustomers.Cast<object>().ToList(), (Customer)c);
+            return c;
         }
 
-        public void Remove(Object c)
+        public void Remove(Object c, Boolean isEdit = false)
         {
             List<Customer> Allcustomers = itsDAL.ReadFromFile(Elements.Customer).Cast<Customer>().ToList();
             List<User> Allusers = itsDAL.ReadFromFile(Elements.User).Cast<User>().ToList();

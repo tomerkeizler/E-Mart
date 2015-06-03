@@ -9,8 +9,8 @@ namespace BL
 {
     public interface IBL
     {
-        void Add(object obj);
-        void Remove(object obj);
+        object Add(object obj);
+        void Remove(object obj, Boolean isEdit = false);
         void Edit(object oldObj, object newObj);
         List<object> FindByName(string name, StringFields field);
         List<object> FindByNumber(IntFields field, int minNumber, int maxNumber);

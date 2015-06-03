@@ -19,7 +19,7 @@ namespace BL
         }
 
         //Methods:
-        public void Add(object cm)
+        public object Add(object cm)
         {
             List<ClubMember> Allclubmems = itsDAL.ReadFromFile(Elements.ClubMember).Cast<ClubMember>().ToList();
             //Generate the new clubmember ID              
@@ -45,9 +45,10 @@ namespace BL
             //Add the new clubmember to the system.
             Allclubmems.Add((ClubMember)cm);
             itsDAL.WriteToFile(Allclubmems.Cast<object>().ToList(), (ClubMember)cm);
+            return cm;
         }
 
-        public void Remove(object cm)
+        public void Remove(object cm, Boolean isEdit = false)
         {
             List<ClubMember> Allclubmems = itsDAL.ReadFromFile(Elements.ClubMember).Cast<ClubMember>().ToList();
             List<User> Allusers = itsDAL.ReadFromFile(Elements.User).Cast<User>().ToList();

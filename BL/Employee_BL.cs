@@ -21,7 +21,7 @@ namespace BL
         }
 
         //Methods:
-        public void Add(object e)
+        public object Add(object e)
         {
             //Add the new employee to the system
             List<Employee> Allemps = itsDAL.ReadFromFile(Elements.Employee).Cast<Employee>().ToList();
@@ -61,10 +61,22 @@ namespace BL
                             itsUserBL.Edit(oldUsr, newUser);
                         }
                     }
+                    if (emp.SupervisiorID == ((Employee)e).Id)
+                    {
+                        User oldUsr = itsDAL.UserPersonQuery(((Employee)e)).ElementAtOrDefault(0);
+                        if (oldUsr != null)
+                        {
+                            ((Employee)e).Rank = Rank.Manager;
+                            User newUser = new User(oldUsr);
+                            newUser.Person = ((Employee)e);
+                            itsUserBL.Edit(oldUsr, newUser);
+                        }
+                    }
                 }
                 if (((Employee)e).SupervisiorID == 0)
                 {
                     checkSup = true;
+                    ((Employee)e).Rank = Rank.Administrator;
                 }
                 if (!checkSup)
                 {
@@ -73,20 +85,25 @@ namespace BL
                 Allemps.Add((Employee)e);
             }
             itsDAL.WriteToFile(Allemps.Cast<object>().ToList(), (Employee)e);
+            return e;
         }
-        public void Remove(object e)
+        public void Remove(object e, Boolean isEdit = false)
         {
             List<Employee> Allemps = itsDAL.ReadFromFile(Elements.Employee).Cast<Employee>().ToList();
             List<User> Allusers = itsDAL.ReadFromFile(Elements.User).Cast<User>().ToList();
             bool hasMoreEmployees = false;
-            Employee temp = new Employee();
+            object temp = new Employee();
+            User tempUser = new User();
             if (!Allemps.Any())
                 throw new NullReferenceException("No Employees to remove!");
-            //check if this employee has workers under him
-            foreach (Employee emp in Allemps)
+            if (!isEdit)
             {
-                if (((Employee)e).Id == emp.SupervisiorID && ((Employee)e).Rank == Rank.Manager)
-                    throw new Exception("this employee has worker under him!");
+                //check if this employee has workers under him
+                foreach (Employee emp in Allemps)
+                {
+                    if (((Employee)e).Id == emp.SupervisiorID)
+                        throw new Exception("this employee has worker under him!");
+                }
             }
             foreach (User user in Allusers)
             {
@@ -111,18 +128,18 @@ namespace BL
                 if (((Employee)e).SupervisiorID == emp.Id)
                 {
                     temp = emp;
-                    foreach (User user in Allusers)
-                    {
-                        if (user.Person.Equals(emp))
-                        {
-                            user.Person = temp;
-                            break;
-                        }
-                    }
+                    tempUser = itsDAL.UserPersonQuery(temp).ElementAtOrDefault(0);
                 }
             }
-            if (!hasMoreEmployees && temp.SupervisiorID != 0)
-                temp.Rank = Rank.Worker;
+            if (!hasMoreEmployees && ((Employee)temp).SupervisiorID != 0)
+            {
+                ((Employee)temp).Rank = Rank.Worker;
+                User newUser = new User(tempUser);
+                newUser.Person = temp;
+                Allusers.Remove(tempUser);
+                Allusers.Add(newUser);
+            }
+                
             itsDAL.WriteToFile(Allemps.Cast<object>().ToList(), (Employee)e);
             itsDAL.WriteToFile(Allusers.Cast<object>().ToList(), new User());
         }   
@@ -136,12 +153,22 @@ namespace BL
             {
                 throw new NullReferenceException("The employee does not exist!");
             }
+            if (((Employee)oldE).Id != ((Employee)newE).Id)
+            {
+                List<Employee> Allemps = itsDAL.ReadFromFile(Elements.Employee).Cast<Employee>().ToList();
+                foreach (Employee emp in Allemps)
+                {
+                    if (((Employee)oldE).Id == emp.SupervisiorID)
+                        throw new Exception("Cant Change ID, this employee has worker under him!");
+                }
+            }
+            if (((Employee)newE).SupervisiorID != 0)
+            {
+                ((Employee)newE).Rank = Rank.Worker;
+            }
             User newUser = new User(oldUser);
-            newUser.Person = newE;
-            ((Employee)newE).Rank = ((Employee)oldE).Rank;
-            ((Employee)oldE).Rank = Rank.Worker;
-            this.Remove(oldE);
-            this.Add(newE);
+            this.Remove(oldE,true);
+            newUser.Person = this.Add(newE);
             itsUserBL.Add(newUser);
         }
 

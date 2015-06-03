@@ -20,7 +20,7 @@ namespace BL
         }
 
         //Methods:
-        public void Add(object d)
+        public object Add(object d)
         {
             List<Department> Alldeparts = itsDAL.ReadFromFile(Elements.Department).Cast<Department>().ToList();
              //Generate the new department ID
@@ -42,9 +42,10 @@ namespace BL
             //Add the new department to the system
             Alldeparts.Add((Department)d);
             itsDAL.WriteToFile(Alldeparts.Cast<object>().ToList(), (Department)d);
+            return d;
         }
 
-        public void Remove(object d)
+        public void Remove(object d, Boolean isEdit = false)
         {
             List<Department> Alldeparts = itsDAL.ReadFromFile(Elements.Department).Cast<Department>().ToList();
             List<Employee> Allemps = itsDAL.ReadFromFile(Elements.Employee).Cast<Employee>().ToList();
