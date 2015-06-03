@@ -87,6 +87,8 @@ namespace BL
 
         public void Edit(object oldU, object newU)
         {
+            if (((Employee)((User)oldU).Person).Id == -1)
+                throw new UnauthorizedAccessException("can't edit default administrator");
             this.Remove(oldU);
             this.Add(newU);
         }
@@ -121,11 +123,19 @@ namespace BL
         //Method for User Only
         public User isItValidUser(User user)
         {
+            Boolean isThereAdmin = false;
             List<User> Allusers = itsDAL.ReadFromFile(Elements.User).Cast<User>().ToList();
-            if (!Allusers.Any())
+            foreach (User _user in Allusers)
+            {
+                if ((_user.Person is Employee) && ((Employee)(_user.Person)).Rank == Rank.Administrator)
+                {
+                    isThereAdmin = true;
+                }
+            }
+            if (!isThereAdmin)
             {
                 DEFAULT_ADMIN.Rank = Rank.Administrator;
-                User admin = new User(DEFAULT_USER_NAME, DEFAULT_PASSWORD,DEFAULT_ADMIN);
+                User admin = new User(DEFAULT_USER_NAME, DEFAULT_PASSWORD, DEFAULT_ADMIN);
                 Allusers.Add(admin);
             }
             if (user.UserName == null || user.Password == null)

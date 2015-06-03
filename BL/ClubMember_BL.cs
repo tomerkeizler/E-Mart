@@ -32,6 +32,10 @@ namespace BL
                 {
                     throw new System.Data.DataException("The ID allready exist in the system");
                 }
+                if (clubmem.Id == ((ClubMember)cm).Id)
+                {
+                    throw new Exception("This club member have duplicate ID with another club member!");
+                }
             }
             if (((ClubMember)cm).MemberID == 0)
             {
@@ -59,8 +63,10 @@ namespace BL
                     foreach (User user in Allusers)
                     {
                         if (user.Person.Equals(cm))
+                        {
                             Allusers.Remove(user);
-                        break;
+                            break;
+                        }
                     }
                     break;
                 }

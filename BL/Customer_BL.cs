@@ -27,9 +27,13 @@ namespace BL
             List<Customer> Allcustomers = itsDAL.ReadFromFile(Elements.Customer).Cast<Customer>().ToList();
             foreach (Customer customer in Allcustomers)
             {
-                if (((Customer)c).Equals(customer))
+                if (customer.Equals(c))
                 {
                     throw new DataException("customer is already exists!");
+                }
+                if (customer.Id == ((Customer)c).Id)
+                {
+                    throw new Exception("This customer have duplicate ID with another customer!");
                 }
             }
             Allcustomers.Add((Customer)c);
@@ -44,14 +48,16 @@ namespace BL
                 throw new NullReferenceException("No customers to remove!");
             foreach (Customer customer in Allcustomers)
             {
-                if (((Customer)c).Equals(customer))
+                if (customer.Equals(c))
                 {
                     Allcustomers.Remove(customer);
                     foreach (User user in Allusers)
                     {
                         if (user.Person.Equals(c))
+                        {
                             Allusers.Remove(user);
-                        break;
+                            break;
+                        }
                     }
                     break;
                 }

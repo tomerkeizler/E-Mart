@@ -45,6 +45,10 @@ namespace BL
                 {
                     if (emp.Equals(e))
                         throw new Exception("employee is already exists!");
+                    if (emp.Id == ((Employee)e).Id)
+                    {
+                        throw new Exception("This employee have duplicate ID with another employee!");
+                    }
                     if (((Employee)e).SupervisiorID == emp.Id)
                     {
                         checkSup = true;
@@ -84,6 +88,22 @@ namespace BL
                 if (((Employee)e).Id == emp.SupervisiorID)
                     throw new Exception("this employee has worker under him!");
             }
+            foreach (User user in Allusers)
+            {
+                if (user.Person.Equals(e))
+                {
+                    Allusers.Remove(user);
+                    break;
+                }
+            }
+            foreach (Employee emp in Allemps)
+            {
+                if (emp.Equals(e))
+                {
+                    Allemps.Remove(emp);
+                    break;
+                }
+            }
             foreach (Employee emp in Allemps)
             {
                 if (((Employee)e).SupervisiorID == emp.SupervisiorID)
@@ -91,27 +111,15 @@ namespace BL
                 if (((Employee)e).SupervisiorID == emp.Id)
                     temp = emp;
             }
-            foreach (User user in Allusers)
-            {
-                if (user.Person.Equals(e))
-                    Allusers.Remove(user);
-                break;
-            }
-            foreach (Employee emp in Allemps)
-            {
-                if (emp.Equals((Employee)e))
-                {
-                    Allemps.Remove(emp);
-                    break;
-                }
-            }
-            if (!hasMoreEmployees)
+            if (!hasMoreEmployees && temp.SupervisiorID != 0)
                 temp.Rank = Rank.Worker;
             itsDAL.WriteToFile(Allemps.Cast<object>().ToList(), (Employee)e);
             itsDAL.WriteToFile(Allusers.Cast<object>().ToList(), new User());
         }   
         public void Edit(object oldE, object newE)
         {
+            if (((Employee)oldE).Id == -1)
+                throw new UnauthorizedAccessException("can't edit default administrator");
             List<User> oldUserList = itsDAL.UserPersonQuery(oldE);
             User oldUser = oldUserList.ElementAtOrDefault(0);
             if (oldUser == null)
