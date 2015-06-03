@@ -27,15 +27,20 @@ namespace PL
         public static PType[] typeIndex = new PType[3] { PType.Electronics, PType.Clothes, PType.Food };
         
         // attributes
+        private PL_GUI parentWindow;
+        private Object customer;
         private IBL itsProductBL;
         private Dictionary<ComboBox, int> currentTypes;
+        private bool areThereAnyProducts;
         private ObservableCollection<Product> currentList;
-        private ObservableCollection<Product> purchasesList;
+        private ObservableCollection<Purchase> purchasesList;
 
         // constructor
-        public PurchaseWindow(IBL _itsProductBL)
+        public PurchaseWindow(PL_GUI _parentWindow, Object _customer, IBL _itsProductBL)
         {
             InitializeComponent();
+            parentWindow = _parentWindow;
+            customer = _customer;
             itsProductBL = _itsProductBL;
 
             // initializing the dictionary with value 3="none" for each combobox
@@ -44,41 +49,66 @@ namespace PL
             currentTypes.Add(pType2, 3);
             currentTypes.Add(pType3, 3);
 
+            // check if are there any products
+            areThereAnyProducts = itsProductBL.GetAll().Any();
+            if (!areThereAnyProducts)
+            {
+                ProductGrid.Visibility = Visibility.Collapsed;
+                purchaseGrid.Visibility = Visibility.Collapsed;
+                emptyStore.Visibility = Visibility.Visible;
+            }
+
             // bind the datagrid to currentList
             currentList = new ObservableCollection<Product>();
             ProductGrid.DataContext = currentList;
 
-            purchasesList = new ObservableCollection<Product>();
+            // bind the datagrid to shopping cart
+            purchasesList = new ObservableCollection<Purchase>();
             purchaseGrid.DataContext = purchasesList;
+
+            if (customer is Customer)
+            {
+                myName.Text = "Name: " + ((Customer)customer).FirstName + " " + ((Customer)customer).LastName;
+                if (((Customer)customer).CreditCard != null)
+                {
+                    cardNumber.Text = ((Customer)customer).CreditCard.CreditNumber.ToString();
+                    expDate.SelectedDate = ((Customer)customer).CreditCard.ExpirationDate;
+                }
+            }
+
+
+
         }
 
 
         private void UpdateProducts(object sender, SelectionChangedEventArgs e)
         {
-            bool areAllNull = true;
-            foreach (var comboBox in currentTypes.Keys)
-                if (comboBox.SelectedItem != null && comboBox.SelectedIndex != 3)
-                    areAllNull = false;
-            if (areAllNull)
-                currentList.Clear();
-            else
+            if (areThereAnyProducts)
             {
-                ComboBox selectedComboBox = ((ComboBox)sender);
-                int TypesInStore = Enum.GetNames(typeof(PType)).Length;
-                int previousChoice = currentTypes[selectedComboBox];
-                if (!previousChoice.Equals(TypesInStore))
-                    if (!isDuplicate(selectedComboBox, previousChoice))
-                        ((Product_BL)itsProductBL).FilterProducts(currentList, typeIndex[previousChoice], false);
+                bool areAllNull = true;
+                foreach (var comboBox in currentTypes.Keys)
+                    if (comboBox.SelectedItem != null && comboBox.SelectedIndex != 3)
+                        areAllNull = false;
+                if (areAllNull)
+                    currentList.Clear();
+                else
+                {
+                    ComboBox selectedComboBox = ((ComboBox)sender);
+                    int TypesInStore = Enum.GetNames(typeof(PType)).Length;
+                    int previousChoice = currentTypes[selectedComboBox];
+                    if (!previousChoice.Equals(TypesInStore))
+                        if (!isDuplicate(selectedComboBox, previousChoice))
+                            ((Product_BL)itsProductBL).FilterProducts(currentList, typeIndex[previousChoice], false);
 
-                int newChoice = selectedComboBox.SelectedIndex;
-                if (!newChoice.Equals(TypesInStore))
-                    if (!isDuplicate(selectedComboBox, newChoice))
-                        ((Product_BL)itsProductBL).FilterProducts(currentList, typeIndex[newChoice], true);
+                    int newChoice = selectedComboBox.SelectedIndex;
+                    if (!newChoice.Equals(TypesInStore))
+                        if (!isDuplicate(selectedComboBox, newChoice))
+                            ((Product_BL)itsProductBL).FilterProducts(currentList, typeIndex[newChoice], true);
 
-                currentTypes[selectedComboBox] = newChoice;
+                    currentTypes[selectedComboBox] = newChoice;
+                }
             }
         }
-
 
         private bool isDuplicate(ComboBox cmb, int choice)
         {
@@ -90,14 +120,11 @@ namespace PL
             return isDuplicate;
         }
 
-
         private void ClearForm(object sender, RoutedEventArgs e)
         {
             foreach (var comboBox in currentTypes.Keys)
                 comboBox.ClearValue(ComboBox.SelectedItemProperty);
-            // to call UpdateProducts() or its being called automatically?
         }
-
 
         public void EmphasizeBestSellers(object sender, DataGridRowEventArgs e)
         {
@@ -110,6 +137,45 @@ namespace PL
             if (p.IsTopSeller)
                 e.Row.Background = myBrush;
         }
+
+        private void Pay(object sender, RoutedEventArgs e)
+        {
+            paymentBox.Visibility = Visibility.Visible;
+        }
+
+        private void CompletePurchase(object sender, RoutedEventArgs e)
+        {
+            if (toSaveVisa.IsChecked == true)
+            {
+                Customer buyer = ((Customer)customer);
+                CreditCard myVisa = new CreditCard(buyer.FirstName, buyer.LastName, buyer.CreditCard.CreditNumber, buyer.CreditCard.ExpirationDate);
+                buyer.CreditCard = myVisa;
+            }
+            //Transaction t1 = new Transaction();
+            MessageBox.Show("Thank you for your purchase!");
+            this.Close();
+        }
+
+        private void DropProduct(object sender, DragEventArgs e)
+        {
+            var data = e.Data.GetData(typeof(Product));
+
+        }
+
+        private void paymentMethod_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (((ComboBox)sender).SelectedIndex == 2)
+                creditCard.Visibility = Visibility.Visible;
+            else
+                creditCard.Visibility = Visibility.Collapsed;
+        }
+
+        private void ProductGrid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Product p = (Product)ProductGrid.SelectedItem;
+            DragDrop.DoDragDrop(sender as DependencyObject, p, DragDropEffects.Move);
+        }
+
 
 
     }

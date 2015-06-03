@@ -37,10 +37,6 @@ namespace MainProg
             
             IPL myPL = new PL_GUI(clubMember, customer, department, employee, product, transaction, user);
             myPL.Run();
-
-            PurchaseWindow p = new PurchaseWindow(product);
-            //p.Show();
-
         }
 
     }

@@ -103,7 +103,7 @@ namespace PL
                 //editing action
                 else
                 {
-                    newObj.Rank = ((Employee)oldObj).Rank;
+                    ///newObj.Rank = ((Employee)oldObj).Rank;
                     if (parentWindow.EditDataEntity(oldObj, newObj, 4))
                         this.Close();
                 }
