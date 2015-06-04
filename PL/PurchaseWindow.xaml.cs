@@ -28,10 +28,9 @@ namespace PL
         
         // attributes
         private PL_GUI parentWindow;
-        private Object customer;
+        private Object buyer;
         private IBL itsProductBL;
         private bool canDrag;
-        private Buyable rowBeingEdited;
 
         private Dictionary<ComboBox, int> currentTypes;
         private bool areThereAnyProducts;
@@ -39,14 +38,13 @@ namespace PL
         private ObservableCollection<Purchase> purchasesList;
 
         // constructor
-        public PurchaseWindow(PL_GUI _parentWindow, Object _customer, IBL _itsProductBL)
+        public PurchaseWindow(PL_GUI _parentWindow, Object _buyer, IBL _itsProductBL)
         {
             InitializeComponent();
             parentWindow = _parentWindow;
-            customer = _customer;
+            buyer = _buyer;
             itsProductBL = _itsProductBL;
             canDrag = true;
-            rowBeingEdited = null;
 
             // initializing the dictionary with value 3="none" for each combobox
             currentTypes = new Dictionary<ComboBox, int>(3);
@@ -71,18 +69,22 @@ namespace PL
             purchasesList = new ObservableCollection<Purchase>();
             purchaseGrid.DataContext = purchasesList;
 
-            if (customer is Customer)
+            if (buyer != null)
             {
-                myName.Text = "Name: " + ((Customer)customer).FirstName + " " + ((Customer)customer).LastName;
-                if (((Customer)customer).CreditCard != null)
+                if (buyer is Customer)
                 {
-                    cardNumber.Text = ((Customer)customer).CreditCard.CreditNumber.ToString();
-                    expDate.SelectedDate = ((Customer)customer).CreditCard.ExpirationDate;
+                    myName.Text = "Name: " + ((Customer)buyer).FirstName + " " + ((Customer)buyer).LastName;
+                    if (((Customer)buyer).CreditCard != null)
+                    {
+                        cardNumber.Text = ((Customer)buyer).CreditCard.CreditNumber.ToString();
+                        expDate.SelectedDate = ((Customer)buyer).CreditCard.ExpirationDate;
+                    }
                 }
+                else
+                    myName.Text = "Name: " + ((Employee)buyer).FirstName + " " + ((Employee)buyer).LastName;
             }
-
-
-
+            else
+                toSaveVisa.Visibility = Visibility.Collapsed;
         }
 
 
@@ -171,34 +173,63 @@ namespace PL
 
         private void CompletePurchase(object sender, RoutedEventArgs e)
         {
-            if (toSaveVisa.IsChecked == true)
+            if (!purchasesList.Any())
+                MessageBox.Show("There are no products in your shopping cart!");
+            else
             {
-                Customer buyer = ((Customer)customer);
-                CreditCard myVisa = new CreditCard(buyer.FirstName, buyer.LastName, buyer.CreditCard.CreditNumber, buyer.CreditCard.ExpirationDate);
-                buyer.CreditCard = myVisa;
+                PaymentMethod myPaymentType;
+                if (paymentMethod.SelectedIndex == 0)
+                    myPaymentType = PaymentMethod.Cash;
+                else if (paymentMethod.SelectedIndex == 1)
+                    myPaymentType = PaymentMethod.Check;
+                else
+                {
+                    myPaymentType = PaymentMethod.Visa;
+
+                    if (toSaveVisa.IsChecked == true)
+                    {
+                        CreditCard myVisa = new CreditCard(((Customer)buyer).FirstName, ((Customer)buyer).LastName, ((Customer)buyer).CreditCard.CreditNumber, ((Customer)buyer).CreditCard.ExpirationDate);
+
+                        if (buyer is ClubMember)
+                        {
+                            ClubMember oldClubMember = ((ClubMember)buyer);
+                            ClubMember newClubMember = new ClubMember(oldClubMember);
+                            newClubMember.CreditCard = myVisa;
+                            parentWindow.cats[1].Edit(oldClubMember, newClubMember);
+                        }
+                        else
+                        {
+                            Customer oldCustomer = ((Customer)buyer);
+                            Customer newCustomer = new Customer(oldCustomer);
+                            newCustomer.CreditCard = myVisa;
+                            parentWindow.cats[1].Edit(oldCustomer, newCustomer);
+                        }
+                    }
+                }
+
+                List<Purchase> receipt = purchasesList.Cast<Purchase>().ToList();
+                Transaction newTran = new Transaction(0, Is_a_return.Purchase, receipt, myPaymentType);
+                MessageBox.Show("Thank you for your purchase!");
+
+                // commiting the transaction for real
+                List<Object> bought = new List<Object>();
+                foreach (Purchase p in purchasesList)
+                {
+                    List<Object> op = itsProductBL.FindByNumber(IntFields.productID, p.PrdID, p.PrdID);
+                    if (op.Any())
+                        ((Product)op.First()).Buy(p.Amount);
+                }
+                this.Close();
             }
-            //Transaction t1 = new Transaction();
-            MessageBox.Show("Thank you for your purchase!");
-            this.Close();
         }
+    
 
         private void DropProduct(object sender, DragEventArgs e)
         {
             if (canDrag) // only if this now paying mode
             {
                 Buyable data = (Buyable)e.Data.GetData(typeof(Buyable));
-                if (data.Amount < 0)
-                    MessageBox.Show("Invalid product amount");
-                else if (data.Amount == 0)
-                    MessageBox.Show("please choose an amount to buy");
-                else if (data.Amount > data.Prod.StockCount)
-                    MessageBox.Show("We don't have so many " + data.Prod.Name + "s at E-MART!");
-                else
-                {
-                    AddSingleToCart(data);
-                    data.ZeroAmount();
-                    ProductGrid.Items.Refresh();
-                }
+                AddSingleToCart(data);
             }
         }
 
@@ -216,7 +247,8 @@ namespace PL
             // no products were chosen
             if (!wasChosen)
                 MessageBox.Show("Please choose some products");
-            else            // reset all amounts of products in main datagrid of products in the store
+            else
+                // reset all amounts of products in main datagrid
                 if (currentList.Any())
                     foreach (Buyable b in currentList)
                     {
@@ -224,39 +256,52 @@ namespace PL
                     }
 
             // update the main table of products to zero amounts
-            purchaseGrid.Items.Refresh();
+            //purchaseGrid.Items.Refresh();
         }
 
         private void AddSingleToCart(Buyable b)
         {
             Purchase toBuy = new Purchase(b.Prod.ProductID, b.Prod.Name, b.Prod.Price, b.Amount);
-
-            // check if the same product is already in the shopping cart
-            Purchase identical = null;
-            if (purchasesList.Any())
-                foreach (Purchase p in purchasesList)
-                    if (p.PrdID == toBuy.PrdID)
-                        identical = p;
-            if (identical == null)
-                purchasesList.Add(toBuy);
+            if (b.Amount < 0)
+                MessageBox.Show("Invalid product amount");
+            else if (b.Amount == 0)
+                MessageBox.Show("please choose an amount to buy");
+            else if (b.Amount > b.Prod.StockCount)
+                MessageBox.Show("We don't have so many " + b.Prod.Name + "s at E-MART!");
             else
-                identical.Amount += toBuy.Amount;
+            {
+                // check if the same product is already in the shopping cart
+                Purchase identical = null;
+                if (purchasesList.Any())
+                    foreach (Purchase p in purchasesList)
+                        if (p.PrdID == toBuy.PrdID)
+                            identical = p;
+                if (identical == null)
+                    purchasesList.Add(toBuy);
+                else
+                    identical.Amount += toBuy.Amount;
 
-            // refresh the shopping cart datagrid
-            purchaseGrid.Items.Refresh();
+                // refresh the shopping cart datagrid
+                purchaseGrid.Items.Refresh();
 
-            // update the stock of the product and refresh the products datagrid
-            b.LeftInStock = b.LeftInStock - b.Amount;
-            ProductGrid.Items.Refresh();
+                // update the stock of the product
+                b.LeftInStock = b.LeftInStock - b.Amount;
+                
 
-            // update the total price and total amount of products in the shopping cart
-            String total = Convert.ToString(int.Parse(totalPrice1.Text) + (b.Prod.Price) * (b.Amount));
-            totalPrice1.Text = total;
-            totalPrice2.Text = total;
-            totalAmount.Text = Convert.ToString(int.Parse(totalAmount.Text) + b.Amount);
+                // update the total price and total amount of products in the shopping cart
+                String total = Convert.ToString(int.Parse(totalPrice1.Text) + (b.Prod.Price) * (b.Amount));
+                totalPrice1.Text = total;
+                totalPrice2.Text = total;
+                totalAmount.Text = Convert.ToString(int.Parse(totalAmount.Text) + b.Amount);
 
-            emptyCart.Visibility = Visibility.Collapsed;
-            removals.Visibility = Visibility.Visible;
+                // zero the amount in main table
+                b.ZeroAmount();
+                // refresh the products datagrid
+                ProductGrid.Items.Refresh();
+
+                emptyCart.Visibility = Visibility.Collapsed;
+                removals.Visibility = Visibility.Visible;
+            }
         }
 
         private void CallRemoveSingleFromCart(object sender, RoutedEventArgs e)
@@ -276,6 +321,7 @@ namespace PL
             foreach (Buyable b in currentList)
                 if (b.Prod.ProductID == toRemove.PrdID)
                     b.LeftInStock = b.LeftInStock + toRemove.Amount;
+            ProductGrid.Items.Refresh();
 
             String total = Convert.ToString(int.Parse(totalPrice1.Text) - (toRemove.Price) * (toRemove.Amount));
             totalPrice1.Text = total;
@@ -297,6 +343,7 @@ namespace PL
                 int plusToStock = purchasesList.Where(n => n.PrdID == b.Prod.ProductID).First().Amount;
                 b.LeftInStock = b.LeftInStock + plusToStock;
             }
+            ProductGrid.Items.Refresh();
 
             purchasesList.Clear();
 
@@ -329,22 +376,6 @@ namespace PL
         }
 
 
-        /*
-        private void dataGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
-        {
-            Buyable rowView = e.Row.Item as Buyable;
-            rowBeingEdited = rowView;
-        }
-
-        private void dataGrid_CurrentCellChanged(object sender, EventArgs e)
-        {
-            if (rowBeingEdited != null)
-            {
-                
-                //rowBeingEdited.EndEdit();
-            }
-        }
-        */
 
         
 

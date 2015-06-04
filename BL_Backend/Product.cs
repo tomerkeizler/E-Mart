@@ -95,14 +95,22 @@ namespace Backend
             return base.GetHashCode() ^ name.GetHashCode();
         }
         //Methods
-        public void Buy()
+        public void Buy(int num = 1)
         {
             if (this.inStock == PStatus.Empty)
             {
                 throw new InvalidOperationException("No Product Left to buy!");
             }
-            this.InStock = this.InStock - 1;
-            this.topSellerStatus.SellCounter = this.topSellerStatus.SellCounter + 1;
+            this.StockCount = this.StockCount - num;
+
+            if (stockCount == 0)
+                inStock = PStatus.Empty;
+            else if (stockCount <= 20)
+                inStock = PStatus.LowQuantity;
+            else
+                inStock = PStatus.InStock;
+
+            this.topSellerStatus.SellCounter = this.topSellerStatus.SellCounter + num;
         }
         public void ResetSells()
         {

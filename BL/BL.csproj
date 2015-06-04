@@ -49,7 +49,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BL_Test.cs" />
     <Compile Include="ClubMember_BL.cs" />
     <Compile Include="Customer_BL.cs" />
     <Compile Include="Department_BL.cs" />

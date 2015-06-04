@@ -220,7 +220,7 @@
                     <TextBox x:Name="cardNumber" Width="180" />
                     <TextBlock Text="expiration date" FontSize="14"/>
                     <DatePicker x:Name="expDate" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                    <CheckBox x:Name="toSaveVisa" FontWeight="Bold" Content="Save my credit card details"/>
+                    <CheckBox IsChecked="False"  x:Name="toSaveVisa" FontWeight="Bold" Content="Save my credit card details"/>
                 </StackPanel>
 
                 <Button Margin="0,5,0,0" Click="CompletePurchase" Background="#FFD1E0F9" FontWeight="Bold" Content="Complete Purchase!" Width="170"/>
