@@ -71,6 +71,7 @@ namespace Backend
         //For Deep Copy
         public Product(Product other)
         {
+            topSellerStatus = other.topSellerStatus;
             name = other.name;
             type = other.type;
             productID = other.productID;

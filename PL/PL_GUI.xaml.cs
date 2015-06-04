@@ -657,7 +657,7 @@ namespace PL
 
         private void CallPurchase(object sender, RoutedEventArgs e)
         {
-            Window purchase = new PurchaseWindow(this, user.Person, cats[5]);
+            Window purchase = new PurchaseWindow(this, user.Person);
             purchase.ShowDialog();
         }
 

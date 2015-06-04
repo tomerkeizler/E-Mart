@@ -69,6 +69,9 @@
       <DependentUpon>ChangePassword.xaml</DependentUpon>
     </Compile>
     <Compile Include="NotRangeNumberConverter.cs" />
+    <Compile Include="ProgressBar.xaml.cs">
+      <DependentUpon>ProgressBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PropertyValueStringConverter.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -162,6 +165,10 @@
     <Page Include="ChangePassword.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ProgressBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PurchaseWindow.xaml">
       <SubType>Designer</SubType>

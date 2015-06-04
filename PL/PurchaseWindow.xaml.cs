@@ -29,7 +29,6 @@ namespace PL
         // attributes
         private PL_GUI parentWindow;
         private Object buyer;
-        private IBL itsProductBL;
         private bool canDrag;
 
         private Dictionary<ComboBox, int> currentTypes;
@@ -38,12 +37,11 @@ namespace PL
         private ObservableCollection<Purchase> purchasesList;
 
         // constructor
-        public PurchaseWindow(PL_GUI _parentWindow, Object _buyer, IBL _itsProductBL)
+        public PurchaseWindow(PL_GUI _parentWindow, Object _buyer)
         {
             InitializeComponent();
             parentWindow = _parentWindow;
             buyer = _buyer;
-            itsProductBL = _itsProductBL;
             canDrag = true;
 
             // initializing the dictionary with value 3="none" for each combobox
@@ -53,11 +51,12 @@ namespace PL
             currentTypes.Add(pType3, 3);
 
             // check if are there any products
-            areThereAnyProducts = itsProductBL.GetAll().Any();
+            areThereAnyProducts = parentWindow.cats[5].GetAll().Any();
             if (!areThereAnyProducts)
             {
                 ProductGrid.Visibility = Visibility.Collapsed;
                 purchaseGrid.Visibility = Visibility.Collapsed;
+                previewBox.Visibility = Visibility.Collapsed;
                 emptyStore.Visibility = Visibility.Visible;
             }
 
@@ -81,12 +80,12 @@ namespace PL
                     }
                 }
                 else
+                {
                     myName.Text = "Name: " + ((Employee)buyer).FirstName + " " + ((Employee)buyer).LastName;
+                    toSaveVisa.Visibility = Visibility.Collapsed;
+                }
             }
-            else
-                toSaveVisa.Visibility = Visibility.Collapsed;
         }
-
 
         private void UpdateProducts(object sender, SelectionChangedEventArgs e)
         {
@@ -105,12 +104,12 @@ namespace PL
                     int previousChoice = currentTypes[selectedComboBox];
                     if (!previousChoice.Equals(TypesInStore))
                         if (!isDuplicate(selectedComboBox, previousChoice))
-                            ((Product_BL)itsProductBL).FilterProducts(currentList, typeIndex[previousChoice], false);
+                            ((Product_BL)parentWindow.cats[5]).FilterProducts(currentList, typeIndex[previousChoice], false);
 
                     int newChoice = selectedComboBox.SelectedIndex;
                     if (!newChoice.Equals(TypesInStore))
                         if (!isDuplicate(selectedComboBox, newChoice))
-                            ((Product_BL)itsProductBL).FilterProducts(currentList, typeIndex[newChoice], true);
+                            ((Product_BL)parentWindow.cats[5]).FilterProducts(currentList, typeIndex[newChoice], true);
 
                     currentTypes[selectedComboBox] = newChoice;
                 }
@@ -215,9 +214,14 @@ namespace PL
                 List<Object> bought = new List<Object>();
                 foreach (Purchase p in purchasesList)
                 {
-                    List<Object> op = itsProductBL.FindByNumber(IntFields.productID, p.PrdID, p.PrdID);
+                    List<Object> op = parentWindow.cats[5].FindByNumber(IntFields.productID, p.PrdID, p.PrdID);
                     if (op.Any())
-                        ((Product)op.First()).Buy(p.Amount);
+                    {
+                        Product oldProd = ((Product)op.First());
+                        Product newProd = new Product(oldProd);
+                        newProd.Buy(p.Amount);
+                        parentWindow.cats[5].Edit(oldProd, newProd);
+                    }
                 }
                 this.Close();
             }
