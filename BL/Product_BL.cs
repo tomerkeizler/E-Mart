@@ -146,6 +146,7 @@ namespace BL
                     prod.IsTopSeller = true;
                 }
             }
+            itsDAL.WriteToFile(Allprods.Cast<object>().ToList(), new Product());
         }
         public void FilterProducts(ObservableCollection<Buyable> currentList, PType type, bool isAdd)
         {
