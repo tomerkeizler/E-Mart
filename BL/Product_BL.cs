@@ -145,6 +145,10 @@ namespace BL
                 {
                     prod.IsTopSeller = true;
                 }
+                else
+                {
+                    prod.IsTopSeller = false;
+                }
             }
             itsDAL.WriteToFile(Allprods.Cast<object>().ToList(), new Product());
         }

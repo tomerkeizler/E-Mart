@@ -12,12 +12,13 @@ namespace Backend
     {
         //TopSeller Private Class for Generate the TopSeller Product each month
         [Serializable()]
-        private class TopSeller
+        public class TopSeller
         {
             private string productName;
             private bool isTopSeller = false;
             private int sellCounter = 0;
             private int currentMonth;
+            public TopSeller() { }
             public TopSeller(string _productName)
             {
                 productName = _productName;
@@ -179,6 +180,11 @@ namespace Backend
         {
             get { return price; }
             set { price = value; }
+        }
+        public TopSeller TopSellerStatus
+        {
+            get { return topSellerStatus; }
+            set { topSellerStatus = value; }
         }
     }
 }
