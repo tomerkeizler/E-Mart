@@ -146,7 +146,7 @@ namespace BL
                 }
             }
         }
-        public void FilterProducts(ObservableCollection<Product> currentList, PType type, bool isAdd)
+        public void FilterProducts(ObservableCollection<Buyable> currentList, PType type, bool isAdd)
         {
             if (currentList == null)
             {

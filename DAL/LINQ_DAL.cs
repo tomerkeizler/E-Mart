@@ -591,7 +591,8 @@ namespace DAL
             return filteredCustomer;
         }
         //Filter by types for product in data grid
-        public void FilterProducts(System.Collections.ObjectModel.ObservableCollection<Product> currentList, PType type, bool isAdd)
+        /////////////////////////////////////////////////////////////////////
+        public void FilterProducts(System.Collections.ObjectModel.ObservableCollection<Buyable> currentList, PType type, bool isAdd)
         {
             if (isAdd)
             {
@@ -599,22 +600,22 @@ namespace DAL
                 filteredProducts = filteredProducts.Where(n => !(n.InStock.Equals(PStatus.Empty))).Cast<Product>().ToList();
                 foreach (Product p in filteredProducts)
                 {
-                    currentList.Add(p);
+                    currentList.Add(new Buyable(p, 0, p.StockCount));
                 }
             }
             else
             {
-                List<Product> toRemove = new List<Product>();
-                foreach (Product p in currentList)
+                List<Buyable> toRemove = new List<Buyable>();
+                foreach (Buyable b in currentList)
                 {
-                    if (p.Type.Equals(type))
+                    if (b.Prod.Type.Equals(type))
                     {
-                        toRemove.Add(p);
+                        toRemove.Add(b);
                     }
                 }
-                foreach (Product p in toRemove)
+                foreach (Buyable b in toRemove)
                 {
-                    currentList.Remove(p);
+                    currentList.Remove(b);
                 }
                 toRemove.Clear();
             }

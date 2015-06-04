@@ -76,25 +76,29 @@
 
     <Grid HorizontalAlignment="Left" Height="520" VerticalAlignment="Top" Width="650" Margin="10,10,10,10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="3*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="5*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="6*"/>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="6*"/>
             <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="5*"/>
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Text="Make a purchase at E-MART" HorizontalAlignment="Center"  FontSize="24" Foreground="#FF2D59EE"/>
 
-        <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="Drag products into the shopping cart below:" FontSize="14" TextDecorations="Underline"/>
-        <TextBlock Grid.Row="1" Grid.Column="2" Text="Select product types to view:" FontSize="14" TextDecorations="Underline"/>
+        <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Vertical">
+            <TextBlock Text="Drag products one by one into the shopping cart below" FontSize="14"/>
+            <TextBlock Text="Or just press 'Add to shopphing cart' button" FontSize="14" TextDecorations="Underline"/>
+        </StackPanel>
+        
+        <TextBlock Grid.Row="1" Grid.Column="2" Text="Select product types to view" FontSize="14" TextDecorations="Underline"/>
 
-        <Image AllowDrop="True" DragDrop.Drop="DropProduct" Grid.Row="2" Grid.Column="1" Source="Resources\shoppingCart.png" />
+        <Image Width="130" Height="130" HorizontalAlignment="Left" AllowDrop="True" DragDrop.Drop="DropProduct" Grid.Row="2" Grid.Column="1" Source="Resources\shoppingCart.png" />
 
 
 
@@ -134,7 +138,7 @@
 
 
 
-        <DataGrid Height="160" Width="200" Grid.Row="2" Grid.Column="0" Grid.RowSpan="2" Name="purchaseGrid" ItemsSource="{Binding}">
+        <DataGrid Height="150" Width="240" Grid.Row="2" Grid.Column="0" Grid.RowSpan="2" Name="purchaseGrid" ItemsSource="{Binding}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding PrdID}"/>
                 <DataGridTextColumn Header="Name" Binding="{Binding PrdName}"/>
@@ -148,25 +152,58 @@
         <TextBlock Visibility="Collapsed" Text="Sorry, E-MART is out of products right now" Margin="0,60,0,0" Grid.Row="3" Grid.ColumnSpan="3" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="22" x:Name="emptyStore" />
 
 
-        <DataGrid Margin="0,20,0,0" IsReadOnly="False" MinHeight="160" MaxHeight="220" Width="370" Grid.Row="3" Grid.Column="1" Grid.RowSpan="2" Grid.ColumnSpan="2" Name="ProductGrid" ItemsSource="{Binding}" LoadingRow="EmphasizeBestSellers" MouseLeftButtonDown="ProductGrid_MouseLeftButtonDown">
+        <DataGrid HorizontalAlignment="Stretch" Margin="0,20,0,0" IsReadOnly="False" Height="160" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Name="ProductGrid" ItemsSource="{Binding}" LoadingRow="EmphasizeBestSellers" MouseLeftButtonDown="ProductGrid_MouseLeftButtonDown">
             <DataGrid.Columns>
-                <DataGridTextColumn CanUserSort="True" Header="Amount"/>
-                <DataGridTextColumn IsReadOnly="true" Header="ID" Binding="{Binding ProductID}"/>
-                <DataGridTextColumn IsReadOnly="true" Header="Name" Binding="{Binding Name}"/>
-                <DataGridTextColumn IsReadOnly="true" Header="Type" Binding="{Binding Type}"/>
-                <DataGridTextColumn IsReadOnly="true" Header="Price" Binding="{Binding Price}"/>
-                <DataGridTextColumn IsReadOnly="true" Header="Stock count" Binding="{Binding StockCount}"/>
+                <DataGridTextColumn x:Name="amountColumn" Header="Amount" Binding="{Binding Amount}"/>
+                <DataGridTextColumn IsReadOnly="true" Header="ID" Binding="{Binding Prod.ProductID}"/>
+                <DataGridTextColumn IsReadOnly="true" Header="Name" Binding="{Binding Prod.Name}"/>
+                <DataGridTextColumn IsReadOnly="true" Header="Type" Binding="{Binding Prod.Type}"/>
+                <DataGridTextColumn IsReadOnly="True" Header="Price" Binding="{Binding Prod.Price}"/>
+                <DataGridTextColumn IsReadOnly="true" Header="Stock count" Binding="{Binding LeftInStock}"/>
             </DataGrid.Columns>
         </DataGrid>
 
         
+        <GroupBox Visibility="Visible" Padding="5" x:Name="previewBox" Grid.Row="3" Grid.Column="0" Grid.RowSpan="3" HorizontalAlignment="Stretch" Margin="10,10,10,10" VerticalAlignment="Stretch">
+            <GroupBox.Header>
+                <Label FontSize="18" FontWeight="Bold">Shopping details</Label>
+            </GroupBox.Header>
+            <StackPanel Margin="0,20,0,0" Orientation="Vertical" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                
+                <StackPanel Visibility="Collapsed" x:Name="removals" Orientation="Vertical">                    
+                    <TextBlock Text="Removal options" FontSize="14"/>
+                    <Button Margin="10,10,10,0" Click="CallRemoveSingleFromCart" Content="Remove selected product" Width="180"/>
+                    <TextBlock Text="" FontSize="14" Margin="0,0,10,0"/>
+                    <Button Margin="10,0,10,0" Click="RemoveManyFromCart" Content="Erase entire shopping cart" Width="180"/>
+                </StackPanel>
 
-        <GroupBox Padding="5" x:Name="paymentBox" Visibility="Collapsed" Grid.Row="4" Grid.Column="0" Grid.RowSpan="2" HorizontalAlignment="Stretch" Margin="10,10,10,10" VerticalAlignment="Stretch">
+                <TextBlock Width="200" Foreground="red" Text="Please choose products to your shopping cart..." x:Name="emptyCart" FontSize="16"/>
+
+                <StackPanel Margin="0,20,0,0" Orientation="Horizontal" HorizontalAlignment="Left">
+                    <TextBlock Text="Total amount of products:" FontSize="14" Margin="0,0,10,0"/>
+                    <TextBlock x:Name="totalAmount" Text="0" FontSize="14" Margin="0,0,10,0"/>
+                </StackPanel>
+                
+                <StackPanel Margin="0,10,0,0" Orientation="Horizontal" HorizontalAlignment="Left">
+                    <TextBlock Text="Total price to pay:" FontSize="14" Margin="0,0,10,0"/>
+                    <TextBlock x:Name="totalPrice1" Text="0" Foreground="#FF2D59EE" FontSize="14" Margin="0,0,10,0"/>
+                </StackPanel>
+                
+            </StackPanel>
+        </GroupBox>
+
+        
+            <GroupBox x:Name="paymentBox" Visibility="Collapsed" Grid.Row="3" Grid.Column="0" Grid.RowSpan="3" HorizontalAlignment="Stretch" Margin="10,10,10,10" VerticalAlignment="Stretch">
             <GroupBox.Header>
                 <Label FontSize="18" FontWeight="Bold">Payment details</Label>
             </GroupBox.Header>
             
             <StackPanel Orientation="Vertical" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <TextBlock Text="Total price to pay:" FontSize="14" Margin="0,0,10,0"/>
+                    <TextBlock x:Name="totalPrice2" Text="0" Foreground="#FF2D59EE" FontSize="14" Margin="0,0,10,0"/>
+                </StackPanel>
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                     <TextBlock Text="Pay with" FontSize="14" Margin="0,0,10,0"/>
@@ -186,7 +223,8 @@
                     <CheckBox x:Name="toSaveVisa" FontWeight="Bold" Content="Save my credit card details"/>
                 </StackPanel>
 
-                <Button Margin="0,20,0,0" Click="CompletePurchase" Background="#FFD1E0F9" FontWeight="Bold" Content="Complete Purchase!" Width="170"/>
+                <Button Margin="0,5,0,0" Click="CompletePurchase" Background="#FFD1E0F9" FontWeight="Bold" Content="Complete Purchase!" Width="170"/>
+                <Button Margin="0,5,0,0" Click="UnPay" Content="Reselect products" Width="140"/>
 
             </StackPanel>
             
@@ -195,9 +233,15 @@
 
         
 
-        <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center">
+
+        <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center">
             <Button Margin="10,0,10,0" Click="Pay" Background="#FFD1E0F9" FontWeight="Bold" Content="Purchase now!" Width="140"/>
-            <Button Margin="10,0,10,0" Click="ClearForm" Content="Reset products" Width="140"/>
+            <Button Margin="10,0,10,0" Click="AddManyToCart" Background="#FFD1E0F9" FontWeight="Bold" Content="Add to shopphing cart" Width="190"/>
+        </StackPanel>
+        
+        <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center">
+            <Button Margin="10,0,10,0" Click="Back" Content="Go back to menu" Width="130"/>
+            <Button Margin="10,0,10,0" Click="ClearForm" Content="Reset all products" Width="140"/>
         </StackPanel>
         
     </Grid>
