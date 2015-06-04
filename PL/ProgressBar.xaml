@@ -7,7 +7,7 @@
     <Grid Margin="0,0,0,13">
 
 
-        <ProgressBar Minimum="0" Maximum="100" Name="pbStatus" Margin="3,5,3,-9" ValueChanged="pbStatus_ValueChanged" RenderTransformOrigin="0.5,0.5" >
+        <ProgressBar Minimum="0" Maximum="100" Name="pbStatus" Margin="3,5,3,-9" RenderTransformOrigin="0.5,0.5" >
             <ProgressBar.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform ScaleY="-1" ScaleX="-1"/>

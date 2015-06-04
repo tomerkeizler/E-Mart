@@ -30,6 +30,7 @@ namespace PL
         private PL_GUI parentWindow;
         private Object buyer;
         private bool canDrag;
+        private Dictionary<Product, int> currentCart;
 
         private Dictionary<ComboBox, int> currentTypes;
         private bool areThereAnyProducts;
@@ -43,6 +44,7 @@ namespace PL
             parentWindow = _parentWindow;
             buyer = _buyer;
             canDrag = true;
+            currentCart = new Dictionary<Product, int>();
 
             // initializing the dictionary with value 3="none" for each combobox
             currentTypes = new Dictionary<ComboBox, int>(3);
@@ -112,6 +114,14 @@ namespace PL
                             ((Product_BL)parentWindow.cats[5]).FilterProducts(currentList, typeIndex[newChoice], true);
 
                     currentTypes[selectedComboBox] = newChoice;
+
+                    // update products and amounts from a saved dictionary
+                    /*
+                    foreach (Buyable b in currentList)
+                        foreach (KeyValuePair<Product, int> inCart in currentCart)
+                            if (b.Prod.Equals(inCart.Key))
+                                b.LeftInStock = currentCart[b.Prod];
+                     */
                 }
             }
         }
@@ -292,7 +302,7 @@ namespace PL
 
                 // update the stock of the product
                 b.LeftInStock = b.LeftInStock - b.Amount;
-                
+
 
                 // update the total price and total amount of products in the shopping cart
                 String total = Convert.ToString(int.Parse(totalPrice1.Text) + (b.Prod.Price) * (b.Amount));
@@ -300,13 +310,24 @@ namespace PL
                 totalPrice2.Text = total;
                 totalAmount.Text = Convert.ToString(int.Parse(totalAmount.Text) + b.Amount);
 
+                emptyCart.Visibility = Visibility.Collapsed;
+                removals.Visibility = Visibility.Visible;
+
+                // update product and amount selected in a dictionary
+                bool flag = false;
+                foreach (KeyValuePair<Product, int> inCart in currentCart)
+                    if (b.Prod.Equals(inCart.Key))
+                    {
+                        currentCart[inCart.Key] += b.Amount;
+                        flag = true;
+                    }
+                if (!flag)
+                    currentCart.Add(b.Prod, b.Amount);
+
                 // zero the amount in main table
                 b.ZeroAmount();
                 // refresh the products datagrid
                 ProductGrid.Items.Refresh();
-
-                emptyCart.Visibility = Visibility.Collapsed;
-                removals.Visibility = Visibility.Visible;
             }
         }
 
@@ -339,6 +360,11 @@ namespace PL
                 emptyCart.Visibility = Visibility.Visible;
                 removals.Visibility = Visibility.Collapsed;
             }
+
+            // update product and amount selected in a dictionary
+            foreach (KeyValuePair<Product, int> inCart in currentCart)
+                if (toRemove.PrdID.Equals(inCart.Key.ProductID))
+                    currentCart[inCart.Key] -= toRemove.Amount;
         }
 
         private void RemoveManyFromCart(object sender, RoutedEventArgs e)
@@ -357,6 +383,8 @@ namespace PL
             totalPrice1.Text = Convert.ToString(0);
             totalPrice2.Text = Convert.ToString(0);
             totalAmount.Text = Convert.ToString(0);
+
+            currentCart.Clear();
         }
 
         private void paymentMethod_SelectionChanged(object sender, SelectionChangedEventArgs e)

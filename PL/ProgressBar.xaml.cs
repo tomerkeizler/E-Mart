@@ -16,9 +16,7 @@ using System.Windows.Shapes;
 
 namespace PL
 {
-    /// <summary>
-    /// Interaction logic for ProgressBar.xaml
-    /// </summary>
+
     public partial class ProgressBar : Window
     {
         public ProgressBar()
@@ -26,34 +24,30 @@ namespace PL
             InitializeComponent();
         }
 
-        private void Window_ContentRendered(object sender, EventArgs e)
+        public void Window_ContentRendered(object sender, EventArgs e)
         {
             BackgroundWorker worker = new BackgroundWorker();
             worker.WorkerReportsProgress = true;
             worker.DoWork += worker_DoWork;
             worker.ProgressChanged += worker_ProgressChanged;
-
             worker.RunWorkerAsync();
-          
         }
 
-        void worker_DoWork(object sender, DoWorkEventArgs e)
+        public void worker_DoWork(object sender, DoWorkEventArgs e)
         {
             for (int i = 0; i <= 100; i++)
             {
                 (sender as BackgroundWorker).ReportProgress(i);
-                Thread.Sleep(5);
-            }      
+                Thread.Sleep(3);
+            }
         }
 
-        void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        public void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             pbStatus.Value = e.ProgressPercentage;
         }
 
-        private void pbStatus_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
 
-        }
+
     }
 }

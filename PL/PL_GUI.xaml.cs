@@ -16,6 +16,7 @@ using Backend;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.ComponentModel;
 
 
 namespace PL
@@ -153,6 +154,7 @@ namespace PL
         public User user;
         public int rank;
         private int currentCategory;
+        private ProgressBar prog;
 
         // constructor
         public PL_GUI(IBL itsClubMemberBL, IBL itsCustomerBL, IBL itsDepartmentBL, IBL itsEmployeeBL, IBL itsProductBL, IBL itsTransactionBL, IBL itsUserBL)
@@ -168,7 +170,10 @@ namespace PL
             // generate all lists of data entities and bind datagrids to lists
             for (int i = 1; i < 8; i++)
                 DisplayData(new List<Object>(cats[i].GetAll()), i);
+
+            prog = new ProgressBar();
         }
+
         // Main method
         public void Run()
         {
@@ -181,6 +186,19 @@ namespace PL
 
             Permissions();
         }
+
+        /////////////////////
+        private void button1_Click()
+        {
+            int i;
+            bar.Minimum = 0;
+            bar.Maximum = 200;
+            for (i = 0; i <= 200; i++)
+            {
+                bar.Value = i;
+            }
+        }
+        /////////////////////
 
         public void Permissions()
         {
@@ -262,7 +280,7 @@ namespace PL
         private void DisplayData(List<Object> results, int categoryNum)
         {
             // a manager can manage only his workers
-            if (rank == 2 && currentCategory == 4)
+            if (rank == 1 && currentCategory == 4)
             {
                 List<Employee> onlyMyWorkers = ((Employee_BL)cats[4]).GetAllWorkers(results.Cast<Employee>().ToList(), ((Employee)(user.Person)).Id);
                 results = onlyMyWorkers.Cast<Object>().ToList();
