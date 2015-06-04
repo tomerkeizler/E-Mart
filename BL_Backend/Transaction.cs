@@ -15,11 +15,11 @@ namespace Backend
         private int transactionID;
         private DateTime currentDate;
         private Is_a_return is_a_return;
-        private Receipt receipt;
+        private List<Purchase> receipt;
         private PaymentMethod payment;
 
         //Constructors:
-        public Transaction(int _transactionID, Is_a_return _is_a_return, Receipt _receipt, PaymentMethod _payment)
+        public Transaction(int _transactionID, Is_a_return _is_a_return, List<Purchase> _receipt, PaymentMethod _payment)
         {
             transactionID = _transactionID;
             currentDate = DateTime.Today;
@@ -33,7 +33,7 @@ namespace Backend
             transactionID = other.transactionID;
             currentDate = other.currentDate;
             is_a_return = other.is_a_return;
-            receipt = new Receipt(other.receipt);
+            receipt = new List<Purchase>(other.receipt);
             payment = other.payment;
         }
         public override bool Equals(object _other)
@@ -41,7 +41,7 @@ namespace Backend
             if (!(_other is Transaction)) return false;
             Transaction other = (Transaction)_other;
             return (transactionID == other.transactionID && currentDate.Equals(other.currentDate) && is_a_return.Equals(other.is_a_return)
-                    && receipt.Equals(other.receipt) && payment.Equals(other.payment));
+                    && receipt.SequenceEqual(other.receipt) && payment.Equals(other.payment));
         }
         public override int GetHashCode()
         {
@@ -71,7 +71,7 @@ namespace Backend
         {
             get { return currentDate; }
         }
-        public Receipt Receipt
+        public List<Purchase> Receipt
         {
             get { return receipt; }
             set { receipt = value; }

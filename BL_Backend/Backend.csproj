@@ -51,7 +51,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Backend_Test.cs" />
+    <Compile Include="Backend_Test.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Buyable.cs" />
     <Compile Include="ClubMember.cs">
       <SubType>Code</SubType>
     </Compile>

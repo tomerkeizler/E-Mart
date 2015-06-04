@@ -63,8 +63,7 @@ namespace Backend
             if (!(other is Purchase))
                 return false;
             Purchase p = (Purchase)other;
-            return prdID == ((Purchase)other).prdID && prdName.Equals(((Purchase)other).prdName)
-                && price.Equals(((Purchase)other).price) && amount.Equals(((Purchase)other).amount);
+            return prdID == p.prdID && prdName.Equals(p.prdName) && price.Equals(p.price) && amount.Equals(p.amount);
         }
 
         public override int GetHashCode()

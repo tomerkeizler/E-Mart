@@ -17,7 +17,7 @@ namespace DAL
         List<Product> ProductNameQuery(string name, StringFields field);
         List<Product> ProductNumberQuery(int minNumber, int maxNumber, IntFields field);
         List<Product> ProductTypeQuery(ValueType type);
-        void FilterProducts(ObservableCollection<Product> currentList, PType type, bool isAdd);
+        void FilterProducts(ObservableCollection<Buyable> currentList, PType type, bool isAdd);
 
 
         //Employees:
