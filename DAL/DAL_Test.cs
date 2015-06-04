@@ -60,19 +60,6 @@ namespace DAL
             Assert.Contains(b, testlist);
         }
         [Test]
-        public void mulquery()
-        {
-            List<Product> listp = new List<Product>();
-            listp.Add(a);
-            listp.Add(b);
-            listp.Add(c);
-            listp.Add(d);
-            List<PType> filter =  new List<PType>();
-            filter.Add(PType.Clothes);
-            filter.Add(PType.Food);
-            Assert.AreEqual(3, ProductMulTypeQuery(listp, filter).Count);
-        }
-        [Test]
         public void ClubmemberTest()
         {
             ClubMember member1 = new ClubMember(123123, "asaf", "asafaa", new DateTime(2014, 09, 10), Gender.Male);
