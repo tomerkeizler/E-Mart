@@ -19,7 +19,7 @@ namespace BL
             itsDAL = dal;
         }
 
-        public void Add(object p)
+        public object Add(object p)
         {
             List<Product> Allprods = itsDAL.ReadFromFile(Elements.Product).Cast<Product>().ToList();
             //Generate the new product ID
@@ -54,8 +54,9 @@ namespace BL
             //Add the new product to the system
             Allprods.Add((Product)p);
             itsDAL.WriteToFile(Allprods.Cast<object>().ToList(), (Product)p);
+            return p;
         }
-        public void Remove(object p)
+        public void Remove(object p, Boolean isEdit = false)
         {
             List<Product> Allprods = itsDAL.ReadFromFile(Elements.Product).Cast<Product>().ToList();
             //check if there are any products to remove

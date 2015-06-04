@@ -23,7 +23,7 @@ namespace BL
         }
 
         //Methods:
-        public void Add(object u)
+        public object Add(object u)
         {
             //Add the new user to the system
             List<User> Allusers = itsDAL.ReadFromFile(Elements.User).Cast<User>().ToList();
@@ -34,9 +34,10 @@ namespace BL
             }
             Allusers.Add((User)u);
             itsDAL.WriteToFile(Allusers.Cast<object>().ToList(), (User)u);
+            return u;
         }
 
-        public void Remove(object u)
+        public void Remove(object u, Boolean isEdit = false)
         {
             List<User> Allusers = itsDAL.ReadFromFile(Elements.User).Cast<User>().ToList();
             if (!Allusers.Any())

@@ -19,7 +19,7 @@ namespace BL
             itsDAL = dal;
         }
 
-        public void Add(object t)
+        public object Add(object t)
         {
             List<Transaction> Alltrans = itsDAL.ReadFromFile(Elements.Transaction).Cast<Transaction>().ToList();
             //Gene      rate the new transaction ID
@@ -41,9 +41,10 @@ namespace BL
             //Add the new transaction to the system
             Alltrans.Add((Transaction)t);
             itsDAL.WriteToFile(Alltrans.Cast<object>().ToList(), (Transaction)t);
+            return t;
         }
 
-        public void Remove(object t)
+        public void Remove(object t, Boolean isEdit = false)
         {
             List<Transaction> Alltrans = itsDAL.ReadFromFile(Elements.Transaction).Cast<Transaction>().ToList();
             if (!Alltrans.Any())

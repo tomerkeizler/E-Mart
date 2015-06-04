@@ -454,12 +454,11 @@ namespace DAL
                 {
                     filteredTransaction = allTransaction.Where(n => n.TransactionID >= minNumber && n.TransactionID <= maxNumber).Cast<Transaction>().ToList();
                 }
-                    /*
+ 
                 else if (field == IntFields.receipt)
                 {
-                    filteredTransaction = allTransaction.Where(n => n.Receipt.ProductsIDs.Any(x => x >= minNumber && x <= maxNumber)).Cast<Transaction>().ToList();
+                    filteredTransaction = allTransaction.Where(n => n.Receipt.Any(x => x.PrdID >= minNumber && x.PrdID <= maxNumber)).Cast<Transaction>().ToList();
                 }
-                     * */
                 else if (field == IntFields.currentDate)
                 {
                     filteredTransaction = allTransaction.Where(n => int.Parse(n.CurrentDate.ToString("yyyyMMdd")) >= minNumber && int.Parse(n.CurrentDate.ToString("yyyyMMdd")) <= maxNumber).Cast<Transaction>().ToList();

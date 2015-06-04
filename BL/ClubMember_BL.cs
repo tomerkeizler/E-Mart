@@ -19,7 +19,7 @@ namespace BL
         }
 
         //Methods:
-        public void Add(object cm)
+        public object Add(object cm)
         {
             List<ClubMember> Allclubmems = itsDAL.ReadFromFile(Elements.ClubMember).Cast<ClubMember>().ToList();
             //Generate the new clubmember ID              
@@ -32,10 +32,6 @@ namespace BL
                 {
                     throw new System.Data.DataException("The ID allready exist in the system");
                 }
-                if (clubmem.Id == ((ClubMember)cm).Id)
-                {
-                    throw new Exception("This club member have duplicate ID with another club member!");
-                }
             }
             if (((ClubMember)cm).MemberID == 0)
             {
@@ -45,9 +41,10 @@ namespace BL
             //Add the new clubmember to the system.
             Allclubmems.Add((ClubMember)cm);
             itsDAL.WriteToFile(Allclubmems.Cast<object>().ToList(), (ClubMember)cm);
+            return cm;
         }
 
-        public void Remove(object cm)
+        public void Remove(object cm, Boolean isEdit = false)
         {
             List<ClubMember> Allclubmems = itsDAL.ReadFromFile(Elements.ClubMember).Cast<ClubMember>().ToList();
             List<User> Allusers = itsDAL.ReadFromFile(Elements.User).Cast<User>().ToList();
