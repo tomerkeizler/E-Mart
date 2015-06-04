@@ -224,6 +224,8 @@ namespace PL
                     }
                 }
                 this.Close();
+                // resetting selling counters
+                ((Product_BL)parentWindow.cats[5]).GenerateTopSeller();
             }
         }
     
