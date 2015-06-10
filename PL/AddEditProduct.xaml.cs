@@ -79,7 +79,6 @@ namespace PL
                 else
                     myPType = PType.Food;
                 Product newObj = new Product(productName.Text, myPType, int.Parse(depID.Text), int.Parse(stockcount.Text), int.Parse(price.Text));
-                newObj.TopSellerStatus = ((Product)oldObj).TopSellerStatus;
 
                 //adding action
                 if (isAdd)
@@ -90,6 +89,7 @@ namespace PL
                 //editing action
                 else
                 {
+                    newObj.TopSellerStatus = ((Product)oldObj).TopSellerStatus;
                     if (parentWindow.EditDataEntity(oldObj, newObj, 5))
                         this.Close();
                 }
