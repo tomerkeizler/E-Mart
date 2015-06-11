@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="E-Mart" Class="E_MartDB_LINQtoSQLDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=ASAF-LAPTOP;Initial Catalog=E-Mart;Integrated Security=True" SettingsObjectName="DAL.Properties.Settings" SettingsPropertyName="E_MartConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Products" Member="Products">
+    <Type Name="Product">
+      <Column Name="Name" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Type" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Price" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="StockCount" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="InStock" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Location" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Product_TopSeller" Member="TopSeller" ThisKey="ProductID" OtherKey="ProductID" Type="TopSeller" Cardinality="One" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TopSellers" Member="TopSellers">
+    <Type Name="TopSeller">
+      <Column Name="ProductID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="IsTopSeller" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="SellCounter" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CurrentMonth" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Product_TopSeller" Member="Product" ThisKey="ProductID" OtherKey="ProductID" Type="Product" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>

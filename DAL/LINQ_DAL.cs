@@ -24,7 +24,7 @@ namespace DAL
         public LINQ_DAL()
         {
             binFormatter = new BinaryFormatter();
-            SerializerObj = new XmlSerializer(typeof(byte[]), new Type[] { typeof(Product), typeof(byte[]) });
+            SerializerObj = new XmlSerializer(typeof(byte[]), new Type[] { typeof(Backend.Product), typeof(byte[]) });
             myRijndael = new RijndaelManaged();
             key = new byte[32] { 118, 123, 23, 17, 161, 152, 35, 68, 126, 213, 16, 115, 68, 217, 58, 108, 56, 218, 5, 78, 28, 128, 113, 208, 61, 56, 10, 87, 187, 162, 233, 38 };
             iv = new byte[16] { 33, 241, 14, 16, 103, 18, 14, 248, 4, 54, 18, 5, 60, 76, 16, 191 };
@@ -161,10 +161,10 @@ namespace DAL
         }
 
         //Filter by name for product
-        public List<Product> ProductNameQuery(string name, StringFields field)
+        public List<Backend.Product> ProductNameQuery(string name, StringFields field)
         {
-            List<Product> allProducts = ReadFromFile(Elements.Product).Cast<Product>().ToList();
-            List<Product> filteredProducts;
+            List<Backend.Product> allProducts = ReadFromFile(Elements.Product).Cast<Backend.Product>().ToList();
+            List<Backend.Product> filteredProducts;
             if (allProducts.ElementAtOrDefault(0) == null)
             {
                 throw new InvalidDataException("There is nothing to find from.");
@@ -173,34 +173,34 @@ namespace DAL
             {
                 throw new System.Data.DataException("Bad Input!");
             }
-            filteredProducts = allProducts.Where(n => n.Name.Equals(name)).Cast<Product>().ToList();
+            filteredProducts = allProducts.Where(n => n.Name.Equals(name)).Cast<Backend.Product>().ToList();
             return filteredProducts;
         }
 
         //Filter by number for product
-        public List<Product> ProductNumberQuery(int minNumber, int maxNumber, IntFields field)
+        public List<Backend.Product> ProductNumberQuery(int minNumber, int maxNumber, IntFields field)
         {
-            List<Product> allProducts = ReadFromFile(Elements.Product).Cast<Product>().ToList();
-            List<Product> filteredProducts;
+            List<Backend.Product> allProducts = ReadFromFile(Elements.Product).Cast<Backend.Product>().ToList();
+            List<Backend.Product> filteredProducts;
             if (allProducts.ElementAtOrDefault(0) == null)
             {
                 throw new InvalidDataException("There is nothing to find from.");
             }
             if (field == IntFields.price)
             {
-                filteredProducts = allProducts.Where(n => n.Price >= minNumber && n.Price <= maxNumber).Cast<Product>().ToList();
+                filteredProducts = allProducts.Where(n => n.Price >= minNumber && n.Price <= maxNumber).Cast<Backend.Product>().ToList();
             }
             else if (field == IntFields.productID)
             {
-                filteredProducts = allProducts.Where(n => n.ProductID >= minNumber && n.ProductID <= maxNumber).Cast<Product>().ToList();
+                filteredProducts = allProducts.Where(n => n.ProductID >= minNumber && n.ProductID <= maxNumber).Cast<Backend.Product>().ToList();
             }
             else if (field == IntFields.location)
             {
-                filteredProducts = allProducts.Where(n => n.Location >= minNumber && n.Location <= maxNumber).Cast<Product>().ToList();
+                filteredProducts = allProducts.Where(n => n.Location >= minNumber && n.Location <= maxNumber).Cast<Backend.Product>().ToList();
             }
             else if (field == IntFields.stockCount)
             {
-                filteredProducts = allProducts.Where(n => n.StockCount >= minNumber && n.StockCount <= maxNumber).Cast<Product>().ToList();
+                filteredProducts = allProducts.Where(n => n.StockCount >= minNumber && n.StockCount <= maxNumber).Cast<Backend.Product>().ToList();
             }
             else
             {
@@ -210,21 +210,21 @@ namespace DAL
         }
 
         //Filter by type for product
-        public List<Product> ProductTypeQuery(ValueType type)
+        public List<Backend.Product> ProductTypeQuery(ValueType type)
         {
-            List<Product> allProducts = ReadFromFile(Elements.Product).Cast<Product>().ToList();
-            List<Product> filteredProducts;
+            List<Backend.Product> allProducts = ReadFromFile(Elements.Product).Cast<Backend.Product>().ToList();
+            List<Backend.Product> filteredProducts;
             if (allProducts.ElementAtOrDefault(0) == null)
             {
                 throw new InvalidDataException("There is nothing to find from.");
             }
             if (type is PType)
             {
-                filteredProducts = allProducts.Where(n => n.Type.Equals((PType)type)).Cast<Product>().ToList();
+                filteredProducts = allProducts.Where(n => n.Type.Equals((PType)type)).Cast<Backend.Product>().ToList();
             }
             else if (type is PStatus)
             {
-                filteredProducts = allProducts.Where(n => n.InStock.Equals((PStatus)type)).Cast<Product>().ToList();
+                filteredProducts = allProducts.Where(n => n.InStock.Equals((PStatus)type)).Cast<Backend.Product>().ToList();
             }
 
             else
@@ -234,16 +234,16 @@ namespace DAL
             return filteredProducts;
         }
         //Filter by multiply types for product
-        public List<Product> ProductMulTypeQuery(List<Product> currentList, List<PType> typelist)
+        public List<Backend.Product> ProductMulTypeQuery(List<Backend.Product> currentList, List<PType> typelist)
         {
-            List<Product> filteredProducts = new List<Product>();
+            List<Backend.Product> filteredProducts = new List<Backend.Product>();
             if (currentList.ElementAtOrDefault(0) == null)
             {
                 throw new InvalidDataException("There is nothing to find from.");
             }
             foreach (PType type in typelist)
             {
-                filteredProducts.AddRange(currentList.Where(n => n.Type.Equals(type)).Cast<Product>().ToList());
+                filteredProducts.AddRange(currentList.Where(n => n.Type.Equals(type)).Cast<Backend.Product>().ToList());
             }
             return filteredProducts;
         }
@@ -597,11 +597,11 @@ namespace DAL
         {
             if (isAdd)
             {
-                List<Product> filteredProducts = this.ProductTypeQuery(type);
-                filteredProducts = filteredProducts.Where(n => !(n.InStock.Equals(PStatus.Empty))).Cast<Product>().ToList();
-                foreach (Product p in filteredProducts)
+                List<Backend.Product> filteredProducts = this.ProductTypeQuery(type);
+                filteredProducts = filteredProducts.Where(n => !(n.InStock.Equals(PStatus.Empty))).Cast<Backend.Product>().ToList();
+                foreach (Backend.Product p in filteredProducts)
                 {
-                    currentList.Add(new Buyable(p, 0, p.StockCount));
+                   // currentList.Add(new Buyable((p, 0, p.StockCount));
                 }
             }
             else

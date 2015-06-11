@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="E-MartDB_LINQtoSQL">
+  <DataContextMoniker Name="/E_MartDB_LINQtoSQLDataContext" />
+  <nestedChildShapes>
+    <classShape Id="4c2cf74b-8cae-4443-8415-faeb0ffbd278" absoluteBounds="0.75, 0.875, 2, 2.1554996744791666">
+      <DataClassMoniker Name="/E_MartDB_LINQtoSQLDataContext/Product" />
+      <nestedChildShapes>
+        <elementListCompartment Id="04dc7d5a-4131-4c73-b649-3c5de3b5b890" absoluteBounds="0.765, 1.335, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="ceb7ec21-e002-4637-a643-c966b988b1e6" absoluteBounds="3.5, 1.25, 2, 1.5785953776041666">
+      <DataClassMoniker Name="/E_MartDB_LINQtoSQLDataContext/TopSeller" />
+      <nestedChildShapes>
+        <elementListCompartment Id="3d13ea1f-a5d8-4c04-b33e-eee43b32aa9f" absoluteBounds="3.515, 1.71, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(2.75 : 2.03929768880208); (3.5 : 2.03929768880208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/E_MartDB_LINQtoSQLDataContext/Product/Product_TopSeller" />
+      <nodes>
+        <classShapeMoniker Id="4c2cf74b-8cae-4443-8415-faeb0ffbd278" />
+        <classShapeMoniker Id="ceb7ec21-e002-4637-a643-c966b988b1e6" />
+      </nodes>
+    </associationConnector>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

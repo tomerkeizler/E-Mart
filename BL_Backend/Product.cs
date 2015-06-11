@@ -14,14 +14,14 @@ namespace Backend
         [Serializable()]
         public class TopSeller
         {
-            private string productName;
+            private int productID;
             private bool isTopSeller = false;
             private int sellCounter = 0;
             private int currentMonth;
             public TopSeller() { }
-            public TopSeller(string _productName)
+            public TopSeller(int _productID)
             {
-                productName = _productName;
+                productID = _productID;
                 currentMonth = DateTime.Today.Month;
             }
             public int SellCounter
@@ -39,6 +39,11 @@ namespace Backend
                 get { return currentMonth; }
                 set { currentMonth = value; }
             }
+            public int ProductID
+            {
+                get { return productID; }
+                set { productID = value; }
+            }
         }
 
         //Fields:
@@ -52,10 +57,12 @@ namespace Backend
         private TopSeller topSellerStatus;
 
         //Constructors:
-        public Product() { }
+        public Product() {
+            topSellerStatus = new TopSeller();
+        }
         public Product(string _name, PType _type, int _location, int _stockCount, int _price, int _productID = 0)
         {
-            topSellerStatus = new TopSeller(_name);
+            topSellerStatus = new TopSeller(_productID);
             name = _name;
             type = _type;
             productID = _productID;
@@ -116,7 +123,7 @@ namespace Backend
         }
         public void ResetSells()
         {
-            topSellerStatus = new TopSeller(name);
+            topSellerStatus = new TopSeller(productID);
         }
 
         //Getter and Setters:

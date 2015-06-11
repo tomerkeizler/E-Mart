@@ -14,9 +14,9 @@ namespace DAL
         List<object> ReadFromFile(Elements element);
 
         //Products:
-        List<Product> ProductNameQuery(string name, StringFields field);
-        List<Product> ProductNumberQuery(int minNumber, int maxNumber, IntFields field);
-        List<Product> ProductTypeQuery(ValueType type);
+        List<Backend.Product> ProductNameQuery(string name, StringFields field);
+        List<Backend.Product> ProductNumberQuery(int minNumber, int maxNumber, IntFields field);
+        List<Backend.Product> ProductTypeQuery(ValueType type);
         void FilterProducts(ObservableCollection<Buyable> currentList, PType type, bool isAdd);
 
 

@@ -17,21 +17,22 @@ namespace DAL
     public class DAL_Test
     {
         IDAL linq = new LINQ_DAL();
-        Product a = new Product("first", PType.Clothes, 2, 4, 123, 4);
-        Product b = new Product("second", PType.Food, 3, 5, 1213, 5);
-        Product c = new Product("Third", PType.Electronics, 3, 5, 1213, 5);
-        Product d = new Product("Forth", PType.Electronics, 3, 5, 1213, 5);
+        IDAL sql = new SQL_DAL();
+        Backend.Product a = new Backend.Product("first", PType.Clothes, 2, 4, 123, 4);
+        Backend.Product b = new Backend.Product("second", PType.Food, 3, 5, 1213, 5);
+        Backend.Product c = new Backend.Product("Third", PType.Electronics, 3, 5, 1213, 5);
+        Backend.Product d = new Backend.Product("Forth", PType.Electronics, 3, 5, 1213, 5);
         List<object> list = new List<object>();
-        public static List<Product> ProductMulTypeQuery(List<Product> currentList, List<PType> typelist)
+        public static List<Backend.Product> ProductMulTypeQuery(List<Backend.Product> currentList, List<PType> typelist)
         {
-            List<Product> filteredProducts = new List<Product>();
+            List<Backend.Product> filteredProducts = new List<Backend.Product>();
             if (currentList.ElementAtOrDefault(0) == null)
             {
                 throw new InvalidDataException("There is nothing to find from.");
             }
             foreach (PType type in typelist)
             {
-                filteredProducts.AddRange(currentList.Where(n => n.Type.Equals(type)).Cast<Product>().ToList());
+                filteredProducts.AddRange(currentList.Where(n => n.Type.Equals(type)).Cast<Backend.Product>().ToList());
             }
             return filteredProducts;
         }
@@ -52,11 +53,38 @@ namespace DAL
             Assert.AreEqual(testlist, list);
         }
         [Test]
+        public void SQLReadAndWrite()
+        {
+            list.Add(a);
+            list.Add(b);
+            sql.WriteToFile(list, b);
+            Assert.Contains(b, sql.ReadFromFile(Elements.Product));
+            sql.WriteToFile(new List<object>(), b);
+        }
+        [Test]
+        public void SQLClear()
+        {
+            sql.WriteToFile(list, b);
+            Assert.IsEmpty(sql.ReadFromFile(Elements.Product));
+            sql.WriteToFile(new List<object>(), b);
+
+        }
+        [Test]
+        public void SQLProductQueryByNum()
+        {
+            list.Add(a);
+            list.Add(b);
+            sql.WriteToFile(list, b);
+            List<Backend.Product> testlist = sql.ProductNumberQuery(5, 5, IntFields.productID);
+            Assert.Contains(b, testlist);
+            sql.WriteToFile(new List<object>(), b);
+        }
+        [Test]
         public void ProductNumberQuery()
         {
             list.Add(a);
             list.Add(b);
-            List<Product> testlist = linq.ProductNumberQuery(5, 5, IntFields.productID);
+            List<Backend.Product> testlist = linq.ProductNumberQuery(5, 5, IntFields.productID);
             Assert.Contains(b, testlist);
         }
         [Test]

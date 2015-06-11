@@ -16,10 +16,10 @@ namespace BL
     [TestFixture]
     class BL_Test
     {
-        public static void TopSeller(List<Product> Allprods, int currMonth)
+        public static void TopSeller(List<Backend.Product> Allprods, int currMonth)
         {
             int currMax = 1;
-            foreach (Product prod in Allprods)
+            foreach (Backend.Product prod in Allprods)
             {
                 if (prod.TopSellerMonth != currMonth)
                 {
@@ -30,7 +30,7 @@ namespace BL
                     currMax = prod.SellCounter;
                 }
             }
-            foreach (Product prod in Allprods)
+            foreach (Backend.Product prod in Allprods)
             {
                 if (prod.SellCounter == currMax)
                 {
@@ -41,14 +41,14 @@ namespace BL
         [Test]
         public void isContainTopSeller()
         {
-            Product prod1 = new Product("Banana", PType.Electronics, 1, 21, 2);
-            Product prod2 = new Product("avocado", PType.Food, 1, 21, 5);
+            Backend.Product prod1 = new Backend.Product("Banana", PType.Electronics, 1, 21, 2);
+            Backend.Product prod2 = new Backend.Product("avocado", PType.Food, 1, 21, 5);
             prod1.Buy();
             prod1.Buy();
             prod2.Buy();
 
             int currMonth = DateTime.Today.Month;
-            List<Product> Allprods = new List<Product>();
+            List<Backend.Product> Allprods = new List<Backend.Product>();
             Allprods.Add(prod1);
             Allprods.Add(prod2);
             TopSeller(Allprods,DateTime.Today.Month);
@@ -60,15 +60,15 @@ namespace BL
         [Test]
         public void isContain2TopSeller()
         {
-            Product prod1 = new Product("Banana", PType.Electronics, 1, 21, 2);
-            Product prod2 = new Product("avocado", PType.Food, 1, 21, 5);
+            Backend.Product prod1 = new Backend.Product("Banana", PType.Electronics, 1, 21, 2);
+            Backend.Product prod2 = new Backend.Product("avocado", PType.Food, 1, 21, 5);
             prod1.Buy();
             prod1.Buy();
             prod2.Buy();
             prod2.Buy();
 
             int currMonth = DateTime.Today.Month;
-            List<Product> Allprods = new List<Product>();
+            List<Backend.Product> Allprods = new List<Backend.Product>();
             Allprods.Add(prod1);
             Allprods.Add(prod2);
             TopSeller(Allprods,DateTime.Today.Month);
@@ -79,12 +79,12 @@ namespace BL
         [Test]
         public void isTopSellerRestarted()
         {
-            Product prod1 = new Product("Banana", PType.Electronics, 1, 21, 2);
-            Product prod2 = new Product("avocado", PType.Food, 1, 21, 5);
+            Backend.Product prod1 = new Backend.Product("Banana", PType.Electronics, 1, 21, 2);
+            Backend.Product prod2 = new Backend.Product("avocado", PType.Food, 1, 21, 5);
             prod1.Buy();
             prod1.Buy();
             prod2.Buy();
-            List<Product> Allprods = new List<Product>();
+            List<Backend.Product> Allprods = new List<Backend.Product>();
             Allprods.Add(prod1);
             Allprods.Add(prod2);
             TopSeller(Allprods,DateTime.Today.Month);
