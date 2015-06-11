@@ -18,6 +18,7 @@ namespace Backend
         protected CreditCard creditCard;
         
         //Constructors:
+        public Customer() { }
         public Customer(int _id, string _firstName, string _lastName, CreditCard _creditCard = null)
         {
             id = _id;

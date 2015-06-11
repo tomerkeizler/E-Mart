@@ -21,37 +21,37 @@ namespace BL
 
         public object Add(object t)
         {
-            List<Transaction> Alltrans = itsDAL.ReadFromFile(Elements.Transaction).Cast<Transaction>().ToList();
+            List<Backend.Transaction> Alltrans = itsDAL.ReadFromFile(Elements.Transaction).Cast<Backend.Transaction>().ToList();
             //Gene      rate the new transaction ID
             int maxID = 0;
-            foreach (Transaction tran in Alltrans)
+            foreach (Backend.Transaction tran in Alltrans)
             {
                 if (tran.TransactionID > maxID)
                     maxID = tran.TransactionID;
-                if (((Transaction)t).TransactionID != 0 && ((Transaction)t).TransactionID == tran.TransactionID)
+                if (((Backend.Transaction)t).TransactionID != 0 && ((Backend.Transaction)t).TransactionID == tran.TransactionID)
                  {
                      throw new System.Data.DataException("The ID allready exist in the system");
                  }
             }
-            if (((Transaction)t).TransactionID == 0)
+            if (((Backend.Transaction)t).TransactionID == 0)
             {
                 //set the new ID
-                ((Transaction)t).TransactionID = maxID + 1;
+                ((Backend.Transaction)t).TransactionID = maxID + 1;
             }
             //Add the new transaction to the system
-            Alltrans.Add((Transaction)t);
-            itsDAL.WriteToFile(Alltrans.Cast<object>().ToList(), (Transaction)t);
+            Alltrans.Add((Backend.Transaction)t);
+            itsDAL.WriteToFile(Alltrans.Cast<object>().ToList(), (Backend.Transaction)t);
             return t;
         }
 
         public void Remove(object t, Boolean isEdit = false)
         {
-            List<Transaction> Alltrans = itsDAL.ReadFromFile(Elements.Transaction).Cast<Transaction>().ToList();
+            List<Backend.Transaction> Alltrans = itsDAL.ReadFromFile(Elements.Transaction).Cast<Backend.Transaction>().ToList();
             if (!Alltrans.Any())
                 throw new NullReferenceException("No Transactions to remove!");
             else
             {
-                foreach (Transaction tran in Alltrans)
+                foreach (Backend.Transaction tran in Alltrans)
                 {
                     if (tran.Equals(t))
                     {
@@ -65,7 +65,7 @@ namespace BL
 
         public void Edit(object oldT, object newT)
         {           
-            ((Transaction)newT).TransactionID = ((Transaction)oldT).TransactionID;
+            ((Backend.Transaction)newT).TransactionID = ((Backend.Transaction)oldT).TransactionID;
             this.Remove(oldT);
             this.Add(newT);            
         }
@@ -92,7 +92,7 @@ namespace BL
 
         public Type GetEntityType()
         {
-            return typeof(Transaction);
+            return typeof(Backend.Transaction);
         }
         public string GetEntityName()
         {

@@ -13,7 +13,7 @@ namespace BL
         //Fields:
         private const string DEFAULT_USER_NAME = "administrator";
         private const string DEFAULT_PASSWORD = "password";
-        private Employee DEFAULT_ADMIN = new Employee();
+        private Backend.Employee DEFAULT_ADMIN = new Backend.Employee();
         IDAL itsDAL;
 
         //Constructors:
@@ -26,56 +26,57 @@ namespace BL
         public object Add(object u)
         {
             //Add the new user to the system
-            List<User> Allusers = itsDAL.ReadFromFile(Elements.User).Cast<User>().ToList();
-            foreach (User user in Allusers)
+            List<Backend.User> Allusers = itsDAL.ReadFromFile(Elements.User).Cast<Backend.User>().ToList();
+            foreach (Backend.User user in Allusers)
             {
-                if (((User)u).UserName == user.UserName)
+                if (((Backend.User)u).UserName == user.UserName)
                     throw new ArgumentException("the username is already exists!");
             }
-            Allusers.Add((User)u);
-            itsDAL.WriteToFile(Allusers.Cast<object>().ToList(), (User)u);
+            Allusers.Add((Backend.User)u);
+            itsDAL.WriteToFile(Allusers.Cast<object>().ToList(), (Backend.User)u);
             return u;
         }
 
         public void Remove(object u, Boolean isEdit = false)
         {
-            List<User> Allusers = itsDAL.ReadFromFile(Elements.User).Cast<User>().ToList();
+            List<Backend.User> Allusers = itsDAL.ReadFromFile(Elements.User).Cast<Backend.User>().ToList();
             if (!Allusers.Any())
                 throw new NullReferenceException("No Users to remove!");
 
             List<object> Allclubmembers = itsDAL.ReadFromFile(Elements.ClubMember).ToList();
             List<object> Allcustomers = itsDAL.ReadFromFile(Elements.Customer).ToList();
             List<object> Allemployees = itsDAL.ReadFromFile(Elements.Employee).ToList();
-            if (((User)u).Person is ClubMember)
+            if (((Backend.User)u).Person is Backend.ClubMember)
             {
                 foreach (object cm in Allclubmembers)
-                    if (cm.Equals(((User)u).Person))
+                    if (cm.Equals(((Backend.User)u).Person))
                     {
                         Allclubmembers.Remove(cm);
-                        itsDAL.WriteToFile(Allclubmembers.Cast<object>().ToList(), (ClubMember)cm);
+                        itsDAL.WriteToFile(Allclubmembers.Cast<object>().ToList(), (Backend.ClubMember)cm);
                         break;
                     }
             }
-            else if (((User)u).Person is Customer) {
+            else if (((Backend.User)u).Person is Backend.Customer)
+            {
                 foreach (object c in Allcustomers)
-                    if (c.Equals(((User)u).Person))
+                    if (c.Equals(((Backend.User)u).Person))
                     {
                         Allcustomers.Remove(c);
-                        itsDAL.WriteToFile(Allcustomers.Cast<object>().ToList(), (Customer)c);
+                        itsDAL.WriteToFile(Allcustomers.Cast<object>().ToList(), (Backend.Customer)c);
                         break;
                     }
             }
-            else if(((User)u).Person is Employee)
+            else if (((Backend.User)u).Person is Backend.Employee)
             {
                 foreach (object e in Allemployees)
-                    if (e.Equals(((User)u).Person))
+                    if (e.Equals(((Backend.User)u).Person))
                     {
                         Allemployees.Remove(e);
-                        itsDAL.WriteToFile(Allemployees.Cast<object>().ToList(), (Employee)e);
+                        itsDAL.WriteToFile(Allemployees.Cast<object>().ToList(), (Backend.Employee)e);
                         break;
                     }
             }
-                foreach (User user in Allusers)
+                foreach (Backend.User user in Allusers)
                 {
                     if (user.Equals(u))
                     {
@@ -83,14 +84,14 @@ namespace BL
                         break;
                     }
                 }
-            itsDAL.WriteToFile(Allusers.Cast<object>().ToList(), (User)u);
+            itsDAL.WriteToFile(Allusers.Cast<object>().ToList(), (Backend.User)u);
         }
 
         public void Edit(object oldU, object newU)
         {
-            if (((User)oldU).Person is Employee)
+            if (((Backend.User)oldU).Person is Backend.Employee)
             {
-                if (((Employee)((User)oldU).Person).Id == -1)
+                if (((Backend.Employee)((Backend.User)oldU).Person).Id == -1)
                     throw new UnauthorizedAccessException("can't edit default administrator");
             }
             this.Remove(oldU);
@@ -125,13 +126,13 @@ namespace BL
             return itsDAL.ReadFromFile(Elements.User);
         }
         //Method for User Only
-        public User isItValidUser(User user)
+        public Backend.User isItValidUser(Backend.User user)
         {
             Boolean isThereAdmin = false;
-            List<User> Allusers = itsDAL.ReadFromFile(Elements.User).Cast<User>().ToList();
-            foreach (User _user in Allusers)
+            List<Backend.User> Allusers = itsDAL.ReadFromFile(Elements.User).Cast<Backend.User>().ToList();
+            foreach (Backend.User _user in Allusers)
             {
-                if ((_user.Person is Employee) && ((Employee)(_user.Person)).Rank == Rank.Administrator)
+                if ((_user.Person is Backend.Employee) && ((Backend.Employee)(_user.Person)).Rank == Rank.Administrator)
                 {
                     isThereAdmin = true;
                 }
@@ -139,14 +140,14 @@ namespace BL
             if (!isThereAdmin)
             {
                 DEFAULT_ADMIN.Rank = Rank.Administrator;
-                User admin = new User(DEFAULT_USER_NAME, DEFAULT_PASSWORD, DEFAULT_ADMIN);
+                Backend.User admin = new Backend.User(DEFAULT_USER_NAME, DEFAULT_PASSWORD, DEFAULT_ADMIN);
                 Allusers.Add(admin);
             }
             if (user.UserName == null || user.Password == null)
             {
                 throw new System.Data.DataException("Bad Input!");
             }
-            foreach (User _user in Allusers)
+            foreach (Backend.User _user in Allusers)
             {
                 if (_user.UserName.Equals(user.UserName) && _user.Password.Equals(user.Password))
                 {
@@ -158,7 +159,7 @@ namespace BL
 
         public Type GetEntityType()
         {
-            return typeof(User);
+            return typeof(Backend.User);
         }
         public string GetEntityName()
         {

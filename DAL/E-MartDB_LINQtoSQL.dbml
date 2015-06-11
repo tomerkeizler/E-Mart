@@ -1,5 +1,66 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="E-Mart" Class="E_MartDB_LINQtoSQLDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="AppSettings" ConnectionString="Data Source=ASAF-LAPTOP;Initial Catalog=E-Mart;Integrated Security=True" SettingsObjectName="DAL.Properties.Settings" SettingsPropertyName="E_MartConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.ClubMember" Member="ClubMembers">
+    <Type Name="ClubMember">
+      <Column Name="MemberID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DateOfBirth" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Gender" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="ClubMember_User" Member="User" ThisKey="Id" OtherKey="Person" Type="User" Cardinality="One" />
+      <Association Name="Customer_ClubMember" Member="Customer" ThisKey="Id" OtherKey="Id" Type="Customer" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.[User]" Member="Users">
+    <Type Name="User">
+      <Column Name="UserName" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="Password" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="Person" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="ClubMember_User" Member="ClubMember" ThisKey="Person" OtherKey="Id" Type="ClubMember" IsForeignKey="true" />
+      <Association Name="Employee_User" Member="Employee" ThisKey="Person" OtherKey="Id" Type="Employee" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CreditCards" Member="CreditCards">
+    <Type Name="CreditCard">
+      <Column Name="FirstName" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="LastName" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="CreditNumber" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ExpirationDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="CreditCard_Customer" Member="Customers" ThisKey="CreditNumber" OtherKey="CreditCard" Type="Customer" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Customers" Member="Customers">
+    <Type Name="Customer">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="FirstName" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="CreditCard" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LastName" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Association Name="Customer_ClubMember" Member="ClubMember" ThisKey="Id" OtherKey="Id" Type="ClubMember" Cardinality="One" />
+      <Association Name="Customer_TranHistoryLinkedTable" Member="TranHistoryLinkedTable" ThisKey="Id" OtherKey="CustomerID" Type="TranHistoryLinkedTable" Cardinality="One" />
+      <Association Name="CreditCard_Customer" Member="CreditCard1" ThisKey="CreditCard" OtherKey="CreditNumber" Type="CreditCard" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Department" Member="Departments">
+    <Type Name="Department">
+      <Column Name="Name" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="DepartmentID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Department_Employee" Member="Employees" ThisKey="DepartmentID" OtherKey="DepID" Type="Employee" />
+      <Association Name="Department_Product" Member="Products" ThisKey="DepartmentID" OtherKey="Location" Type="Product" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Employee" Member="Employees">
+    <Type Name="Employee">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Gender" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SupervisiorID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Salary" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DepID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FirstName" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="LastName" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="Rank" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Employee_User" Member="User" ThisKey="Id" OtherKey="Person" Type="User" Cardinality="One" />
+      <Association Name="Department_Employee" Member="Department" ThisKey="DepID" OtherKey="DepartmentID" Type="Department" IsForeignKey="true" />
+    </Type>
+  </Table>
   <Table Name="dbo.Products" Member="Products">
     <Type Name="Product">
       <Column Name="Name" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
@@ -10,6 +71,18 @@
       <Column Name="Location" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="ProductID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Association Name="Product_TopSeller" Member="TopSeller" ThisKey="ProductID" OtherKey="ProductID" Type="TopSeller" Cardinality="One" />
+      <Association Name="Department_Product" Member="Department" ThisKey="Location" OtherKey="DepartmentID" Type="Department" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Purchase" Member="Purchases">
+    <Type Name="Purchase">
+      <Column Name="PrdID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PrdName" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="Price" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Amount" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TransID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TimeOfPurchase" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Transaction_Purchase" Member="Transaction" ThisKey="TransID" OtherKey="TransactionID" Type="Transaction" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.TopSellers" Member="TopSellers">
@@ -19,6 +92,24 @@
       <Column Name="SellCounter" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="CurrentMonth" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="Product_TopSeller" Member="Product" ThisKey="ProductID" OtherKey="ProductID" Type="Product" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TranHistoryLinkedTable" Member="TranHistoryLinkedTables">
+    <Type Name="TranHistoryLinkedTable">
+      <Column Name="CustomerID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TransID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Customer_TranHistoryLinkedTable" Member="Customer" ThisKey="CustomerID" OtherKey="Id" Type="Customer" IsForeignKey="true" />
+      <Association Name="Transaction_TranHistoryLinkedTable" Member="Transaction" ThisKey="TransID" OtherKey="TransactionID" Type="Transaction" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Transactions" Member="Transactions">
+    <Type Name="Transaction">
+      <Column Name="TransactionID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Is_a_Return" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Payment" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Receipt" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Transaction_Purchase" Member="Purchases" ThisKey="TransactionID" OtherKey="TransID" Type="Purchase" />
+      <Association Name="Transaction_TranHistoryLinkedTable" Member="TranHistoryLinkedTables" ThisKey="TransactionID" OtherKey="TransID" Type="TranHistoryLinkedTable" />
     </Type>
   </Table>
 </Database>

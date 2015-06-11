@@ -14,6 +14,7 @@ namespace Backend
         private int departmentID;
 
         //Constructors:
+        public Department() { }
         public Department(string _name, int _id = 0)
         {
             name = _name;

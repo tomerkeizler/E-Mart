@@ -22,46 +22,46 @@ namespace BL
         //Methods:
         public object Add(object d)
         {
-            List<Department> Alldeparts = itsDAL.ReadFromFile(Elements.Department).Cast<Department>().ToList();
+            List<Backend.Department> Alldeparts = itsDAL.ReadFromFile(Elements.Department).Cast<Backend.Department>().ToList();
              //Generate the new department ID
              int maxID = 0;
-             foreach (Department depart in Alldeparts)
+             foreach (Backend.Department depart in Alldeparts)
              {
                  if (depart.DepartmentID > maxID)
                      maxID = depart.DepartmentID;
-                 if (((Department)d).DepartmentID != 0 && ((Department)d).DepartmentID == depart.DepartmentID)
+                 if (((Backend.Department)d).DepartmentID != 0 && ((Backend.Department)d).DepartmentID == depart.DepartmentID)
                  {
                      throw new System.Data.DataException("The ID allready exist in the system");
                  }
              }
-             if (((Department)d).DepartmentID == 0)
+             if (((Backend.Department)d).DepartmentID == 0)
              {
                  //set the new ID
-                 ((Department)d).DepartmentID = maxID + 1;
+                 ((Backend.Department)d).DepartmentID = maxID + 1;
              }
             //Add the new department to the system
-            Alldeparts.Add((Department)d);
-            itsDAL.WriteToFile(Alldeparts.Cast<object>().ToList(), (Department)d);
+            Alldeparts.Add((Backend.Department)d);
+            itsDAL.WriteToFile(Alldeparts.Cast<object>().ToList(), (Backend.Department)d);
             return d;
         }
 
         public void Remove(object d, Boolean isEdit = false)
         {
-            List<Department> Alldeparts = itsDAL.ReadFromFile(Elements.Department).Cast<Department>().ToList();
-            List<Employee> Allemps = itsDAL.ReadFromFile(Elements.Employee).Cast<Employee>().ToList();
+            List<Backend.Department> Alldeparts = itsDAL.ReadFromFile(Elements.Department).Cast<Backend.Department>().ToList();
+            List<Backend.Employee> Allemps = itsDAL.ReadFromFile(Elements.Employee).Cast<Backend.Employee>().ToList();
             //check if there are any departments to remove
             if (!Alldeparts.Any())
                 throw new NullReferenceException("No Departments to remove!");
             else
             {
                 //check if an employee is under this department
-                foreach (Employee emp in Allemps)
+                foreach (Backend.Employee emp in Allemps)
                 {
-                    if (((Department)d).DepartmentID == emp.DepID)
+                    if (((Backend.Department)d).DepartmentID == emp.DepID)
                         throw new Exception("this department is currently in use!");
                 }
                 //find and remove department
-                foreach (Department depart in Alldeparts)
+                foreach (Backend.Department depart in Alldeparts)
                 {
                     if (depart.Equals(d))
                     {
@@ -76,7 +76,7 @@ namespace BL
         public void Edit(object oldD, object newD)
         {
             //preserve the id for the edited department
-            ((Department)newD).DepartmentID = ((Department)oldD).DepartmentID;
+            ((Backend.Department)newD).DepartmentID = ((Backend.Department)oldD).DepartmentID;
             this.Remove(oldD);
             this.Add(newD);
         }
@@ -111,7 +111,7 @@ namespace BL
         public Type GetEntityType()
         {
             //return the department type
-            return typeof(Department);
+            return typeof(Backend.Department);
         }
         public string GetEntityName()
         {

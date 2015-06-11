@@ -30,12 +30,39 @@ namespace DAL
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
+    partial void InsertClubMember(ClubMember instance);
+    partial void UpdateClubMember(ClubMember instance);
+    partial void DeleteClubMember(ClubMember instance);
+    partial void InsertUser(User instance);
+    partial void UpdateUser(User instance);
+    partial void DeleteUser(User instance);
+    partial void InsertCreditCard(CreditCard instance);
+    partial void UpdateCreditCard(CreditCard instance);
+    partial void DeleteCreditCard(CreditCard instance);
+    partial void InsertCustomer(Customer instance);
+    partial void UpdateCustomer(Customer instance);
+    partial void DeleteCustomer(Customer instance);
+    partial void InsertDepartment(Department instance);
+    partial void UpdateDepartment(Department instance);
+    partial void DeleteDepartment(Department instance);
+    partial void InsertEmployee(Employee instance);
+    partial void UpdateEmployee(Employee instance);
+    partial void DeleteEmployee(Employee instance);
     partial void InsertProduct(Product instance);
     partial void UpdateProduct(Product instance);
     partial void DeleteProduct(Product instance);
+    partial void InsertPurchase(Purchase instance);
+    partial void UpdatePurchase(Purchase instance);
+    partial void DeletePurchase(Purchase instance);
     partial void InsertTopSeller(TopSeller instance);
     partial void UpdateTopSeller(TopSeller instance);
     partial void DeleteTopSeller(TopSeller instance);
+    partial void InsertTranHistoryLinkedTable(TranHistoryLinkedTable instance);
+    partial void UpdateTranHistoryLinkedTable(TranHistoryLinkedTable instance);
+    partial void DeleteTranHistoryLinkedTable(TranHistoryLinkedTable instance);
+    partial void InsertTransaction(Transaction instance);
+    partial void UpdateTransaction(Transaction instance);
+    partial void DeleteTransaction(Transaction instance);
     #endregion
 		
 		public E_MartDB_LINQtoSQLDataContext() : 
@@ -68,6 +95,54 @@ namespace DAL
 			OnCreated();
 		}
 		
+		public System.Data.Linq.Table<ClubMember> ClubMembers
+		{
+			get
+			{
+				return this.GetTable<ClubMember>();
+			}
+		}
+		
+		public System.Data.Linq.Table<User> Users
+		{
+			get
+			{
+				return this.GetTable<User>();
+			}
+		}
+		
+		public System.Data.Linq.Table<CreditCard> CreditCards
+		{
+			get
+			{
+				return this.GetTable<CreditCard>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Customer> Customers
+		{
+			get
+			{
+				return this.GetTable<Customer>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Department> Departments
+		{
+			get
+			{
+				return this.GetTable<Department>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Employee> Employees
+		{
+			get
+			{
+				return this.GetTable<Employee>();
+			}
+		}
+		
 		public System.Data.Linq.Table<Product> Products
 		{
 			get
@@ -76,11 +151,1276 @@ namespace DAL
 			}
 		}
 		
+		public System.Data.Linq.Table<Purchase> Purchases
+		{
+			get
+			{
+				return this.GetTable<Purchase>();
+			}
+		}
+		
 		public System.Data.Linq.Table<TopSeller> TopSellers
 		{
 			get
 			{
 				return this.GetTable<TopSeller>();
+			}
+		}
+		
+		public System.Data.Linq.Table<TranHistoryLinkedTable> TranHistoryLinkedTables
+		{
+			get
+			{
+				return this.GetTable<TranHistoryLinkedTable>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Transaction> Transactions
+		{
+			get
+			{
+				return this.GetTable<Transaction>();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ClubMember")]
+	public partial class ClubMember : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _MemberID;
+		
+		private System.DateTime _DateOfBirth;
+		
+		private int _Gender;
+		
+		private int _Id;
+		
+		private EntityRef<User> _User;
+		
+		private EntityRef<Customer> _Customer;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnMemberIDChanging(int value);
+    partial void OnMemberIDChanged();
+    partial void OnDateOfBirthChanging(System.DateTime value);
+    partial void OnDateOfBirthChanged();
+    partial void OnGenderChanging(int value);
+    partial void OnGenderChanged();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    #endregion
+		
+		public ClubMember()
+		{
+			this._User = default(EntityRef<User>);
+			this._Customer = default(EntityRef<Customer>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MemberID", DbType="Int NOT NULL")]
+		public int MemberID
+		{
+			get
+			{
+				return this._MemberID;
+			}
+			set
+			{
+				if ((this._MemberID != value))
+				{
+					this.OnMemberIDChanging(value);
+					this.SendPropertyChanging();
+					this._MemberID = value;
+					this.SendPropertyChanged("MemberID");
+					this.OnMemberIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DateOfBirth", DbType="DateTime NOT NULL")]
+		public System.DateTime DateOfBirth
+		{
+			get
+			{
+				return this._DateOfBirth;
+			}
+			set
+			{
+				if ((this._DateOfBirth != value))
+				{
+					this.OnDateOfBirthChanging(value);
+					this.SendPropertyChanging();
+					this._DateOfBirth = value;
+					this.SendPropertyChanged("DateOfBirth");
+					this.OnDateOfBirthChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Gender", DbType="Int NOT NULL")]
+		public int Gender
+		{
+			get
+			{
+				return this._Gender;
+			}
+			set
+			{
+				if ((this._Gender != value))
+				{
+					this.OnGenderChanging(value);
+					this.SendPropertyChanging();
+					this._Gender = value;
+					this.SendPropertyChanged("Gender");
+					this.OnGenderChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					if (this._Customer.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ClubMember_User", Storage="_User", ThisKey="Id", OtherKey="Person", IsUnique=true, IsForeignKey=false)]
+		public User User
+		{
+			get
+			{
+				return this._User.Entity;
+			}
+			set
+			{
+				User previousValue = this._User.Entity;
+				if (((previousValue != value) 
+							|| (this._User.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._User.Entity = null;
+						previousValue.ClubMember = null;
+					}
+					this._User.Entity = value;
+					if ((value != null))
+					{
+						value.ClubMember = this;
+					}
+					this.SendPropertyChanged("User");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Customer_ClubMember", Storage="_Customer", ThisKey="Id", OtherKey="Id", IsForeignKey=true)]
+		public Customer Customer
+		{
+			get
+			{
+				return this._Customer.Entity;
+			}
+			set
+			{
+				Customer previousValue = this._Customer.Entity;
+				if (((previousValue != value) 
+							|| (this._Customer.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Customer.Entity = null;
+						previousValue.ClubMember = null;
+					}
+					this._Customer.Entity = value;
+					if ((value != null))
+					{
+						value.ClubMember = this;
+						this._Id = value.Id;
+					}
+					else
+					{
+						this._Id = default(int);
+					}
+					this.SendPropertyChanged("Customer");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.[User]")]
+	public partial class User : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _UserName;
+		
+		private string _Password;
+		
+		private int _Person;
+		
+		private EntityRef<ClubMember> _ClubMember;
+		
+		private EntityRef<Employee> _Employee;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnUserNameChanging(string value);
+    partial void OnUserNameChanged();
+    partial void OnPasswordChanging(string value);
+    partial void OnPasswordChanged();
+    partial void OnPersonChanging(int value);
+    partial void OnPersonChanged();
+    #endregion
+		
+		public User()
+		{
+			this._ClubMember = default(EntityRef<ClubMember>);
+			this._Employee = default(EntityRef<Employee>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserName", DbType="Text NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
+		public string UserName
+		{
+			get
+			{
+				return this._UserName;
+			}
+			set
+			{
+				if ((this._UserName != value))
+				{
+					this.OnUserNameChanging(value);
+					this.SendPropertyChanging();
+					this._UserName = value;
+					this.SendPropertyChanged("UserName");
+					this.OnUserNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Password", DbType="Text NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
+		public string Password
+		{
+			get
+			{
+				return this._Password;
+			}
+			set
+			{
+				if ((this._Password != value))
+				{
+					this.OnPasswordChanging(value);
+					this.SendPropertyChanging();
+					this._Password = value;
+					this.SendPropertyChanged("Password");
+					this.OnPasswordChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Person", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int Person
+		{
+			get
+			{
+				return this._Person;
+			}
+			set
+			{
+				if ((this._Person != value))
+				{
+					if ((this._ClubMember.HasLoadedOrAssignedValue || this._Employee.HasLoadedOrAssignedValue))
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnPersonChanging(value);
+					this.SendPropertyChanging();
+					this._Person = value;
+					this.SendPropertyChanged("Person");
+					this.OnPersonChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ClubMember_User", Storage="_ClubMember", ThisKey="Person", OtherKey="Id", IsForeignKey=true)]
+		public ClubMember ClubMember
+		{
+			get
+			{
+				return this._ClubMember.Entity;
+			}
+			set
+			{
+				ClubMember previousValue = this._ClubMember.Entity;
+				if (((previousValue != value) 
+							|| (this._ClubMember.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ClubMember.Entity = null;
+						previousValue.User = null;
+					}
+					this._ClubMember.Entity = value;
+					if ((value != null))
+					{
+						value.User = this;
+						this._Person = value.Id;
+					}
+					else
+					{
+						this._Person = default(int);
+					}
+					this.SendPropertyChanged("ClubMember");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Employee_User", Storage="_Employee", ThisKey="Person", OtherKey="Id", IsForeignKey=true)]
+		public Employee Employee
+		{
+			get
+			{
+				return this._Employee.Entity;
+			}
+			set
+			{
+				Employee previousValue = this._Employee.Entity;
+				if (((previousValue != value) 
+							|| (this._Employee.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Employee.Entity = null;
+						previousValue.User = null;
+					}
+					this._Employee.Entity = value;
+					if ((value != null))
+					{
+						value.User = this;
+						this._Person = value.Id;
+					}
+					else
+					{
+						this._Person = default(int);
+					}
+					this.SendPropertyChanged("Employee");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.CreditCards")]
+	public partial class CreditCard : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _FirstName;
+		
+		private string _LastName;
+		
+		private int _CreditNumber;
+		
+		private System.DateTime _ExpirationDate;
+		
+		private EntitySet<Customer> _Customers;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnFirstNameChanging(string value);
+    partial void OnFirstNameChanged();
+    partial void OnLastNameChanging(string value);
+    partial void OnLastNameChanged();
+    partial void OnCreditNumberChanging(int value);
+    partial void OnCreditNumberChanged();
+    partial void OnExpirationDateChanging(System.DateTime value);
+    partial void OnExpirationDateChanged();
+    #endregion
+		
+		public CreditCard()
+		{
+			this._Customers = new EntitySet<Customer>(new Action<Customer>(this.attach_Customers), new Action<Customer>(this.detach_Customers));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FirstName", DbType="Text NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
+		public string FirstName
+		{
+			get
+			{
+				return this._FirstName;
+			}
+			set
+			{
+				if ((this._FirstName != value))
+				{
+					this.OnFirstNameChanging(value);
+					this.SendPropertyChanging();
+					this._FirstName = value;
+					this.SendPropertyChanged("FirstName");
+					this.OnFirstNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastName", DbType="Text NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
+		public string LastName
+		{
+			get
+			{
+				return this._LastName;
+			}
+			set
+			{
+				if ((this._LastName != value))
+				{
+					this.OnLastNameChanging(value);
+					this.SendPropertyChanging();
+					this._LastName = value;
+					this.SendPropertyChanged("LastName");
+					this.OnLastNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreditNumber", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int CreditNumber
+		{
+			get
+			{
+				return this._CreditNumber;
+			}
+			set
+			{
+				if ((this._CreditNumber != value))
+				{
+					this.OnCreditNumberChanging(value);
+					this.SendPropertyChanging();
+					this._CreditNumber = value;
+					this.SendPropertyChanged("CreditNumber");
+					this.OnCreditNumberChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ExpirationDate", DbType="DateTime NOT NULL")]
+		public System.DateTime ExpirationDate
+		{
+			get
+			{
+				return this._ExpirationDate;
+			}
+			set
+			{
+				if ((this._ExpirationDate != value))
+				{
+					this.OnExpirationDateChanging(value);
+					this.SendPropertyChanging();
+					this._ExpirationDate = value;
+					this.SendPropertyChanged("ExpirationDate");
+					this.OnExpirationDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CreditCard_Customer", Storage="_Customers", ThisKey="CreditNumber", OtherKey="CreditCard")]
+		public EntitySet<Customer> Customers
+		{
+			get
+			{
+				return this._Customers;
+			}
+			set
+			{
+				this._Customers.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Customers(Customer entity)
+		{
+			this.SendPropertyChanging();
+			entity.CreditCard1 = this;
+		}
+		
+		private void detach_Customers(Customer entity)
+		{
+			this.SendPropertyChanging();
+			entity.CreditCard1 = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Customers")]
+	public partial class Customer : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private string _FirstName;
+		
+		private int _CreditCard;
+		
+		private string _LastName;
+		
+		private EntityRef<ClubMember> _ClubMember;
+		
+		private EntityRef<TranHistoryLinkedTable> _TranHistoryLinkedTable;
+		
+		private EntityRef<CreditCard> _CreditCard1;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnFirstNameChanging(string value);
+    partial void OnFirstNameChanged();
+    partial void OnCreditCardChanging(int value);
+    partial void OnCreditCardChanged();
+    partial void OnLastNameChanging(string value);
+    partial void OnLastNameChanged();
+    #endregion
+		
+		public Customer()
+		{
+			this._ClubMember = default(EntityRef<ClubMember>);
+			this._TranHistoryLinkedTable = default(EntityRef<TranHistoryLinkedTable>);
+			this._CreditCard1 = default(EntityRef<CreditCard>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FirstName", DbType="Text NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
+		public string FirstName
+		{
+			get
+			{
+				return this._FirstName;
+			}
+			set
+			{
+				if ((this._FirstName != value))
+				{
+					this.OnFirstNameChanging(value);
+					this.SendPropertyChanging();
+					this._FirstName = value;
+					this.SendPropertyChanged("FirstName");
+					this.OnFirstNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreditCard", DbType="Int NOT NULL")]
+		public int CreditCard
+		{
+			get
+			{
+				return this._CreditCard;
+			}
+			set
+			{
+				if ((this._CreditCard != value))
+				{
+					if (this._CreditCard1.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnCreditCardChanging(value);
+					this.SendPropertyChanging();
+					this._CreditCard = value;
+					this.SendPropertyChanged("CreditCard");
+					this.OnCreditCardChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastName", DbType="Text NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
+		public string LastName
+		{
+			get
+			{
+				return this._LastName;
+			}
+			set
+			{
+				if ((this._LastName != value))
+				{
+					this.OnLastNameChanging(value);
+					this.SendPropertyChanging();
+					this._LastName = value;
+					this.SendPropertyChanged("LastName");
+					this.OnLastNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Customer_ClubMember", Storage="_ClubMember", ThisKey="Id", OtherKey="Id", IsUnique=true, IsForeignKey=false)]
+		public ClubMember ClubMember
+		{
+			get
+			{
+				return this._ClubMember.Entity;
+			}
+			set
+			{
+				ClubMember previousValue = this._ClubMember.Entity;
+				if (((previousValue != value) 
+							|| (this._ClubMember.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ClubMember.Entity = null;
+						previousValue.Customer = null;
+					}
+					this._ClubMember.Entity = value;
+					if ((value != null))
+					{
+						value.Customer = this;
+					}
+					this.SendPropertyChanged("ClubMember");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Customer_TranHistoryLinkedTable", Storage="_TranHistoryLinkedTable", ThisKey="Id", OtherKey="CustomerID", IsUnique=true, IsForeignKey=false)]
+		public TranHistoryLinkedTable TranHistoryLinkedTable
+		{
+			get
+			{
+				return this._TranHistoryLinkedTable.Entity;
+			}
+			set
+			{
+				TranHistoryLinkedTable previousValue = this._TranHistoryLinkedTable.Entity;
+				if (((previousValue != value) 
+							|| (this._TranHistoryLinkedTable.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._TranHistoryLinkedTable.Entity = null;
+						previousValue.Customer = null;
+					}
+					this._TranHistoryLinkedTable.Entity = value;
+					if ((value != null))
+					{
+						value.Customer = this;
+					}
+					this.SendPropertyChanged("TranHistoryLinkedTable");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CreditCard_Customer", Storage="_CreditCard1", ThisKey="CreditCard", OtherKey="CreditNumber", IsForeignKey=true)]
+		public CreditCard CreditCard1
+		{
+			get
+			{
+				return this._CreditCard1.Entity;
+			}
+			set
+			{
+				CreditCard previousValue = this._CreditCard1.Entity;
+				if (((previousValue != value) 
+							|| (this._CreditCard1.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._CreditCard1.Entity = null;
+						previousValue.Customers.Remove(this);
+					}
+					this._CreditCard1.Entity = value;
+					if ((value != null))
+					{
+						value.Customers.Add(this);
+						this._CreditCard = value.CreditNumber;
+					}
+					else
+					{
+						this._CreditCard = default(int);
+					}
+					this.SendPropertyChanged("CreditCard1");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Department")]
+	public partial class Department : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _Name;
+		
+		private int _DepartmentID;
+		
+		private EntitySet<Employee> _Employees;
+		
+		private EntitySet<Product> _Products;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    partial void OnDepartmentIDChanging(int value);
+    partial void OnDepartmentIDChanged();
+    #endregion
+		
+		public Department()
+		{
+			this._Employees = new EntitySet<Employee>(new Action<Employee>(this.attach_Employees), new Action<Employee>(this.detach_Employees));
+			this._Products = new EntitySet<Product>(new Action<Product>(this.attach_Products), new Action<Product>(this.detach_Products));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="Text NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DepartmentID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int DepartmentID
+		{
+			get
+			{
+				return this._DepartmentID;
+			}
+			set
+			{
+				if ((this._DepartmentID != value))
+				{
+					this.OnDepartmentIDChanging(value);
+					this.SendPropertyChanging();
+					this._DepartmentID = value;
+					this.SendPropertyChanged("DepartmentID");
+					this.OnDepartmentIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Department_Employee", Storage="_Employees", ThisKey="DepartmentID", OtherKey="DepID")]
+		public EntitySet<Employee> Employees
+		{
+			get
+			{
+				return this._Employees;
+			}
+			set
+			{
+				this._Employees.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Department_Product", Storage="_Products", ThisKey="DepartmentID", OtherKey="Location")]
+		public EntitySet<Product> Products
+		{
+			get
+			{
+				return this._Products;
+			}
+			set
+			{
+				this._Products.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Employees(Employee entity)
+		{
+			this.SendPropertyChanging();
+			entity.Department = this;
+		}
+		
+		private void detach_Employees(Employee entity)
+		{
+			this.SendPropertyChanging();
+			entity.Department = null;
+		}
+		
+		private void attach_Products(Product entity)
+		{
+			this.SendPropertyChanging();
+			entity.Department = this;
+		}
+		
+		private void detach_Products(Product entity)
+		{
+			this.SendPropertyChanging();
+			entity.Department = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Employee")]
+	public partial class Employee : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private int _Gender;
+		
+		private int _SupervisiorID;
+		
+		private int _Salary;
+		
+		private int _DepID;
+		
+		private string _FirstName;
+		
+		private string _LastName;
+		
+		private int _Rank;
+		
+		private EntityRef<User> _User;
+		
+		private EntityRef<Department> _Department;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnGenderChanging(int value);
+    partial void OnGenderChanged();
+    partial void OnSupervisiorIDChanging(int value);
+    partial void OnSupervisiorIDChanged();
+    partial void OnSalaryChanging(int value);
+    partial void OnSalaryChanged();
+    partial void OnDepIDChanging(int value);
+    partial void OnDepIDChanged();
+    partial void OnFirstNameChanging(string value);
+    partial void OnFirstNameChanged();
+    partial void OnLastNameChanging(string value);
+    partial void OnLastNameChanged();
+    partial void OnRankChanging(int value);
+    partial void OnRankChanged();
+    #endregion
+		
+		public Employee()
+		{
+			this._User = default(EntityRef<User>);
+			this._Department = default(EntityRef<Department>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Gender", DbType="Int NOT NULL")]
+		public int Gender
+		{
+			get
+			{
+				return this._Gender;
+			}
+			set
+			{
+				if ((this._Gender != value))
+				{
+					this.OnGenderChanging(value);
+					this.SendPropertyChanging();
+					this._Gender = value;
+					this.SendPropertyChanged("Gender");
+					this.OnGenderChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SupervisiorID", DbType="Int NOT NULL")]
+		public int SupervisiorID
+		{
+			get
+			{
+				return this._SupervisiorID;
+			}
+			set
+			{
+				if ((this._SupervisiorID != value))
+				{
+					this.OnSupervisiorIDChanging(value);
+					this.SendPropertyChanging();
+					this._SupervisiorID = value;
+					this.SendPropertyChanged("SupervisiorID");
+					this.OnSupervisiorIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Salary", DbType="Int NOT NULL")]
+		public int Salary
+		{
+			get
+			{
+				return this._Salary;
+			}
+			set
+			{
+				if ((this._Salary != value))
+				{
+					this.OnSalaryChanging(value);
+					this.SendPropertyChanging();
+					this._Salary = value;
+					this.SendPropertyChanged("Salary");
+					this.OnSalaryChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DepID", DbType="Int NOT NULL")]
+		public int DepID
+		{
+			get
+			{
+				return this._DepID;
+			}
+			set
+			{
+				if ((this._DepID != value))
+				{
+					if (this._Department.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnDepIDChanging(value);
+					this.SendPropertyChanging();
+					this._DepID = value;
+					this.SendPropertyChanged("DepID");
+					this.OnDepIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FirstName", DbType="Text NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
+		public string FirstName
+		{
+			get
+			{
+				return this._FirstName;
+			}
+			set
+			{
+				if ((this._FirstName != value))
+				{
+					this.OnFirstNameChanging(value);
+					this.SendPropertyChanging();
+					this._FirstName = value;
+					this.SendPropertyChanged("FirstName");
+					this.OnFirstNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastName", DbType="Text NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
+		public string LastName
+		{
+			get
+			{
+				return this._LastName;
+			}
+			set
+			{
+				if ((this._LastName != value))
+				{
+					this.OnLastNameChanging(value);
+					this.SendPropertyChanging();
+					this._LastName = value;
+					this.SendPropertyChanged("LastName");
+					this.OnLastNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Rank", DbType="Int NOT NULL")]
+		public int Rank
+		{
+			get
+			{
+				return this._Rank;
+			}
+			set
+			{
+				if ((this._Rank != value))
+				{
+					this.OnRankChanging(value);
+					this.SendPropertyChanging();
+					this._Rank = value;
+					this.SendPropertyChanged("Rank");
+					this.OnRankChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Employee_User", Storage="_User", ThisKey="Id", OtherKey="Person", IsUnique=true, IsForeignKey=false)]
+		public User User
+		{
+			get
+			{
+				return this._User.Entity;
+			}
+			set
+			{
+				User previousValue = this._User.Entity;
+				if (((previousValue != value) 
+							|| (this._User.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._User.Entity = null;
+						previousValue.Employee = null;
+					}
+					this._User.Entity = value;
+					if ((value != null))
+					{
+						value.Employee = this;
+					}
+					this.SendPropertyChanged("User");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Department_Employee", Storage="_Department", ThisKey="DepID", OtherKey="DepartmentID", IsForeignKey=true)]
+		public Department Department
+		{
+			get
+			{
+				return this._Department.Entity;
+			}
+			set
+			{
+				Department previousValue = this._Department.Entity;
+				if (((previousValue != value) 
+							|| (this._Department.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Department.Entity = null;
+						previousValue.Employees.Remove(this);
+					}
+					this._Department.Entity = value;
+					if ((value != null))
+					{
+						value.Employees.Add(this);
+						this._DepID = value.DepartmentID;
+					}
+					else
+					{
+						this._DepID = default(int);
+					}
+					this.SendPropertyChanged("Department");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
 	}
@@ -107,6 +1447,8 @@ namespace DAL
 		
 		private EntityRef<TopSeller> _TopSeller;
 		
+		private EntityRef<Department> _Department;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -130,6 +1472,7 @@ namespace DAL
 		public Product()
 		{
 			this._TopSeller = default(EntityRef<TopSeller>);
+			this._Department = default(EntityRef<Department>);
 			OnCreated();
 		}
 		
@@ -244,6 +1587,10 @@ namespace DAL
 			{
 				if ((this._Location != value))
 				{
+					if (this._Department.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
 					this.OnLocationChanging(value);
 					this.SendPropertyChanging();
 					this._Location = value;
@@ -298,6 +1645,263 @@ namespace DAL
 						value.Product = this;
 					}
 					this.SendPropertyChanged("TopSeller");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Department_Product", Storage="_Department", ThisKey="Location", OtherKey="DepartmentID", IsForeignKey=true)]
+		public Department Department
+		{
+			get
+			{
+				return this._Department.Entity;
+			}
+			set
+			{
+				Department previousValue = this._Department.Entity;
+				if (((previousValue != value) 
+							|| (this._Department.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Department.Entity = null;
+						previousValue.Products.Remove(this);
+					}
+					this._Department.Entity = value;
+					if ((value != null))
+					{
+						value.Products.Add(this);
+						this._Location = value.DepartmentID;
+					}
+					else
+					{
+						this._Location = default(int);
+					}
+					this.SendPropertyChanged("Department");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Purchase")]
+	public partial class Purchase : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _PrdID;
+		
+		private string _PrdName;
+		
+		private int _Price;
+		
+		private int _Amount;
+		
+		private int _TransID;
+		
+		private System.DateTime _TimeOfPurchase;
+		
+		private EntityRef<Transaction> _Transaction;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnPrdIDChanging(int value);
+    partial void OnPrdIDChanged();
+    partial void OnPrdNameChanging(string value);
+    partial void OnPrdNameChanged();
+    partial void OnPriceChanging(int value);
+    partial void OnPriceChanged();
+    partial void OnAmountChanging(int value);
+    partial void OnAmountChanged();
+    partial void OnTransIDChanging(int value);
+    partial void OnTransIDChanged();
+    partial void OnTimeOfPurchaseChanging(System.DateTime value);
+    partial void OnTimeOfPurchaseChanged();
+    #endregion
+		
+		public Purchase()
+		{
+			this._Transaction = default(EntityRef<Transaction>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PrdID", DbType="Int NOT NULL")]
+		public int PrdID
+		{
+			get
+			{
+				return this._PrdID;
+			}
+			set
+			{
+				if ((this._PrdID != value))
+				{
+					this.OnPrdIDChanging(value);
+					this.SendPropertyChanging();
+					this._PrdID = value;
+					this.SendPropertyChanged("PrdID");
+					this.OnPrdIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PrdName", DbType="Text NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
+		public string PrdName
+		{
+			get
+			{
+				return this._PrdName;
+			}
+			set
+			{
+				if ((this._PrdName != value))
+				{
+					this.OnPrdNameChanging(value);
+					this.SendPropertyChanging();
+					this._PrdName = value;
+					this.SendPropertyChanged("PrdName");
+					this.OnPrdNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Price", DbType="Int NOT NULL")]
+		public int Price
+		{
+			get
+			{
+				return this._Price;
+			}
+			set
+			{
+				if ((this._Price != value))
+				{
+					this.OnPriceChanging(value);
+					this.SendPropertyChanging();
+					this._Price = value;
+					this.SendPropertyChanged("Price");
+					this.OnPriceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Amount", DbType="Int NOT NULL")]
+		public int Amount
+		{
+			get
+			{
+				return this._Amount;
+			}
+			set
+			{
+				if ((this._Amount != value))
+				{
+					this.OnAmountChanging(value);
+					this.SendPropertyChanging();
+					this._Amount = value;
+					this.SendPropertyChanged("Amount");
+					this.OnAmountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TransID", DbType="Int NOT NULL")]
+		public int TransID
+		{
+			get
+			{
+				return this._TransID;
+			}
+			set
+			{
+				if ((this._TransID != value))
+				{
+					if (this._Transaction.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnTransIDChanging(value);
+					this.SendPropertyChanging();
+					this._TransID = value;
+					this.SendPropertyChanged("TransID");
+					this.OnTransIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TimeOfPurchase", DbType="DateTime NOT NULL", IsPrimaryKey=true)]
+		public System.DateTime TimeOfPurchase
+		{
+			get
+			{
+				return this._TimeOfPurchase;
+			}
+			set
+			{
+				if ((this._TimeOfPurchase != value))
+				{
+					this.OnTimeOfPurchaseChanging(value);
+					this.SendPropertyChanging();
+					this._TimeOfPurchase = value;
+					this.SendPropertyChanged("TimeOfPurchase");
+					this.OnTimeOfPurchaseChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Transaction_Purchase", Storage="_Transaction", ThisKey="TransID", OtherKey="TransactionID", IsForeignKey=true)]
+		public Transaction Transaction
+		{
+			get
+			{
+				return this._Transaction.Entity;
+			}
+			set
+			{
+				Transaction previousValue = this._Transaction.Entity;
+				if (((previousValue != value) 
+							|| (this._Transaction.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Transaction.Entity = null;
+						previousValue.Purchases.Remove(this);
+					}
+					this._Transaction.Entity = value;
+					if ((value != null))
+					{
+						value.Purchases.Add(this);
+						this._TransID = value.TransactionID;
+					}
+					else
+					{
+						this._TransID = default(int);
+					}
+					this.SendPropertyChanged("Transaction");
 				}
 			}
 		}
@@ -495,6 +2099,364 @@ namespace DAL
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TranHistoryLinkedTable")]
+	public partial class TranHistoryLinkedTable : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _CustomerID;
+		
+		private int _TransID;
+		
+		private EntityRef<Customer> _Customer;
+		
+		private EntityRef<Transaction> _Transaction;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnCustomerIDChanging(int value);
+    partial void OnCustomerIDChanged();
+    partial void OnTransIDChanging(int value);
+    partial void OnTransIDChanged();
+    #endregion
+		
+		public TranHistoryLinkedTable()
+		{
+			this._Customer = default(EntityRef<Customer>);
+			this._Transaction = default(EntityRef<Transaction>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CustomerID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int CustomerID
+		{
+			get
+			{
+				return this._CustomerID;
+			}
+			set
+			{
+				if ((this._CustomerID != value))
+				{
+					if (this._Customer.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnCustomerIDChanging(value);
+					this.SendPropertyChanging();
+					this._CustomerID = value;
+					this.SendPropertyChanged("CustomerID");
+					this.OnCustomerIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TransID", DbType="Int NOT NULL")]
+		public int TransID
+		{
+			get
+			{
+				return this._TransID;
+			}
+			set
+			{
+				if ((this._TransID != value))
+				{
+					if (this._Transaction.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnTransIDChanging(value);
+					this.SendPropertyChanging();
+					this._TransID = value;
+					this.SendPropertyChanged("TransID");
+					this.OnTransIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Customer_TranHistoryLinkedTable", Storage="_Customer", ThisKey="CustomerID", OtherKey="Id", IsForeignKey=true)]
+		public Customer Customer
+		{
+			get
+			{
+				return this._Customer.Entity;
+			}
+			set
+			{
+				Customer previousValue = this._Customer.Entity;
+				if (((previousValue != value) 
+							|| (this._Customer.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Customer.Entity = null;
+						previousValue.TranHistoryLinkedTable = null;
+					}
+					this._Customer.Entity = value;
+					if ((value != null))
+					{
+						value.TranHistoryLinkedTable = this;
+						this._CustomerID = value.Id;
+					}
+					else
+					{
+						this._CustomerID = default(int);
+					}
+					this.SendPropertyChanged("Customer");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Transaction_TranHistoryLinkedTable", Storage="_Transaction", ThisKey="TransID", OtherKey="TransactionID", IsForeignKey=true)]
+		public Transaction Transaction
+		{
+			get
+			{
+				return this._Transaction.Entity;
+			}
+			set
+			{
+				Transaction previousValue = this._Transaction.Entity;
+				if (((previousValue != value) 
+							|| (this._Transaction.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Transaction.Entity = null;
+						previousValue.TranHistoryLinkedTables.Remove(this);
+					}
+					this._Transaction.Entity = value;
+					if ((value != null))
+					{
+						value.TranHistoryLinkedTables.Add(this);
+						this._TransID = value.TransactionID;
+					}
+					else
+					{
+						this._TransID = default(int);
+					}
+					this.SendPropertyChanged("Transaction");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Transactions")]
+	public partial class Transaction : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _TransactionID;
+		
+		private int _Is_a_Return;
+		
+		private int _Payment;
+		
+		private int _Receipt;
+		
+		private EntitySet<Purchase> _Purchases;
+		
+		private EntitySet<TranHistoryLinkedTable> _TranHistoryLinkedTables;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnTransactionIDChanging(int value);
+    partial void OnTransactionIDChanged();
+    partial void OnIs_a_ReturnChanging(int value);
+    partial void OnIs_a_ReturnChanged();
+    partial void OnPaymentChanging(int value);
+    partial void OnPaymentChanged();
+    partial void OnReceiptChanging(int value);
+    partial void OnReceiptChanged();
+    #endregion
+		
+		public Transaction()
+		{
+			this._Purchases = new EntitySet<Purchase>(new Action<Purchase>(this.attach_Purchases), new Action<Purchase>(this.detach_Purchases));
+			this._TranHistoryLinkedTables = new EntitySet<TranHistoryLinkedTable>(new Action<TranHistoryLinkedTable>(this.attach_TranHistoryLinkedTables), new Action<TranHistoryLinkedTable>(this.detach_TranHistoryLinkedTables));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TransactionID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int TransactionID
+		{
+			get
+			{
+				return this._TransactionID;
+			}
+			set
+			{
+				if ((this._TransactionID != value))
+				{
+					this.OnTransactionIDChanging(value);
+					this.SendPropertyChanging();
+					this._TransactionID = value;
+					this.SendPropertyChanged("TransactionID");
+					this.OnTransactionIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Is_a_Return", DbType="Int NOT NULL")]
+		public int Is_a_Return
+		{
+			get
+			{
+				return this._Is_a_Return;
+			}
+			set
+			{
+				if ((this._Is_a_Return != value))
+				{
+					this.OnIs_a_ReturnChanging(value);
+					this.SendPropertyChanging();
+					this._Is_a_Return = value;
+					this.SendPropertyChanged("Is_a_Return");
+					this.OnIs_a_ReturnChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Payment", DbType="Int NOT NULL")]
+		public int Payment
+		{
+			get
+			{
+				return this._Payment;
+			}
+			set
+			{
+				if ((this._Payment != value))
+				{
+					this.OnPaymentChanging(value);
+					this.SendPropertyChanging();
+					this._Payment = value;
+					this.SendPropertyChanged("Payment");
+					this.OnPaymentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Receipt", DbType="Int NOT NULL")]
+		public int Receipt
+		{
+			get
+			{
+				return this._Receipt;
+			}
+			set
+			{
+				if ((this._Receipt != value))
+				{
+					this.OnReceiptChanging(value);
+					this.SendPropertyChanging();
+					this._Receipt = value;
+					this.SendPropertyChanged("Receipt");
+					this.OnReceiptChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Transaction_Purchase", Storage="_Purchases", ThisKey="TransactionID", OtherKey="TransID")]
+		public EntitySet<Purchase> Purchases
+		{
+			get
+			{
+				return this._Purchases;
+			}
+			set
+			{
+				this._Purchases.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Transaction_TranHistoryLinkedTable", Storage="_TranHistoryLinkedTables", ThisKey="TransactionID", OtherKey="TransID")]
+		public EntitySet<TranHistoryLinkedTable> TranHistoryLinkedTables
+		{
+			get
+			{
+				return this._TranHistoryLinkedTables;
+			}
+			set
+			{
+				this._TranHistoryLinkedTables.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Purchases(Purchase entity)
+		{
+			this.SendPropertyChanging();
+			entity.Transaction = this;
+		}
+		
+		private void detach_Purchases(Purchase entity)
+		{
+			this.SendPropertyChanging();
+			entity.Transaction = null;
+		}
+		
+		private void attach_TranHistoryLinkedTables(TranHistoryLinkedTable entity)
+		{
+			this.SendPropertyChanging();
+			entity.Transaction = this;
+		}
+		
+		private void detach_TranHistoryLinkedTables(TranHistoryLinkedTable entity)
+		{
+			this.SendPropertyChanging();
+			entity.Transaction = null;
 		}
 	}
 }

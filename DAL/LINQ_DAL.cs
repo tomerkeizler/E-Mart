@@ -233,37 +233,23 @@ namespace DAL
             }
             return filteredProducts;
         }
-        //Filter by multiply types for product
-        public List<Backend.Product> ProductMulTypeQuery(List<Backend.Product> currentList, List<PType> typelist)
-        {
-            List<Backend.Product> filteredProducts = new List<Backend.Product>();
-            if (currentList.ElementAtOrDefault(0) == null)
-            {
-                throw new InvalidDataException("There is nothing to find from.");
-            }
-            foreach (PType type in typelist)
-            {
-                filteredProducts.AddRange(currentList.Where(n => n.Type.Equals(type)).Cast<Backend.Product>().ToList());
-            }
-            return filteredProducts;
-        }
 
         //Filter by name for employee
-        public List<Employee> EmployeeNameQuery(string name, StringFields field)
+        public List<Backend.Employee> EmployeeNameQuery(string name, StringFields field)
         {
-            List<Employee> allEmployee = ReadFromFile(Elements.Employee).Cast<Employee>().ToList();
-            List<Employee> filteredEmployee;
+            List<Backend.Employee> allEmployee = ReadFromFile(Elements.Employee).Cast<Backend.Employee>().ToList();
+            List<Backend.Employee> filteredEmployee;
             if (allEmployee.ElementAtOrDefault(0) == null)
             {
                 throw new InvalidDataException("There is nothing to find from.");
             }
             if (field == StringFields.firstName)
             {
-                filteredEmployee = allEmployee.Where(n => n.FirstName.Equals(name)).Cast<Employee>().ToList();
+                filteredEmployee = allEmployee.Where(n => n.FirstName.Equals(name)).Cast<Backend.Employee>().ToList();
             }
             else if (field == StringFields.lastName)
             {
-                filteredEmployee = allEmployee.Where(n => n.LastName.Equals(name)).Cast<Employee>().ToList();
+                filteredEmployee = allEmployee.Where(n => n.LastName.Equals(name)).Cast<Backend.Employee>().ToList();
             }
             else
             {
@@ -273,29 +259,29 @@ namespace DAL
         }
 
         //Filter by number for employee
-        public List<Employee> EmployeeNumberQuery(int minNumber, int maxNumber, IntFields field)
+        public List<Backend.Employee> EmployeeNumberQuery(int minNumber, int maxNumber, IntFields field)
         {
-            List<Employee> allEmployee = ReadFromFile(Elements.Employee).Cast<Employee>().ToList();
-            List<Employee> filteredEmployee;
+            List<Backend.Employee> allEmployee = ReadFromFile(Elements.Employee).Cast<Backend.Employee>().ToList();
+            List<Backend.Employee> filteredEmployee;
             if (allEmployee.ElementAtOrDefault(0) == null)
             {
                 throw new InvalidDataException("There is nothing to find from.");
             }
             if (field == IntFields.id)
             {
-                filteredEmployee = allEmployee.Where(n => n.Id >= minNumber && n.Id <= maxNumber).Cast<Employee>().ToList();
+                filteredEmployee = allEmployee.Where(n => n.Id >= minNumber && n.Id <= maxNumber).Cast<Backend.Employee>().ToList();
             }
             else if (field == IntFields.depID)
             {
-                filteredEmployee = allEmployee.Where(n => n.DepID >= minNumber && n.DepID <= maxNumber).Cast<Employee>().ToList();
+                filteredEmployee = allEmployee.Where(n => n.DepID >= minNumber && n.DepID <= maxNumber).Cast<Backend.Employee>().ToList();
             }
             else if (field == IntFields.salary)
             {
-                filteredEmployee = allEmployee.Where(n => n.Salary >= minNumber && n.Salary <= maxNumber).Cast<Employee>().ToList();
+                filteredEmployee = allEmployee.Where(n => n.Salary >= minNumber && n.Salary <= maxNumber).Cast<Backend.Employee>().ToList();
             }
             else if (field == IntFields.supervisiorID)
             {
-                filteredEmployee = allEmployee.Where(n => n.SupervisiorID >= minNumber && n.SupervisiorID <= maxNumber).Cast<Employee>().ToList();
+                filteredEmployee = allEmployee.Where(n => n.SupervisiorID >= minNumber && n.SupervisiorID <= maxNumber).Cast<Backend.Employee>().ToList();
             }
             else
             {
@@ -305,21 +291,21 @@ namespace DAL
         }
 
         //Filter by type for employee
-        public List<Employee> EmployeeTypeQuery(ValueType type)
+        public List<Backend.Employee> EmployeeTypeQuery(ValueType type)
         {
-            List<Employee> allEmployee = ReadFromFile(Elements.Employee).Cast<Employee>().ToList();
-            List<Employee> filteredEmployee;
+            List<Backend.Employee> allEmployee = ReadFromFile(Elements.Employee).Cast<Backend.Employee>().ToList();
+            List<Backend.Employee> filteredEmployee;
             if (allEmployee.ElementAtOrDefault(0) == null)
             {
                 throw new InvalidDataException("There is nothing to find from.");
             }
             if (type is Gender)
             {
-                filteredEmployee = allEmployee.Where(n => n.Gender.Equals((Gender)type)).Cast<Employee>().ToList();
+                filteredEmployee = allEmployee.Where(n => n.Gender.Equals((Gender)type)).Cast<Backend.Employee>().ToList();
             }
             else if (type is Rank)
             {
-                filteredEmployee = allEmployee.Where(n => n.Rank.Equals((Rank)type)).Cast<Employee>().ToList();
+                filteredEmployee = allEmployee.Where(n => n.Rank.Equals((Rank)type)).Cast<Backend.Employee>().ToList();
             }
             else
             {
@@ -329,21 +315,21 @@ namespace DAL
         }
 
         //Filter by name for club memeber
-        public List<ClubMember> ClubMemberNameQuery(string name, StringFields field)
+        public List<Backend.ClubMember> ClubMemberNameQuery(string name, StringFields field)
         {
-            List<ClubMember> allClubMember = ReadFromFile(Elements.ClubMember).Cast<ClubMember>().ToList();
-            List<ClubMember> filteredClubMember;
+            List<Backend.ClubMember> allClubMember = ReadFromFile(Elements.ClubMember).Cast<Backend.ClubMember>().ToList();
+            List<Backend.ClubMember> filteredClubMember;
             if (allClubMember.ElementAtOrDefault(0) == null)
             {
                 throw new InvalidDataException("There is nothing to find from.");
             }
             if (field == StringFields.firstName)
             {
-                filteredClubMember = allClubMember.Where(n => n.FirstName.Equals(name)).Cast<ClubMember>().ToList();
+                filteredClubMember = allClubMember.Where(n => n.FirstName.Equals(name)).Cast<Backend.ClubMember>().ToList();
             }
             else if (field == StringFields.lastName)
             {
-                filteredClubMember = allClubMember.Where(n => n.LastName.Equals(name)).Cast<ClubMember>().ToList();
+                filteredClubMember = allClubMember.Where(n => n.LastName.Equals(name)).Cast<Backend.ClubMember>().ToList();
             }
             else
             {
@@ -353,29 +339,29 @@ namespace DAL
         }
 
         //Filter by number for club member
-        public List<ClubMember> ClubMemberNumberQuery(int minNumber, int maxNumber, IntFields field)
+        public List<Backend.ClubMember> ClubMemberNumberQuery(int minNumber, int maxNumber, IntFields field)
         {
-            List<ClubMember> allClubMember = ReadFromFile(Elements.ClubMember).Cast<ClubMember>().ToList();
-            List<ClubMember> filteredClubMember;
+            List<Backend.ClubMember> allClubMember = ReadFromFile(Elements.ClubMember).Cast<Backend.ClubMember>().ToList();
+            List<Backend.ClubMember> filteredClubMember;
             if (allClubMember.ElementAtOrDefault(0) == null)
             {
                 throw new InvalidDataException("There is nothing to find from.");
             }
             if (field == IntFields.memberID)
             {
-                filteredClubMember = allClubMember.Where(n => n.MemberID >= minNumber && n.MemberID <= maxNumber).Cast<ClubMember>().ToList();
+                filteredClubMember = allClubMember.Where(n => n.MemberID >= minNumber && n.MemberID <= maxNumber).Cast<Backend.ClubMember>().ToList();
             }
             else if (field == IntFields.id)
             {
-                filteredClubMember = allClubMember.Where(n => n.Id >= minNumber && n.Id <= maxNumber).Cast<ClubMember>().ToList();
+                filteredClubMember = allClubMember.Where(n => n.Id >= minNumber && n.Id <= maxNumber).Cast<Backend.ClubMember>().ToList();
             }
             else if (field == IntFields.tranHistory)
             {
-                filteredClubMember = allClubMember.Where(n => n.TranHistory.Any(x => x.TransactionID >= minNumber && x.TransactionID <= maxNumber)).Cast<ClubMember>().ToList();
+                filteredClubMember = allClubMember.Where(n => n.TranHistory.Any(x => x.TransactionID >= minNumber && x.TransactionID <= maxNumber)).Cast<Backend.ClubMember>().ToList();
             }
             else if (field == IntFields.dateOfBirth)
             {
-                filteredClubMember = allClubMember.Where(n => int.Parse(n.DateOfBirth.ToString("yyyyMMdd")) >= minNumber && int.Parse(n.DateOfBirth.ToString("yyyyMMdd")) <= maxNumber).Cast<ClubMember>().ToList();
+                filteredClubMember = allClubMember.Where(n => int.Parse(n.DateOfBirth.ToString("yyyyMMdd")) >= minNumber && int.Parse(n.DateOfBirth.ToString("yyyyMMdd")) <= maxNumber).Cast<Backend.ClubMember>().ToList();
             }
             else
             {
@@ -385,17 +371,17 @@ namespace DAL
         }
 
         //Filter by type for club member
-        public List<ClubMember> ClubMemberTypeQuery(ValueType type)
+        public List<Backend.ClubMember> ClubMemberTypeQuery(ValueType type)
         {
-            List<ClubMember> allClubMember = ReadFromFile(Elements.ClubMember).Cast<ClubMember>().ToList();
-            List<ClubMember> filteredClubMember;
+            List<Backend.ClubMember> allClubMember = ReadFromFile(Elements.ClubMember).Cast<Backend.ClubMember>().ToList();
+            List<Backend.ClubMember> filteredClubMember;
             if (allClubMember.ElementAtOrDefault(0) == null)
             {
                 throw new InvalidDataException("There is nothing to find from.");
             }
             if (type is Gender)
             {
-                filteredClubMember = allClubMember.Where(n => n.Gender.Equals((Gender)type)).Cast<ClubMember>().ToList();
+                filteredClubMember = allClubMember.Where(n => n.Gender.Equals((Gender)type)).Cast<Backend.ClubMember>().ToList();
             }
             else
             {
@@ -405,10 +391,10 @@ namespace DAL
         }
 
         //Filter by name for department
-        public List<Department> DepartmentNameQuery(string name, StringFields field)
+        public List<Backend.Department> DepartmentNameQuery(string name, StringFields field)
         {
-            List<Department> allDepartment = ReadFromFile(Elements.Department).Cast<Department>().ToList();
-            List<Department> filteredDepartment;
+            List<Backend.Department> allDepartment = ReadFromFile(Elements.Department).Cast<Backend.Department>().ToList();
+            List<Backend.Department> filteredDepartment;
             if (allDepartment.ElementAtOrDefault(0) == null)
             {
                 throw new InvalidDataException("There is nothing to find from.");
@@ -417,16 +403,16 @@ namespace DAL
             {
                 throw new System.Data.DataException("Bad Input!");
             }
-            filteredDepartment = allDepartment.Where(n => n.Name.Equals(name)).Cast<Department>().ToList();
+            filteredDepartment = allDepartment.Where(n => n.Name.Equals(name)).Cast<Backend.Department>().ToList();
             return filteredDepartment;
         }
 
         //Filter by number for department
-        public List<Department> DepartmentNumberQuery(int minNumber, int maxNumber, IntFields field)
+        public List<Backend.Department> DepartmentNumberQuery(int minNumber, int maxNumber, IntFields field)
         {
             {
-                List<Department> allDepartment = ReadFromFile(Elements.Department).Cast<Department>().ToList();
-                List<Department> filteredDepartment;
+                List<Backend.Department> allDepartment = ReadFromFile(Elements.Department).Cast<Backend.Department>().ToList();
+                List<Backend.Department> filteredDepartment;
                 if (allDepartment.ElementAtOrDefault(0) == null)
                 {
                     throw new InvalidDataException("There is nothing to find from.");
@@ -435,33 +421,33 @@ namespace DAL
                 {
                     throw new System.Data.DataException("Bad Input!");
                 }
-                filteredDepartment = allDepartment.Where(n => n.DepartmentID >= minNumber && n.DepartmentID <= maxNumber).Cast<Department>().ToList();
+                filteredDepartment = allDepartment.Where(n => n.DepartmentID >= minNumber && n.DepartmentID <= maxNumber).Cast<Backend.Department>().ToList();
                 return filteredDepartment;
             }
         }
 
         //Filter by number for transaction
-        public List<Transaction> TransactionNumberQuery(int minNumber, int maxNumber, IntFields field)
+        public List<Backend.Transaction> TransactionNumberQuery(int minNumber, int maxNumber, IntFields field)
         {
             {
-                List<Transaction> allTransaction = ReadFromFile(Elements.Transaction).Cast<Transaction>().ToList();
-                List<Transaction> filteredTransaction;
+                List<Backend.Transaction> allTransaction = ReadFromFile(Elements.Transaction).Cast<Backend.Transaction>().ToList();
+                List<Backend.Transaction> filteredTransaction;
                 if (allTransaction.ElementAtOrDefault(0) == null)
                 {
                     throw new InvalidDataException("There is nothing to find from.");
                 }
                 if (field == IntFields.transactionID)
                 {
-                    filteredTransaction = allTransaction.Where(n => n.TransactionID >= minNumber && n.TransactionID <= maxNumber).Cast<Transaction>().ToList();
+                    filteredTransaction = allTransaction.Where(n => n.TransactionID >= minNumber && n.TransactionID <= maxNumber).Cast<Backend.Transaction>().ToList();
                 }
  
                 else if (field == IntFields.receipt)
                 {
-                    filteredTransaction = allTransaction.Where(n => n.Receipt.Any(x => x.PrdID >= minNumber && x.PrdID <= maxNumber)).Cast<Transaction>().ToList();
+                    filteredTransaction = allTransaction.Where(n => n.Receipt.Any(x => x.PrdID >= minNumber && x.PrdID <= maxNumber)).Cast<Backend.Transaction>().ToList();
                 }
                 else if (field == IntFields.currentDate)
                 {
-                    filteredTransaction = allTransaction.Where(n => int.Parse(n.CurrentDate.ToString("yyyyMMdd")) >= minNumber && int.Parse(n.CurrentDate.ToString("yyyyMMdd")) <= maxNumber).Cast<Transaction>().ToList();
+                    filteredTransaction = allTransaction.Where(n => int.Parse(n.CurrentDate.ToString("yyyyMMdd")) >= minNumber && int.Parse(n.CurrentDate.ToString("yyyyMMdd")) <= maxNumber).Cast<Backend.Transaction>().ToList();
                 }
                 else
                 {
@@ -472,21 +458,21 @@ namespace DAL
         }
 
         //Filter by type for transaction
-        public List<Transaction> TransactionTypeQuery(ValueType type)
+        public List<Backend.Transaction> TransactionTypeQuery(ValueType type)
         {
-            List<Transaction> allTransaction = ReadFromFile(Elements.Transaction).Cast<Transaction>().ToList();
-            List<Transaction> filteredTransaction;
+            List<Backend.Transaction> allTransaction = ReadFromFile(Elements.Transaction).Cast<Backend.Transaction>().ToList();
+            List<Backend.Transaction> filteredTransaction;
             if (allTransaction.ElementAtOrDefault(0) == null)
             {
                 throw new InvalidDataException("There is nothing to find from.");
             }
             if (type is Is_a_return)
             {
-                filteredTransaction = allTransaction.Where(n => n.Is_a_Return.Equals(type)).Cast<Transaction>().ToList();
+                filteredTransaction = allTransaction.Where(n => n.Is_a_Return.Equals(type)).Cast<Backend.Transaction>().ToList();
             }
             else if (type is PaymentMethod)
             {
-                filteredTransaction = allTransaction.Where(n => n.Payment.Equals(type)).Cast<Transaction>().ToList();
+                filteredTransaction = allTransaction.Where(n => n.Payment.Equals(type)).Cast<Backend.Transaction>().ToList();
             }
             else
             {
@@ -496,10 +482,10 @@ namespace DAL
         }
 
         //Filter by name for user
-        public List<User> UserNameQuery(string name, StringFields field)
+        public List<Backend.User> UserNameQuery(string name, StringFields field)
         {
-            List<User> allUser = ReadFromFile(Elements.User).Cast<User>().ToList();
-            List<User> filteredUser;
+            List<Backend.User> allUser = ReadFromFile(Elements.User).Cast<Backend.User>().ToList();
+            List<Backend.User> filteredUser;
             if (allUser.ElementAtOrDefault(0) == null)
             {
                 throw new InvalidDataException("There is nothing to find from.");
@@ -508,20 +494,20 @@ namespace DAL
             {
                 throw new System.Data.DataException("Bad Input!");
             }
-            filteredUser = allUser.Where(n => n.UserName.Equals(name)).Cast<User>().ToList();
+            filteredUser = allUser.Where(n => n.UserName.Equals(name)).Cast<Backend.User>().ToList();
             return filteredUser;
         }
-        public List<User> UserTypeQuery(ValueType type)
+        public List<Backend.User> UserTypeQuery(ValueType type)
         {
-            List<User> allUser = ReadFromFile(Elements.User).Cast<User>().ToList();
-            List<User> filteredUser;
+            List<Backend.User> allUser = ReadFromFile(Elements.User).Cast<Backend.User>().ToList();
+            List<Backend.User> filteredUser;
             if (allUser.ElementAtOrDefault(0) == null)
             {
                 throw new InvalidDataException("There is nothing to find from.");
             }
             if (type is Rank)
             {
-                filteredUser = allUser.Where(n => (n.Person is Employee) && ((Employee)n.Person).Rank.Equals((Rank)type)).Cast<User>().ToList();
+                filteredUser = allUser.Where(n => (n.Person is Backend.Employee) && ((Backend.Employee)n.Person).Rank.Equals((Rank)type)).Cast<Backend.User>().ToList();
             }
             else
             {
@@ -529,10 +515,10 @@ namespace DAL
             }
             return filteredUser;
         }
-        public List<User> UserPersonQuery(object person)
+        public List<Backend.User> UserPersonQuery(object person)
         {
-            List<User> allUser = ReadFromFile(Elements.User).Cast<User>().ToList();
-            List<User> filteredUser;
+            List<Backend.User> allUser = ReadFromFile(Elements.User).Cast<Backend.User>().ToList();
+            List<Backend.User> filteredUser;
             if (allUser.ElementAtOrDefault(0) == null)
             {
                 throw new InvalidDataException("There is nothing to find from.");
@@ -541,25 +527,25 @@ namespace DAL
             {
                 throw new System.Data.DataException("Bad Input!");
             }
-            filteredUser = allUser.Where(n => n.Person.Equals(person)).Cast<User>().ToList();
+            filteredUser = allUser.Where(n => n.Person.Equals(person)).Cast<Backend.User>().ToList();
             return filteredUser;
         }
         //Filter by name for Customer
-        public List<Customer> CustomerNameQuery(string name, StringFields field)
+        public List<Backend.Customer> CustomerNameQuery(string name, StringFields field)
         {
-            List<Customer> allCustomer = ReadFromFile(Elements.Customer).Cast<Customer>().ToList();
-            List<Customer> filteredCustomer;
+            List<Backend.Customer> allCustomer = ReadFromFile(Elements.Customer).Cast<Backend.Customer>().ToList();
+            List<Backend.Customer> filteredCustomer;
             if (allCustomer.ElementAtOrDefault(0) == null)
             {
                 throw new InvalidDataException("There is nothing to find from.");
             }
             if (field == StringFields.firstName)
             {
-                filteredCustomer = allCustomer.Where(n => n.FirstName.Equals(name)).Cast<Customer>().ToList();
+                filteredCustomer = allCustomer.Where(n => n.FirstName.Equals(name)).Cast<Backend.Customer>().ToList();
             }
             else if (field == StringFields.lastName)
             {
-                filteredCustomer = allCustomer.Where(n => n.LastName.Equals(name)).Cast<Customer>().ToList();
+                filteredCustomer = allCustomer.Where(n => n.LastName.Equals(name)).Cast<Backend.Customer>().ToList();
             }
             else
             {
@@ -569,21 +555,21 @@ namespace DAL
         }
 
         //Filter by number for Customer
-        public List<Customer> CustomerNumberQuery(int minNumber, int maxNumber, IntFields field)
+        public List<Backend.Customer> CustomerNumberQuery(int minNumber, int maxNumber, IntFields field)
         {
-            List<Customer> allCustomer = ReadFromFile(Elements.Customer).Cast<Customer>().ToList();
-            List<Customer> filteredCustomer;
+            List<Backend.Customer> allCustomer = ReadFromFile(Elements.Customer).Cast<Backend.Customer>().ToList();
+            List<Backend.Customer> filteredCustomer;
             if (allCustomer.ElementAtOrDefault(0) == null)
             {
                 throw new InvalidDataException("There is nothing to find from.");
             }
             if (field == IntFields.id)
             {
-                filteredCustomer = allCustomer.Where(n => n.Id >= minNumber && n.Id <= maxNumber).Cast<Customer>().ToList();
+                filteredCustomer = allCustomer.Where(n => n.Id >= minNumber && n.Id <= maxNumber).Cast<Backend.Customer>().ToList();
             }
             else if (field == IntFields.tranHistory)
             {
-                filteredCustomer = allCustomer.Where(n => n.TranHistory.Any(x => x.TransactionID >= minNumber && x.TransactionID <= maxNumber)).Cast<Customer>().ToList();
+                filteredCustomer = allCustomer.Where(n => n.TranHistory.Any(x => x.TransactionID >= minNumber && x.TransactionID <= maxNumber)).Cast<Backend.Customer>().ToList();
             }
             else
             {
@@ -592,7 +578,6 @@ namespace DAL
             return filteredCustomer;
         }
         //Filter by types for product in data grid
-        /////////////////////////////////////////////////////////////////////
         public void FilterProducts(System.Collections.ObjectModel.ObservableCollection<Buyable> currentList, PType type, bool isAdd)
         {
             if (isAdd)
@@ -601,7 +586,7 @@ namespace DAL
                 filteredProducts = filteredProducts.Where(n => !(n.InStock.Equals(PStatus.Empty))).Cast<Backend.Product>().ToList();
                 foreach (Backend.Product p in filteredProducts)
                 {
-                   // currentList.Add(new Buyable((p, 0, p.StockCount));
+                    // currentList.Add(new Buyable((p, 0, p.StockCount));
                 }
             }
             else

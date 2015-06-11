@@ -24,35 +24,35 @@ namespace BL
         public object Add(object c)
         {
             //Add the new employee to the system
-            List<Customer> Allcustomers = itsDAL.ReadFromFile(Elements.Customer).Cast<Customer>().ToList();
-            foreach (Customer customer in Allcustomers)
+            List<Backend.Customer> Allcustomers = itsDAL.ReadFromFile(Elements.Customer).Cast<Backend.Customer>().ToList();
+            foreach (Backend.Customer customer in Allcustomers)
             {
                 if (customer.Equals(c))
                 {
                     throw new DataException("customer is already exists!");
                 }
-                if (customer.Id == ((Customer)c).Id)
+                if (customer.Id == ((Backend.Customer)c).Id)
                 {
                     throw new Exception("This customer have duplicate ID with another customer!");
                 }
             }
-            Allcustomers.Add((Customer)c);
-            itsDAL.WriteToFile(Allcustomers.Cast<object>().ToList(), (Customer)c);
+            Allcustomers.Add((Backend.Customer)c);
+            itsDAL.WriteToFile(Allcustomers.Cast<object>().ToList(), (Backend.Customer)c);
             return c;
         }
 
         public void Remove(Object c, Boolean isEdit = false)
         {
-            List<Customer> Allcustomers = itsDAL.ReadFromFile(Elements.Customer).Cast<Customer>().ToList();
-            List<User> Allusers = itsDAL.ReadFromFile(Elements.User).Cast<User>().ToList();
+            List<Backend.Customer> Allcustomers = itsDAL.ReadFromFile(Elements.Customer).Cast<Backend.Customer>().ToList();
+            List<Backend.User> Allusers = itsDAL.ReadFromFile(Elements.User).Cast<Backend.User>().ToList();
             if (!Allcustomers.Any())
                 throw new NullReferenceException("No customers to remove!");
-            foreach (Customer customer in Allcustomers)
+            foreach (Backend.Customer customer in Allcustomers)
             {
                 if (customer.Equals(c))
                 {
                     Allcustomers.Remove(customer);
-                    foreach (User user in Allusers)
+                    foreach (Backend.User user in Allusers)
                     {
                         if (user.Person.Equals(c))
                         {
@@ -63,20 +63,20 @@ namespace BL
                     break;
                 }
             }
-            itsDAL.WriteToFile(Allcustomers.Cast<object>().ToList(), (Customer)c);
-            itsDAL.WriteToFile(Allusers.Cast<object>().ToList(), new User());
+            itsDAL.WriteToFile(Allcustomers.Cast<object>().ToList(), (Backend.Customer)c);
+            itsDAL.WriteToFile(Allusers.Cast<object>().ToList(), new Backend.User());
         }
 
         public void Edit(object oldC, object newC)
         {
-            List<User> oldUserList = itsDAL.UserPersonQuery(oldC);
-            User oldUser = oldUserList.ElementAtOrDefault(0);
+            List<Backend.User> oldUserList = itsDAL.UserPersonQuery(oldC);
+            Backend.User oldUser = oldUserList.ElementAtOrDefault(0);
             if (oldUser == null)
             {
                 throw new NullReferenceException("The customer does not exist!");
             }
             User_BL itsUserBL = new User_BL(itsDAL);
-            User newUser = new User(oldUser);
+            Backend.User newUser = new Backend.User(oldUser);
             newUser.Person = newC;
             itsUserBL.Edit(oldUser, newUser);
             this.Remove(oldC);
@@ -111,7 +111,7 @@ namespace BL
         public Type GetEntityType()
         {
             //return the Customer type
-            return typeof(Customer);
+            return typeof(Backend.Customer);
         }
         public string GetEntityName()
         {

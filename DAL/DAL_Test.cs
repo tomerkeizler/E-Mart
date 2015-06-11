@@ -18,8 +18,8 @@ namespace DAL
     {
         IDAL linq = new LINQ_DAL();
         IDAL sql = new SQL_DAL();
-        Backend.Product a = new Backend.Product("first", PType.Clothes, 2, 4, 123, 4);
-        Backend.Product b = new Backend.Product("second", PType.Food, 3, 5, 1213, 5);
+        Backend.Product a = new Backend.Product("first", PType.Clothes, 1, 4, 123,5);
+        Backend.Product b = new Backend.Product("second", PType.Food, 3, 25, 1213, 4);
         Backend.Product c = new Backend.Product("Third", PType.Electronics, 3, 5, 1213, 5);
         Backend.Product d = new Backend.Product("Forth", PType.Electronics, 3, 5, 1213, 5);
         List<object> list = new List<object>();
@@ -35,6 +35,13 @@ namespace DAL
                 filteredProducts.AddRange(currentList.Where(n => n.Type.Equals(type)).Cast<Backend.Product>().ToList());
             }
             return filteredProducts;
+        }
+        public void clear()
+        {
+            List<object> emptyList = new List<object>();
+            sql.WriteToFile(emptyList, new Backend.Product());
+            sql.WriteToFile(emptyList, new Backend.Employee());
+            sql.WriteToFile(emptyList, new Backend.Department());
         }
         [Test]
         public void WriteToFile()
@@ -55,33 +62,72 @@ namespace DAL
         [Test]
         public void SQLReadAndWrite()
         {
+            clear();
+            List<object> depList = new List<object>();
+            depList.Add(new Backend.Department("Dep1", 1));
+            sql.WriteToFile(depList, new Backend.Department());
             list.Add(a);
-            list.Add(b);
+            //list.Add(b);
             sql.WriteToFile(list, b);
-            Assert.Contains(b, sql.ReadFromFile(Elements.Product));
-            sql.WriteToFile(new List<object>(), b);
+            Assert.Contains(a, sql.ReadFromFile(Elements.Product));
+            clear();
         }
         [Test]
         public void SQLClear()
         {
-            sql.WriteToFile(list, b);
+            clear();
             Assert.IsEmpty(sql.ReadFromFile(Elements.Product));
-            sql.WriteToFile(new List<object>(), b);
+            clear();
 
         }
         [Test]
         public void SQLProductQueryByNum()
         {
+            clear();
+            List<object> depList = new List<object>();
+            depList.Add(new Backend.Department("Dep1", 1));
+            depList.Add(new Backend.Department("Dep2", 3));
+            sql.WriteToFile(depList, new Backend.Department());
             list.Add(a);
             list.Add(b);
             sql.WriteToFile(list, b);
             List<Backend.Product> testlist = sql.ProductNumberQuery(5, 5, IntFields.productID);
-            Assert.Contains(b, testlist);
-            sql.WriteToFile(new List<object>(), b);
+            Assert.Contains(a, testlist);
+            clear();
         }
+        [Test]
+        public void SQLProductQueryByType()
+        {
+            clear();
+            List<object> depList = new List<object>();
+            depList.Add(new Backend.Department("Dep1", 1));
+            depList.Add(new Backend.Department("Dep2", 3));
+            sql.WriteToFile(depList, new Backend.Department());
+            list.Add(a);
+            list.Add(b);
+            sql.WriteToFile(list, b);
+            List<Backend.Product> testlist = sql.ProductTypeQuery(PStatus.InStock);
+            Assert.Contains(b, testlist);
+            clear();
+        }
+        [Test]
+        public void SQLEqualProduct()
+        {
+            clear();
+            List<object> depList = new List<object>();
+            depList.Add(new Backend.Department("Dep1", 1));
+            sql.WriteToFile(depList,new Backend.Department());
+            list.Add(a);
+            sql.WriteToFile(list, a);
+            Backend.Product prod = sql.ReadFromFile(Elements.Product).Cast<Backend.Product>().ToList().ElementAt(0);
+            Assert.AreEqual(prod, a);
+            clear();
+        }
+           
         [Test]
         public void ProductNumberQuery()
         {
+
             list.Add(a);
             list.Add(b);
             List<Backend.Product> testlist = linq.ProductNumberQuery(5, 5, IntFields.productID);
@@ -90,7 +136,7 @@ namespace DAL
         [Test]
         public void ClubmemberTest()
         {
-            ClubMember member1 = new ClubMember(123123, "asaf", "asafaa", new DateTime(2014, 09, 10), Gender.Male);
+            Backend.ClubMember member1 = new Backend.ClubMember(123123, "asaf", "asafaa", new DateTime(2014, 09, 10), Gender.Male);
             List<object> list = new List<object>();
             list.Add(member1);
             linq.WriteToFile(list, member1);

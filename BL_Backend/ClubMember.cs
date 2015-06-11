@@ -15,6 +15,7 @@ namespace Backend
         private Gender gender;
 
         //Constructors:
+        public ClubMember() { }
         public ClubMember(int _id, string _firstName, string _lastName, DateTime _dob, Gender _gender, int _memID = 0, CreditCard _creditCard=null)
             : base(_id, _firstName, _lastName, _creditCard)
         {

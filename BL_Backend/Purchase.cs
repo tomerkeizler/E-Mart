@@ -14,6 +14,9 @@ namespace Backend
         private string prdName;
         private int price;
         private int amount;
+        private DateTime timeOfPurchase;
+
+        
 
         // constructors
         public Purchase(int _prdID, string _prdName, int _price, int _amount)
@@ -22,6 +25,7 @@ namespace Backend
             prdName = _prdName;
             price = _price;
             amount = _amount;
+            timeOfPurchase = DateTime.Now;
         }
 
         public Purchase(Purchase other)
@@ -55,6 +59,11 @@ namespace Backend
         {
             get { return amount; }
             set { amount = value; }
+        }
+        public DateTime TimeOfPurchase
+        {
+            get { return timeOfPurchase; }
+            set { timeOfPurchase = value; }
         }
 
         // methods

@@ -24,10 +24,10 @@ namespace BL
             List<Backend.Product> Allprods = itsDAL.ReadFromFile(Elements.Product).Cast<Backend.Product>().ToList();
             //Generate the new product ID
             int maxID = 0;
-            List<Department> Alldeparts = itsDAL.ReadFromFile(Elements.Department).Cast<Department>().ToList();
+            List<Backend.Department> Alldeparts = itsDAL.ReadFromFile(Elements.Department).Cast<Backend.Department>().ToList();
             bool checkID = false;
             //check id the product's department accually exists
-            foreach (Department dep in Alldeparts)
+            foreach (Backend.Department dep in Alldeparts)
             {
                 if (((Backend.Product)p).Location == dep.DepartmentID)
                 {
