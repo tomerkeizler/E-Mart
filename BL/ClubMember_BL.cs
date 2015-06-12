@@ -68,8 +68,8 @@ namespace BL
                     break;
                 }
             }
-            itsDAL.WriteToFile(Allclubmems.Cast<object>().ToList(), cm);
             itsDAL.WriteToFile(Allusers.Cast<object>().ToList(), new Backend.User());
+            itsDAL.WriteToFile(Allclubmems.Cast<object>().ToList(), cm);
         }
 
         public void Edit(object oldCM, object newCM)

@@ -63,8 +63,8 @@ namespace BL
                     break;
                 }
             }
-            itsDAL.WriteToFile(Allcustomers.Cast<object>().ToList(), (Backend.Customer)c);
             itsDAL.WriteToFile(Allusers.Cast<object>().ToList(), new Backend.User());
+            itsDAL.WriteToFile(Allcustomers.Cast<object>().ToList(), (Backend.Customer)c);
         }
 
         public void Edit(object oldC, object newC)

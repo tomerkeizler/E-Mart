@@ -131,7 +131,7 @@ namespace BL
                     tempUser = itsDAL.UserPersonQuery(temp).ElementAtOrDefault(0);
                 }
             }
-            if (!hasMoreEmployees && ((Backend.Employee)temp).SupervisiorID != 0)
+            if (!hasMoreEmployees && ((Backend.Employee)temp).SupervisiorID != 0 && ((Backend.Employee)temp).SupervisiorID != -1)
             {
                 ((Backend.Employee)temp).Rank = Rank.Worker;
                 Backend.User newUser = new Backend.User(tempUser);
@@ -139,9 +139,9 @@ namespace BL
                 Allusers.Remove(tempUser);
                 Allusers.Add(newUser);
             }
-                
-            itsDAL.WriteToFile(Allemps.Cast<object>().ToList(), (Backend.Employee)e);
+
             itsDAL.WriteToFile(Allusers.Cast<object>().ToList(), new Backend.User());
+            itsDAL.WriteToFile(Allemps.Cast<object>().ToList(), (Backend.Employee)e);
         }   
         public void Edit(object oldE, object newE)
         {

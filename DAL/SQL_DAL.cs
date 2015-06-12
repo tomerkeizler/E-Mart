@@ -886,24 +886,24 @@ namespace DAL
             currentUser.UserName = dataContextUser.UserName;
             currentUser.Password = dataContextUser.Password;
             if (dataContextUser.PersonAsClubMember != null){
-                IQueryable personQuery = from Backend.ClubMember person in db.ClubMembers
+                IQueryable personQuery = from ClubMember person in db.ClubMembers
                                          where person.Id == dataContextUser.PersonID
                                          select person;
-                currentUser.Person = personQuery.Cast<ClubMember>().ToList().ElementAt(0);
+                currentUser.Person = ClubMemberConverterToBackend(personQuery.Cast<ClubMember>().ToList().ElementAt(0));
             }
             else if (dataContextUser.PersonAsCustomer != null)
             {
-                IQueryable personQuery = from Backend.Customer person in db.Customers
+                IQueryable personQuery = from Customer person in db.Customers
                                          where person.Id == dataContextUser.PersonID
                                          select person;
-                currentUser.Person = personQuery.Cast<Customer>().ToList().ElementAt(0);
+                currentUser.Person = CustomerConverterToBackend(personQuery.Cast<Customer>().ToList().ElementAt(0));
             }
             else if (dataContextUser.PersonAsEmployee != null)
             {
-                IQueryable personQuery = from Backend.Employee person in db.Employees
+                IQueryable personQuery = from Employee person in db.Employees
                                          where person.Id == dataContextUser.PersonID
                                          select person;
-                currentUser.Person = personQuery.Cast<Employee>().ToList().ElementAt(0);
+                currentUser.Person = EmployeeConverterToBackend(personQuery.Cast<Employee>().ToList().ElementAt(0));
             }
             return currentUser;
             
@@ -920,12 +920,12 @@ namespace DAL
             }
             else if (currentUser.Person is Backend.Customer)
             {
-                dataContextUser.PersonAsClubMember = ((Backend.Customer)currentUser.Person).Id;
+                dataContextUser.PersonAsCustomer = ((Backend.Customer)currentUser.Person).Id;
                 dataContextUser.PersonID = ((Backend.Customer)currentUser.Person).Id;
             }
             else if (currentUser.Person is Backend.Employee)
             {
-                dataContextUser.PersonAsClubMember = ((Backend.Employee)currentUser.Person).Id;
+                dataContextUser.PersonAsEmployee = ((Backend.Employee)currentUser.Person).Id;
                 dataContextUser.PersonID = ((Backend.Employee)currentUser.Person).Id;
             }
             return dataContextUser;
