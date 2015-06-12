@@ -299,7 +299,7 @@ namespace DAL
                 filteredProducts = filteredProducts.Where(n => !(n.InStock.Equals(PStatus.Empty))).Cast<Backend.Product>().ToList();
                 foreach (Backend.Product p in filteredProducts)
                 {
-                    // currentList.Add(new Buyable((p, 0, p.StockCount));
+                    currentList.Add(new Buyable(p, 0, p.StockCount));
                 }
             }
             else
