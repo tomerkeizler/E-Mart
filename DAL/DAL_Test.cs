@@ -22,6 +22,7 @@ namespace DAL
         Backend.Product b = new Backend.Product("second", PType.Food, 3, 25, 1213, 4);
         Backend.Product c = new Backend.Product("Third", PType.Electronics, 3, 5, 1213, 5);
         Backend.Product d = new Backend.Product("Forth", PType.Electronics, 3, 5, 1213, 5);
+        Backend.Employee emp1 = new Backend.Employee("Emp1", "Last1", 123123123, Gender.Male, 1, 112, 0);
         List<object> list = new List<object>();
         public static List<Backend.Product> ProductMulTypeQuery(List<Backend.Product> currentList, List<PType> typelist)
         {
@@ -43,6 +44,7 @@ namespace DAL
             sql.WriteToFile(emptyList, new Backend.Employee());
             sql.WriteToFile(emptyList, new Backend.Department());
         }
+
         [Test]
         public void WriteToFile()
         {
@@ -123,15 +125,30 @@ namespace DAL
             Assert.AreEqual(prod, a);
             clear();
         }
-           
+        [Test]
+        public void SQLEqualEmployee()
+        {
+            clear();
+            List<object> depList = new List<object>();
+            depList.Add(new Backend.Department("Dep1", 1));
+            depList.Add(new Backend.Department("Dep2", 3));
+            sql.WriteToFile(depList, new Backend.Department());
+            list.Add(emp1);
+            sql.WriteToFile(list, emp1);
+            Backend.Employee emp = sql.ReadFromFile(Elements.Employee).Cast<Backend.Employee>().ToList().ElementAt(0);
+            Assert.AreEqual(emp, emp1);
+            clear();
+        }
+            
         [Test]
         public void ProductNumberQuery()
         {
 
             list.Add(a);
             list.Add(b);
+            linq.WriteToFile(list, b);
             List<Backend.Product> testlist = linq.ProductNumberQuery(5, 5, IntFields.productID);
-            Assert.Contains(b, testlist);
+            Assert.Contains(a, testlist);
         }
         [Test]
         public void ClubmemberTest()

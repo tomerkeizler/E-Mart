@@ -18,7 +18,11 @@ namespace Backend
         protected CreditCard creditCard;
         
         //Constructors:
-        public Customer() { }
+        public Customer()
+        {
+            creditCard = new CreditCard();
+            tranHistory = new List<Transaction>();
+        }
         public Customer(int _id, string _firstName, string _lastName, CreditCard _creditCard = null)
         {
             id = _id;

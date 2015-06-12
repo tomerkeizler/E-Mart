@@ -15,6 +15,7 @@ namespace Backend
         private int creditNumber;
         private DateTime expirationDate;
         //constructors:
+        public CreditCard() { }
         public CreditCard(string _firstName, string _lastName, int _creditNumber, DateTime _expirationDate)
         {
             firstName = _firstName;

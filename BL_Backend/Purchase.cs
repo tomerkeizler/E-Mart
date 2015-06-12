@@ -15,17 +15,19 @@ namespace Backend
         private int price;
         private int amount;
         private DateTime timeOfPurchase;
+        private int transID;
 
-        
 
         // constructors
-        public Purchase(int _prdID, string _prdName, int _price, int _amount)
+        public Purchase() { }
+        public Purchase(int _prdID, string _prdName, int _price, int _amount,int _transID = -1)
         {
             prdID = _prdID;
             prdName = _prdName;
             price = _price;
             amount = _amount;
             timeOfPurchase = DateTime.Now;
+            transID = _transID;
         }
 
         public Purchase(Purchase other)
@@ -64,6 +66,11 @@ namespace Backend
         {
             get { return timeOfPurchase; }
             set { timeOfPurchase = value; }
+        }
+        public int TransID
+        {
+            get { return transID; }
+            set { transID = value; }
         }
 
         // methods

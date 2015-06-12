@@ -19,6 +19,10 @@ namespace Backend
         private PaymentMethod payment;
 
         //Constructors:
+        public Transaction()
+        {
+            receipt = new List<Purchase>();
+        }
         public Transaction(int _transactionID, Is_a_return _is_a_return, List<Purchase> _receipt, PaymentMethod _payment)
         {
             transactionID = _transactionID;
@@ -67,14 +71,15 @@ namespace Backend
             get { return payment; }
             set { payment = value; }
         }
-        public DateTime CurrentDate
-        {
-            get { return currentDate; }
-        }
         public List<Purchase> Receipt
         {
             get { return receipt; }
             set { receipt = value; }
+        }
+        public DateTime CurrentDate
+        {
+            get { return currentDate; }
+            set { currentDate = value; }
         }
     }
 }

@@ -57,12 +57,12 @@ namespace DAL
     partial void InsertTopSeller(TopSeller instance);
     partial void UpdateTopSeller(TopSeller instance);
     partial void DeleteTopSeller(TopSeller instance);
-    partial void InsertTranHistoryLinkedTable(TranHistoryLinkedTable instance);
-    partial void UpdateTranHistoryLinkedTable(TranHistoryLinkedTable instance);
-    partial void DeleteTranHistoryLinkedTable(TranHistoryLinkedTable instance);
     partial void InsertTransaction(Transaction instance);
     partial void UpdateTransaction(Transaction instance);
     partial void DeleteTransaction(Transaction instance);
+    partial void InsertTranHistoryLinkedTable(TranHistoryLinkedTable instance);
+    partial void UpdateTranHistoryLinkedTable(TranHistoryLinkedTable instance);
+    partial void DeleteTranHistoryLinkedTable(TranHistoryLinkedTable instance);
     #endregion
 		
 		public E_MartDB_LINQtoSQLDataContext() : 
@@ -167,19 +167,19 @@ namespace DAL
 			}
 		}
 		
-		public System.Data.Linq.Table<TranHistoryLinkedTable> TranHistoryLinkedTables
-		{
-			get
-			{
-				return this.GetTable<TranHistoryLinkedTable>();
-			}
-		}
-		
 		public System.Data.Linq.Table<Transaction> Transactions
 		{
 			get
 			{
 				return this.GetTable<Transaction>();
+			}
+		}
+		
+		public System.Data.Linq.Table<TranHistoryLinkedTable> TranHistoryLinkedTables
+		{
+			get
+			{
+				return this.GetTable<TranHistoryLinkedTable>();
 			}
 		}
 	}
@@ -198,6 +198,8 @@ namespace DAL
 		
 		private int _Id;
 		
+		private bool _IsAClubMember;
+		
 		private EntityRef<User> _User;
 		
 		private EntityRef<Customer> _Customer;
@@ -214,6 +216,8 @@ namespace DAL
     partial void OnGenderChanged();
     partial void OnIdChanging(int value);
     partial void OnIdChanged();
+    partial void OnIsAClubMemberChanging(bool value);
+    partial void OnIsAClubMemberChanged();
     #endregion
 		
 		public ClubMember()
@@ -303,6 +307,26 @@ namespace DAL
 					this._Id = value;
 					this.SendPropertyChanged("Id");
 					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsAClubMember", DbType="Bit NOT NULL")]
+		public bool IsAClubMember
+		{
+			get
+			{
+				return this._IsAClubMember;
+			}
+			set
+			{
+				if ((this._IsAClubMember != value))
+				{
+					this.OnIsAClubMemberChanging(value);
+					this.SendPropertyChanging();
+					this._IsAClubMember = value;
+					this.SendPropertyChanged("IsAClubMember");
+					this.OnIsAClubMemberChanged();
 				}
 			}
 		}
@@ -755,6 +779,8 @@ namespace DAL
 		
 		private string _LastName;
 		
+		private bool _IsAClubMember;
+		
 		private EntityRef<ClubMember> _ClubMember;
 		
 		private EntityRef<TranHistoryLinkedTable> _TranHistoryLinkedTable;
@@ -773,6 +799,8 @@ namespace DAL
     partial void OnCreditCardChanged();
     partial void OnLastNameChanging(string value);
     partial void OnLastNameChanged();
+    partial void OnIsAClubMemberChanging(bool value);
+    partial void OnIsAClubMemberChanged();
     #endregion
 		
 		public Customer()
@@ -863,6 +891,26 @@ namespace DAL
 					this._LastName = value;
 					this.SendPropertyChanged("LastName");
 					this.OnLastNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsAClubMember", DbType="Bit NOT NULL")]
+		public bool IsAClubMember
+		{
+			get
+			{
+				return this._IsAClubMember;
+			}
+			set
+			{
+				if ((this._IsAClubMember != value))
+				{
+					this.OnIsAClubMemberChanging(value);
+					this.SendPropertyChanging();
+					this._IsAClubMember = value;
+					this.SendPropertyChanged("IsAClubMember");
+					this.OnIsAClubMemberChanged();
 				}
 			}
 		}
@@ -2102,6 +2150,220 @@ namespace DAL
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Transactions")]
+	public partial class Transaction : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _TransactionID;
+		
+		private int _Is_a_Return;
+		
+		private int _Payment;
+		
+		private int _Receipt;
+		
+		private System.DateTime _CurrentDate;
+		
+		private EntitySet<Purchase> _Purchases;
+		
+		private EntitySet<TranHistoryLinkedTable> _TranHistoryLinkedTables;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnTransactionIDChanging(int value);
+    partial void OnTransactionIDChanged();
+    partial void OnIs_a_ReturnChanging(int value);
+    partial void OnIs_a_ReturnChanged();
+    partial void OnPaymentChanging(int value);
+    partial void OnPaymentChanged();
+    partial void OnReceiptChanging(int value);
+    partial void OnReceiptChanged();
+    partial void OnCurrentDateChanging(System.DateTime value);
+    partial void OnCurrentDateChanged();
+    #endregion
+		
+		public Transaction()
+		{
+			this._Purchases = new EntitySet<Purchase>(new Action<Purchase>(this.attach_Purchases), new Action<Purchase>(this.detach_Purchases));
+			this._TranHistoryLinkedTables = new EntitySet<TranHistoryLinkedTable>(new Action<TranHistoryLinkedTable>(this.attach_TranHistoryLinkedTables), new Action<TranHistoryLinkedTable>(this.detach_TranHistoryLinkedTables));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TransactionID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int TransactionID
+		{
+			get
+			{
+				return this._TransactionID;
+			}
+			set
+			{
+				if ((this._TransactionID != value))
+				{
+					this.OnTransactionIDChanging(value);
+					this.SendPropertyChanging();
+					this._TransactionID = value;
+					this.SendPropertyChanged("TransactionID");
+					this.OnTransactionIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Is_a_Return", DbType="Int NOT NULL")]
+		public int Is_a_Return
+		{
+			get
+			{
+				return this._Is_a_Return;
+			}
+			set
+			{
+				if ((this._Is_a_Return != value))
+				{
+					this.OnIs_a_ReturnChanging(value);
+					this.SendPropertyChanging();
+					this._Is_a_Return = value;
+					this.SendPropertyChanged("Is_a_Return");
+					this.OnIs_a_ReturnChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Payment", DbType="Int NOT NULL")]
+		public int Payment
+		{
+			get
+			{
+				return this._Payment;
+			}
+			set
+			{
+				if ((this._Payment != value))
+				{
+					this.OnPaymentChanging(value);
+					this.SendPropertyChanging();
+					this._Payment = value;
+					this.SendPropertyChanged("Payment");
+					this.OnPaymentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Receipt", DbType="Int NOT NULL")]
+		public int Receipt
+		{
+			get
+			{
+				return this._Receipt;
+			}
+			set
+			{
+				if ((this._Receipt != value))
+				{
+					this.OnReceiptChanging(value);
+					this.SendPropertyChanging();
+					this._Receipt = value;
+					this.SendPropertyChanged("Receipt");
+					this.OnReceiptChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CurrentDate", DbType="DateTime NOT NULL")]
+		public System.DateTime CurrentDate
+		{
+			get
+			{
+				return this._CurrentDate;
+			}
+			set
+			{
+				if ((this._CurrentDate != value))
+				{
+					this.OnCurrentDateChanging(value);
+					this.SendPropertyChanging();
+					this._CurrentDate = value;
+					this.SendPropertyChanged("CurrentDate");
+					this.OnCurrentDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Transaction_Purchase", Storage="_Purchases", ThisKey="TransactionID", OtherKey="TransID")]
+		public EntitySet<Purchase> Purchases
+		{
+			get
+			{
+				return this._Purchases;
+			}
+			set
+			{
+				this._Purchases.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Transaction_TranHistoryLinkedTable", Storage="_TranHistoryLinkedTables", ThisKey="TransactionID", OtherKey="TransID")]
+		public EntitySet<TranHistoryLinkedTable> TranHistoryLinkedTables
+		{
+			get
+			{
+				return this._TranHistoryLinkedTables;
+			}
+			set
+			{
+				this._TranHistoryLinkedTables.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Purchases(Purchase entity)
+		{
+			this.SendPropertyChanging();
+			entity.Transaction = this;
+		}
+		
+		private void detach_Purchases(Purchase entity)
+		{
+			this.SendPropertyChanging();
+			entity.Transaction = null;
+		}
+		
+		private void attach_TranHistoryLinkedTables(TranHistoryLinkedTable entity)
+		{
+			this.SendPropertyChanging();
+			entity.Transaction = this;
+		}
+		
+		private void detach_TranHistoryLinkedTables(TranHistoryLinkedTable entity)
+		{
+			this.SendPropertyChanging();
+			entity.Transaction = null;
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TranHistoryLinkedTable")]
 	public partial class TranHistoryLinkedTable : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -2111,6 +2373,8 @@ namespace DAL
 		private int _CustomerID;
 		
 		private int _TransID;
+		
+		private bool _IsAClubMember;
 		
 		private EntityRef<Customer> _Customer;
 		
@@ -2124,6 +2388,8 @@ namespace DAL
     partial void OnCustomerIDChanged();
     partial void OnTransIDChanging(int value);
     partial void OnTransIDChanged();
+    partial void OnIsAClubMemberChanging(bool value);
+    partial void OnIsAClubMemberChanged();
     #endregion
 		
 		public TranHistoryLinkedTable()
@@ -2177,6 +2443,26 @@ namespace DAL
 					this._TransID = value;
 					this.SendPropertyChanged("TransID");
 					this.OnTransIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsAClubMember", DbType="Bit NOT NULL")]
+		public bool IsAClubMember
+		{
+			get
+			{
+				return this._IsAClubMember;
+			}
+			set
+			{
+				if ((this._IsAClubMember != value))
+				{
+					this.OnIsAClubMemberChanging(value);
+					this.SendPropertyChanging();
+					this._IsAClubMember = value;
+					this.SendPropertyChanged("IsAClubMember");
+					this.OnIsAClubMemberChanged();
 				}
 			}
 		}
@@ -2267,196 +2553,6 @@ namespace DAL
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Transactions")]
-	public partial class Transaction : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _TransactionID;
-		
-		private int _Is_a_Return;
-		
-		private int _Payment;
-		
-		private int _Receipt;
-		
-		private EntitySet<Purchase> _Purchases;
-		
-		private EntitySet<TranHistoryLinkedTable> _TranHistoryLinkedTables;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnTransactionIDChanging(int value);
-    partial void OnTransactionIDChanged();
-    partial void OnIs_a_ReturnChanging(int value);
-    partial void OnIs_a_ReturnChanged();
-    partial void OnPaymentChanging(int value);
-    partial void OnPaymentChanged();
-    partial void OnReceiptChanging(int value);
-    partial void OnReceiptChanged();
-    #endregion
-		
-		public Transaction()
-		{
-			this._Purchases = new EntitySet<Purchase>(new Action<Purchase>(this.attach_Purchases), new Action<Purchase>(this.detach_Purchases));
-			this._TranHistoryLinkedTables = new EntitySet<TranHistoryLinkedTable>(new Action<TranHistoryLinkedTable>(this.attach_TranHistoryLinkedTables), new Action<TranHistoryLinkedTable>(this.detach_TranHistoryLinkedTables));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TransactionID", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int TransactionID
-		{
-			get
-			{
-				return this._TransactionID;
-			}
-			set
-			{
-				if ((this._TransactionID != value))
-				{
-					this.OnTransactionIDChanging(value);
-					this.SendPropertyChanging();
-					this._TransactionID = value;
-					this.SendPropertyChanged("TransactionID");
-					this.OnTransactionIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Is_a_Return", DbType="Int NOT NULL")]
-		public int Is_a_Return
-		{
-			get
-			{
-				return this._Is_a_Return;
-			}
-			set
-			{
-				if ((this._Is_a_Return != value))
-				{
-					this.OnIs_a_ReturnChanging(value);
-					this.SendPropertyChanging();
-					this._Is_a_Return = value;
-					this.SendPropertyChanged("Is_a_Return");
-					this.OnIs_a_ReturnChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Payment", DbType="Int NOT NULL")]
-		public int Payment
-		{
-			get
-			{
-				return this._Payment;
-			}
-			set
-			{
-				if ((this._Payment != value))
-				{
-					this.OnPaymentChanging(value);
-					this.SendPropertyChanging();
-					this._Payment = value;
-					this.SendPropertyChanged("Payment");
-					this.OnPaymentChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Receipt", DbType="Int NOT NULL")]
-		public int Receipt
-		{
-			get
-			{
-				return this._Receipt;
-			}
-			set
-			{
-				if ((this._Receipt != value))
-				{
-					this.OnReceiptChanging(value);
-					this.SendPropertyChanging();
-					this._Receipt = value;
-					this.SendPropertyChanged("Receipt");
-					this.OnReceiptChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Transaction_Purchase", Storage="_Purchases", ThisKey="TransactionID", OtherKey="TransID")]
-		public EntitySet<Purchase> Purchases
-		{
-			get
-			{
-				return this._Purchases;
-			}
-			set
-			{
-				this._Purchases.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Transaction_TranHistoryLinkedTable", Storage="_TranHistoryLinkedTables", ThisKey="TransactionID", OtherKey="TransID")]
-		public EntitySet<TranHistoryLinkedTable> TranHistoryLinkedTables
-		{
-			get
-			{
-				return this._TranHistoryLinkedTables;
-			}
-			set
-			{
-				this._TranHistoryLinkedTables.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_Purchases(Purchase entity)
-		{
-			this.SendPropertyChanging();
-			entity.Transaction = this;
-		}
-		
-		private void detach_Purchases(Purchase entity)
-		{
-			this.SendPropertyChanging();
-			entity.Transaction = null;
-		}
-		
-		private void attach_TranHistoryLinkedTables(TranHistoryLinkedTable entity)
-		{
-			this.SendPropertyChanging();
-			entity.Transaction = this;
-		}
-		
-		private void detach_TranHistoryLinkedTables(TranHistoryLinkedTable entity)
-		{
-			this.SendPropertyChanging();
-			entity.Transaction = null;
 		}
 	}
 }

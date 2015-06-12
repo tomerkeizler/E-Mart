@@ -6,6 +6,7 @@
       <Column Name="DateOfBirth" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="Gender" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="IsAClubMember" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Association Name="ClubMember_User" Member="User" ThisKey="Id" OtherKey="Person" Type="User" Cardinality="One" />
       <Association Name="Customer_ClubMember" Member="Customer" ThisKey="Id" OtherKey="Id" Type="Customer" IsForeignKey="true" />
     </Type>
@@ -34,6 +35,7 @@
       <Column Name="FirstName" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
       <Column Name="CreditCard" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="LastName" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="IsAClubMember" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Association Name="Customer_ClubMember" Member="ClubMember" ThisKey="Id" OtherKey="Id" Type="ClubMember" Cardinality="One" />
       <Association Name="Customer_TranHistoryLinkedTable" Member="TranHistoryLinkedTable" ThisKey="Id" OtherKey="CustomerID" Type="TranHistoryLinkedTable" Cardinality="One" />
       <Association Name="CreditCard_Customer" Member="CreditCard1" ThisKey="CreditCard" OtherKey="CreditNumber" Type="CreditCard" IsForeignKey="true" />
@@ -94,22 +96,24 @@
       <Association Name="Product_TopSeller" Member="Product" ThisKey="ProductID" OtherKey="ProductID" Type="Product" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.TranHistoryLinkedTable" Member="TranHistoryLinkedTables">
-    <Type Name="TranHistoryLinkedTable">
-      <Column Name="CustomerID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="TransID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="Customer_TranHistoryLinkedTable" Member="Customer" ThisKey="CustomerID" OtherKey="Id" Type="Customer" IsForeignKey="true" />
-      <Association Name="Transaction_TranHistoryLinkedTable" Member="Transaction" ThisKey="TransID" OtherKey="TransactionID" Type="Transaction" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.Transactions" Member="Transactions">
     <Type Name="Transaction">
       <Column Name="TransactionID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="Is_a_Return" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Payment" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Receipt" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CurrentDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Association Name="Transaction_Purchase" Member="Purchases" ThisKey="TransactionID" OtherKey="TransID" Type="Purchase" />
       <Association Name="Transaction_TranHistoryLinkedTable" Member="TranHistoryLinkedTables" ThisKey="TransactionID" OtherKey="TransID" Type="TranHistoryLinkedTable" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TranHistoryLinkedTable" Member="TranHistoryLinkedTables">
+    <Type Name="TranHistoryLinkedTable">
+      <Column Name="CustomerID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TransID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IsAClubMember" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Customer_TranHistoryLinkedTable" Member="Customer" ThisKey="CustomerID" OtherKey="Id" Type="Customer" IsForeignKey="true" />
+      <Association Name="Transaction_TranHistoryLinkedTable" Member="Transaction" ThisKey="TransID" OtherKey="TransactionID" Type="Transaction" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

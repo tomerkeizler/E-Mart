@@ -77,6 +77,71 @@ namespace DAL
                 {
                     db.Employees.InsertOnSubmit(EmployeeConverterToContext(emp));
                 }
+
+            }
+            else if (obj is Backend.Customer)
+            {
+                foreach (TranHistoryLinkedTable linkedTrans in db.TranHistoryLinkedTables)
+                {
+                    if (!linkedTrans.IsAClubMember)
+                    {
+                        db.TranHistoryLinkedTables.DeleteOnSubmit(linkedTrans);
+                    }
+                }
+                foreach (Customer cust in db.Customers)
+                {
+                    db.Customers.DeleteOnSubmit(cust);
+                }
+                foreach (Backend.Customer cust in list)
+                {
+                    db.Customers.InsertOnSubmit(CustomerConverterToContext(cust));
+                    foreach (Backend.Transaction trans in cust.TranHistory)
+                    {
+                        TranHistoryLinkedTable currentLinkedTrans = new TranHistoryLinkedTable();
+                        currentLinkedTrans.CustomerID = cust.Id;
+                        currentLinkedTrans.TransID = trans.TransactionID;
+                        currentLinkedTrans.IsAClubMember = false;
+                        db.TranHistoryLinkedTables.InsertOnSubmit(currentLinkedTrans);
+                    }
+                }
+            }
+            else if (obj is Backend.ClubMember)
+            {
+                foreach (TranHistoryLinkedTable linkedTrans in db.TranHistoryLinkedTables)
+                {
+                    if (linkedTrans.IsAClubMember)
+                    {
+                        db.TranHistoryLinkedTables.DeleteOnSubmit(linkedTrans);
+                    }
+                }
+                foreach (ClubMember club in db.ClubMembers)
+                {
+                    db.ClubMembers.DeleteOnSubmit(club);
+                }
+                foreach (Backend.ClubMember club in list)
+                {
+                    db.ClubMembers.InsertOnSubmit(ClubMemberConverterToContext(club));
+                    foreach (Backend.Transaction trans in club.TranHistory)
+                    {
+                        TranHistoryLinkedTable currentLinkedTrans = new TranHistoryLinkedTable();
+                        currentLinkedTrans.CustomerID = club.Id;
+                        currentLinkedTrans.TransID = trans.TransactionID;
+                        currentLinkedTrans.IsAClubMember = true;
+                        db.TranHistoryLinkedTables.InsertOnSubmit(currentLinkedTrans);
+                    }
+                }
+            }
+            else if (obj is Backend.Transaction)
+            {
+                foreach (Employee emp in db.Employees)
+                {
+                    db.Employees.DeleteOnSubmit(emp);
+                }
+                foreach (Backend.Employee emp in list)
+                {
+                    db.Employees.InsertOnSubmit(EmployeeConverterToContext(emp));
+                }
+
             }
             else
             {
@@ -107,6 +172,13 @@ namespace DAL
                 foreach (Employee emp in db.Employees)
                 {
                     currentList.Add(EmployeeConverterToBackend(emp));
+                }
+            }
+            else if (element.Equals(Elements.Customer))
+            {
+                foreach (Customer cust in db.Customers)
+                {
+                    currentList.Add(CustomerConverterToBackend(cust));
                 }
             }
             else
@@ -638,6 +710,149 @@ namespace DAL
             dataContextEmployee.SupervisiorID = currentEmployee.SupervisiorID;
             return dataContextEmployee;
         }
+        public Backend.Customer CustomerConverterToBackend(Customer dataContextCustomer)
+        {
+            Backend.Customer currentCustomer = new Backend.Customer();
+            //Credit Card Entity
+            currentCustomer.CreditCard.CreditNumber = dataContextCustomer.CreditCard1.CreditNumber;
+            currentCustomer.CreditCard.ExpirationDate = dataContextCustomer.CreditCard1.ExpirationDate;
+            currentCustomer.CreditCard.FirstName = dataContextCustomer.CreditCard1.FirstName;
+            currentCustomer.CreditCard.LastName = dataContextCustomer.CreditCard1.LastName;
+            //Customer Entity
+            currentCustomer.FirstName = dataContextCustomer.FirstName;
+            currentCustomer.LastName = dataContextCustomer.LastName;
+            currentCustomer.Id = dataContextCustomer.Id;
+            IQueryable transQuery = from Transaction trans in db.Transactions
+                                    from TranHistoryLinkedTable linkedTrans in db.TranHistoryLinkedTables
+                                    where (trans.TransactionID == linkedTrans.TransID && linkedTrans.CustomerID == currentCustomer.Id)
+                                    select trans;
+            foreach (Transaction trans in transQuery)
+            {
+                currentCustomer.TranHistory.Add(TransactionConverterToBackend(trans));
+            }
+            return currentCustomer;
+        }
+        public Customer CustomerConverterToContext(Backend.Customer currentCustomer)
+        {
+            CreditCard dataContextCreditCard = new CreditCard();
+            Customer dataContextCustomer = new Customer();
+            //Credit Card Entity
+            dataContextCreditCard.CreditNumber = currentCustomer.CreditCard.CreditNumber;
+            dataContextCreditCard.ExpirationDate = currentCustomer.CreditCard.ExpirationDate;
+            dataContextCreditCard.FirstName = currentCustomer.CreditCard.FirstName;
+            dataContextCreditCard.LastName = currentCustomer.CreditCard.LastName;
+            dataContextCustomer.CreditCard1 = dataContextCreditCard;
+            //Customer Entity
+            dataContextCustomer.IsAClubMember = false;
+            dataContextCustomer.CreditCard = currentCustomer.CreditCard.CreditNumber;
+            dataContextCustomer.FirstName = currentCustomer.FirstName;
+            dataContextCustomer.LastName = currentCustomer.LastName;
+            dataContextCustomer.Id = currentCustomer.Id;
+            return dataContextCustomer;
+        }
+        public Backend.Transaction TransactionConverterToBackend(Transaction dataContextTransaction)
+        {
+            Backend.Transaction currentTransaction = new Backend.Transaction();
+            currentTransaction.CurrentDate = dataContextTransaction.CurrentDate;
+            currentTransaction.Is_a_Return = (Is_a_return)dataContextTransaction.Is_a_Return;
+            currentTransaction.Payment = (PaymentMethod)dataContextTransaction.Payment;
+            currentTransaction.TransactionID = dataContextTransaction.TransactionID;
+            IQueryable receiptQuery = from Purchase purch in db.Purchases
+                                      where purch.TransID == dataContextTransaction.TransactionID
+                                      select purch;
+            foreach (Purchase purch in receiptQuery){
+                currentTransaction.Receipt.Add(PurchaseConverterToBackend(purch));
+            }
+            return currentTransaction;
+        }
+        public Transaction TransactionConverterToContext(Transaction currentTransaction)
+        {
+            Transaction dataContextTransaction = new Transaction();
+            dataContextTransaction.CurrentDate = currentTransaction.CurrentDate;
+            dataContextTransaction.Is_a_Return = (int)currentTransaction.Is_a_Return;
+            dataContextTransaction.Payment = (int)currentTransaction.Payment;
+            dataContextTransaction.TransactionID = currentTransaction.TransactionID;
+            dataContextTransaction.Receipt = 0;
+            IQueryable receiptQuery = from Purchase purch in db.Purchases
+                                      where purch.TransID == dataContextTransaction.TransactionID
+                                      select purch;
+            foreach (Purchase purch in receiptQuery)
+            {
+                dataContextTransaction.Receipt++;
+            }
+            return dataContextTransaction;
+        }
+        public Backend.Purchase PurchaseConverterToBackend(Purchase dataContextPurchase)
+        {
+            Backend.Purchase currentPurchase = new Backend.Purchase();
+            currentPurchase.Amount = dataContextPurchase.Amount;
+            currentPurchase.PrdID = dataContextPurchase.PrdID;
+            currentPurchase.PrdName = dataContextPurchase.PrdName;
+            currentPurchase.Price = dataContextPurchase.Price;
+            currentPurchase.TimeOfPurchase = dataContextPurchase.TimeOfPurchase;
+            currentPurchase.TransID = dataContextPurchase.TransID;
+            return currentPurchase;
+        }
+        public Purchase PurchaseConverterToContext(Backend.Purchase currentPurchase)
+        {
+            Purchase dataContextPurchase = new Purchase();
+            dataContextPurchase.Amount = currentPurchase.Amount;
+            dataContextPurchase.PrdID = currentPurchase.PrdID;
+            dataContextPurchase.PrdName = currentPurchase.PrdName;
+            dataContextPurchase.Price = currentPurchase.Price;
+            dataContextPurchase.TimeOfPurchase = currentPurchase.TimeOfPurchase;
+            dataContextPurchase.TransID = currentPurchase.TransID;
+            return dataContextPurchase;
+        }
+        public Backend.ClubMember ClubMemberConverterToBackend(ClubMember dataContextClubMember)
+        {
+            Backend.ClubMember currentClubMember = new Backend.ClubMember();
+            //Credit Card Entity
+            currentClubMember.CreditCard.CreditNumber = dataContextClubMember.Customer.CreditCard1.CreditNumber;
+            currentClubMember.CreditCard.ExpirationDate = dataContextClubMember.Customer.CreditCard1.ExpirationDate;
+            currentClubMember.CreditCard.FirstName = dataContextClubMember.Customer.CreditCard1.FirstName;
+            currentClubMember.CreditCard.LastName = dataContextClubMember.Customer.CreditCard1.LastName;
+            //Customer Entity
+            currentClubMember.FirstName = dataContextClubMember.Customer.FirstName;
+            currentClubMember.LastName = dataContextClubMember.Customer.LastName;
+            currentClubMember.Id = dataContextClubMember.Customer.Id;
+            IQueryable transQuery = from Transaction trans in db.Transactions
+                                    from TranHistoryLinkedTable linkedTrans in db.TranHistoryLinkedTables
+                                    where (trans.TransactionID == linkedTrans.TransID && linkedTrans.CustomerID == currentClubMember.Id)
+                                    select trans;
+            foreach (Transaction trans in transQuery)
+            {
+                currentClubMember.TranHistory.Add(TransactionConverterToBackend(trans));
+            }
+            //Clubmember Entity
+            currentClubMember.DateOfBirth = dataContextClubMember.DateOfBirth;
+            currentClubMember.Gender = (Gender)dataContextClubMember.Gender;
+            currentClubMember.MemberID = dataContextClubMember.MemberID;
+            return currentClubMember;
+        }
+        public ClubMember ClubMemberConverterToContext(Backend.ClubMember currentClubMember)
+        {
+            CreditCard dataContextCreditCard = new CreditCard();
+            ClubMember dataContextClubMember = new ClubMember();
+            //Credit Card Entity
+            dataContextCreditCard.CreditNumber = currentClubMember.CreditCard.CreditNumber;
+            dataContextCreditCard.ExpirationDate = currentClubMember.CreditCard.ExpirationDate;
+            dataContextCreditCard.FirstName = currentClubMember.CreditCard.FirstName;
+            dataContextCreditCard.LastName = currentClubMember.CreditCard.LastName;
+            dataContextClubMember.Customer.CreditCard1 = dataContextCreditCard;
+            //Customer Entity
+            dataContextClubMember.IsAClubMember = true;
+            dataContextClubMember.Customer.CreditCard = currentClubMember.CreditCard.CreditNumber;
+            dataContextClubMember.Customer.FirstName = currentClubMember.FirstName;
+            dataContextClubMember.Customer.LastName = currentClubMember.LastName;
+            dataContextClubMember.Customer.Id = currentClubMember.Id;
+            //Clubmember Entity
+            dataContextClubMember.DateOfBirth = currentClubMember.DateOfBirth;
+            dataContextClubMember.Gender = (int)currentClubMember.Gender;
+            dataContextClubMember.MemberID = currentClubMember.MemberID;
+            return dataContextClubMember;
+        }
+            
 
     }
 }
