@@ -57,12 +57,12 @@ namespace DAL
     partial void InsertTopSeller(TopSeller instance);
     partial void UpdateTopSeller(TopSeller instance);
     partial void DeleteTopSeller(TopSeller instance);
-    partial void InsertTransaction(Transaction instance);
-    partial void UpdateTransaction(Transaction instance);
-    partial void DeleteTransaction(Transaction instance);
     partial void InsertTranHistoryLinkedTable(TranHistoryLinkedTable instance);
     partial void UpdateTranHistoryLinkedTable(TranHistoryLinkedTable instance);
     partial void DeleteTranHistoryLinkedTable(TranHistoryLinkedTable instance);
+    partial void InsertTransaction(Transaction instance);
+    partial void UpdateTransaction(Transaction instance);
+    partial void DeleteTransaction(Transaction instance);
     #endregion
 		
 		public E_MartDB_LINQtoSQLDataContext() : 
@@ -167,19 +167,19 @@ namespace DAL
 			}
 		}
 		
-		public System.Data.Linq.Table<Transaction> Transactions
-		{
-			get
-			{
-				return this.GetTable<Transaction>();
-			}
-		}
-		
 		public System.Data.Linq.Table<TranHistoryLinkedTable> TranHistoryLinkedTables
 		{
 			get
 			{
 				return this.GetTable<TranHistoryLinkedTable>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Transaction> Transactions
+		{
+			get
+			{
+				return this.GetTable<Transaction>();
 			}
 		}
 	}
@@ -199,8 +199,6 @@ namespace DAL
 		private int _Id;
 		
 		private bool _IsAClubMember;
-		
-		private EntityRef<User> _User;
 		
 		private EntityRef<Customer> _Customer;
 		
@@ -222,7 +220,6 @@ namespace DAL
 		
 		public ClubMember()
 		{
-			this._User = default(EntityRef<User>);
 			this._Customer = default(EntityRef<Customer>);
 			OnCreated();
 		}
@@ -331,35 +328,6 @@ namespace DAL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ClubMember_User", Storage="_User", ThisKey="Id", OtherKey="Person", IsUnique=true, IsForeignKey=false)]
-		public User User
-		{
-			get
-			{
-				return this._User.Entity;
-			}
-			set
-			{
-				User previousValue = this._User.Entity;
-				if (((previousValue != value) 
-							|| (this._User.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._User.Entity = null;
-						previousValue.ClubMember = null;
-					}
-					this._User.Entity = value;
-					if ((value != null))
-					{
-						value.ClubMember = this;
-					}
-					this.SendPropertyChanged("User");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Customer_ClubMember", Storage="_Customer", ThisKey="Id", OtherKey="Id", IsForeignKey=true)]
 		public Customer Customer
 		{
@@ -425,11 +393,15 @@ namespace DAL
 		
 		private string _Password;
 		
-		private int _Person;
+		private int _PersonID;
 		
-		private EntityRef<ClubMember> _ClubMember;
+		private System.Nullable<int> _PersonAsEmployee;
 		
-		private EntityRef<Employee> _Employee;
+		private System.Nullable<int> _PersonAsCustomer;
+		
+		private System.Nullable<int> _PersonAsClubMember;
+		
+		private EntityRef<Customer> _Customer;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -439,14 +411,19 @@ namespace DAL
     partial void OnUserNameChanged();
     partial void OnPasswordChanging(string value);
     partial void OnPasswordChanged();
-    partial void OnPersonChanging(int value);
-    partial void OnPersonChanged();
+    partial void OnPersonIDChanging(int value);
+    partial void OnPersonIDChanged();
+    partial void OnPersonAsEmployeeChanging(System.Nullable<int> value);
+    partial void OnPersonAsEmployeeChanged();
+    partial void OnPersonAsCustomerChanging(System.Nullable<int> value);
+    partial void OnPersonAsCustomerChanged();
+    partial void OnPersonAsClubMemberChanging(System.Nullable<int> value);
+    partial void OnPersonAsClubMemberChanged();
     #endregion
 		
 		public User()
 		{
-			this._ClubMember = default(EntityRef<ClubMember>);
-			this._Employee = default(EntityRef<Employee>);
+			this._Customer = default(EntityRef<Customer>);
 			OnCreated();
 		}
 		
@@ -490,94 +467,120 @@ namespace DAL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Person", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int Person
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PersonID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int PersonID
 		{
 			get
 			{
-				return this._Person;
+				return this._PersonID;
 			}
 			set
 			{
-				if ((this._Person != value))
+				if ((this._PersonID != value))
 				{
-					if ((this._ClubMember.HasLoadedOrAssignedValue || this._Employee.HasLoadedOrAssignedValue))
+					this.OnPersonIDChanging(value);
+					this.SendPropertyChanging();
+					this._PersonID = value;
+					this.SendPropertyChanged("PersonID");
+					this.OnPersonIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PersonAsEmployee", DbType="Int")]
+		public System.Nullable<int> PersonAsEmployee
+		{
+			get
+			{
+				return this._PersonAsEmployee;
+			}
+			set
+			{
+				if ((this._PersonAsEmployee != value))
+				{
+					this.OnPersonAsEmployeeChanging(value);
+					this.SendPropertyChanging();
+					this._PersonAsEmployee = value;
+					this.SendPropertyChanged("PersonAsEmployee");
+					this.OnPersonAsEmployeeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PersonAsCustomer", DbType="Int")]
+		public System.Nullable<int> PersonAsCustomer
+		{
+			get
+			{
+				return this._PersonAsCustomer;
+			}
+			set
+			{
+				if ((this._PersonAsCustomer != value))
+				{
+					if (this._Customer.HasLoadedOrAssignedValue)
 					{
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 					}
-					this.OnPersonChanging(value);
+					this.OnPersonAsCustomerChanging(value);
 					this.SendPropertyChanging();
-					this._Person = value;
-					this.SendPropertyChanged("Person");
-					this.OnPersonChanged();
+					this._PersonAsCustomer = value;
+					this.SendPropertyChanged("PersonAsCustomer");
+					this.OnPersonAsCustomerChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ClubMember_User", Storage="_ClubMember", ThisKey="Person", OtherKey="Id", IsForeignKey=true)]
-		public ClubMember ClubMember
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PersonAsClubMember", DbType="Int")]
+		public System.Nullable<int> PersonAsClubMember
 		{
 			get
 			{
-				return this._ClubMember.Entity;
+				return this._PersonAsClubMember;
 			}
 			set
 			{
-				ClubMember previousValue = this._ClubMember.Entity;
-				if (((previousValue != value) 
-							|| (this._ClubMember.HasLoadedOrAssignedValue == false)))
+				if ((this._PersonAsClubMember != value))
 				{
+					this.OnPersonAsClubMemberChanging(value);
 					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._ClubMember.Entity = null;
-						previousValue.User = null;
-					}
-					this._ClubMember.Entity = value;
-					if ((value != null))
-					{
-						value.User = this;
-						this._Person = value.Id;
-					}
-					else
-					{
-						this._Person = default(int);
-					}
-					this.SendPropertyChanged("ClubMember");
+					this._PersonAsClubMember = value;
+					this.SendPropertyChanged("PersonAsClubMember");
+					this.OnPersonAsClubMemberChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Employee_User", Storage="_Employee", ThisKey="Person", OtherKey="Id", IsForeignKey=true)]
-		public Employee Employee
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Customer_User", Storage="_Customer", ThisKey="PersonAsCustomer", OtherKey="Id", IsForeignKey=true)]
+		public Customer Customer
 		{
 			get
 			{
-				return this._Employee.Entity;
+				return this._Customer.Entity;
 			}
 			set
 			{
-				Employee previousValue = this._Employee.Entity;
+				Customer previousValue = this._Customer.Entity;
 				if (((previousValue != value) 
-							|| (this._Employee.HasLoadedOrAssignedValue == false)))
+							|| (this._Customer.HasLoadedOrAssignedValue == false)))
 				{
 					this.SendPropertyChanging();
 					if ((previousValue != null))
 					{
-						this._Employee.Entity = null;
-						previousValue.User = null;
+						this._Customer.Entity = null;
+						previousValue.Users.Remove(this);
 					}
-					this._Employee.Entity = value;
+					this._Customer.Entity = value;
 					if ((value != null))
 					{
-						value.User = this;
-						this._Person = value.Id;
+						value.Users.Add(this);
+						this._PersonAsCustomer = value.Id;
 					}
 					else
 					{
-						this._Person = default(int);
+						this._PersonAsCustomer = default(Nullable<int>);
 					}
-					this.SendPropertyChanged("Employee");
+					this.SendPropertyChanged("Customer");
 				}
 			}
 		}
@@ -783,6 +786,8 @@ namespace DAL
 		
 		private EntityRef<ClubMember> _ClubMember;
 		
+		private EntitySet<User> _Users;
+		
 		private EntityRef<TranHistoryLinkedTable> _TranHistoryLinkedTable;
 		
 		private EntityRef<CreditCard> _CreditCard1;
@@ -806,6 +811,7 @@ namespace DAL
 		public Customer()
 		{
 			this._ClubMember = default(EntityRef<ClubMember>);
+			this._Users = new EntitySet<User>(new Action<User>(this.attach_Users), new Action<User>(this.detach_Users));
 			this._TranHistoryLinkedTable = default(EntityRef<TranHistoryLinkedTable>);
 			this._CreditCard1 = default(EntityRef<CreditCard>);
 			OnCreated();
@@ -944,6 +950,19 @@ namespace DAL
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Customer_User", Storage="_Users", ThisKey="Id", OtherKey="PersonAsCustomer")]
+		public EntitySet<User> Users
+		{
+			get
+			{
+				return this._Users;
+			}
+			set
+			{
+				this._Users.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Customer_TranHistoryLinkedTable", Storage="_TranHistoryLinkedTable", ThisKey="Id", OtherKey="CustomerID", IsUnique=true, IsForeignKey=false)]
 		public TranHistoryLinkedTable TranHistoryLinkedTable
 		{
@@ -1025,6 +1044,18 @@ namespace DAL
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+		
+		private void attach_Users(User entity)
+		{
+			this.SendPropertyChanging();
+			entity.Customer = this;
+		}
+		
+		private void detach_Users(User entity)
+		{
+			this.SendPropertyChanging();
+			entity.Customer = null;
 		}
 	}
 	
@@ -1192,8 +1223,6 @@ namespace DAL
 		
 		private int _Rank;
 		
-		private EntityRef<User> _User;
-		
 		private EntityRef<Department> _Department;
 		
     #region Extensibility Method Definitions
@@ -1220,7 +1249,6 @@ namespace DAL
 		
 		public Employee()
 		{
-			this._User = default(EntityRef<User>);
 			this._Department = default(EntityRef<Department>);
 			OnCreated();
 		}
@@ -1385,35 +1413,6 @@ namespace DAL
 					this._Rank = value;
 					this.SendPropertyChanged("Rank");
 					this.OnRankChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Employee_User", Storage="_User", ThisKey="Id", OtherKey="Person", IsUnique=true, IsForeignKey=false)]
-		public User User
-		{
-			get
-			{
-				return this._User.Entity;
-			}
-			set
-			{
-				User previousValue = this._User.Entity;
-				if (((previousValue != value) 
-							|| (this._User.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._User.Entity = null;
-						previousValue.Employee = null;
-					}
-					this._User.Entity = value;
-					if ((value != null))
-					{
-						value.Employee = this;
-					}
-					this.SendPropertyChanged("User");
 				}
 			}
 		}
@@ -2150,6 +2149,198 @@ namespace DAL
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TranHistoryLinkedTable")]
+	public partial class TranHistoryLinkedTable : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _CustomerID;
+		
+		private int _TransID;
+		
+		private bool _IsAClubMember;
+		
+		private EntityRef<Customer> _Customer;
+		
+		private EntityRef<Transaction> _Transaction;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnCustomerIDChanging(int value);
+    partial void OnCustomerIDChanged();
+    partial void OnTransIDChanging(int value);
+    partial void OnTransIDChanged();
+    partial void OnIsAClubMemberChanging(bool value);
+    partial void OnIsAClubMemberChanged();
+    #endregion
+		
+		public TranHistoryLinkedTable()
+		{
+			this._Customer = default(EntityRef<Customer>);
+			this._Transaction = default(EntityRef<Transaction>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CustomerID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int CustomerID
+		{
+			get
+			{
+				return this._CustomerID;
+			}
+			set
+			{
+				if ((this._CustomerID != value))
+				{
+					if (this._Customer.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnCustomerIDChanging(value);
+					this.SendPropertyChanging();
+					this._CustomerID = value;
+					this.SendPropertyChanged("CustomerID");
+					this.OnCustomerIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TransID", DbType="Int NOT NULL")]
+		public int TransID
+		{
+			get
+			{
+				return this._TransID;
+			}
+			set
+			{
+				if ((this._TransID != value))
+				{
+					if (this._Transaction.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnTransIDChanging(value);
+					this.SendPropertyChanging();
+					this._TransID = value;
+					this.SendPropertyChanged("TransID");
+					this.OnTransIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsAClubMember", DbType="Bit NOT NULL")]
+		public bool IsAClubMember
+		{
+			get
+			{
+				return this._IsAClubMember;
+			}
+			set
+			{
+				if ((this._IsAClubMember != value))
+				{
+					this.OnIsAClubMemberChanging(value);
+					this.SendPropertyChanging();
+					this._IsAClubMember = value;
+					this.SendPropertyChanged("IsAClubMember");
+					this.OnIsAClubMemberChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Customer_TranHistoryLinkedTable", Storage="_Customer", ThisKey="CustomerID", OtherKey="Id", IsForeignKey=true)]
+		public Customer Customer
+		{
+			get
+			{
+				return this._Customer.Entity;
+			}
+			set
+			{
+				Customer previousValue = this._Customer.Entity;
+				if (((previousValue != value) 
+							|| (this._Customer.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Customer.Entity = null;
+						previousValue.TranHistoryLinkedTable = null;
+					}
+					this._Customer.Entity = value;
+					if ((value != null))
+					{
+						value.TranHistoryLinkedTable = this;
+						this._CustomerID = value.Id;
+					}
+					else
+					{
+						this._CustomerID = default(int);
+					}
+					this.SendPropertyChanged("Customer");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Transaction_TranHistoryLinkedTable", Storage="_Transaction", ThisKey="TransID", OtherKey="TransactionID", IsForeignKey=true)]
+		public Transaction Transaction
+		{
+			get
+			{
+				return this._Transaction.Entity;
+			}
+			set
+			{
+				Transaction previousValue = this._Transaction.Entity;
+				if (((previousValue != value) 
+							|| (this._Transaction.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Transaction.Entity = null;
+						previousValue.TranHistoryLinkedTables.Remove(this);
+					}
+					this._Transaction.Entity = value;
+					if ((value != null))
+					{
+						value.TranHistoryLinkedTables.Add(this);
+						this._TransID = value.TransactionID;
+					}
+					else
+					{
+						this._TransID = default(int);
+					}
+					this.SendPropertyChanged("Transaction");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Transactions")]
 	public partial class Transaction : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -2361,198 +2552,6 @@ namespace DAL
 		{
 			this.SendPropertyChanging();
 			entity.Transaction = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TranHistoryLinkedTable")]
-	public partial class TranHistoryLinkedTable : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _CustomerID;
-		
-		private int _TransID;
-		
-		private bool _IsAClubMember;
-		
-		private EntityRef<Customer> _Customer;
-		
-		private EntityRef<Transaction> _Transaction;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnCustomerIDChanging(int value);
-    partial void OnCustomerIDChanged();
-    partial void OnTransIDChanging(int value);
-    partial void OnTransIDChanged();
-    partial void OnIsAClubMemberChanging(bool value);
-    partial void OnIsAClubMemberChanged();
-    #endregion
-		
-		public TranHistoryLinkedTable()
-		{
-			this._Customer = default(EntityRef<Customer>);
-			this._Transaction = default(EntityRef<Transaction>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CustomerID", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int CustomerID
-		{
-			get
-			{
-				return this._CustomerID;
-			}
-			set
-			{
-				if ((this._CustomerID != value))
-				{
-					if (this._Customer.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnCustomerIDChanging(value);
-					this.SendPropertyChanging();
-					this._CustomerID = value;
-					this.SendPropertyChanged("CustomerID");
-					this.OnCustomerIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TransID", DbType="Int NOT NULL")]
-		public int TransID
-		{
-			get
-			{
-				return this._TransID;
-			}
-			set
-			{
-				if ((this._TransID != value))
-				{
-					if (this._Transaction.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnTransIDChanging(value);
-					this.SendPropertyChanging();
-					this._TransID = value;
-					this.SendPropertyChanged("TransID");
-					this.OnTransIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsAClubMember", DbType="Bit NOT NULL")]
-		public bool IsAClubMember
-		{
-			get
-			{
-				return this._IsAClubMember;
-			}
-			set
-			{
-				if ((this._IsAClubMember != value))
-				{
-					this.OnIsAClubMemberChanging(value);
-					this.SendPropertyChanging();
-					this._IsAClubMember = value;
-					this.SendPropertyChanged("IsAClubMember");
-					this.OnIsAClubMemberChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Customer_TranHistoryLinkedTable", Storage="_Customer", ThisKey="CustomerID", OtherKey="Id", IsForeignKey=true)]
-		public Customer Customer
-		{
-			get
-			{
-				return this._Customer.Entity;
-			}
-			set
-			{
-				Customer previousValue = this._Customer.Entity;
-				if (((previousValue != value) 
-							|| (this._Customer.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Customer.Entity = null;
-						previousValue.TranHistoryLinkedTable = null;
-					}
-					this._Customer.Entity = value;
-					if ((value != null))
-					{
-						value.TranHistoryLinkedTable = this;
-						this._CustomerID = value.Id;
-					}
-					else
-					{
-						this._CustomerID = default(int);
-					}
-					this.SendPropertyChanged("Customer");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Transaction_TranHistoryLinkedTable", Storage="_Transaction", ThisKey="TransID", OtherKey="TransactionID", IsForeignKey=true)]
-		public Transaction Transaction
-		{
-			get
-			{
-				return this._Transaction.Entity;
-			}
-			set
-			{
-				Transaction previousValue = this._Transaction.Entity;
-				if (((previousValue != value) 
-							|| (this._Transaction.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Transaction.Entity = null;
-						previousValue.TranHistoryLinkedTables.Remove(this);
-					}
-					this._Transaction.Entity = value;
-					if ((value != null))
-					{
-						value.TranHistoryLinkedTables.Add(this);
-						this._TransID = value.TransactionID;
-					}
-					else
-					{
-						this._TransID = default(int);
-					}
-					this.SendPropertyChanged("Transaction");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
 		}
 	}
 }

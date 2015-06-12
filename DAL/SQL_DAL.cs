@@ -10,7 +10,7 @@ using System.Data.Linq.Mapping;
 
 namespace DAL
 {
-    class SQL_DAL : IDAL
+    public class SQL_DAL : IDAL
     {
         //Fields
         IQueryable prodQuery;
@@ -133,13 +133,20 @@ namespace DAL
             }
             else if (obj is Backend.Transaction)
             {
-                foreach (Employee emp in db.Employees)
+                foreach (Backend.Transaction trans in list)
                 {
-                    db.Employees.DeleteOnSubmit(emp);
+                    db.Transactions.InsertOnSubmit(TransactionConverterToContext(trans));
                 }
-                foreach (Backend.Employee emp in list)
+            }
+            else if (obj is Backend.User)
+            {
+                foreach (User usr in db.Users)
                 {
-                    db.Employees.InsertOnSubmit(EmployeeConverterToContext(emp));
+                    db.Users.DeleteOnSubmit(usr);
+                }
+                foreach (Backend.User usr in list)
+                {
+                    db.Users.InsertOnSubmit(UserConverterToContext(usr));
                 }
 
             }
@@ -174,11 +181,32 @@ namespace DAL
                     currentList.Add(EmployeeConverterToBackend(emp));
                 }
             }
+            else if (element.Equals(Elements.ClubMember))
+            {
+                foreach (ClubMember club in db.ClubMembers)
+                {
+                    currentList.Add(ClubMemberConverterToBackend(club));
+                }
+            }
             else if (element.Equals(Elements.Customer))
             {
                 foreach (Customer cust in db.Customers)
                 {
                     currentList.Add(CustomerConverterToBackend(cust));
+                }
+            }
+            else if (element.Equals(Elements.Transaction))
+            {
+                foreach (Transaction trans in db.Transactions)
+                {
+                    currentList.Add(TransactionConverterToBackend(trans));
+                }
+            }
+            else if (element.Equals(Elements.User))
+            {
+                foreach (User usr in db.Users)
+                {
+                    currentList.Add(UserConverterToBackend(usr));
                 }
             }
             else
@@ -765,7 +793,7 @@ namespace DAL
             }
             return currentTransaction;
         }
-        public Transaction TransactionConverterToContext(Transaction currentTransaction)
+        public Transaction TransactionConverterToContext(Backend.Transaction currentTransaction)
         {
             Transaction dataContextTransaction = new Transaction();
             dataContextTransaction.CurrentDate = currentTransaction.CurrentDate;
@@ -851,6 +879,56 @@ namespace DAL
             dataContextClubMember.Gender = (int)currentClubMember.Gender;
             dataContextClubMember.MemberID = currentClubMember.MemberID;
             return dataContextClubMember;
+        }
+        public Backend.User UserConverterToBackend(User dataContextUser)
+        {
+            Backend.User currentUser = new Backend.User();
+            currentUser.UserName = dataContextUser.UserName;
+            currentUser.Password = dataContextUser.Password;
+            if (dataContextUser.PersonAsClubMember != null){
+                IQueryable personQuery = from Backend.ClubMember person in db.ClubMembers
+                                         where person.Id == dataContextUser.PersonID
+                                         select person;
+                currentUser.Person = personQuery.Cast<ClubMember>().ToList().ElementAt(0);
+            }
+            else if (dataContextUser.PersonAsCustomer != null)
+            {
+                IQueryable personQuery = from Backend.Customer person in db.Customers
+                                         where person.Id == dataContextUser.PersonID
+                                         select person;
+                currentUser.Person = personQuery.Cast<Customer>().ToList().ElementAt(0);
+            }
+            else if (dataContextUser.PersonAsEmployee != null)
+            {
+                IQueryable personQuery = from Backend.Employee person in db.Employees
+                                         where person.Id == dataContextUser.PersonID
+                                         select person;
+                currentUser.Person = personQuery.Cast<Employee>().ToList().ElementAt(0);
+            }
+            return currentUser;
+            
+        }
+        public User UserConverterToContext(Backend.User currentUser)
+        {
+            User dataContextUser = new User();
+            dataContextUser.Password = currentUser.Password;
+            dataContextUser.UserName = currentUser.UserName;
+            if (currentUser.Person is Backend.ClubMember)
+            {
+                dataContextUser.PersonAsClubMember = ((Backend.ClubMember)currentUser.Person).Id;
+                dataContextUser.PersonID = ((Backend.ClubMember)currentUser.Person).Id;
+            }
+            else if (currentUser.Person is Backend.Customer)
+            {
+                dataContextUser.PersonAsClubMember = ((Backend.Customer)currentUser.Person).Id;
+                dataContextUser.PersonID = ((Backend.Customer)currentUser.Person).Id;
+            }
+            else if (currentUser.Person is Backend.Employee)
+            {
+                dataContextUser.PersonAsClubMember = ((Backend.Employee)currentUser.Person).Id;
+                dataContextUser.PersonID = ((Backend.Employee)currentUser.Person).Id;
+            }
+            return dataContextUser;
         }
             
 

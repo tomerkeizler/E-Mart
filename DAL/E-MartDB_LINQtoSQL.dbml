@@ -7,7 +7,6 @@
       <Column Name="Gender" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="IsAClubMember" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Association Name="ClubMember_User" Member="User" ThisKey="Id" OtherKey="Person" Type="User" Cardinality="One" />
       <Association Name="Customer_ClubMember" Member="Customer" ThisKey="Id" OtherKey="Id" Type="Customer" IsForeignKey="true" />
     </Type>
   </Table>
@@ -15,9 +14,11 @@
     <Type Name="User">
       <Column Name="UserName" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
       <Column Name="Password" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
-      <Column Name="Person" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Association Name="ClubMember_User" Member="ClubMember" ThisKey="Person" OtherKey="Id" Type="ClubMember" IsForeignKey="true" />
-      <Association Name="Employee_User" Member="Employee" ThisKey="Person" OtherKey="Id" Type="Employee" IsForeignKey="true" />
+      <Column Name="PersonID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="PersonAsEmployee" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PersonAsCustomer" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PersonAsClubMember" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Customer_User" Member="Customer" ThisKey="PersonAsCustomer" OtherKey="Id" Type="Customer" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.CreditCards" Member="CreditCards">
@@ -37,6 +38,7 @@
       <Column Name="LastName" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
       <Column Name="IsAClubMember" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Association Name="Customer_ClubMember" Member="ClubMember" ThisKey="Id" OtherKey="Id" Type="ClubMember" Cardinality="One" />
+      <Association Name="Customer_User" Member="Users" ThisKey="Id" OtherKey="PersonAsCustomer" Type="User" />
       <Association Name="Customer_TranHistoryLinkedTable" Member="TranHistoryLinkedTable" ThisKey="Id" OtherKey="CustomerID" Type="TranHistoryLinkedTable" Cardinality="One" />
       <Association Name="CreditCard_Customer" Member="CreditCard1" ThisKey="CreditCard" OtherKey="CreditNumber" Type="CreditCard" IsForeignKey="true" />
     </Type>
@@ -59,7 +61,6 @@
       <Column Name="FirstName" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
       <Column Name="LastName" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
       <Column Name="Rank" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="Employee_User" Member="User" ThisKey="Id" OtherKey="Person" Type="User" Cardinality="One" />
       <Association Name="Department_Employee" Member="Department" ThisKey="DepID" OtherKey="DepartmentID" Type="Department" IsForeignKey="true" />
     </Type>
   </Table>
@@ -96,6 +97,15 @@
       <Association Name="Product_TopSeller" Member="Product" ThisKey="ProductID" OtherKey="ProductID" Type="Product" IsForeignKey="true" />
     </Type>
   </Table>
+  <Table Name="dbo.TranHistoryLinkedTable" Member="TranHistoryLinkedTables">
+    <Type Name="TranHistoryLinkedTable">
+      <Column Name="CustomerID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TransID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IsAClubMember" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Customer_TranHistoryLinkedTable" Member="Customer" ThisKey="CustomerID" OtherKey="Id" Type="Customer" IsForeignKey="true" />
+      <Association Name="Transaction_TranHistoryLinkedTable" Member="Transaction" ThisKey="TransID" OtherKey="TransactionID" Type="Transaction" IsForeignKey="true" />
+    </Type>
+  </Table>
   <Table Name="dbo.Transactions" Member="Transactions">
     <Type Name="Transaction">
       <Column Name="TransactionID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -105,15 +115,6 @@
       <Column Name="CurrentDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Association Name="Transaction_Purchase" Member="Purchases" ThisKey="TransactionID" OtherKey="TransID" Type="Purchase" />
       <Association Name="Transaction_TranHistoryLinkedTable" Member="TranHistoryLinkedTables" ThisKey="TransactionID" OtherKey="TransID" Type="TranHistoryLinkedTable" />
-    </Type>
-  </Table>
-  <Table Name="dbo.TranHistoryLinkedTable" Member="TranHistoryLinkedTables">
-    <Type Name="TranHistoryLinkedTable">
-      <Column Name="CustomerID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="TransID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="IsAClubMember" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Association Name="Customer_TranHistoryLinkedTable" Member="Customer" ThisKey="CustomerID" OtherKey="Id" Type="Customer" IsForeignKey="true" />
-      <Association Name="Transaction_TranHistoryLinkedTable" Member="Transaction" ThisKey="TransID" OtherKey="TransactionID" Type="Transaction" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

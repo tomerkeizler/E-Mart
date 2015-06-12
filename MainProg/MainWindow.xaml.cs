@@ -25,7 +25,8 @@ namespace MainProg
     {
         public MainWindow()
         {
-            IDAL myDal = new LINQ_DAL();
+            //IDAL myDal = new LINQ_DAL();
+            IDAL myDal = new SQL_DAL();
 
             IBL clubMember = new ClubMember_BL(myDal);
             IBL customer = new Customer_BL(myDal);
