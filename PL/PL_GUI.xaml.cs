@@ -508,8 +508,7 @@ namespace PL
                 }
 
                 if (!done)
-                    if (newUser != null)
-                        cats[7].Remove(newUser);
+                    cats[categoryNum].Remove(newObj);
             }
 
             if (done)
