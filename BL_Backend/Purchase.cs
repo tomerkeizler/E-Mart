@@ -36,6 +36,7 @@ namespace Backend
             prdName = other.prdName;
             price = other.price;
             amount = other.amount;
+            transID = other.transID;
         }
 
         // getters ans setters
@@ -79,7 +80,7 @@ namespace Backend
             if (!(other is Purchase))
                 return false;
             Purchase p = (Purchase)other;
-            return prdID == p.prdID && prdName.Equals(p.prdName) && price.Equals(p.price) && amount.Equals(p.amount);
+            return prdID == p.prdID && prdName.Equals(p.prdName) && price.Equals(p.price) && amount.Equals(p.amount) && transID == p.transID && timeOfPurchase.Equals(p.timeOfPurchase);
         }
 
         public override int GetHashCode()
