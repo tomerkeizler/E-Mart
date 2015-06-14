@@ -185,6 +185,8 @@ namespace PL
                 MessageBox.Show("There are no products in your shopping cart!");
             else
             {
+                MessageBox.Show("Thank you for your purchase!");
+
                 PaymentMethod myPaymentType;
                 if (paymentMethod.SelectedIndex == 0)
                     myPaymentType = PaymentMethod.Cash;
@@ -215,10 +217,18 @@ namespace PL
                     }
                 }
 
+                // create the receipt for this transaction
                 List<Purchase> receipt = purchasesList.Cast<Purchase>().ToList();
+
+                // create the transcation
                 Transaction newTran = new Transaction(0, Is_a_return.Purchase, receipt, myPaymentType);
+                
+                // add this transaction to the table of all transactions
                 parentWindow.cats[6].Add(newTran);
-                MessageBox.Show("Thank you for your purchase!");
+
+                // add this transaction to the tranHistory of the buyer (if he is a customer/clubmember)
+                if (buyer is Customer)
+                    ((Customer)buyer).TranHistory.Add(newTran);
 
                 // commiting the transaction for real
                 foreach (Purchase p in purchasesList)
