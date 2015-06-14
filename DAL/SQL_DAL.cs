@@ -24,7 +24,14 @@ namespace DAL
 
         public SQL_DAL()
         {
-            db = new E_MartDB_LINQtoSQLDataContext();
+            try
+            {
+                db = new E_MartDB_LINQtoSQLDataContext();
+            }
+            catch
+            {
+                throw new Exception("Cant connect to DB!");
+            }
             prodQuery = from Product prod in db.Products
                         select prod;
             empQuery = from Employee emp in db.Employees
@@ -133,9 +140,26 @@ namespace DAL
             }
             else if (obj is Backend.Transaction)
             {
+                List<Transaction> currentTransList = new List<Transaction>();
+                foreach (Transaction trans in db.Transactions)
+                {
+                    currentTransList.Add(trans);
+                }
                 foreach (Backend.Transaction trans in list)
                 {
-                    db.Transactions.InsertOnSubmit(TransactionConverterToContext(trans));
+                    bool isIn = false;
+                    foreach (Transaction currTran in currentTransList)
+                    {
+                        if (currTran.TransactionID == trans.TransactionID)
+                        {
+                            isIn = true;
+                            break;
+                        }
+                    }
+                    if (!isIn)
+                    {
+                        db.Transactions.InsertOnSubmit(TransactionConverterToContext(trans));
+                    }
                 }
             }
             else if (obj is Backend.User)
@@ -742,10 +766,18 @@ namespace DAL
         {
             Backend.Customer currentCustomer = new Backend.Customer();
             //Credit Card Entity
-            currentCustomer.CreditCard.CreditNumber = dataContextCustomer.CreditCard1.CreditNumber;
-            currentCustomer.CreditCard.ExpirationDate = dataContextCustomer.CreditCard1.ExpirationDate;
-            currentCustomer.CreditCard.FirstName = dataContextCustomer.CreditCard1.FirstName;
-            currentCustomer.CreditCard.LastName = dataContextCustomer.CreditCard1.LastName;
+            if (dataContextCustomer.CreditCard != null)
+            {
+                currentCustomer.CreditCard.CreditNumber = dataContextCustomer.CreditCard1.CreditNumber;
+                currentCustomer.CreditCard.ExpirationDate = dataContextCustomer.CreditCard1.ExpirationDate;
+                currentCustomer.CreditCard.FirstName = dataContextCustomer.CreditCard1.FirstName;
+                currentCustomer.CreditCard.LastName = dataContextCustomer.CreditCard1.LastName;
+            }
+            else
+            {
+                currentCustomer.CreditCard = null;
+            }
+            
             //Customer Entity
             currentCustomer.FirstName = dataContextCustomer.FirstName;
             currentCustomer.LastName = dataContextCustomer.LastName;
@@ -765,14 +797,18 @@ namespace DAL
             CreditCard dataContextCreditCard = new CreditCard();
             Customer dataContextCustomer = new Customer();
             //Credit Card Entity
-            dataContextCreditCard.CreditNumber = currentCustomer.CreditCard.CreditNumber;
-            dataContextCreditCard.ExpirationDate = currentCustomer.CreditCard.ExpirationDate;
-            dataContextCreditCard.FirstName = currentCustomer.CreditCard.FirstName;
-            dataContextCreditCard.LastName = currentCustomer.CreditCard.LastName;
-            dataContextCustomer.CreditCard1 = dataContextCreditCard;
+            if (currentCustomer.CreditCard != null)
+            {
+                dataContextCreditCard.CreditNumber = currentCustomer.CreditCard.CreditNumber;
+                dataContextCreditCard.ExpirationDate = currentCustomer.CreditCard.ExpirationDate;
+                dataContextCreditCard.FirstName = currentCustomer.CreditCard.FirstName;
+                dataContextCreditCard.LastName = currentCustomer.CreditCard.LastName;
+                dataContextCustomer.CreditCard1 = dataContextCreditCard;
+                dataContextCustomer.CreditCard = currentCustomer.CreditCard.CreditNumber;
+            }
+            
             //Customer Entity
-            dataContextCustomer.IsAClubMember = false;
-            dataContextCustomer.CreditCard = currentCustomer.CreditCard.CreditNumber;
+            dataContextCustomer.IsAClubMember = false; 
             dataContextCustomer.FirstName = currentCustomer.FirstName;
             dataContextCustomer.LastName = currentCustomer.LastName;
             dataContextCustomer.Id = currentCustomer.Id;

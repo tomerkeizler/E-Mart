@@ -223,7 +223,7 @@ namespace PL
                 // commiting the transaction for real
                 foreach (Purchase p in purchasesList)
                 {
-                    p.TranID = newTran.TransactionID;
+                    p.TransID = newTran.TransactionID;
                     List<Object> bought = parentWindow.cats[5].FindByNumber(IntFields.productID, p.PrdID, p.PrdID);
                     if (bought.Any())
                     {

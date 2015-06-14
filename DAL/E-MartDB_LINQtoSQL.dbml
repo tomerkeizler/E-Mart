@@ -7,23 +7,26 @@
       <Column Name="Gender" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="IsAClubMember" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="ClubMember_User" Member="Users" ThisKey="Id" OtherKey="PersonAsClubMember" Type="User" />
       <Association Name="Customer_ClubMember" Member="Customer" ThisKey="Id" OtherKey="Id" Type="Customer" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.[User]" Member="Users">
+  <Table Name="dbo.Users" Member="Users">
     <Type Name="User">
-      <Column Name="UserName" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
-      <Column Name="Password" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="UserName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Password" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="PersonID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="PersonAsEmployee" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="PersonAsCustomer" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="PersonAsClubMember" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="ClubMember_User" Member="ClubMember" ThisKey="PersonAsClubMember" OtherKey="Id" Type="ClubMember" IsForeignKey="true" />
       <Association Name="Customer_User" Member="Customer" ThisKey="PersonAsCustomer" OtherKey="Id" Type="Customer" IsForeignKey="true" />
+      <Association Name="Employee_User" Member="Employee" ThisKey="PersonAsEmployee" OtherKey="Id" Type="Employee" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.CreditCards" Member="CreditCards">
     <Type Name="CreditCard">
-      <Column Name="FirstName" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="FirstName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="LastName" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
       <Column Name="CreditNumber" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="ExpirationDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
@@ -33,9 +36,9 @@
   <Table Name="dbo.Customers" Member="Customers">
     <Type Name="Customer">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="FirstName" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
-      <Column Name="CreditCard" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="LastName" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="FirstName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="CreditCard" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LastName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="IsAClubMember" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Association Name="Customer_ClubMember" Member="ClubMember" ThisKey="Id" OtherKey="Id" Type="ClubMember" Cardinality="One" />
       <Association Name="Customer_User" Member="Users" ThisKey="Id" OtherKey="PersonAsCustomer" Type="User" />
@@ -45,7 +48,7 @@
   </Table>
   <Table Name="dbo.Department" Member="Departments">
     <Type Name="Department">
-      <Column Name="Name" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="DepartmentID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Association Name="Department_Employee" Member="Employees" ThisKey="DepartmentID" OtherKey="DepID" Type="Employee" />
       <Association Name="Department_Product" Member="Products" ThisKey="DepartmentID" OtherKey="Location" Type="Product" />
@@ -58,15 +61,16 @@
       <Column Name="SupervisiorID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Salary" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="DepID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="FirstName" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
-      <Column Name="LastName" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="FirstName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="LastName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="Rank" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Employee_User" Member="Users" ThisKey="Id" OtherKey="PersonAsEmployee" Type="User" />
       <Association Name="Department_Employee" Member="Department" ThisKey="DepID" OtherKey="DepartmentID" Type="Department" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Products" Member="Products">
     <Type Name="Product">
-      <Column Name="Name" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Column Name="Type" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Price" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="StockCount" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
@@ -80,7 +84,7 @@
   <Table Name="dbo.Purchase" Member="Purchases">
     <Type Name="Purchase">
       <Column Name="PrdID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="PrdName" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="PrdName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="Price" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Amount" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="TransID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />

@@ -38,6 +38,7 @@ namespace Backend
             firstName = other.FirstName;
             lastName = other.LastName;
             tranHistory = other.TranHistory;
+            creditCard = other.creditCard;
         }
 
         //Getters and Setters:
@@ -72,7 +73,7 @@ namespace Backend
             if (!(_other is Customer)) return false;
             Customer other = (Customer)_other;
             return (id == other.Id && firstName.Equals(other.firstName) && lastName.Equals(other.lastName)
-                    && tranHistory.SequenceEqual(other.tranHistory) && creditCard==other.CreditCard);
+                    && tranHistory.SequenceEqual(other.tranHistory) && creditCard.Equals(other.CreditCard));
         }
         public override int GetHashCode()
         {

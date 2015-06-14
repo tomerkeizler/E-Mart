@@ -464,10 +464,10 @@ namespace PL
         public bool AddDataEntity(Object newObj, User newUser, int categoryNum)
         {
             bool done = true;
+            
             try
             {
-                if (newUser != null)
-                    cats[7].Add(newUser);
+                cats[categoryNum].Add(newObj);
             }
             catch (System.Data.DataException e)
             {
@@ -484,12 +484,12 @@ namespace PL
                 done = false;
                 MessageBox.Show(e.Message);
             }
-
             if (done)
             {
                 try
                 {
-                    cats[categoryNum].Add(newObj);
+                    if (newUser != null)
+                        cats[7].Add(newUser);
                 }
                 catch (System.Data.DataException e)
                 {

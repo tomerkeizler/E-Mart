@@ -200,6 +200,8 @@ namespace DAL
 		
 		private bool _IsAClubMember;
 		
+		private EntitySet<User> _Users;
+		
 		private EntityRef<Customer> _Customer;
 		
     #region Extensibility Method Definitions
@@ -220,6 +222,7 @@ namespace DAL
 		
 		public ClubMember()
 		{
+			this._Users = new EntitySet<User>(new Action<User>(this.attach_Users), new Action<User>(this.detach_Users));
 			this._Customer = default(EntityRef<Customer>);
 			OnCreated();
 		}
@@ -328,6 +331,19 @@ namespace DAL
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ClubMember_User", Storage="_Users", ThisKey="Id", OtherKey="PersonAsClubMember")]
+		public EntitySet<User> Users
+		{
+			get
+			{
+				return this._Users;
+			}
+			set
+			{
+				this._Users.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Customer_ClubMember", Storage="_Customer", ThisKey="Id", OtherKey="Id", IsForeignKey=true)]
 		public Customer Customer
 		{
@@ -381,9 +397,21 @@ namespace DAL
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
+		
+		private void attach_Users(User entity)
+		{
+			this.SendPropertyChanging();
+			entity.ClubMember = this;
+		}
+		
+		private void detach_Users(User entity)
+		{
+			this.SendPropertyChanging();
+			entity.ClubMember = null;
+		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.[User]")]
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Users")]
 	public partial class User : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
@@ -401,7 +429,11 @@ namespace DAL
 		
 		private System.Nullable<int> _PersonAsClubMember;
 		
+		private EntityRef<ClubMember> _ClubMember;
+		
 		private EntityRef<Customer> _Customer;
+		
+		private EntityRef<Employee> _Employee;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -423,11 +455,13 @@ namespace DAL
 		
 		public User()
 		{
+			this._ClubMember = default(EntityRef<ClubMember>);
 			this._Customer = default(EntityRef<Customer>);
+			this._Employee = default(EntityRef<Employee>);
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserName", DbType="Text NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserName", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
 		public string UserName
 		{
 			get
@@ -447,7 +481,7 @@ namespace DAL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Password", DbType="Text NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Password", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
 		public string Password
 		{
 			get
@@ -498,6 +532,10 @@ namespace DAL
 			{
 				if ((this._PersonAsEmployee != value))
 				{
+					if (this._Employee.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
 					this.OnPersonAsEmployeeChanging(value);
 					this.SendPropertyChanging();
 					this._PersonAsEmployee = value;
@@ -542,11 +580,49 @@ namespace DAL
 			{
 				if ((this._PersonAsClubMember != value))
 				{
+					if (this._ClubMember.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
 					this.OnPersonAsClubMemberChanging(value);
 					this.SendPropertyChanging();
 					this._PersonAsClubMember = value;
 					this.SendPropertyChanged("PersonAsClubMember");
 					this.OnPersonAsClubMemberChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ClubMember_User", Storage="_ClubMember", ThisKey="PersonAsClubMember", OtherKey="Id", IsForeignKey=true)]
+		public ClubMember ClubMember
+		{
+			get
+			{
+				return this._ClubMember.Entity;
+			}
+			set
+			{
+				ClubMember previousValue = this._ClubMember.Entity;
+				if (((previousValue != value) 
+							|| (this._ClubMember.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ClubMember.Entity = null;
+						previousValue.Users.Remove(this);
+					}
+					this._ClubMember.Entity = value;
+					if ((value != null))
+					{
+						value.Users.Add(this);
+						this._PersonAsClubMember = value.Id;
+					}
+					else
+					{
+						this._PersonAsClubMember = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("ClubMember");
 				}
 			}
 		}
@@ -581,6 +657,40 @@ namespace DAL
 						this._PersonAsCustomer = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("Customer");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Employee_User", Storage="_Employee", ThisKey="PersonAsEmployee", OtherKey="Id", IsForeignKey=true)]
+		public Employee Employee
+		{
+			get
+			{
+				return this._Employee.Entity;
+			}
+			set
+			{
+				Employee previousValue = this._Employee.Entity;
+				if (((previousValue != value) 
+							|| (this._Employee.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Employee.Entity = null;
+						previousValue.Users.Remove(this);
+					}
+					this._Employee.Entity = value;
+					if ((value != null))
+					{
+						value.Users.Add(this);
+						this._PersonAsEmployee = value.Id;
+					}
+					else
+					{
+						this._PersonAsEmployee = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Employee");
 				}
 			}
 		}
@@ -642,7 +752,7 @@ namespace DAL
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FirstName", DbType="Text NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FirstName", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
 		public string FirstName
 		{
 			get
@@ -778,7 +888,7 @@ namespace DAL
 		
 		private string _FirstName;
 		
-		private int _CreditCard;
+		private System.Nullable<int> _CreditCard;
 		
 		private string _LastName;
 		
@@ -800,7 +910,7 @@ namespace DAL
     partial void OnIdChanged();
     partial void OnFirstNameChanging(string value);
     partial void OnFirstNameChanged();
-    partial void OnCreditCardChanging(int value);
+    partial void OnCreditCardChanging(System.Nullable<int> value);
     partial void OnCreditCardChanged();
     partial void OnLastNameChanging(string value);
     partial void OnLastNameChanged();
@@ -837,7 +947,7 @@ namespace DAL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FirstName", DbType="Text NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FirstName", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
 		public string FirstName
 		{
 			get
@@ -857,8 +967,8 @@ namespace DAL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreditCard", DbType="Int NOT NULL")]
-		public int CreditCard
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreditCard", DbType="Int")]
+		public System.Nullable<int> CreditCard
 		{
 			get
 			{
@@ -881,7 +991,7 @@ namespace DAL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastName", DbType="Text NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastName", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
 		public string LastName
 		{
 			get
@@ -1019,7 +1129,7 @@ namespace DAL
 					}
 					else
 					{
-						this._CreditCard = default(int);
+						this._CreditCard = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("CreditCard1");
 				}
@@ -1090,7 +1200,7 @@ namespace DAL
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="Text NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
 		public string Name
 		{
 			get
@@ -1223,6 +1333,8 @@ namespace DAL
 		
 		private int _Rank;
 		
+		private EntitySet<User> _Users;
+		
 		private EntityRef<Department> _Department;
 		
     #region Extensibility Method Definitions
@@ -1249,6 +1361,7 @@ namespace DAL
 		
 		public Employee()
 		{
+			this._Users = new EntitySet<User>(new Action<User>(this.attach_Users), new Action<User>(this.detach_Users));
 			this._Department = default(EntityRef<Department>);
 			OnCreated();
 		}
@@ -1357,7 +1470,7 @@ namespace DAL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FirstName", DbType="Text NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FirstName", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
 		public string FirstName
 		{
 			get
@@ -1377,7 +1490,7 @@ namespace DAL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastName", DbType="Text NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastName", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
 		public string LastName
 		{
 			get
@@ -1414,6 +1527,19 @@ namespace DAL
 					this.SendPropertyChanged("Rank");
 					this.OnRankChanged();
 				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Employee_User", Storage="_Users", ThisKey="Id", OtherKey="PersonAsEmployee")]
+		public EntitySet<User> Users
+		{
+			get
+			{
+				return this._Users;
+			}
+			set
+			{
+				this._Users.Assign(value);
 			}
 		}
 		
@@ -1470,6 +1596,18 @@ namespace DAL
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
+		
+		private void attach_Users(User entity)
+		{
+			this.SendPropertyChanging();
+			entity.Employee = this;
+		}
+		
+		private void detach_Users(User entity)
+		{
+			this.SendPropertyChanging();
+			entity.Employee = null;
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Products")]
@@ -1523,7 +1661,7 @@ namespace DAL
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="Text", UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(50)")]
 		public string Name
 		{
 			get
@@ -1815,7 +1953,7 @@ namespace DAL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PrdName", DbType="Text NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PrdName", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
 		public string PrdName
 		{
 			get
