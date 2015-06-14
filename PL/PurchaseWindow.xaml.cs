@@ -30,7 +30,7 @@ namespace PL
         private PL_GUI parentWindow;
         private Object buyer;
         private bool canDrag;
-        private Dictionary<Product, int> currentCart;
+        private Dictionary<int, int> currentCart;
 
         private Dictionary<ComboBox, int> currentTypes;
         private bool areThereAnyProducts;
@@ -44,7 +44,7 @@ namespace PL
             parentWindow = _parentWindow;
             buyer = _buyer;
             canDrag = true;
-            currentCart = new Dictionary<Product, int>();
+            currentCart = new Dictionary<int, int>();
 
             // initializing the dictionary with value 3="none" for each combobox
             currentTypes = new Dictionary<ComboBox, int>(3);
@@ -116,12 +116,11 @@ namespace PL
                     currentTypes[selectedComboBox] = newChoice;
 
                     // update products and amounts from a saved dictionary
-                    /*
-                    foreach (Buyable b in currentList)
-                        foreach (KeyValuePair<Product, int> inCart in currentCart)
-                            if (b.Prod.Equals(inCart.Key))
-                                b.LeftInStock = currentCart[b.Prod];
-                     */
+                    if (currentCart.Any())
+                        foreach (Buyable b in currentList)
+                            foreach (KeyValuePair<int, int> inCart in currentCart)
+                                if (b.Prod.ProductID == inCart.Key)
+                                    b.LeftInStock = inCart.Value;
                 }
             }
         }
@@ -197,7 +196,7 @@ namespace PL
 
                     if (toSaveVisa.IsChecked == true)
                     {
-                        CreditCard myVisa = new CreditCard(((Customer)buyer).FirstName, ((Customer)buyer).LastName, ((Customer)buyer).CreditCard.CreditNumber, ((Customer)buyer).CreditCard.ExpirationDate);
+                        CreditCard myVisa = new CreditCard(((Customer)buyer).FirstName, ((Customer)buyer).LastName, int.Parse(cardNumber.Text), expDate.SelectedDate.Value);
 
                         if (buyer is ClubMember)
                         {
@@ -206,7 +205,7 @@ namespace PL
                             newClubMember.CreditCard = myVisa;
                             parentWindow.cats[1].Edit(oldClubMember, newClubMember);
                         }
-                        else
+                        else if (buyer is Customer)
                         {
                             Customer oldCustomer = ((Customer)buyer);
                             Customer newCustomer = new Customer(oldCustomer);
@@ -218,24 +217,27 @@ namespace PL
 
                 List<Purchase> receipt = purchasesList.Cast<Purchase>().ToList();
                 Transaction newTran = new Transaction(0, Is_a_return.Purchase, receipt, myPaymentType);
+                parentWindow.cats[6].Add(newTran);
                 MessageBox.Show("Thank you for your purchase!");
 
                 // commiting the transaction for real
-                List<Object> bought = new List<Object>();
                 foreach (Purchase p in purchasesList)
                 {
-                    List<Object> op = parentWindow.cats[5].FindByNumber(IntFields.productID, p.PrdID, p.PrdID);
-                    if (op.Any())
+                    p.TranID = newTran.TransactionID;
+                    List<Object> bought = parentWindow.cats[5].FindByNumber(IntFields.productID, p.PrdID, p.PrdID);
+                    if (bought.Any())
                     {
-                        Product oldProd = ((Product)op.First());
+                        Product oldProd = ((Product)bought.First());
                         Product newProd = new Product(oldProd);
                         newProd.Buy(p.Amount);
                         parentWindow.cats[5].Edit(oldProd, newProd);
                     }
                 }
-                this.Close();
+
                 // resetting selling counters
                 ((Product_BL)parentWindow.cats[5]).GenerateTopSeller();
+                   
+                this.Close();
             }
         }
     
@@ -270,9 +272,6 @@ namespace PL
                     {
                         b.ZeroAmount();
                     }
-
-            // update the main table of products to zero amounts
-            //purchaseGrid.Items.Refresh();
         }
 
         private void AddSingleToCart(Buyable b)
@@ -298,6 +297,7 @@ namespace PL
                     identical.Amount += toBuy.Amount;
 
                 // refresh the shopping cart datagrid
+                purchaseGrid.CancelEdit();////
                 purchaseGrid.Items.Refresh();
 
                 // update the stock of the product
@@ -315,18 +315,19 @@ namespace PL
 
                 // update product and amount selected in a dictionary
                 bool flag = false;
-                foreach (KeyValuePair<Product, int> inCart in currentCart)
-                    if (b.Prod.Equals(inCart.Key))
-                    {
-                        currentCart[inCart.Key] += b.Amount;
-                        flag = true;
-                    }
-                if (!flag)
-                    currentCart.Add(b.Prod, b.Amount);
+                if (currentCart.Any())
+                    foreach (int inCart in currentCart.Keys)
+                        if (b.Prod.ProductID == inCart && !flag)
+                            flag = true;
+                if (flag)
+                    currentCart[b.Prod.ProductID] = b.LeftInStock;
+                else
+                    currentCart.Add(b.Prod.ProductID, b.LeftInStock);
 
                 // zero the amount in main table
                 b.ZeroAmount();
                 // refresh the products datagrid
+                ProductGrid.CancelEdit();////
                 ProductGrid.Items.Refresh();
             }
         }
@@ -348,6 +349,7 @@ namespace PL
             foreach (Buyable b in currentList)
                 if (b.Prod.ProductID == toRemove.PrdID)
                     b.LeftInStock = b.LeftInStock + toRemove.Amount;
+            ProductGrid.CancelEdit();////
             ProductGrid.Items.Refresh();
 
             String total = Convert.ToString(int.Parse(totalPrice1.Text) - (toRemove.Price) * (toRemove.Amount));
@@ -361,10 +363,10 @@ namespace PL
                 removals.Visibility = Visibility.Collapsed;
             }
 
+
             // update product and amount selected in a dictionary
-            foreach (KeyValuePair<Product, int> inCart in currentCart)
-                if (toRemove.PrdID.Equals(inCart.Key.ProductID))
-                    currentCart[inCart.Key] -= toRemove.Amount;
+            if (currentCart.Any())
+                currentCart.Remove(toRemove.PrdID);
         }
 
         private void RemoveManyFromCart(object sender, RoutedEventArgs e)
@@ -375,6 +377,7 @@ namespace PL
                 int plusToStock = purchasesList.Where(n => n.PrdID == b.Prod.ProductID).First().Amount;
                 b.LeftInStock = b.LeftInStock + plusToStock;
             }
+            ProductGrid.CancelEdit();////
             ProductGrid.Items.Refresh();
 
             purchasesList.Clear();
@@ -408,14 +411,6 @@ namespace PL
         {
             this.Close();
         }
-
-
-
-        
-
-
-
-
 
 
     }

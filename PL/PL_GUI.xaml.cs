@@ -164,6 +164,10 @@ namespace PL
             grids = new DataGrid[8] { null, clubMemberGrid, CustomerGrid, DepartmentGrid, EmployeeGrid, ProductGrid, TransactionGrid, UserGrid };
             data = new List<Object>[8];
 
+            // default user and rank
+            user = null;
+            rank = 4;
+
             // default category is ClubMember = 1
             currentCategory = 1;
 
@@ -675,7 +679,13 @@ namespace PL
 
         private void CallPurchase(object sender, RoutedEventArgs e)
         {
-            Window purchase = new PurchaseWindow(this, user.Person);
+            Object buyer;
+            if (user == null)
+                buyer = null;
+            else
+                buyer = user.Person;
+
+            Window purchase = new PurchaseWindow(this, buyer);
             purchase.ShowDialog();
         }
 
@@ -794,6 +804,11 @@ namespace PL
             Product p = e.Row.DataContext as Product;
             if (p.IsTopSeller)
                 e.Row.Background = myBrush;
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
 
 
