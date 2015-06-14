@@ -14,9 +14,10 @@ namespace Backend
         private string prdName;
         private int price;
         private int amount;
+        private int tranID;
 
         // constructors
-        public Purchase(int _prdID, string _prdName, int _price, int _amount)
+        public Purchase(int _prdID, string _prdName, int _price, int _amount, int _tranID = -1)
         {
             prdID = _prdID;
             prdName = _prdName;
@@ -30,6 +31,7 @@ namespace Backend
             prdName = other.prdName;
             price = other.price;
             amount = other.amount;
+            tranID = other.tranID;
         }
 
         // getters ans setters
@@ -55,6 +57,12 @@ namespace Backend
         {
             get { return amount; }
             set { amount = value; }
+        }
+
+        public int TranID
+        {
+            get { return tranID; }
+            set { tranID = value; }
         }
 
         // methods
