@@ -202,17 +202,15 @@ namespace PL
 
                         if (buyer is ClubMember)
                         {
-                            ClubMember oldClubMember = ((ClubMember)buyer);
-                            ClubMember newClubMember = new ClubMember(oldClubMember);
-                            newClubMember.CreditCard = myVisa;
-                            parentWindow.cats[1].Edit(oldClubMember, newClubMember);
+                            ClubMember oldClubMember = new ClubMember((ClubMember)buyer);
+                            ((Customer)buyer).CreditCard = myVisa;
+                            parentWindow.cats[1].Edit(oldClubMember, buyer);
                         }
                         else if (buyer is Customer)
                         {
-                            Customer oldCustomer = ((Customer)buyer);
-                            Customer newCustomer = new Customer(oldCustomer);
-                            newCustomer.CreditCard = myVisa;
-                            parentWindow.cats[1].Edit(oldCustomer, newCustomer);
+                            Customer oldCustomer = new Customer((Customer)buyer);
+                            ((Customer)buyer).CreditCard = myVisa;
+                            parentWindow.cats[2].Edit(oldCustomer, buyer);
                         }
                     }
                 }
@@ -233,12 +231,9 @@ namespace PL
                         parentWindow.cats[5].Edit(oldProd, newProd);
                     }
                 }
+
                 // add this transaction to the table of all transactions
                 parentWindow.cats[6].Add(newTran);
-                /*
-                // create the receipt for this transaction
-                List<Purchase> receipt = purchasesList.Cast<Purchase>().ToList();
-                newTran.Receipt = receipt;*/
                 
                 // add this transaction to the tranHistory of the buyer (if he is a customer/clubmember)
                 if (buyer is Customer)
@@ -255,7 +250,6 @@ namespace PL
                         ((Customer)buyer).TranHistory.Add(newTran);
                         parentWindow.cats[2].Edit(oldCus, buyer);
                     }
-
                 } 
 
                 // resetting selling counters
