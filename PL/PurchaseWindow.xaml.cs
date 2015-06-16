@@ -217,23 +217,13 @@ namespace PL
                     }
                 }
 
-                // create the receipt for this transaction
-                List<Purchase> receipt = purchasesList.Cast<Purchase>().ToList();
-
                 // create the transcation
-                Transaction newTran = new Transaction(0, Is_a_return.Purchase, receipt, myPaymentType);
-                
-                // add this transaction to the table of all transactions
-                parentWindow.cats[6].Add(newTran);
-
-                // add this transaction to the tranHistory of the buyer (if he is a customer/clubmember)
-                if (buyer is Customer)
-                    ((Customer)buyer).TranHistory.Add(newTran);
+                Transaction newTran = new Transaction(0, Is_a_return.Purchase, new List<Purchase>(), myPaymentType);
 
                 // commiting the transaction for real
                 foreach (Purchase p in purchasesList)
                 {
-                    p.TransID = newTran.TransactionID;
+                    newTran.Receipt.Add(p);
                     List<Object> bought = parentWindow.cats[5].FindByNumber(IntFields.productID, p.PrdID, p.PrdID);
                     if (bought.Any())
                     {
@@ -243,6 +233,30 @@ namespace PL
                         parentWindow.cats[5].Edit(oldProd, newProd);
                     }
                 }
+                // add this transaction to the table of all transactions
+                parentWindow.cats[6].Add(newTran);
+                /*
+                // create the receipt for this transaction
+                List<Purchase> receipt = purchasesList.Cast<Purchase>().ToList();
+                newTran.Receipt = receipt;*/
+                
+                // add this transaction to the tranHistory of the buyer (if he is a customer/clubmember)
+                if (buyer is Customer)
+                {
+                    if (buyer is ClubMember)
+                    {
+                        ClubMember oldClub = new ClubMember((ClubMember)buyer);
+                        ((Customer)buyer).TranHistory.Add(newTran);
+                        parentWindow.cats[1].Edit(oldClub, buyer);
+                    }
+                    else
+                    {
+                        Customer oldCus = new Customer((Customer)buyer);
+                        ((Customer)buyer).TranHistory.Add(newTran);
+                        parentWindow.cats[2].Edit(oldCus, buyer);
+                    }
+
+                } 
 
                 // resetting selling counters
                 ((Product_BL)parentWindow.cats[5]).GenerateTopSeller();

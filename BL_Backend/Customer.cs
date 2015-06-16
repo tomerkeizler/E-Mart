@@ -37,7 +37,7 @@ namespace Backend
             id = other.Id;
             firstName = other.FirstName;
             lastName = other.LastName;
-            tranHistory = other.TranHistory;
+            tranHistory = new List<Transaction>(other.TranHistory);
             creditCard = other.creditCard;
         }
 
@@ -74,10 +74,10 @@ namespace Backend
             Customer other = (Customer)_other;
             if (creditCard != null)
                 return (id == other.Id && firstName.Equals(other.firstName) && lastName.Equals(other.lastName)
-                        && tranHistory.SequenceEqual(other.tranHistory) && creditCard.Equals(other.CreditCard));
+                        && creditCard.Equals(other.CreditCard));
             else
                 return (id == other.Id && firstName.Equals(other.firstName) && lastName.Equals(other.lastName)
-                        && tranHistory.SequenceEqual(other.tranHistory) && other.creditCard == null);
+                        &&  other.creditCard == null);
         }
         public override int GetHashCode()
         {

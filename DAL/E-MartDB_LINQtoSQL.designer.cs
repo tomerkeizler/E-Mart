@@ -898,7 +898,7 @@ namespace DAL
 		
 		private EntitySet<User> _Users;
 		
-		private EntityRef<TranHistoryLinkedTable> _TranHistoryLinkedTable;
+		private EntitySet<TranHistoryLinkedTable> _TranHistoryLinkedTables;
 		
 		private EntityRef<CreditCard> _CreditCard1;
 		
@@ -922,7 +922,7 @@ namespace DAL
 		{
 			this._ClubMember = default(EntityRef<ClubMember>);
 			this._Users = new EntitySet<User>(new Action<User>(this.attach_Users), new Action<User>(this.detach_Users));
-			this._TranHistoryLinkedTable = default(EntityRef<TranHistoryLinkedTable>);
+			this._TranHistoryLinkedTables = new EntitySet<TranHistoryLinkedTable>(new Action<TranHistoryLinkedTable>(this.attach_TranHistoryLinkedTables), new Action<TranHistoryLinkedTable>(this.detach_TranHistoryLinkedTables));
 			this._CreditCard1 = default(EntityRef<CreditCard>);
 			OnCreated();
 		}
@@ -1073,32 +1073,16 @@ namespace DAL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Customer_TranHistoryLinkedTable", Storage="_TranHistoryLinkedTable", ThisKey="Id", OtherKey="CustomerID", IsUnique=true, IsForeignKey=false)]
-		public TranHistoryLinkedTable TranHistoryLinkedTable
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Customer_TranHistoryLinkedTable", Storage="_TranHistoryLinkedTables", ThisKey="Id", OtherKey="CustomerID")]
+		public EntitySet<TranHistoryLinkedTable> TranHistoryLinkedTables
 		{
 			get
 			{
-				return this._TranHistoryLinkedTable.Entity;
+				return this._TranHistoryLinkedTables;
 			}
 			set
 			{
-				TranHistoryLinkedTable previousValue = this._TranHistoryLinkedTable.Entity;
-				if (((previousValue != value) 
-							|| (this._TranHistoryLinkedTable.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._TranHistoryLinkedTable.Entity = null;
-						previousValue.Customer = null;
-					}
-					this._TranHistoryLinkedTable.Entity = value;
-					if ((value != null))
-					{
-						value.Customer = this;
-					}
-					this.SendPropertyChanged("TranHistoryLinkedTable");
-				}
+				this._TranHistoryLinkedTables.Assign(value);
 			}
 		}
 		
@@ -1163,6 +1147,18 @@ namespace DAL
 		}
 		
 		private void detach_Users(User entity)
+		{
+			this.SendPropertyChanging();
+			entity.Customer = null;
+		}
+		
+		private void attach_TranHistoryLinkedTables(TranHistoryLinkedTable entity)
+		{
+			this.SendPropertyChanging();
+			entity.Customer = this;
+		}
+		
+		private void detach_TranHistoryLinkedTables(TranHistoryLinkedTable entity)
 		{
 			this.SendPropertyChanging();
 			entity.Customer = null;
@@ -2322,7 +2318,7 @@ namespace DAL
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CustomerID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CustomerID", DbType="Int NOT NULL")]
 		public int CustomerID
 		{
 			get
@@ -2346,7 +2342,7 @@ namespace DAL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TransID", DbType="Int NOT NULL")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TransID", DbType="Int NOT NULL", IsPrimaryKey=true)]
 		public int TransID
 		{
 			get
@@ -2407,12 +2403,12 @@ namespace DAL
 					if ((previousValue != null))
 					{
 						this._Customer.Entity = null;
-						previousValue.TranHistoryLinkedTable = null;
+						previousValue.TranHistoryLinkedTables.Remove(this);
 					}
 					this._Customer.Entity = value;
 					if ((value != null))
 					{
-						value.TranHistoryLinkedTable = this;
+						value.TranHistoryLinkedTables.Add(this);
 						this._CustomerID = value.Id;
 					}
 					else
@@ -2441,12 +2437,12 @@ namespace DAL
 					if ((previousValue != null))
 					{
 						this._Transaction.Entity = null;
-						previousValue.TranHistoryLinkedTables.Remove(this);
+						previousValue.TranHistoryLinkedTable = null;
 					}
 					this._Transaction.Entity = value;
 					if ((value != null))
 					{
-						value.TranHistoryLinkedTables.Add(this);
+						value.TranHistoryLinkedTable = this;
 						this._TransID = value.TransactionID;
 					}
 					else
@@ -2497,7 +2493,7 @@ namespace DAL
 		
 		private EntitySet<Purchase> _Purchases;
 		
-		private EntitySet<TranHistoryLinkedTable> _TranHistoryLinkedTables;
+		private EntityRef<TranHistoryLinkedTable> _TranHistoryLinkedTable;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -2518,7 +2514,7 @@ namespace DAL
 		public Transaction()
 		{
 			this._Purchases = new EntitySet<Purchase>(new Action<Purchase>(this.attach_Purchases), new Action<Purchase>(this.detach_Purchases));
-			this._TranHistoryLinkedTables = new EntitySet<TranHistoryLinkedTable>(new Action<TranHistoryLinkedTable>(this.attach_TranHistoryLinkedTables), new Action<TranHistoryLinkedTable>(this.detach_TranHistoryLinkedTables));
+			this._TranHistoryLinkedTable = default(EntityRef<TranHistoryLinkedTable>);
 			OnCreated();
 		}
 		
@@ -2635,16 +2631,32 @@ namespace DAL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Transaction_TranHistoryLinkedTable", Storage="_TranHistoryLinkedTables", ThisKey="TransactionID", OtherKey="TransID")]
-		public EntitySet<TranHistoryLinkedTable> TranHistoryLinkedTables
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Transaction_TranHistoryLinkedTable", Storage="_TranHistoryLinkedTable", ThisKey="TransactionID", OtherKey="TransID", IsUnique=true, IsForeignKey=false)]
+		public TranHistoryLinkedTable TranHistoryLinkedTable
 		{
 			get
 			{
-				return this._TranHistoryLinkedTables;
+				return this._TranHistoryLinkedTable.Entity;
 			}
 			set
 			{
-				this._TranHistoryLinkedTables.Assign(value);
+				TranHistoryLinkedTable previousValue = this._TranHistoryLinkedTable.Entity;
+				if (((previousValue != value) 
+							|| (this._TranHistoryLinkedTable.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._TranHistoryLinkedTable.Entity = null;
+						previousValue.Transaction = null;
+					}
+					this._TranHistoryLinkedTable.Entity = value;
+					if ((value != null))
+					{
+						value.Transaction = this;
+					}
+					this.SendPropertyChanged("TranHistoryLinkedTable");
+				}
 			}
 		}
 		
@@ -2675,18 +2687,6 @@ namespace DAL
 		}
 		
 		private void detach_Purchases(Purchase entity)
-		{
-			this.SendPropertyChanging();
-			entity.Transaction = null;
-		}
-		
-		private void attach_TranHistoryLinkedTables(TranHistoryLinkedTable entity)
-		{
-			this.SendPropertyChanging();
-			entity.Transaction = this;
-		}
-		
-		private void detach_TranHistoryLinkedTables(TranHistoryLinkedTable entity)
 		{
 			this.SendPropertyChanging();
 			entity.Transaction = null;

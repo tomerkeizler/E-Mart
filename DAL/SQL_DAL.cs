@@ -159,6 +159,10 @@ namespace DAL
                     if (!isIn)
                     {
                         db.Transactions.InsertOnSubmit(TransactionConverterToContext(trans));
+                        foreach (Backend.Purchase purch in trans.Receipt){
+                            db.Purchases.InsertOnSubmit(PurchaseConverterToContext(purch));
+                        }
+                        
                     }
                 }
             }

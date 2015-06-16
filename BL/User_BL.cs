@@ -42,40 +42,43 @@ namespace BL
             List<Backend.User> Allusers = itsDAL.ReadFromFile(Elements.User).Cast<Backend.User>().ToList();
             if (!Allusers.Any())
                 throw new NullReferenceException("No Users to remove!");
-
-            List<object> Allclubmembers = itsDAL.ReadFromFile(Elements.ClubMember).ToList();
-            List<object> Allcustomers = itsDAL.ReadFromFile(Elements.Customer).ToList();
-            List<object> Allemployees = itsDAL.ReadFromFile(Elements.Employee).ToList();
-            if (((Backend.User)u).Person is Backend.ClubMember)
+            if (!isEdit)
             {
-                foreach (object cm in Allclubmembers)
-                    if (cm.Equals(((Backend.User)u).Person))
-                    {
-                        Allclubmembers.Remove(cm);
-                        itsDAL.WriteToFile(Allclubmembers.Cast<object>().ToList(), (Backend.ClubMember)cm);
-                        break;
-                    }
+                List<object> Allclubmembers = itsDAL.ReadFromFile(Elements.ClubMember).ToList();
+                List<object> Allcustomers = itsDAL.ReadFromFile(Elements.Customer).ToList();
+                List<object> Allemployees = itsDAL.ReadFromFile(Elements.Employee).ToList();
+                if (((Backend.User)u).Person is Backend.ClubMember)
+                {
+                    foreach (object cm in Allclubmembers)
+                        if (cm.Equals(((Backend.User)u).Person))
+                        {
+                            Allclubmembers.Remove(cm);
+                            itsDAL.WriteToFile(Allclubmembers.Cast<object>().ToList(), (Backend.ClubMember)cm);
+                            break;
+                        }
+                }
+                else if (((Backend.User)u).Person is Backend.Customer)
+                {
+                    foreach (object c in Allcustomers)
+                        if (c.Equals(((Backend.User)u).Person))
+                        {
+                            Allcustomers.Remove(c);
+                            itsDAL.WriteToFile(Allcustomers.Cast<object>().ToList(), (Backend.Customer)c);
+                            break;
+                        }
+                }
+                else if (((Backend.User)u).Person is Backend.Employee)
+                {
+                    foreach (object e in Allemployees)
+                        if (e.Equals(((Backend.User)u).Person))
+                        {
+                            Allemployees.Remove(e);
+                            itsDAL.WriteToFile(Allemployees.Cast<object>().ToList(), (Backend.Employee)e);
+                            break;
+                        }
+                }
             }
-            else if (((Backend.User)u).Person is Backend.Customer)
-            {
-                foreach (object c in Allcustomers)
-                    if (c.Equals(((Backend.User)u).Person))
-                    {
-                        Allcustomers.Remove(c);
-                        itsDAL.WriteToFile(Allcustomers.Cast<object>().ToList(), (Backend.Customer)c);
-                        break;
-                    }
-            }
-            else if (((Backend.User)u).Person is Backend.Employee)
-            {
-                foreach (object e in Allemployees)
-                    if (e.Equals(((Backend.User)u).Person))
-                    {
-                        Allemployees.Remove(e);
-                        itsDAL.WriteToFile(Allemployees.Cast<object>().ToList(), (Backend.Employee)e);
-                        break;
-                    }
-            }
+            
                 foreach (Backend.User user in Allusers)
                 {
                     if (user.Equals(u))
@@ -94,7 +97,7 @@ namespace BL
                 if (((Backend.Employee)((Backend.User)oldU).Person).Id == -1)
                     throw new UnauthorizedAccessException("can't edit default administrator");
             }
-            this.Remove(oldU);
+            this.Remove(oldU,true);
             this.Add(newU);
         }
 

@@ -38,6 +38,11 @@ namespace BL
                 //set the new ID
                 ((Backend.Transaction)t).TransactionID = maxID + 1;
             }
+            //assign the ID to the purchases
+            foreach (Backend.Purchase purc in ((Backend.Transaction)t).Receipt)
+            {
+                purc.TransID = ((Backend.Transaction)t).TransactionID;
+            }
             //Add the new transaction to the system
             Alltrans.Add((Backend.Transaction)t);
             itsDAL.WriteToFile(Alltrans.Cast<object>().ToList(), (Backend.Transaction)t);

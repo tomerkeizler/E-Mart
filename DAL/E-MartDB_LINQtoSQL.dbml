@@ -42,7 +42,7 @@
       <Column Name="IsAClubMember" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Association Name="Customer_ClubMember" Member="ClubMember" ThisKey="Id" OtherKey="Id" Type="ClubMember" Cardinality="One" />
       <Association Name="Customer_User" Member="Users" ThisKey="Id" OtherKey="PersonAsCustomer" Type="User" />
-      <Association Name="Customer_TranHistoryLinkedTable" Member="TranHistoryLinkedTable" ThisKey="Id" OtherKey="CustomerID" Type="TranHistoryLinkedTable" Cardinality="One" />
+      <Association Name="Customer_TranHistoryLinkedTable" Member="TranHistoryLinkedTables" ThisKey="Id" OtherKey="CustomerID" Type="TranHistoryLinkedTable" />
       <Association Name="CreditCard_Customer" Member="CreditCard1" ThisKey="CreditCard" OtherKey="CreditNumber" Type="CreditCard" IsForeignKey="true" />
     </Type>
   </Table>
@@ -103,8 +103,8 @@
   </Table>
   <Table Name="dbo.TranHistoryLinkedTable" Member="TranHistoryLinkedTables">
     <Type Name="TranHistoryLinkedTable">
-      <Column Name="CustomerID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="TransID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TransID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="IsAClubMember" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Association Name="Customer_TranHistoryLinkedTable" Member="Customer" ThisKey="CustomerID" OtherKey="Id" Type="Customer" IsForeignKey="true" />
       <Association Name="Transaction_TranHistoryLinkedTable" Member="Transaction" ThisKey="TransID" OtherKey="TransactionID" Type="Transaction" IsForeignKey="true" />
@@ -118,7 +118,7 @@
       <Column Name="Receipt" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="CurrentDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Association Name="Transaction_Purchase" Member="Purchases" ThisKey="TransactionID" OtherKey="TransID" Type="Purchase" />
-      <Association Name="Transaction_TranHistoryLinkedTable" Member="TranHistoryLinkedTables" ThisKey="TransactionID" OtherKey="TransID" Type="TranHistoryLinkedTable" />
+      <Association Name="Transaction_TranHistoryLinkedTable" Member="TranHistoryLinkedTable" ThisKey="TransactionID" OtherKey="TransID" Type="TranHistoryLinkedTable" Cardinality="One" />
     </Type>
   </Table>
 </Database>

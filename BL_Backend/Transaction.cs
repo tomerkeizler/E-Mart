@@ -28,7 +28,7 @@ namespace Backend
             transactionID = _transactionID;
             currentDate = DateTime.Today;
             is_a_return = _is_a_return;
-            receipt = _receipt;
+            receipt = new List<Purchase>(_receipt);
             payment = _payment;
         }
         //For Deep Copy
