@@ -21,6 +21,13 @@ namespace Backend
             Assert.AreEqual(PStatus.InStock, prod.InStock);
         }
         [Test]
+        public void isCustomerEquals()
+        {
+            Customer prod = new Customer(123123123, "tomer", "amdur", null);
+            Customer prod1 = new Customer(123123123, "tomer", "amdur", new CreditCard("tomera", "amdur", 111222333, DateTime.Now));
+            Assert.IsFalse(prod.Equals(prod1));
+        }
+        [Test]
         public void isChangedPstatus()
         {
             Product prod = new Product("Banana", PType.Clothes, 1, 21, 2);

@@ -72,8 +72,12 @@ namespace Backend
         {
             if (!(_other is Customer)) return false;
             Customer other = (Customer)_other;
-            return (id == other.Id && firstName.Equals(other.firstName) && lastName.Equals(other.lastName)
-                    && tranHistory.SequenceEqual(other.tranHistory) && creditCard.Equals(other.CreditCard));
+            if (creditCard != null)
+                return (id == other.Id && firstName.Equals(other.firstName) && lastName.Equals(other.lastName)
+                        && tranHistory.SequenceEqual(other.tranHistory) && creditCard.Equals(other.CreditCard));
+            else
+                return (id == other.Id && firstName.Equals(other.firstName) && lastName.Equals(other.lastName)
+                        && tranHistory.SequenceEqual(other.tranHistory) && other.creditCard == null);
         }
         public override int GetHashCode()
         {
