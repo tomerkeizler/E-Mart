@@ -85,9 +85,10 @@ namespace BL
             User_BL itsUserBL = new User_BL(itsDAL);
             Backend.User newUser = new Backend.User(oldUser);
             newUser.Person = newCM;
-            itsUserBL.Edit(oldUser, newUser);
+            itsUserBL.Remove(oldUser, true);
             this.Remove(oldCM);
             this.Add(newCM);
+            itsUserBL.Add(newUser);
         }
 
         public List<object> FindByName(string name, StringFields field)
