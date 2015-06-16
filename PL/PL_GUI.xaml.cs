@@ -154,7 +154,6 @@ namespace PL
         public User user;
         public int rank;
         private int currentCategory;
-        private ProgressBar prog;
 
         // constructor
         public PL_GUI(IBL itsClubMemberBL, IBL itsCustomerBL, IBL itsDepartmentBL, IBL itsEmployeeBL, IBL itsProductBL, IBL itsTransactionBL, IBL itsUserBL)
@@ -174,8 +173,6 @@ namespace PL
             // generate all lists of data entities and bind datagrids to lists
             for (int i = 1; i < 8; i++)
                 DisplayData(new List<Object>(cats[i].GetAll()), i);
-
-            prog = new ProgressBar();
         }
 
         // Main method
@@ -190,19 +187,6 @@ namespace PL
 
             Permissions();
         }
-
-        /////////////////////
-        private void button1_Click()
-        {
-            int i;
-            bar.Minimum = 0;
-            bar.Maximum = 200;
-            for (i = 0; i <= 200; i++)
-            {
-                bar.Value = i;
-            }
-        }
-        /////////////////////
 
         public void Permissions()
         {
