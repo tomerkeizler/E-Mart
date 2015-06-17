@@ -99,6 +99,13 @@ namespace DAL
                 {
                     db.ClubMembers.DeleteOnSubmit(club);
                 }
+                foreach (Customer clubAsCust in db.Customers)
+                {
+                    if (clubAsCust.IsAClubMember)
+                    {
+                        db.Customers.DeleteOnSubmit(clubAsCust);
+                    }
+                }
                 foreach (Backend.ClubMember club in list)
                 {
                     db.ClubMembers.InsertOnSubmit(ClubMemberConverterToContext(club));
@@ -220,7 +227,10 @@ namespace DAL
             {
                 foreach (Customer cust in db.Customers)
                 {
-                    currentList.Add(CustomerConverterToBackend(cust));
+                    if (!cust.IsAClubMember)
+                    {
+                        currentList.Add(CustomerConverterToBackend(cust));
+                    }
                 }
             }
             else if (element.Equals(Elements.Transaction))
