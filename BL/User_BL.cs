@@ -11,8 +11,8 @@ namespace BL
     public class User_BL : IBL
     {
         //Fields:
-        private const string DEFAULT_USER_NAME = "administrator";
-        private const string DEFAULT_PASSWORD = "password";
+        private const string DEFAULT_USER_NAME = "admin1";
+        private const string DEFAULT_PASSWORD = "admin1";
         private Backend.Employee DEFAULT_ADMIN = new Backend.Employee();
         IDAL itsDAL;
 
