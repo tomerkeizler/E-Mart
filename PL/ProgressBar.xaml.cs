@@ -19,30 +19,35 @@ namespace PL
 
     public partial class ProgressBar : Window
     {
-        public ProgressBar()
+        private Window parent;
+
+        public ProgressBar(Window _parent)
         {
+            parent = _parent;
             InitializeComponent();
         }
 
-        public void Window_ContentRendered(object sender, EventArgs e)
+        private void Window_ContentRendered(object sender, EventArgs e)
         {
             BackgroundWorker worker = new BackgroundWorker();
             worker.WorkerReportsProgress = true;
             worker.DoWork += worker_DoWork;
             worker.ProgressChanged += worker_ProgressChanged;
+
             worker.RunWorkerAsync();
         }
 
-        public void worker_DoWork(object sender, DoWorkEventArgs e)
+        private void worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            for (int i = 0; i <= 100; i++)
+            for (int i = 0; i < 100; i++)
             {
                 (sender as BackgroundWorker).ReportProgress(i);
-                Thread.Sleep(3);
+                Thread.Sleep(50);
             }
+
         }
 
-        public void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        private void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             pbStatus.Value = e.ProgressPercentage;
         }

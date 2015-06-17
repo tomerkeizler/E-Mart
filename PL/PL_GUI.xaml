@@ -135,7 +135,6 @@
         </Grid.ColumnDefinitions>
 
 
-        <ProgressBar x:Name="bar" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" Height="22" Margin="0,0,0,0" VerticalAlignment="Center" Width="300" />
 
 
         <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="0" Grid.RowSpan="3">
@@ -161,6 +160,15 @@
                 </Expander.Content>
             </Expander>
 
+            <Expander x:Name="find_Store">
+                <Expander.Header>
+                    <TextBlock HorizontalAlignment="Left" Text="Check out stores" FontSize="16" TextDecorations="Underline"/>
+                </Expander.Header>
+                <Expander.Content>
+                    <ComboBox x:Name="stores_cmb" SelectionChanged="CallStore" />
+                </Expander.Content>
+            </Expander>
+            
             <Expander x:Name="add_menu" Expanded="add_menu_Expanded">
                 <Expander.Header>
                     <TextBlock Text="Add items" FontSize="16" TextDecorations="Underline"/>
@@ -297,7 +305,14 @@
                 </DataGrid>
             </TabItem>
 
-        </TabControl>
+                <TabItem Header="Stores">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock x:Name="temp" FontSize="16" />
+                        <WebBrowser Visibility="Collapsed" x:Name="web" Height="320" Width="650" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden" />
+                    </StackPanel>
+                </TabItem>
+
+            </TabControl>
             
             <TextBlock Panel.ZIndex="1" Visibility="Collapsed" HorizontalAlignment="Center" FontSize="22" x:Name="categoryEmpty" />
 

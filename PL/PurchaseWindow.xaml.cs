@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ComponentModel;
+using System.Threading;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -91,6 +93,16 @@ namespace PL
 
         private void UpdateProducts(object sender, SelectionChangedEventArgs e)
         {
+            //////////////////////////
+            ////// progress bar //////
+            //////////////////////////
+            BackgroundWorker worker = new BackgroundWorker();
+            worker.WorkerReportsProgress = true;
+            worker.DoWork += worker_DoWork;
+            worker.ProgressChanged += worker_ProgressChanged;
+            worker.RunWorkerAsync();
+            //////////////////////////
+
             if (areThereAnyProducts)
             {
                 bool areAllNull = true;
@@ -202,17 +214,15 @@ namespace PL
 
                         if (buyer is ClubMember)
                         {
-                            ClubMember oldClubMember = ((ClubMember)buyer);
-                            ClubMember newClubMember = new ClubMember(oldClubMember);
-                            newClubMember.CreditCard = myVisa;
-                            parentWindow.cats[1].Edit(oldClubMember, newClubMember);
+                            ClubMember oldClubMember = new ClubMember((ClubMember)buyer);
+                            ((Customer)buyer).CreditCard = myVisa;
+                            parentWindow.cats[1].Edit(oldClubMember, buyer);
                         }
                         else if (buyer is Customer)
                         {
-                            Customer oldCustomer = ((Customer)buyer);
-                            Customer newCustomer = new Customer(oldCustomer);
-                            newCustomer.CreditCard = myVisa;
-                            parentWindow.cats[1].Edit(oldCustomer, newCustomer);
+                            Customer oldCustomer = new Customer((Customer)buyer);
+                            ((Customer)buyer).CreditCard = myVisa;
+                            parentWindow.cats[2].Edit(oldCustomer, buyer);
                         }
                     }
                 }
@@ -233,12 +243,9 @@ namespace PL
                         parentWindow.cats[5].Edit(oldProd, newProd);
                     }
                 }
+
                 // add this transaction to the table of all transactions
                 parentWindow.cats[6].Add(newTran);
-                /*
-                // create the receipt for this transaction
-                List<Purchase> receipt = purchasesList.Cast<Purchase>().ToList();
-                newTran.Receipt = receipt;*/
                 
                 // add this transaction to the tranHistory of the buyer (if he is a customer/clubmember)
                 if (buyer is Customer)
@@ -255,7 +262,6 @@ namespace PL
                         ((Customer)buyer).TranHistory.Add(newTran);
                         parentWindow.cats[2].Edit(oldCus, buyer);
                     }
-
                 } 
 
                 // resetting selling counters
@@ -435,6 +441,24 @@ namespace PL
         {
             this.Close();
         }
+
+
+        //////////////////////////////////
+        ////// progress bar methods //////
+        //////////////////////////////////
+        private void worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            for (int i = 0; i <= 100; i++)
+            {
+                (sender as BackgroundWorker).ReportProgress(i);
+                Thread.Sleep(30);
+            }
+        }
+        private void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            pbStatus.Value = e.ProgressPercentage;
+        }
+        //////////////////////////////////
 
 
     }
