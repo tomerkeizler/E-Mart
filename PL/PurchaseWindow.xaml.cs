@@ -311,7 +311,7 @@ namespace PL
                 MessageBox.Show("Invalid product amount");
             else if (b.Amount == 0)
                 MessageBox.Show("please choose an amount to buy");
-            else if (b.Amount > b.Prod.StockCount)
+            else if (b.Amount > b.LeftInStock)
                 MessageBox.Show("We don't have so many " + b.Prod.Name + "s at E-MART!");
             else
             {
@@ -401,23 +401,28 @@ namespace PL
 
         private void RemoveManyFromCart(object sender, RoutedEventArgs e)
         {
-            // update the stock of the products
-            foreach (Buyable b in currentList)
+            if (!purchasesList.Any())
+                MessageBox.Show("The shopping cart is empty");
+            else
             {
-                int plusToStock = purchasesList.Where(n => n.PrdID == b.Prod.ProductID).First().Amount;
-                b.LeftInStock = b.LeftInStock + plusToStock;
+                // update the stock of the products
+                foreach (Buyable b in currentList)
+                {
+                    int plusToStock = purchasesList.Where(n => n.PrdID == b.Prod.ProductID).First().Amount;
+                    b.LeftInStock = b.LeftInStock + plusToStock;
+                }
+                ProductGrid.CancelEdit();////
+                ProductGrid.Items.Refresh();
+
+                purchasesList.Clear();
+
+                // zero the total price and total amount of products in the shopping cart
+                totalPrice1.Text = Convert.ToString(0);
+                totalPrice2.Text = Convert.ToString(0);
+                totalAmount.Text = Convert.ToString(0);
+
+                currentCart.Clear();
             }
-            ProductGrid.CancelEdit();////
-            ProductGrid.Items.Refresh();
-
-            purchasesList.Clear();
-
-            // zero the total price and total amount of products in the shopping cart
-            totalPrice1.Text = Convert.ToString(0);
-            totalPrice2.Text = Convert.ToString(0);
-            totalAmount.Text = Convert.ToString(0);
-
-            currentCart.Clear();
         }
 
         private void paymentMethod_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -451,7 +456,7 @@ namespace PL
             for (int i = 0; i <= 100; i++)
             {
                 (sender as BackgroundWorker).ReportProgress(i);
-                Thread.Sleep(30);
+                Thread.Sleep(10);
             }
         }
         private void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
