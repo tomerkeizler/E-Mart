@@ -105,6 +105,13 @@ namespace DAL
                     {
                         db.Customers.DeleteOnSubmit(clubAsCust);
                     }
+                    foreach (CreditCard credit in db.CreditCards)
+                    {
+                        if (credit.CreditNumber == clubAsCust.CreditCard)
+                        {
+                            db.CreditCards.DeleteOnSubmit(credit);
+                        }
+                    }
                 }
                 foreach (Backend.ClubMember club in list)
                 {
@@ -131,6 +138,13 @@ namespace DAL
                 foreach (Customer cust in db.Customers)
                 {
                     db.Customers.DeleteOnSubmit(cust);
+                    foreach (CreditCard credit in db.CreditCards)
+                    {
+                        if (credit.CreditNumber == cust.CreditCard)
+                        {
+                            db.CreditCards.DeleteOnSubmit(credit);
+                        }
+                    }
                 }
                 foreach (Backend.Customer cust in list)
                 {
@@ -919,16 +933,6 @@ namespace DAL
         {
             CreditCard dataContextCreditCard = new CreditCard();
             ClubMember dataContextClubMember = new ClubMember();
-            //Credit Card Entity
-            if (currentClubMember.CreditCard != null)
-            {
-                dataContextCreditCard.CreditNumber = currentClubMember.CreditCard.CreditNumber;
-                dataContextCreditCard.ExpirationDate = currentClubMember.CreditCard.ExpirationDate;
-                dataContextCreditCard.FirstName = currentClubMember.CreditCard.FirstName;
-                dataContextCreditCard.LastName = currentClubMember.CreditCard.LastName;
-                dataContextClubMember.Customer.CreditCard1 = dataContextCreditCard;
-                dataContextClubMember.Customer.CreditCard = currentClubMember.CreditCard.CreditNumber;
-            }
             //Customer Entity
             Customer currtCusAsClub = new Customer();
             currtCusAsClub.IsAClubMember = true;
@@ -940,6 +944,16 @@ namespace DAL
             dataContextClubMember.Customer.LastName = currentClubMember.LastName;
             dataContextClubMember.Customer.Id = currentClubMember.Id;*/
             dataContextClubMember.Customer = currtCusAsClub;
+            //Credit Card Entity
+            if (currentClubMember.CreditCard != null)
+            {
+                dataContextCreditCard.CreditNumber = currentClubMember.CreditCard.CreditNumber;
+                dataContextCreditCard.ExpirationDate = currentClubMember.CreditCard.ExpirationDate;
+                dataContextCreditCard.FirstName = currentClubMember.CreditCard.FirstName;
+                dataContextCreditCard.LastName = currentClubMember.CreditCard.LastName;
+                dataContextClubMember.Customer.CreditCard1 = dataContextCreditCard;
+                dataContextClubMember.Customer.CreditCard = currentClubMember.CreditCard.CreditNumber;
+            }
             //Clubmember Entity
             dataContextClubMember.DateOfBirth = currentClubMember.DateOfBirth;
             dataContextClubMember.Gender = (int)currentClubMember.Gender;
