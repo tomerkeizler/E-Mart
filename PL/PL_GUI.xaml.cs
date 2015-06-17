@@ -281,6 +281,11 @@ namespace PL
                 viewButton.Visibility = Visibility.Collapsed;
                 resetButton.Visibility = Visibility.Collapsed;
             }
+
+            TabItem tab = (allTabs.SelectedItem as TabItem);
+            if (tab != null && (tab.Header as string).Equals("Stores"))
+                if (!string.IsNullOrEmpty(stores_cmb.Text))
+                    categoryEmpty.Visibility = Visibility.Collapsed;
         }
 
         private void DisplayData(List<Object> results, int categoryNum)
@@ -754,6 +759,8 @@ namespace PL
                 case "Users":
                     currentCategory = 7;
                     break;
+                case "Stores":
+                    break;
                 default:
                     return;
             }
@@ -783,6 +790,11 @@ namespace PL
                 removeButton.Visibility = Visibility.Visible;
             }
             ///////////////////////////////////////////////////////////
+
+            string str = ((sender as TabControl).SelectedItem as TabItem).Header as string;
+            if (str.Equals("Stores"))
+                if (string.IsNullOrEmpty(stores_cmb.Text))
+                    categoryEmpty.Text = "Please choose a city from the list";
         }
 
         private void add_menu_Expanded(object sender, RoutedEventArgs e)
@@ -814,7 +826,7 @@ namespace PL
 
         private void CallStore(object sender, SelectionChangedEventArgs e)
         {
-            cityEmpty.Visibility = Visibility.Collapsed;
+            web.Visibility = Visibility.Visible;
             allTabs.SelectedIndex = 7;
             allTabs.Height = 420;
             ComboBox cmb = ((ComboBox)sender);
@@ -822,10 +834,12 @@ namespace PL
 
             string str = "<html><body><table cellspacing='0' cellpadding='0' border='1' bordercolor='black'><tr><td><iframe src='http://www.yourmapmaker.com/preview.php?a=";
             str += stores_list[selectedCity];
-            str += "&w=600&h=300&n=&z=14&t=Map' height='300' width='600' scrolling='no' frameborder='0'></iframe></td></tr></table></body></html>";
+            str += "&w=600&h=270&n=&z=14&t=Map' height='270' width='600' scrolling='no' frameborder='0'></iframe></td></tr></table></body></html>";
             web.NavigateToString(str);
 
             GetWeather(selectedCity, "metric");
+
+            categoryEmpty.Visibility = Visibility.Collapsed;
         }
 
         public void GetWeather(string city, string unit)

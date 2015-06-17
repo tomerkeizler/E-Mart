@@ -307,9 +307,8 @@
 
                 <TabItem Header="Stores">
                     <StackPanel Orientation="Vertical">
-                        <TextBlock HorizontalAlignment="Center" FontSize="22" x:Name="cityEmpty" Text="Please choose a city from the list" />
                         <TextBlock x:Name="temp" FontSize="16" />
-                        <WebBrowser x:Name="web" Height="350" Width="650" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" />
+                        <WebBrowser Visibility="Collapsed" x:Name="web" Height="320" Width="650" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden" />
                     </StackPanel>
                 </TabItem>
 
