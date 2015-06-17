@@ -160,6 +160,15 @@
                 </Expander.Content>
             </Expander>
 
+            <Expander x:Name="find_Store">
+                <Expander.Header>
+                    <TextBlock HorizontalAlignment="Left" Text="Check out stores" FontSize="16" TextDecorations="Underline"/>
+                </Expander.Header>
+                <Expander.Content>
+                    <ComboBox x:Name="stores_cmb" SelectionChanged="CallStore" />
+                </Expander.Content>
+            </Expander>
+            
             <Expander x:Name="add_menu" Expanded="add_menu_Expanded">
                 <Expander.Header>
                     <TextBlock Text="Add items" FontSize="16" TextDecorations="Underline"/>
@@ -296,7 +305,15 @@
                 </DataGrid>
             </TabItem>
 
-        </TabControl>
+                <TabItem Header="Stores">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock HorizontalAlignment="Center" FontSize="22" x:Name="cityEmpty" Text="Please choose a city from the list" />
+                        <TextBlock x:Name="temp" FontSize="16" />
+                        <WebBrowser x:Name="web" Height="350" Width="650" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" />
+                    </StackPanel>
+                </TabItem>
+
+            </TabControl>
             
             <TextBlock Panel.ZIndex="1" Visibility="Collapsed" HorizontalAlignment="Center" FontSize="22" x:Name="categoryEmpty" />
 

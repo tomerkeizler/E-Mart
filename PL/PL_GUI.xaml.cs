@@ -17,7 +17,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.ComponentModel;
-
+using System.Xml;
 
 namespace PL
 {
@@ -26,6 +26,7 @@ namespace PL
         // static attributes
         public static int[][] allPermissions = new int[5][];
         public static string[][] inputsInfo = new string[5][];
+        public static Dictionary<string, string> stores_list = new Dictionary<string, string>();
 
         // static constructor
         static PL_GUI()
@@ -58,6 +59,19 @@ namespace PL
 
             // not empty
             inputsInfo[4] = new string[2] { "^.+$", "selected" };
+
+
+            ////////// stores list
+            stores_list.Add("Tel Aviv", "Derech HaShalom 4 Tel Aviv Israel");
+            stores_list.Add("Eilat", "Derekh Yotam 55 Eilat Israel");
+            stores_list.Add("Kfar Saba", "Ben Yehuda 10 Kfar Saba Israel");
+            stores_list.Add("Barcelona", "La Rambla 20 Barcelona Spain");
+            stores_list.Add("Rome", "Via Torino 44 Rome, Metropolitan City of Rome, Italy");
+            stores_list.Add("Warsaw", "Stefana Batorego 31B, Warsaw, Poland");
+            stores_list.Add("Berlin", "Stralauer Straße 44, Berlin, Germany");
+            stores_list.Add("Miami", "W Flagler 55, Miami, FL, United States");
+            stores_list.Add("New York", "West 45th 4, New York, NY, United States");
+            stores_list.Add("Washington", "New York Avenue Northwest 444, Washington, DC, United States");
         }
 
         // static methods
@@ -173,6 +187,10 @@ namespace PL
             // generate all lists of data entities and bind datagrids to lists
             for (int i = 1; i < 8; i++)
                 DisplayData(new List<Object>(cats[i].GetAll()), i);
+
+            // generate the list of stores
+            foreach (string city in stores_list.Keys)
+                stores_cmb.Items.Add(city);
         }
 
         // Main method
@@ -794,6 +812,62 @@ namespace PL
             Application.Current.Shutdown();
         }
 
+        private void CallStore(object sender, SelectionChangedEventArgs e)
+        {
+            cityEmpty.Visibility = Visibility.Collapsed;
+            allTabs.SelectedIndex = 7;
+            allTabs.Height = 420;
+            ComboBox cmb = ((ComboBox)sender);
+            string selectedCity = cmb.SelectedItem.ToString();
+
+            string str = "<html><body><table cellspacing='0' cellpadding='0' border='1' bordercolor='black'><tr><td><iframe src='http://www.yourmapmaker.com/preview.php?a=";
+            str += stores_list[selectedCity];
+            str += "&w=600&h=300&n=&z=14&t=Map' height='300' width='600' scrolling='no' frameborder='0'></iframe></td></tr></table></body></html>";
+            web.NavigateToString(str);
+
+            GetWeather(selectedCity, "metric");
+        }
+
+        public void GetWeather(string city, string unit)
+        {
+            try
+            {
+                string m_strFilePath = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&mode=xml&units=" + unit;//URL to API (including request)
+                XmlDocument myXmlDocument = new XmlDocument();
+                myXmlDocument.Load(m_strFilePath); // load the web service's reply -XML
+
+                // look for Temperature
+                XmlNode node = myXmlDocument.DocumentElement.ChildNodes[1];
+                if (node != null)
+                    if (node.Attributes != null)
+                    {
+                        temp.Text = "Temperature in " + city + ": ";
+                        temp.Text += node.Attributes["value"].Value + " " + node.Attributes["unit"].InnerText; //get node's value for the tempurature
+                    }
+
+                // look for Humidity
+                node = myXmlDocument.DocumentElement.ChildNodes[2];
+                if (node != null)
+                    if (node.Attributes != null)
+                    {
+                        temp.Text += "\nHumidity in " + city + ": ";
+                        temp.Text += node.Attributes["value"].Value + " " + node.Attributes["unit"].InnerText; //get node's value for the tempurature
+                    }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("could not get the weather");
+            }
+        }
+
 
     }
 }
+
+
+
+
+
+
+
+
