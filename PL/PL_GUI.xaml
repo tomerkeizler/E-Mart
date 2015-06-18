@@ -200,6 +200,8 @@
                     </StackPanel>
                 </Expander.Content>
             </Expander>
+            
+            <Button Style="{StaticResource button_Style}" Background="black" Foreground="White" Content="Log out" Click="Logout" />
 
             <Button Style="{StaticResource button_Style}" Background="black" Foreground="White" Content="Exit" Click="Exit" />
 

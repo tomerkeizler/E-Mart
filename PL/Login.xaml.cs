@@ -26,6 +26,7 @@ namespace PL
         // attributes
         private PL_GUI parentWindow;
         private User_BL userBL;
+        private bool isEndProccess;
 
         // constructors
         public Login(IBL _userBL, PL_GUI _parentWindow)
@@ -33,6 +34,7 @@ namespace PL
             InitializeComponent();
             parentWindow = _parentWindow;
             userBL = (User_BL)_userBL;
+            isEndProccess = true;
         }
 
         private void ClearForm(object sender, RoutedEventArgs e)
@@ -74,6 +76,7 @@ namespace PL
                     parentWindow.title_rank.Text = "Logged in as " + ((_user.Person is ClubMember) ? ("Club Member") : (_rank.ToString()));
 
                     parentWindow.Permissions(); // activate permissions control
+                    isEndProccess = false;
                     this.Close();
                     parentWindow.Show();
                 }
@@ -83,7 +86,8 @@ namespace PL
         // Open registration window
         private void Register(object sender, RoutedEventArgs e)
         {
-            this.Hide();
+            isEndProccess = false;
+            this.Close();
             AddEditCustomer reg = new AddEditCustomer(this, this.parentWindow, true, true, null);
             reg.Show();
         }
@@ -98,6 +102,7 @@ namespace PL
             parentWindow.title_rank.Text = "Enjoy the store!";
 
             parentWindow.Permissions(); // activate permissions control
+            isEndProccess = false;
             this.Close();
             parentWindow.Show();
         }
@@ -109,6 +114,13 @@ namespace PL
             if (flag)
                 flag = PL_GUI.RegExp(password.Password, "Password", 3);
             return flag;
+        }
+
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (isEndProccess)
+                Application.Current.Shutdown();
         }
 
 

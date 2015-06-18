@@ -25,7 +25,7 @@ namespace PL
     {
         // static attributes
         public static int[][] allPermissions = new int[5][];
-        public static string[][] inputsInfo = new string[5][];
+        public static string[][] inputsInfo = new string[6][];
         public static Dictionary<string, string> stores_list = new Dictionary<string, string>();
 
         // static constructor
@@ -59,6 +59,9 @@ namespace PL
 
             // not empty
             inputsInfo[4] = new string[2] { "^.+$", "selected" };
+
+            // credit card number - 16 digits
+            inputsInfo[5] = new string[2] { "^[0-9]{8}$", "exactly 8 digits (0-9)" };
 
 
             ////////// stores list
@@ -167,7 +170,8 @@ namespace PL
 
         public User user;
         public int rank;
-        private int currentCategory;
+        public int currentCategory;
+        private bool isEndProccess;
 
         // constructor
         public PL_GUI(IBL itsClubMemberBL, IBL itsCustomerBL, IBL itsDepartmentBL, IBL itsEmployeeBL, IBL itsProductBL, IBL itsTransactionBL, IBL itsUserBL)
@@ -183,6 +187,7 @@ namespace PL
 
             // default category is ClubMember = 1
             currentCategory = 1;
+            isEndProccess = true;
 
             // generate all lists of data entities and bind datagrids to lists
             for (int i = 1; i < 8; i++)
@@ -315,7 +320,7 @@ namespace PL
             ResetRecords();
         }
 
-        private void ResetRecords()
+        public void ResetRecords()
         {
             DisplayData(new List<Object>(cats[currentCategory].GetAll()), currentCategory);
         }
@@ -678,9 +683,26 @@ namespace PL
         // General methods //
         /////////////////////
 
+
+        private void Logout(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Are you sure you want to log out?", "Log out", MessageBoxButton.YesNo);
+            switch (result)
+            {
+                case MessageBoxResult.Yes:
+                    isEndProccess = false;
+                    this.Close();
+                    IPL myPL = new PL_GUI(cats[1], cats[2], cats[3], cats[4], cats[5], cats[6], cats[7]);
+                    myPL.Run();
+                    break;
+                case MessageBoxResult.No:
+                    break;
+            }
+        }
+
         private void Exit(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+            this.Close();
         }
 
         private void CallPurchase(object sender, RoutedEventArgs e)
@@ -821,7 +843,8 @@ namespace PL
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            Application.Current.Shutdown();
+            if (isEndProccess)
+                Application.Current.Shutdown();
         }
 
         private void CallStore(object sender, SelectionChangedEventArgs e)
