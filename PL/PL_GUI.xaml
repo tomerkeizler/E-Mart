@@ -225,7 +225,7 @@
                         <DataGridTextColumn Header="Last name" Binding="{Binding LastName}"/>
                         <DataGridTextColumn Header="Gender" Binding="{Binding Gender}"/>
                         <DataGridTextColumn Header="Date of birth" Binding="{Binding DateOfBirth, StringFormat=\{0:dd-MM-yyyy\}}"/>
-                            <DataGridTextColumn Header="Credit card" Binding="{Binding CreditCard.CreditNumber, Converter={StaticResource propertyValueStringConverter}}"/>
+                            <DataGridTextColumn Header="Credit card" Binding="{Binding CreditCard, Converter={StaticResource propertyValueStringConverter}}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>

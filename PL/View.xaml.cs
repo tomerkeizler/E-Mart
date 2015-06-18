@@ -39,6 +39,13 @@ namespace PL
             allViews = new Grid[8] { null, clubMemberView, customerView, departmentView, employeeView, productView, transactionView, userView };
             allViews[currentCategory].Visibility = Visibility.Visible;
 
+            if (currentCategory == 1)
+                tranHistoryClubMember.DataContext = ((ClubMember)oldObj).TranHistory;
+            else if (currentCategory == 2)
+                tranHistoryCustomer.DataContext = ((Customer)oldObj).TranHistory;
+            else if (currentCategory == 6)
+                receipt.DataContext = ((Transaction)oldObj).Receipt;
+
             ///////////////////////////////////////////////////////////
             //////////////////////  permissions  //////////////////////
             ///////////////////////////////////////////////////////////
