@@ -36,7 +36,7 @@ namespace Backend
         }
         public override string ToString()
         {
-            return "Credit Number: " + creditNumber.ToString() + "Expiration Date: " + expirationDate;
+            return "Number: " + creditNumber.ToString() + "\nExpiration Date: " + expirationDate.ToShortDateString();
         }
 
         //getters and setters:

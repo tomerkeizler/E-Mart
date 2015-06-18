@@ -27,7 +27,7 @@ namespace PL
     { 
         // static attributes
         public static PType[] typeIndex = new PType[3] { PType.Electronics, PType.Clothes, PType.Food };
-        
+
         // attributes
         private PL_GUI parentWindow;
         private Object buyer;
@@ -89,6 +89,8 @@ namespace PL
                     toSaveVisa.Visibility = Visibility.Collapsed;
                 }
             }
+            else
+                toSaveVisa.Visibility = Visibility.Collapsed;
         }
 
         private void UpdateProducts(object sender, SelectionChangedEventArgs e)
@@ -191,86 +193,110 @@ namespace PL
                 MessageBox.Show("You shopphing cart is empty!");
         }
 
+        private bool isValid()
+        {
+            bool flag = true;
+            if (creditCard.Visibility == Visibility.Visible)
+            {
+                flag = PL_GUI.RegExp(cardNumber.Text, "credit card number", 5);
+                if (flag)
+                    if (expDate.Text.Equals(""))
+                    {
+                        MessageBox.Show("Expiration date must be selected");
+                        flag = false;
+                    }
+            }
+            return flag;
+        }
+
         private void CompletePurchase(object sender, RoutedEventArgs e)
         {
             if (!purchasesList.Any())
                 MessageBox.Show("There are no products in your shopping cart!");
             else
             {
-                MessageBox.Show("Thank you for your purchase!");
-
-                PaymentMethod myPaymentType;
-                if (paymentMethod.SelectedIndex == 0)
-                    myPaymentType = PaymentMethod.Cash;
-                else if (paymentMethod.SelectedIndex == 1)
-                    myPaymentType = PaymentMethod.Check;
-                else
+                if (isValid()) // input validation with regular expressions
                 {
-                    myPaymentType = PaymentMethod.Visa;
+                    MessageBox.Show("Thank you for your purchase!");
 
-                    if (toSaveVisa.IsChecked == true)
-                    {
-                        CreditCard myVisa = new CreditCard(((Customer)buyer).FirstName, ((Customer)buyer).LastName, int.Parse(cardNumber.Text), expDate.SelectedDate.Value);
-
-                        if (buyer is ClubMember)
-                        {
-                            ClubMember oldClubMember = new ClubMember((ClubMember)buyer);
-                            ((Customer)buyer).CreditCard = myVisa;
-                            parentWindow.cats[1].Edit(oldClubMember, buyer);
-                        }
-                        else if (buyer is Customer)
-                        {
-                            Customer oldCustomer = new Customer((Customer)buyer);
-                            ((Customer)buyer).CreditCard = myVisa;
-                            parentWindow.cats[2].Edit(oldCustomer, buyer);
-                        }
-                    }
-                }
-
-                // create the transcation
-                Transaction newTran = new Transaction(0, Is_a_return.Purchase, new List<Purchase>(), myPaymentType);
-
-                // commiting the transaction for real
-                foreach (Purchase p in purchasesList)
-                {
-                    newTran.Receipt.Add(p);
-                    List<Object> bought = parentWindow.cats[5].FindByNumber(IntFields.productID, p.PrdID, p.PrdID);
-                    if (bought.Any())
-                    {
-                        Product oldProd = ((Product)bought.First());
-                        Product newProd = new Product(oldProd);
-                        newProd.Buy(p.Amount);
-                        parentWindow.cats[5].Edit(oldProd, newProd);
-                    }
-                }
-
-                // add this transaction to the table of all transactions
-                parentWindow.cats[6].Add(newTran);
-                
-                // add this transaction to the tranHistory of the buyer (if he is a customer/clubmember)
-                if (buyer is Customer)
-                {
-                    if (buyer is ClubMember)
-                    {
-                        ClubMember oldClub = new ClubMember((ClubMember)buyer);
-                        ((Customer)buyer).TranHistory.Add(newTran);
-                        parentWindow.cats[1].Edit(oldClub, buyer);
-                    }
+                    // check the requested payment type
+                    PaymentMethod myPaymentType;
+                    if (paymentMethod.SelectedIndex == 0)
+                        myPaymentType = PaymentMethod.Cash;
+                    else if (paymentMethod.SelectedIndex == 1)
+                        myPaymentType = PaymentMethod.Check;
                     else
                     {
-                        Customer oldCus = new Customer((Customer)buyer);
-                        ((Customer)buyer).TranHistory.Add(newTran);
-                        parentWindow.cats[2].Edit(oldCus, buyer);
-                    }
-                } 
+                        myPaymentType = PaymentMethod.Visa;
 
-                // resetting selling counters
-                ((Product_BL)parentWindow.cats[5]).GenerateTopSeller();
-                   
-                this.Close();
+                        // save the credit card details if the buyer asked so
+                        if (toSaveVisa.IsChecked == true)
+                        {
+                            CreditCard myVisa = new CreditCard(((Customer)buyer).FirstName, ((Customer)buyer).LastName, int.Parse(cardNumber.Text), expDate.SelectedDate.Value);
+
+                            if (buyer is ClubMember)
+                            {
+                                ClubMember oldClubMember = new ClubMember((ClubMember)buyer);
+                                ((Customer)buyer).CreditCard = myVisa;
+                                parentWindow.cats[1].Edit(oldClubMember, buyer);
+                            }
+                            else if (buyer is Customer)
+                            {
+                                Customer oldCustomer = new Customer((Customer)buyer);
+                                ((Customer)buyer).CreditCard = myVisa;
+                                parentWindow.cats[2].Edit(oldCustomer, buyer);
+                            }
+                        }
+                    }
+
+                    // create the transcation
+                    Transaction newTran = new Transaction(0, Is_a_return.Purchase, new List<Purchase>(), myPaymentType);
+
+                    // commiting the transaction for real
+                    foreach (Purchase p in purchasesList)
+                    {
+                        newTran.Receipt.Add(p);
+                        List<Object> bought = parentWindow.cats[5].FindByNumber(IntFields.productID, p.PrdID, p.PrdID);
+                        if (bought.Any())
+                        {
+                            Product oldProd = ((Product)bought.First());
+                            Product newProd = new Product(oldProd);
+                            newProd.Buy(p.Amount);
+                            parentWindow.cats[5].Edit(oldProd, newProd);
+                        }
+                    }
+
+                    // add this transaction to the table of all transactions
+                    parentWindow.cats[6].Add(newTran);
+
+                    // add this transaction to the tranHistory of the buyer (if he is a customer/clubmember)
+                    if (buyer is Customer)
+                    {
+                        if (buyer is ClubMember)
+                        {
+                            ClubMember oldClub = new ClubMember((ClubMember)buyer);
+                            ((Customer)buyer).TranHistory.Add(newTran);
+                            parentWindow.cats[1].Edit(oldClub, buyer);
+                        }
+                        else
+                        {
+                            Customer oldCus = new Customer((Customer)buyer);
+                            ((Customer)buyer).TranHistory.Add(newTran);
+                            parentWindow.cats[2].Edit(oldCus, buyer);
+                        }
+                    }
+
+                    // resetting selling counters
+                    ((Product_BL)parentWindow.cats[5]).GenerateTopSeller();
+
+                    // resetting product tab in parent window
+                    if (parentWindow.currentCategory == 5)
+                        parentWindow.ResetRecords();
+
+                    this.Close();
+                }
             }
         }
-    
 
         private void DropProduct(object sender, DragEventArgs e)
         {
