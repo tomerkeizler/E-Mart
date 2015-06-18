@@ -893,7 +893,7 @@ namespace PL
             }
             catch (Exception e)
             {
-                Console.WriteLine("could not get the weather");
+                Console.WriteLine("could not get the weather" + e);
             }
         }
 

@@ -86,32 +86,6 @@ namespace DAL
                 }
 
             }
-            else if (obj is Backend.Customer)
-            {
-                foreach (TranHistoryLinkedTable linkedTrans in db.TranHistoryLinkedTables)
-                {
-                    if (!linkedTrans.IsAClubMember)
-                    {
-                        db.TranHistoryLinkedTables.DeleteOnSubmit(linkedTrans);
-                    }
-                }
-                foreach (Customer cust in db.Customers)
-                {
-                    db.Customers.DeleteOnSubmit(cust);
-                }
-                foreach (Backend.Customer cust in list)
-                {
-                    db.Customers.InsertOnSubmit(CustomerConverterToContext(cust));
-                    foreach (Backend.Transaction trans in cust.TranHistory)
-                    {
-                        TranHistoryLinkedTable currentLinkedTrans = new TranHistoryLinkedTable();
-                        currentLinkedTrans.CustomerID = cust.Id;
-                        currentLinkedTrans.TransID = trans.TransactionID;
-                        currentLinkedTrans.IsAClubMember = false;
-                        db.TranHistoryLinkedTables.InsertOnSubmit(currentLinkedTrans);
-                    }
-                }
-            }
             else if (obj is Backend.ClubMember)
             {
                 foreach (TranHistoryLinkedTable linkedTrans in db.TranHistoryLinkedTables)
@@ -125,6 +99,20 @@ namespace DAL
                 {
                     db.ClubMembers.DeleteOnSubmit(club);
                 }
+                foreach (Customer clubAsCust in db.Customers)
+                {
+                    if (clubAsCust.IsAClubMember)
+                    {
+                        db.Customers.DeleteOnSubmit(clubAsCust);
+                    }
+                    foreach (CreditCard credit in db.CreditCards)
+                    {
+                        if (credit.CreditNumber == clubAsCust.CreditCard)
+                        {
+                            db.CreditCards.DeleteOnSubmit(credit);
+                        }
+                    }
+                }
                 foreach (Backend.ClubMember club in list)
                 {
                     db.ClubMembers.InsertOnSubmit(ClubMemberConverterToContext(club));
@@ -134,6 +122,39 @@ namespace DAL
                         currentLinkedTrans.CustomerID = club.Id;
                         currentLinkedTrans.TransID = trans.TransactionID;
                         currentLinkedTrans.IsAClubMember = true;
+                        db.TranHistoryLinkedTables.InsertOnSubmit(currentLinkedTrans);
+                    }
+                }
+            }
+            else if (obj is Backend.Customer)
+            {
+                foreach (TranHistoryLinkedTable linkedTrans in db.TranHistoryLinkedTables)
+                {
+                    if (!linkedTrans.IsAClubMember)
+                    {
+                        db.TranHistoryLinkedTables.DeleteOnSubmit(linkedTrans);
+                    }
+                }
+                foreach (Customer cust in db.Customers)
+                {
+                    db.Customers.DeleteOnSubmit(cust);
+                    foreach (CreditCard credit in db.CreditCards)
+                    {
+                        if (credit.CreditNumber == cust.CreditCard)
+                        {
+                            db.CreditCards.DeleteOnSubmit(credit);
+                        }
+                    }
+                }
+                foreach (Backend.Customer cust in list)
+                {
+                    db.Customers.InsertOnSubmit(CustomerConverterToContext(cust));
+                    foreach (Backend.Transaction trans in cust.TranHistory)
+                    {
+                        TranHistoryLinkedTable currentLinkedTrans = new TranHistoryLinkedTable();
+                        currentLinkedTrans.CustomerID = cust.Id;
+                        currentLinkedTrans.TransID = trans.TransactionID;
+                        currentLinkedTrans.IsAClubMember = false;
                         db.TranHistoryLinkedTables.InsertOnSubmit(currentLinkedTrans);
                     }
                 }
@@ -220,7 +241,10 @@ namespace DAL
             {
                 foreach (Customer cust in db.Customers)
                 {
-                    currentList.Add(CustomerConverterToBackend(cust));
+                    if (!cust.IsAClubMember)
+                    {
+                        currentList.Add(CustomerConverterToBackend(cust));
+                    }
                 }
             }
             else if (element.Equals(Elements.Transaction))
@@ -692,9 +716,15 @@ namespace DAL
             return filteredCustomer;
         }
 
+
+
+        //Converters
+
+
+        //Product
         public Backend.Product ProductConverterToBackend(Product dataContextProduct)
         {
-            Backend.Product currentProduct = new Backend.Product();//ADDINSTEADOFBELOW
+            Backend.Product currentProduct = new Backend.Product();
             currentProduct.Name = dataContextProduct.Name;
             currentProduct.Type = (PType)dataContextProduct.Type;
             currentProduct.ProductID = dataContextProduct.ProductID;
@@ -708,6 +738,7 @@ namespace DAL
             currentProduct.TopSellerStatus.ProductID = dataContextProduct.TopSeller.ProductID;
             return currentProduct;
         }
+
         public Product ProductConverterToContext(Backend.Product currentProduct)
         {
             TopSeller dataContextTopSeller = new TopSeller();
@@ -726,6 +757,9 @@ namespace DAL
             dataContextProduct.TopSeller = dataContextTopSeller;
             return dataContextProduct;
         }
+
+
+        //Department
         public Backend.Department DepartmentConverterToBackend(Department dataContextDepartment)
         {
             Backend.Department currentDepartment = new Backend.Department();
@@ -733,6 +767,7 @@ namespace DAL
             currentDepartment.Name = dataContextDepartment.Name;
             return currentDepartment;
         }
+
         public Department DepartmentConverterToContext(Backend.Department currentDepartment)
         {
             Department dataContextDepartment = new Department();
@@ -740,6 +775,9 @@ namespace DAL
             dataContextDepartment.DepartmentID = currentDepartment.DepartmentID;
             return dataContextDepartment;
         }
+
+
+        //Employee
         public Backend.Employee EmployeeConverterToBackend(Employee dataContextEmployee)
         {
             Backend.Employee currentEmployee = new Backend.Employee();
@@ -753,6 +791,7 @@ namespace DAL
             currentEmployee.SupervisiorID = dataContextEmployee.SupervisiorID;
             return currentEmployee;
         }
+
         public Employee EmployeeConverterToContext(Backend.Employee currentEmployee)
         {
             Employee dataContextEmployee = new Employee();
@@ -766,9 +805,13 @@ namespace DAL
             dataContextEmployee.SupervisiorID = currentEmployee.SupervisiorID;
             return dataContextEmployee;
         }
+
+
+        //Customer
         public Backend.Customer CustomerConverterToBackend(Customer dataContextCustomer)
         {
             Backend.Customer currentCustomer = new Backend.Customer();
+
             //Credit Card Entity
             if (dataContextCustomer.CreditCard != null)
             {
@@ -796,10 +839,12 @@ namespace DAL
             }
             return currentCustomer;
         }
+
         public Customer CustomerConverterToContext(Backend.Customer currentCustomer)
         {
             CreditCard dataContextCreditCard = new CreditCard();
             Customer dataContextCustomer = new Customer();
+
             //Credit Card Entity
             if (currentCustomer.CreditCard != null)
             {
@@ -818,6 +863,9 @@ namespace DAL
             dataContextCustomer.Id = currentCustomer.Id;
             return dataContextCustomer;
         }
+
+
+        //Transaction
         public Backend.Transaction TransactionConverterToBackend(Transaction dataContextTransaction)
         {
             Backend.Transaction currentTransaction = new Backend.Transaction();
@@ -833,6 +881,7 @@ namespace DAL
             }
             return currentTransaction;
         }
+
         public Transaction TransactionConverterToContext(Backend.Transaction currentTransaction)
         {
             Transaction dataContextTransaction = new Transaction();
@@ -850,6 +899,9 @@ namespace DAL
             }
             return dataContextTransaction;
         }
+
+
+        //Purchase
         public Backend.Purchase PurchaseConverterToBackend(Purchase dataContextPurchase)
         {
             Backend.Purchase currentPurchase = new Backend.Purchase();
@@ -861,6 +913,7 @@ namespace DAL
             currentPurchase.TransID = dataContextPurchase.TransID;
             return currentPurchase;
         }
+
         public Purchase PurchaseConverterToContext(Backend.Purchase currentPurchase)
         {
             Purchase dataContextPurchase = new Purchase();
@@ -872,14 +925,26 @@ namespace DAL
             dataContextPurchase.TransID = currentPurchase.TransID;
             return dataContextPurchase;
         }
+
+
+        //Club Member
         public Backend.ClubMember ClubMemberConverterToBackend(ClubMember dataContextClubMember)
         {
             Backend.ClubMember currentClubMember = new Backend.ClubMember();
+
             //Credit Card Entity
-            currentClubMember.CreditCard.CreditNumber = dataContextClubMember.Customer.CreditCard1.CreditNumber;
-            currentClubMember.CreditCard.ExpirationDate = dataContextClubMember.Customer.CreditCard1.ExpirationDate;
-            currentClubMember.CreditCard.FirstName = dataContextClubMember.Customer.CreditCard1.FirstName;
-            currentClubMember.CreditCard.LastName = dataContextClubMember.Customer.CreditCard1.LastName;
+            if (dataContextClubMember.Customer.CreditCard != null)
+            {
+                currentClubMember.CreditCard.CreditNumber = dataContextClubMember.Customer.CreditCard1.CreditNumber;
+                currentClubMember.CreditCard.ExpirationDate = dataContextClubMember.Customer.CreditCard1.ExpirationDate;
+                currentClubMember.CreditCard.FirstName = dataContextClubMember.Customer.CreditCard1.FirstName;
+                currentClubMember.CreditCard.LastName = dataContextClubMember.Customer.CreditCard1.LastName;
+            }
+            else
+            {
+                currentClubMember.CreditCard = null;
+            }
+
             //Customer Entity
             currentClubMember.FirstName = dataContextClubMember.Customer.FirstName;
             currentClubMember.LastName = dataContextClubMember.Customer.LastName;
@@ -892,34 +957,45 @@ namespace DAL
             {
                 currentClubMember.TranHistory.Add(TransactionConverterToBackend(trans));
             }
+
             //Clubmember Entity
             currentClubMember.DateOfBirth = dataContextClubMember.DateOfBirth;
             currentClubMember.Gender = (Gender)dataContextClubMember.Gender;
             currentClubMember.MemberID = dataContextClubMember.MemberID;
             return currentClubMember;
         }
+
         public ClubMember ClubMemberConverterToContext(Backend.ClubMember currentClubMember)
         {
             CreditCard dataContextCreditCard = new CreditCard();
             ClubMember dataContextClubMember = new ClubMember();
-            //Credit Card Entity
-            dataContextCreditCard.CreditNumber = currentClubMember.CreditCard.CreditNumber;
-            dataContextCreditCard.ExpirationDate = currentClubMember.CreditCard.ExpirationDate;
-            dataContextCreditCard.FirstName = currentClubMember.CreditCard.FirstName;
-            dataContextCreditCard.LastName = currentClubMember.CreditCard.LastName;
-            dataContextClubMember.Customer.CreditCard1 = dataContextCreditCard;
+
             //Customer Entity
-            dataContextClubMember.IsAClubMember = true;
-            dataContextClubMember.Customer.CreditCard = currentClubMember.CreditCard.CreditNumber;
-            dataContextClubMember.Customer.FirstName = currentClubMember.FirstName;
-            dataContextClubMember.Customer.LastName = currentClubMember.LastName;
-            dataContextClubMember.Customer.Id = currentClubMember.Id;
+            Customer currtCusAsClub = new Customer();
+            currtCusAsClub.IsAClubMember = true;
+            currtCusAsClub.FirstName = currentClubMember.LastName;
+            currtCusAsClub.LastName = currentClubMember.LastName;
+            currtCusAsClub.Id = currentClubMember.Id;
+            dataContextClubMember.Customer = currtCusAsClub;
+            //Credit Card Entity
+            if (currentClubMember.CreditCard != null)
+            {
+                dataContextCreditCard.CreditNumber = currentClubMember.CreditCard.CreditNumber;
+                dataContextCreditCard.ExpirationDate = currentClubMember.CreditCard.ExpirationDate;
+                dataContextCreditCard.FirstName = currentClubMember.CreditCard.FirstName;
+                dataContextCreditCard.LastName = currentClubMember.CreditCard.LastName;
+                dataContextClubMember.Customer.CreditCard1 = dataContextCreditCard;
+                dataContextClubMember.Customer.CreditCard = currentClubMember.CreditCard.CreditNumber;
+            }
             //Clubmember Entity
             dataContextClubMember.DateOfBirth = currentClubMember.DateOfBirth;
             dataContextClubMember.Gender = (int)currentClubMember.Gender;
             dataContextClubMember.MemberID = currentClubMember.MemberID;
             return dataContextClubMember;
         }
+
+
+        //User
         public Backend.User UserConverterToBackend(User dataContextUser)
         {
             Backend.User currentUser = new Backend.User();
@@ -948,6 +1024,7 @@ namespace DAL
             return currentUser;
             
         }
+
         public User UserConverterToContext(Backend.User currentUser)
         {
             User dataContextUser = new User();
