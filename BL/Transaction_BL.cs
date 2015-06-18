@@ -69,10 +69,8 @@ namespace BL
         }
 
         public void Edit(object oldT, object newT)
-        {           
-            ((Backend.Transaction)newT).TransactionID = ((Backend.Transaction)oldT).TransactionID;
-            this.Remove(oldT);
-            this.Add(newT);            
+        {
+            throw new UnauthorizedAccessException("Can't edit transactions!");
         }
 
         public List<object> FindByName(string name, StringFields field)
