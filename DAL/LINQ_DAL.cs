@@ -390,6 +390,20 @@ namespace DAL
             return filteredClubMember;
         }
 
+        //Department Name Changer
+        public void DepartmentNameEdit(Backend.Department dep)
+        {
+            List<Backend.Department> allDepartment = ReadFromFile(Elements.Department).Cast<Backend.Department>().ToList();
+            foreach (Backend.Department currentDep in allDepartment)
+            {
+                if (currentDep.DepartmentID == dep.DepartmentID)
+                {
+                    currentDep.Name = dep.Name;
+                    break;
+                }
+            }
+            WriteToFile(allDepartment.Cast<object>().ToList(), dep);
+        }
         //Filter by name for department
         public List<Backend.Department> DepartmentNameQuery(string name, StringFields field)
         {

@@ -35,6 +35,7 @@ namespace DAL
         List<Backend.Customer> CustomerNumberQuery(int minNumber, int maxNumber, IntFields field);
 
         //Department:
+        void DepartmentNameEdit(Backend.Department dep);
         List<Backend.Department> DepartmentNameQuery(string name, StringFields field);
         List<Backend.Department> DepartmentNumberQuery(int minNumber, int maxNumber, IntFields field);
 

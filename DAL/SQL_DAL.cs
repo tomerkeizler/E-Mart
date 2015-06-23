@@ -528,6 +528,19 @@ namespace DAL
             return filteredClubMember;
         }
 
+        //Department Name Changer
+        public void DepartmentNameEdit(Backend.Department dep)
+        {
+            foreach (Department currentDep in db.Departments)
+            {
+                if (currentDep.DepartmentID == dep.DepartmentID)
+                {
+                    currentDep.Name = dep.Name;
+                    break;
+                }
+            }
+            db.SubmitChanges();
+        }
         //Filter by name for department
         public List<Backend.Department> DepartmentNameQuery(string name, StringFields field)
         {

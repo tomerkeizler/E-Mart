@@ -81,11 +81,12 @@ namespace BL
 
         public void Edit(object oldD, object newD)
         {
-            //throw new FieldAccessException("not authorize!");
-            //preserve the id for the edited department
+            if (!(oldD is Backend.Department) || !(newD is Backend.Department))
+            {
+                throw new System.Data.DataException("Bad Input!");
+            }
             ((Backend.Department)newD).DepartmentID = ((Backend.Department)oldD).DepartmentID;
-            this.Remove(oldD);
-            this.Add(newD);
+            itsDAL.DepartmentNameEdit((Backend.Department)newD);
         }
 
         public List<object> FindByName(string name, Backend.StringFields field)
