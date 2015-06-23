@@ -69,6 +69,18 @@ namespace BL
 
         public void Edit(object oldC, object newC)
         {
+            List<Backend.Customer> Allclubmems = itsDAL.ReadFromFile(Elements.Customer).Cast<Backend.Customer>().ToList();
+            //Check for credit card conflict
+            if (((Backend.Customer)newC).CreditCard != null)
+            {
+                foreach (Backend.Customer customer in Allclubmems)
+                {
+                    if (customer.CreditCard != null && customer.CreditCard.CreditNumber == ((Backend.Customer)newC).CreditCard.CreditNumber)
+                    {
+                        throw new System.Data.DataException("The Credit Card ID allready exist in the system");
+                    }
+                }
+            }
             List<Backend.User> oldUserList = itsDAL.UserPersonQuery(oldC);
             Backend.User oldUser = oldUserList.ElementAtOrDefault(0);
             if (oldUser == null)
