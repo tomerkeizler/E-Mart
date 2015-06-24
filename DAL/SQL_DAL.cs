@@ -658,7 +658,7 @@ namespace DAL
             }
             if (type is Rank)
             {
-                filteredUser = allUser.Where(n => (n.Person is Employee) && ((Employee)n.Person).Rank.Equals((Rank)type)).Cast<Backend.User>().ToList();
+                filteredUser = allUser.Where(n => (n.Person is Backend.Employee) && ((Backend.Employee)n.Person).Rank.Equals((Rank)type)).Cast<Backend.User>().ToList();
             }
             else
             {
