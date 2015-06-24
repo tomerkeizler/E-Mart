@@ -51,10 +51,8 @@ namespace PL
             productName.Text = ((Product)oldObj).Name;
             price.Text = Convert.ToString(((Product)oldObj).Price);
             stockcount.Text = Convert.ToString(((Product)oldObj).StockCount);
-
             depID.SelectedItem = ((Department)parentWindow.cats[3].FindByNumber(IntFields.departmentID, ((Product)oldObj).Location, ((Product)oldObj).Location).First());
             depID.Text = ((Department)depID.SelectedItem).Name;
-
             productType.SelectedIndex = (int)(((Product)oldObj).Type);
         }
 

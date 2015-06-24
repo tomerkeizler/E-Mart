@@ -437,7 +437,7 @@ namespace PL
                         foreach (Buyable b in currentList)
                             if (p.PrdID == b.Prod.ProductID)
                                 b.LeftInStock = b.LeftInStock + p.Amount;
-                                 
+
                 ProductGrid.CancelEdit();
                 ProductGrid.Items.Refresh();
 
