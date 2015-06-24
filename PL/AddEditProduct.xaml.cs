@@ -51,7 +51,10 @@ namespace PL
             productName.Text = ((Product)oldObj).Name;
             price.Text = Convert.ToString(((Product)oldObj).Price);
             stockcount.Text = Convert.ToString(((Product)oldObj).StockCount);
-            depID.Text = Convert.ToString(((Product)oldObj).Location);
+
+            depID.SelectedItem = ((Department)parentWindow.cats[3].FindByNumber(IntFields.departmentID, ((Product)oldObj).Location, ((Product)oldObj).Location).First());
+            depID.Text = ((Department)depID.SelectedItem).Name;
+
             productType.SelectedIndex = (int)(((Product)oldObj).Type);
         }
 
@@ -78,7 +81,7 @@ namespace PL
                     myPType = PType.Electronics;
                 else
                     myPType = PType.Food;
-                Product newObj = new Product(productName.Text, myPType, int.Parse(depID.Text), int.Parse(stockcount.Text), int.Parse(price.Text));
+                Product newObj = new Product(productName.Text, myPType, ((Department)depID.SelectedItem).DepartmentID, int.Parse(stockcount.Text), int.Parse(price.Text));
 
                 //adding action
                 if (isAdd)
@@ -107,7 +110,7 @@ namespace PL
             if (flag)
                 flag = PL_GUI.RegExp(stockcount.Text, "Stock count", 2);
             if (flag)
-                flag = PL_GUI.ComboboxValidate(depID, "Department ID");
+                flag = PL_GUI.ComboboxValidate(depID, "Department name");
             return flag;
         }
 
