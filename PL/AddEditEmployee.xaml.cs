@@ -50,9 +50,13 @@ namespace PL
                 AddEditButton.Content = "Edit Employee";
                 oldObj = _oldObj;
                 allEmployees.Remove(((Employee)oldObj)); // prevents an option of employee being his own supervisor
+                supID.ItemsSource = allEmployees;
                 ResetToDefault();
             }
-            supID.ItemsSource = allEmployees;
+            else
+            {
+                supID.ItemsSource = allEmployees;
+            }
         }
 
         // Reset the form to the old object details
@@ -61,7 +65,8 @@ namespace PL
             firstName.Text = ((Employee)oldObj).FirstName;
             lastName.Text = ((Employee)oldObj).LastName;
             ID.Text = Convert.ToString(((Employee)oldObj).Id);
-            depID.Text = Convert.ToString(((Employee)oldObj).DepID);
+            depID.SelectedItem = ((Department)parentWindow.cats[3].FindByNumber(IntFields.departmentID, ((Employee)oldObj).DepID, ((Employee)oldObj).DepID).First());
+            depID.Text = ((Department)depID.SelectedItem).Name;
             supID.Text = Convert.ToString(((Employee)oldObj).SupervisiorID);
             salary.Text = Convert.ToString(((Employee)oldObj).Salary);
             if (((Employee)oldObj).Gender.Equals(Gender.Male))
@@ -91,7 +96,7 @@ namespace PL
                 else
                     myGender = Gender.Female;
 
-                Employee newObj = new Employee(firstName.Text, lastName.Text, int.Parse(ID.Text), myGender, int.Parse(depID.Text), int.Parse(salary.Text), int.Parse(supID.Text));
+                Employee newObj = new Employee(firstName.Text, lastName.Text, int.Parse(ID.Text), myGender, ((Department)depID.SelectedItem).DepartmentID, int.Parse(salary.Text), int.Parse(supID.Text));
 
                 //adding action
                 if (isAdd)
@@ -129,7 +134,7 @@ namespace PL
             if (flag)
                 flag = PL_GUI.DoubleRadioValidate(male, female, "Gender");
             if (flag)
-                flag = PL_GUI.ComboboxValidate(depID, "Department ID");
+                flag = PL_GUI.ComboboxValidate(depID, "Department name");
             if (flag)
                 flag = PL_GUI.ComboboxValidate(supID, "Supervisor ID");
             if (flag)

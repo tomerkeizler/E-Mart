@@ -75,7 +75,7 @@
         <TextBlock Grid.Row="4" Grid.Column="0" Text="Last name" FontSize="14"/>
         <TextBlock Grid.Row="5" Grid.Column="0" Text="ID number" FontSize="14"/>
         <TextBlock Grid.Row="6" Grid.Column="0" Text="Gender" FontSize="14"/>
-        <TextBlock Grid.Row="8" Grid.Column="0" Text="Department ID" FontSize="14"/>
+        <TextBlock Grid.Row="8" Grid.Column="0" Text="Department name" FontSize="14"/>
         <TextBlock Grid.Row="9" Grid.Column="0" Text="Supervisor ID" FontSize="14"/>
         <TextBlock Grid.Row="10" Grid.Column="0" Text="Salary" FontSize="14"/>
 
@@ -91,7 +91,7 @@
             <RadioButton Grid.Column="0" GroupName="gender" x:Name="male" Content="Male"/>
             <RadioButton Grid.Column="1" GroupName="gender" x:Name="female" Content="Female"/>
         </Grid>
-        <ComboBox Grid.Row="8" Grid.Column="1" Width="80" x:Name="depID" DisplayMemberPath="DepartmentID" />
+        <ComboBox Grid.Row="8" Grid.Column="1" Width="140" x:Name="depID" DisplayMemberPath="Name" />
         <ComboBox Grid.Row="9" Grid.Column="1" x:Name="supID" DisplayMemberPath="Id"/>
         <TextBox x:Name="salary" Grid.Row="10" Grid.Column="1" />
 

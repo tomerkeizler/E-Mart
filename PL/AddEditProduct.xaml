@@ -48,7 +48,7 @@
         <TextBlock Grid.Row="2" Grid.Column="0" Text="Product type" FontSize="14"/>
         <TextBlock Grid.Row="3" Grid.Column="0" Text="Product price" FontSize="14"/>
         <TextBlock Grid.Row="4" Grid.Column="0" Text="Stock count" FontSize="14"/>
-        <TextBlock Grid.Row="5" Grid.Column="0" Text="Department ID" FontSize="14"/>
+        <TextBlock Grid.Row="5" Grid.Column="0" Text="Department name" FontSize="14"/>
 
 
 
@@ -60,7 +60,7 @@
         </ComboBox>
         <TextBox x:Name="price" Grid.Row="3" Grid.Column="1" />
         <TextBox x:Name="stockcount" Grid.Row="4" Grid.Column="1" />
-        <ComboBox Grid.Row="5" Grid.Column="1" Width="80" x:Name="depID" DisplayMemberPath="DepartmentID" />
+        <ComboBox Grid.Row="5" Grid.Column="1" Width="140" x:Name="depID" DisplayMemberPath="Name" />
 
         
         <Button Click="ResetForm" Grid.Row="6" Grid.Column="0" Content="Reset all" HorizontalAlignment="Right" VerticalAlignment="Center" Width="100" FontSize="14"/>
