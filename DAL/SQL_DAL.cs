@@ -13,15 +13,9 @@ namespace DAL
     public class SQL_DAL : IDAL
     {
         //Fields
-        IQueryable prodQuery;
-        IQueryable empQuery;
-        IQueryable clubQuery;
-        IQueryable custQuery;
-        IQueryable depQuery;
-        IQueryable transQuery;
-        IQueryable usrQuery;
         E_MartDB_LINQtoSQLDataContext db;
 
+        //Constructors
         public SQL_DAL()
         {
             try
@@ -30,23 +24,11 @@ namespace DAL
             }
             catch
             {
-                throw new Exception("Cant connect to DB!");
+                throw new Exception("Cant connect to E-Mart DB!");
             }
-            prodQuery = from Product prod in db.Products
-                        select prod;
-            empQuery = from Employee emp in db.Employees
-                       select emp;
-            clubQuery = from ClubMember club in db.ClubMembers
-                        select club;
-            custQuery = from Customer cust in db.Customers
-                        select cust;
-            depQuery = from Department dep in db.Departments
-                       select dep;
-            transQuery = from Transaction trans in db.Transactions
-                         select trans;
-            usrQuery = from User usr in db.Users
-                       select usr;
         }
+
+        //Adding the updated list of entities to DB (by remove all the types and re-add them to compitable the BL operations)
         public void WriteToFile(List<object> list, object obj)
         {
             if (obj is Backend.Product)
@@ -203,9 +185,17 @@ namespace DAL
             {
                 throw new System.Data.DataException("Bad Input!");
             }
-            db.SubmitChanges();
+            try
+            {
+                db.SubmitChanges();
+            }
+            catch
+            {
+                throw new InvalidDataException("There is a conflict with the change. Operation aborted.");
+            }
         }
 
+        //Read the specific entity from the DB, return it as List
         public List<object> ReadFromFile(Backend.Elements element)
         {
             List<object> currentList = new List<object>();
@@ -539,7 +529,14 @@ namespace DAL
                     break;
                 }
             }
-            db.SubmitChanges();
+            try
+            {
+                db.SubmitChanges();
+            }
+            catch
+            {
+                throw new InvalidDataException("There is a conflict with the change. Operation aborted.");
+            }
         }
         //Filter by name for department
         public List<Backend.Department> DepartmentNameQuery(string name, StringFields field)
