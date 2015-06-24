@@ -60,7 +60,7 @@
 
         <TextBlock Grid.Row="3" Grid.Column="0" Text="Rank" FontSize="14"/>
         <ComboBox Grid.Row="3" Grid.Column="1" x:Name="rank">
-            <ComboBoxItem Content="Admin" />
+            <ComboBoxItem Content="Administrator" /> 
             <ComboBoxItem Content="Manager" />
             <ComboBoxItem Content="Worker" />
             <ComboBoxItem Content="Customer" />
