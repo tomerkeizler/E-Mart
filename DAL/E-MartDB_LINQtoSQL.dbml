@@ -1,16 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="E-Mart" Class="E_MartDB_LINQtoSQLDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=ASAF-LAPTOP;Initial Catalog=E-Mart;Integrated Security=True" SettingsObjectName="DAL.Properties.Settings" SettingsPropertyName="E_MartConnectionString" Provider="System.Data.SqlClient" />
-  <Table Name="dbo.ClubMember" Member="ClubMembers">
-    <Type Name="ClubMember">
-      <Column Name="MemberID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="DateOfBirth" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="Gender" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="IsAClubMember" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Association Name="ClubMember_User" Member="Users" ThisKey="Id" OtherKey="PersonAsClubMember" Type="User" />
-      <Association Name="Customer_ClubMember" Member="Customer" ThisKey="Id" OtherKey="Id" Type="Customer" IsForeignKey="true" />
-    </Type>
-  </Table>
+  <Connection Mode="AppSettings" ConnectionString="Data Source=USR-PC\SQLEXPRESS;Initial Catalog=E-Mart;Integrated Security=True" SettingsObjectName="DAL.Properties.Settings" SettingsPropertyName="E_MartConnectionString1" Provider="System.Data.SqlClient" />
   <Table Name="dbo.Users" Member="Users">
     <Type Name="User">
       <Column Name="UserName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
@@ -22,6 +11,40 @@
       <Association Name="ClubMember_User" Member="ClubMember" ThisKey="PersonAsClubMember" OtherKey="Id" Type="ClubMember" IsForeignKey="true" />
       <Association Name="Customer_User" Member="Customer" ThisKey="PersonAsCustomer" OtherKey="Id" Type="Customer" IsForeignKey="true" />
       <Association Name="Employee_User" Member="Employee" ThisKey="PersonAsEmployee" OtherKey="Id" Type="Employee" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TopSellers" Member="TopSellers">
+    <Type Name="TopSeller">
+      <Column Name="ProductID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="IsTopSeller" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="SellCounter" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CurrentMonth" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Product_TopSeller" Member="Product" ThisKey="ProductID" OtherKey="ProductID" Type="Product" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ClubMember" Member="ClubMembers">
+    <Type Name="ClubMember">
+      <Column Name="MemberID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DateOfBirth" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Gender" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="IsAClubMember" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="ClubMember_User" Member="Users" ThisKey="Id" OtherKey="PersonAsClubMember" Type="User" />
+      <Association Name="ClubMember_User1" Member="User1s" ThisKey="Id" OtherKey="PersonAsClubMember" Type="User1" />
+      <Association Name="Customer_ClubMember" Member="Customer" ThisKey="Id" OtherKey="Id" Type="Customer" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Users" Member="User1s">
+    <Type Name="User1">
+      <Column Name="UserName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Password" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="PersonID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="PersonAsEmployee" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PersonAsCustomer" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PersonAsClubMember" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="ClubMember_User1" Member="ClubMember" ThisKey="PersonAsClubMember" OtherKey="Id" Type="ClubMember" IsForeignKey="true" />
+      <Association Name="Customer_User1" Member="Customer" ThisKey="PersonAsCustomer" OtherKey="Id" Type="Customer" IsForeignKey="true" />
+      <Association Name="Employee_User1" Member="Employee" ThisKey="PersonAsEmployee" OtherKey="Id" Type="Employee" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.CreditCards" Member="CreditCards">
@@ -40,8 +63,9 @@
       <Column Name="CreditCard" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="LastName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="IsAClubMember" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Association Name="Customer_ClubMember" Member="ClubMember" ThisKey="Id" OtherKey="Id" Type="ClubMember" Cardinality="One" />
       <Association Name="Customer_User" Member="Users" ThisKey="Id" OtherKey="PersonAsCustomer" Type="User" />
+      <Association Name="Customer_User1" Member="User1s" ThisKey="Id" OtherKey="PersonAsCustomer" Type="User1" />
+      <Association Name="Customer_ClubMember" Member="ClubMember" ThisKey="Id" OtherKey="Id" Type="ClubMember" Cardinality="One" />
       <Association Name="Customer_TranHistoryLinkedTable" Member="TranHistoryLinkedTables" ThisKey="Id" OtherKey="CustomerID" Type="TranHistoryLinkedTable" />
       <Association Name="CreditCard_Customer" Member="CreditCard1" ThisKey="CreditCard" OtherKey="CreditNumber" Type="CreditCard" IsForeignKey="true" />
     </Type>
@@ -65,6 +89,7 @@
       <Column Name="LastName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="Rank" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="Employee_User" Member="Users" ThisKey="Id" OtherKey="PersonAsEmployee" Type="User" />
+      <Association Name="Employee_User1" Member="User1s" ThisKey="Id" OtherKey="PersonAsEmployee" Type="User1" />
       <Association Name="Department_Employee" Member="Department" ThisKey="DepID" OtherKey="DepartmentID" Type="Department" IsForeignKey="true" />
     </Type>
   </Table>
@@ -78,6 +103,7 @@
       <Column Name="Location" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="ProductID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Association Name="Product_TopSeller" Member="TopSeller" ThisKey="ProductID" OtherKey="ProductID" Type="TopSeller" Cardinality="One" />
+      <Association Name="Product_TopSeller1" Member="TopSeller1" ThisKey="ProductID" OtherKey="ProductID" Type="TopSeller1" Cardinality="One" />
       <Association Name="Department_Product" Member="Department" ThisKey="Location" OtherKey="DepartmentID" Type="Department" IsForeignKey="true" />
     </Type>
   </Table>
@@ -92,13 +118,13 @@
       <Association Name="Transaction_Purchase" Member="Transaction" ThisKey="TransID" OtherKey="TransactionID" Type="Transaction" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.TopSellers" Member="TopSellers">
-    <Type Name="TopSeller">
+  <Table Name="dbo.TopSellers" Member="TopSeller1s">
+    <Type Name="TopSeller1">
       <Column Name="ProductID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="IsTopSeller" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="SellCounter" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="CurrentMonth" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="Product_TopSeller" Member="Product" ThisKey="ProductID" OtherKey="ProductID" Type="Product" IsForeignKey="true" />
+      <Association Name="Product_TopSeller1" Member="Product" ThisKey="ProductID" OtherKey="ProductID" Type="Product" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.TranHistoryLinkedTable" Member="TranHistoryLinkedTables">
