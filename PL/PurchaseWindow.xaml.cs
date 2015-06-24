@@ -125,7 +125,8 @@ namespace PL
                     int newChoice = selectedComboBox.SelectedIndex;
                     if (!newChoice.Equals(TypesInStore))
                         if (!isDuplicate(selectedComboBox, newChoice))
-                            ((Product_BL)parentWindow.cats[5]).FilterProducts(currentList, typeIndex[newChoice], true);
+                            if (newChoice != -1)
+                                ((Product_BL)parentWindow.cats[5]).FilterProducts(currentList, typeIndex[newChoice], true);
 
                     currentTypes[selectedComboBox] = newChoice;
 
