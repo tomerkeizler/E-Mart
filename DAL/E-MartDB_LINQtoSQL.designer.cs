@@ -1426,9 +1426,9 @@ namespace DAL
 		
 		private EntitySet<User> _Users;
 		
-		private EntitySet<User1> _User1s;
-		
 		private EntityRef<ClubMember> _ClubMember;
+		
+		private EntitySet<User1> _User1s;
 		
 		private EntitySet<TranHistoryLinkedTable> _TranHistoryLinkedTables;
 		
@@ -1453,8 +1453,8 @@ namespace DAL
 		public Customer()
 		{
 			this._Users = new EntitySet<User>(new Action<User>(this.attach_Users), new Action<User>(this.detach_Users));
-			this._User1s = new EntitySet<User1>(new Action<User1>(this.attach_User1s), new Action<User1>(this.detach_User1s));
 			this._ClubMember = default(EntityRef<ClubMember>);
+			this._User1s = new EntitySet<User1>(new Action<User1>(this.attach_User1s), new Action<User1>(this.detach_User1s));
 			this._TranHistoryLinkedTables = new EntitySet<TranHistoryLinkedTable>(new Action<TranHistoryLinkedTable>(this.attach_TranHistoryLinkedTables), new Action<TranHistoryLinkedTable>(this.detach_TranHistoryLinkedTables));
 			this._CreditCard1 = default(EntityRef<CreditCard>);
 			OnCreated();
@@ -1577,19 +1577,6 @@ namespace DAL
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Customer_User1", Storage="_User1s", ThisKey="Id", OtherKey="PersonAsCustomer")]
-		public EntitySet<User1> User1s
-		{
-			get
-			{
-				return this._User1s;
-			}
-			set
-			{
-				this._User1s.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Customer_ClubMember", Storage="_ClubMember", ThisKey="Id", OtherKey="Id", IsUnique=true, IsForeignKey=false)]
 		public ClubMember ClubMember
 		{
@@ -1616,6 +1603,19 @@ namespace DAL
 					}
 					this.SendPropertyChanged("ClubMember");
 				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Customer_User1", Storage="_User1s", ThisKey="Id", OtherKey="PersonAsCustomer")]
+		public EntitySet<User1> User1s
+		{
+			get
+			{
+				return this._User1s;
+			}
+			set
+			{
+				this._User1s.Assign(value);
 			}
 		}
 		
