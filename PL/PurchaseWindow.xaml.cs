@@ -353,7 +353,7 @@ namespace PL
                     identical.Amount += toBuy.Amount;
 
                 // refresh the shopping cart datagrid
-                purchaseGrid.CancelEdit();////
+                purchaseGrid.CancelEdit();
                 purchaseGrid.Items.Refresh();
 
                 // update the stock of the product
@@ -383,7 +383,7 @@ namespace PL
                 // zero the amount in main table
                 b.ZeroAmount();
                 // refresh the products datagrid
-                ProductGrid.CancelEdit();////
+                ProductGrid.CancelEdit();
                 ProductGrid.Items.Refresh();
             }
         }
@@ -405,7 +405,7 @@ namespace PL
             foreach (Buyable b in currentList)
                 if (b.Prod.ProductID == toRemove.PrdID)
                     b.LeftInStock = b.LeftInStock + toRemove.Amount;
-            ProductGrid.CancelEdit();////
+            ProductGrid.CancelEdit();
             ProductGrid.Items.Refresh();
 
             String total = Convert.ToString(int.Parse(totalPrice1.Text) - (toRemove.Price) * (toRemove.Amount));
@@ -432,12 +432,13 @@ namespace PL
             else
             {
                 // update the stock of the products
-                foreach (Buyable b in currentList)
-                {
-                    int plusToStock = purchasesList.Where(n => n.PrdID == b.Prod.ProductID).First().Amount;
-                    b.LeftInStock = b.LeftInStock + plusToStock;
-                }
-                ProductGrid.CancelEdit();////
+                foreach (Purchase p in purchasesList)
+                    if (currentList.Any())
+                        foreach (Buyable b in currentList)
+                            if (p.PrdID == b.Prod.ProductID)
+                                b.LeftInStock = b.LeftInStock + p.Amount;
+
+                ProductGrid.CancelEdit();
                 ProductGrid.Items.Refresh();
 
                 purchasesList.Clear();
