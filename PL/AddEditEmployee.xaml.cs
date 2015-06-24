@@ -50,9 +50,13 @@ namespace PL
                 AddEditButton.Content = "Edit Employee";
                 oldObj = _oldObj;
                 allEmployees.Remove(((Employee)oldObj)); // prevents an option of employee being his own supervisor
+                supID.ItemsSource = allEmployees;
                 ResetToDefault();
             }
-            supID.ItemsSource = allEmployees;
+            else
+            {
+                supID.ItemsSource = allEmployees;
+            }
         }
 
         // Reset the form to the old object details
