@@ -119,14 +119,17 @@ namespace DAL
                 }
                 foreach (Customer cust in db.Customers)
                 {
-                    db.Customers.DeleteOnSubmit(cust);
-                    foreach (CreditCard credit in db.CreditCards)
+                    if (!cust.IsAClubMember)
                     {
-                        if (credit.CreditNumber == cust.CreditCard)
+                        db.Customers.DeleteOnSubmit(cust);
+                        foreach (CreditCard credit in db.CreditCards)
                         {
-                            db.CreditCards.DeleteOnSubmit(credit);
+                            if (credit.CreditNumber == cust.CreditCard)
+                            {
+                                db.CreditCards.DeleteOnSubmit(credit);
+                            }
                         }
-                    }
+                    } 
                 }
                 foreach (Backend.Customer cust in list)
                 {
