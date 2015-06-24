@@ -53,6 +53,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DAL_Test.cs" />
+    <Compile Include="E-MartDB_LINQtoSQL.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>E-MartDB_LINQtoSQL.dbml</DependentUpon>
+    </Compile>
     <Compile Include="IDAL.cs" />
     <Compile Include="LINQ_DAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -17,7 +17,7 @@ namespace DAL
     public class DAL_Test
     {
         IDAL linq = new LINQ_DAL();
-        IDAL sql = new SQL_DAL();
+        IDAL sql = new LINQ_DAL();
         Backend.Product a = new Backend.Product("first", PType.Clothes, 1, 4, 123,5);
         Backend.Product b = new Backend.Product("second", PType.Food, 3, 25, 1213, 4);
         Backend.Product c = new Backend.Product("Third", PType.Electronics, 3, 5, 1213, 5);
