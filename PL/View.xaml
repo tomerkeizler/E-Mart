@@ -327,7 +327,7 @@
             <TextBlock Grid.Row="1" Grid.Column="0" Text="Username" FontSize="14"/>
             <TextBlock Grid.Row="2" Grid.Column="0" Text="Password" FontSize="14"/>
 
-            <TextBlock Text="{Binding Path=Username}" Grid.Row="1" Grid.Column="1" />
+            <TextBlock Text="{Binding Path=UserName}" Grid.Row="1" Grid.Column="1" />
             <TextBlock Text="{Binding Path=Password}" Grid.Row="2" Grid.Column="1" />
         </Grid>
 

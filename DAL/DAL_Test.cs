@@ -40,10 +40,10 @@ namespace DAL
         public void clear()
         {
             list.Clear();
-            List<object> emptyList = new List<object>();
-            sql.WriteToFile(emptyList, new Backend.Product());
-            sql.WriteToFile(emptyList, new Backend.Employee());
-            sql.WriteToFile(emptyList, new Backend.Department());
+            //List<object> emptyList = new List<object>();
+           // sql.WriteToFile(emptyList, new Backend.Product());
+           // sql.WriteToFile(emptyList, new Backend.Employee());
+            //sql.WriteToFile(emptyList, new Backend.Department());
         }
 
         [Test]
