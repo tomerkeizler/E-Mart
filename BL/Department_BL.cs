@@ -49,6 +49,7 @@ namespace BL
         {
             List<Backend.Department> Alldeparts = itsDAL.ReadFromFile(Elements.Department).Cast<Backend.Department>().ToList();
             List<Backend.Employee> Allemps = itsDAL.ReadFromFile(Elements.Employee).Cast<Backend.Employee>().ToList();
+            List<Backend.Product> Allprod = itsDAL.ReadFromFile(Elements.Product).Cast<Backend.Product>().ToList();
             //check if there are any departments to remove
             if (!Alldeparts.Any())
                 throw new NullReferenceException("No Departments to remove!");
@@ -58,6 +59,11 @@ namespace BL
                 foreach (Backend.Employee emp in Allemps)
                 {
                     if (((Backend.Department)d).DepartmentID == emp.DepID)
+                        throw new Exception("this department is currently in use!");
+                }
+                foreach (Backend.Product prod in Allprod)
+                {
+                    if (((Backend.Department)d).DepartmentID == prod.Location)
                         throw new Exception("this department is currently in use!");
                 }
                 //find and remove department
@@ -75,10 +81,12 @@ namespace BL
 
         public void Edit(object oldD, object newD)
         {
-            //preserve the id for the edited department
+            if (!(oldD is Backend.Department) || !(newD is Backend.Department))
+            {
+                throw new System.Data.DataException("Bad Input!");
+            }
             ((Backend.Department)newD).DepartmentID = ((Backend.Department)oldD).DepartmentID;
-            this.Remove(oldD);
-            this.Add(newD);
+            itsDAL.DepartmentNameEdit((Backend.Department)newD);
         }
 
         public List<object> FindByName(string name, Backend.StringFields field)

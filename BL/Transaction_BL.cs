@@ -51,28 +51,12 @@ namespace BL
 
         public void Remove(object t, Boolean isEdit = false)
         {
-            List<Backend.Transaction> Alltrans = itsDAL.ReadFromFile(Elements.Transaction).Cast<Backend.Transaction>().ToList();
-            if (!Alltrans.Any())
-                throw new NullReferenceException("No Transactions to remove!");
-            else
-            {
-                foreach (Backend.Transaction tran in Alltrans)
-                {
-                    if (tran.Equals(t))
-                    {
-                        Alltrans.Remove(tran);
-                        break;
-                    }
-                }
-                itsDAL.WriteToFile(Alltrans.Cast<object>().ToList(), t);
-            }
+            throw new UnauthorizedAccessException("Transactions are not editable for this version");
         }
 
         public void Edit(object oldT, object newT)
-        {           
-            ((Backend.Transaction)newT).TransactionID = ((Backend.Transaction)oldT).TransactionID;
-            this.Remove(oldT);
-            this.Add(newT);            
+        {
+            throw new UnauthorizedAccessException("Transactions are not editable for this version");
         }
 
         public List<object> FindByName(string name, StringFields field)

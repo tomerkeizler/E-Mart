@@ -74,6 +74,18 @@ namespace BL
 
         public void Edit(object oldCM, object newCM)
         {
+            List<Backend.ClubMember> Allclubmems = itsDAL.ReadFromFile(Elements.ClubMember).Cast<Backend.ClubMember>().ToList();
+            //Check for credit card conflict
+            if (((Backend.ClubMember)newCM).CreditCard != null)
+            {
+                foreach (Backend.ClubMember clubmem in Allclubmems)
+                {
+                    if (clubmem.CreditCard != null && clubmem.CreditCard.CreditNumber == ((Backend.ClubMember)newCM).CreditCard.CreditNumber)
+                    {
+                        throw new System.Data.DataException("The Credit Card ID allready exist in the system");
+                    }
+                }
+            }
             //preserve the id for the edited clubmember
             ((Backend.ClubMember)newCM).MemberID = ((Backend.ClubMember)oldCM).MemberID;
             List<Backend.User> oldUserList = itsDAL.UserPersonQuery(oldCM);
@@ -85,9 +97,10 @@ namespace BL
             User_BL itsUserBL = new User_BL(itsDAL);
             Backend.User newUser = new Backend.User(oldUser);
             newUser.Person = newCM;
-            itsUserBL.Edit(oldUser, newUser);
+            itsUserBL.Remove(oldUser, true);
             this.Remove(oldCM);
             this.Add(newCM);
+            itsUserBL.Add(newUser);
         }
 
         public List<object> FindByName(string name, StringFields field)
