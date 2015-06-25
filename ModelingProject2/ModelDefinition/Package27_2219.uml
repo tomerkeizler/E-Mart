@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm4="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/LogicalClassDesigner"
+  dslVersion="1.0.0.0"
+  Id="c3a98616-79ef-45fa-9222-98aeb4eccee8"
+  name="Cryptography"
+  visibility="Private" xmlns="http://schemas.microsoft.com/dsltools/ModelStore">
+  <referencesInternal>
+    <reference
+      Id="68a2daae-e449-4dc3-9cfb-01a3c5adb81f"
+      handle="viewcode://./CodeSchema_Namespace?Namespace%3DSystem.Security.Cryptography"
+      tag="ViewCode" />
+  </referencesInternal>
+  <packagedElements>
+    <packageHasNamedElement>
+      <class
+        Id="f9ba4f64-d52f-4d8a-bf8e-6e54e8a27650"
+        name="SymmetricAlgorithm"
+        isAbstract="true"
+        isLeaf="false"
+        isActiveClass="false">
+        <referencesInternal>
+          <reference
+            Id="827734dd-c7b2-437f-a25e-993fda7f6288"
+            handle="viewcode://./CodeSchema_Class?Assembly%3D&quot;file:%2F%2F%2FC:%2FProgram Files (x86)%2FReference Assemblies%2FMicrosoft%2FFramework%2F.NETFramework%2Fv4.5%2Fmscorlib.dll&quot; Namespace%3DSystem.Security.Cryptography Type%3DSymmetricAlgorithm"
+            tag="ViewCode" />
+        </referencesInternal>
+        <appliedStereotypesInternal>
+          <stereotypeInstance
+            Id="f77e7f3e-a09d-4d44-960c-ea2ad33e3253"
+            name="class"
+            profile="CSharpProfile">
+            <propertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="efd28ea6-88f3-4f51-b231-2692dc32730b">
+                <propertyInstance
+                  Id="2de827ee-e17d-4a9f-a47d-74ca314d0b04"
+                  name="ClrAttributes" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="fbb858b6-8913-42a5-91b8-4f53f13d1b1c">
+                <propertyInstance
+                  Id="28bec436-5c62-4606-a84b-80c6fddba95d"
+                  name="IsPartial"
+                  value="false" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="76bc9267-1ef5-45ae-8587-c1b581be1d0a">
+                <propertyInstance
+                  Id="533621b4-684c-4eba-96d1-7140d2e0e884"
+                  name="IsStatic"
+                  value="False" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="7e57b788-9a2b-4755-a58f-cbbecfd98c3d">
+                <propertyInstance
+                  Id="5e648797-0233-43f1-bc26-fa5a959b9563"
+                  name="IsUnsafe"
+                  value="false" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="06c323c0-de6f-4c2a-9613-4e3b04583377">
+                <propertyInstance
+                  Id="2145dfbe-43f9-4b07-aa0d-480f00ab5ada"
+                  name="PackageVisibility"
+                  value="internal" />
+              </stereotypeInstanceHasPropertyInstances>
+            </propertyInstances>
+          </stereotypeInstance>
+        </appliedStereotypesInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="bd4a64b0-be31-429a-98e6-2ecedecbd15d"
+        name="RijndaelManaged"
+        isAbstract="false"
+        isLeaf="true"
+        isActiveClass="false">
+        <referencesInternal>
+          <reference
+            Id="06529965-4c78-4152-b1a8-5bfe3a58f867"
+            handle="viewcode://./CodeSchema_Class?Assembly%3D&quot;file:%2F%2F%2FC:%2FProgram Files (x86)%2FReference Assemblies%2FMicrosoft%2FFramework%2F.NETFramework%2Fv4.5%2Fmscorlib.dll&quot; Namespace%3DSystem.Security.Cryptography Type%3DRijndaelManaged"
+            tag="ViewCode" />
+        </referencesInternal>
+        <appliedStereotypesInternal>
+          <stereotypeInstance
+            Id="68a5e8c0-6542-4b47-9202-957b20b70531"
+            name="class"
+            profile="CSharpProfile">
+            <propertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="d9fcee58-b333-41ae-8c59-3b10d6e537d0">
+                <propertyInstance
+                  Id="6032a8b0-28ae-4390-b37b-042ceca7a452"
+                  name="ClrAttributes" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="1b6df88e-1dd6-44e1-9fcd-50c7d054e9d4">
+                <propertyInstance
+                  Id="5c275ec1-9960-41d1-9ffe-ac1690294245"
+                  name="IsPartial"
+                  value="false" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="82fd4a51-8765-4bcf-9225-898593396513">
+                <propertyInstance
+                  Id="b204ff10-5ef5-4f59-894f-a0f18005b9db"
+                  name="IsStatic"
+                  value="False" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="50b3c133-1b5a-4af0-a493-e8e2c0765d1e">
+                <propertyInstance
+                  Id="4b9d04ba-629c-4f99-8e00-e6db27ce2cd9"
+                  name="IsUnsafe"
+                  value="false" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="1dad96ca-89b6-4908-a316-3926d1b11bed">
+                <propertyInstance
+                  Id="81103cb2-36e8-4a2d-a003-2434288f35c5"
+                  name="PackageVisibility"
+                  value="internal" />
+              </stereotypeInstanceHasPropertyInstances>
+            </propertyInstances>
+          </stereotypeInstance>
+        </appliedStereotypesInternal>
+      </class>
+    </packageHasNamedElement>
+  </packagedElements>
+</package>

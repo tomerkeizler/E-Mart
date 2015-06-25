@@ -1,0 +1,793 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm4="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/LogicalClassDesigner"
+  dslVersion="1.0.0.0"
+  Id="7900a4f1-f41e-463e-8481-62d6c2a42cfc"
+  name="Properties"
+  visibility="Private" xmlns="http://schemas.microsoft.com/dsltools/ModelStore">
+  <referencesInternal>
+    <reference
+      Id="cd16d03a-7b60-4572-b8ce-f2a61b10d856"
+      handle="viewcode://./CodeSchema_Namespace?Namespace%3DMainProg.Properties"
+      tag="ViewCode" />
+  </referencesInternal>
+  <packagedElements>
+    <packageHasNamedElement>
+      <class
+        Id="77bb8932-37db-4b4f-871a-c80811f884c7"
+        name="Resources"
+        visibility="Package"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <referencesInternal>
+          <reference
+            Id="e96a5809-6d6c-4648-b326-8bb880322029"
+            handle="viewcode://./CodeSchema_Class?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2Fasafb_000%2FDocuments%2FVisual Studio 2013%2FProjects%2FE_Mart%2FMainProg%2Fbin%2FDebug%2FMainProg.exe&quot; Namespace%3DMainProg.Properties Type%3DResources"
+            tag="ViewCode" />
+        </referencesInternal>
+        <appliedStereotypesInternal>
+          <stereotypeInstance
+            Id="0fd88eee-390d-4b7f-8a27-c7eace66bf1f"
+            name="class"
+            profile="CSharpProfile">
+            <propertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="a9ab112e-1f8d-49aa-96b6-0fd6f787a1c7">
+                <propertyInstance
+                  Id="51b7280c-bf32-4971-b2d1-c796c48d184c"
+                  name="ClrAttributes" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="c1474f85-63bb-49a1-9552-1c8ae479b48a">
+                <propertyInstance
+                  Id="09aea698-6068-4fb4-beff-faa0083887fa"
+                  name="IsPartial"
+                  value="false" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="276cd26e-ecd8-40af-8882-0679bc413def">
+                <propertyInstance
+                  Id="4a648090-b11a-4f7e-a9e7-63ac28a8800b"
+                  name="IsStatic"
+                  value="False" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="de73dc4e-1e4d-44fe-877d-757b633c642e">
+                <propertyInstance
+                  Id="d84413b2-5cea-4b4a-8f06-e94c308f64f6"
+                  name="IsUnsafe"
+                  value="false" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="0d21cadf-ebc7-4650-afb3-150a3be2d99d">
+                <propertyInstance
+                  Id="8a22bb2c-26e3-43f5-8d3e-ffa7033e124a"
+                  name="PackageVisibility"
+                  value="internal" />
+              </stereotypeInstanceHasPropertyInstances>
+            </propertyInstances>
+          </stereotypeInstance>
+        </appliedStereotypesInternal>
+        <ownedAttributesInternal>
+          <property
+            Id="a72431df-d556-4cbd-ad1b-57aa4f683083"
+            name="ResourceManager"
+            visibility="Package"
+            isLeaf="false"
+            isStatic="true"
+            isReadOnly="true"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <referencesInternal>
+              <reference
+                Id="46195b4a-a66c-4aff-bb40-485ee385cce2"
+                handle="viewcode://./CodeSchema_Property?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2Fasafb_000%2FDocuments%2FVisual Studio 2013%2FProjects%2FE_Mart%2FMainProg%2Fbin%2FDebug%2FMainProg.exe&quot; Namespace%3DMainProg.Properties Type%3DResources Member%3DResourceManager"
+                tag="ViewCode" />
+            </referencesInternal>
+            <appliedStereotypesInternal>
+              <stereotypeInstance
+                Id="d67bc429-a39b-45fd-8f88-199dbee5f70a"
+                name="property"
+                profile="CSharpProfile">
+                <propertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="00165252-42c6-47be-9f99-ac158bee4fac">
+                    <propertyInstance
+                      Id="67d8b9fb-f448-4e22-9fd2-da7a2d85c44b"
+                      name="ClrAttributes" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="251f3702-fe1c-44a3-b54a-927ef2615a0d">
+                    <propertyInstance
+                      Id="7ea677cd-0ae4-4775-813d-0b3068cf27eb"
+                      name="Get"
+                      value="package" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="b3585fe1-8150-4156-8d01-10c109119b7d">
+                    <propertyInstance
+                      Id="b67ceb6e-bf08-475d-a0ab-f182eb0938af"
+                      name="HasBody"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="f3ec0b78-bb8d-44d2-a2aa-e80ca09b2114">
+                    <propertyInstance
+                      Id="cff04a18-d57e-4bb4-a010-034b4dbe9d4f"
+                      name="IsUnsafe"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="d6cab3ca-1f86-4114-8fdf-b8f84706913a">
+                    <propertyInstance
+                      Id="2b9e2183-ae12-4107-a952-82208ccf1475"
+                      name="Inheritance"
+                      value="none" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="1b42f7d4-2888-4083-b9cb-ab2f79fb2099">
+                    <propertyInstance
+                      Id="423b7a88-7bfe-498e-bc27-3bb7e836b242"
+                      name="PackageVisibility"
+                      value="internal" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="51847600-e582-4042-a0fe-80f674a5630c">
+                    <propertyInstance
+                      Id="cfd28ecd-df0f-4397-9fbb-e71828974ba9"
+                      name="Set"
+                      value="none" />
+                  </stereotypeInstanceHasPropertyInstances>
+                </propertyInstances>
+              </stereotypeInstance>
+            </appliedStereotypesInternal>
+            <type_NamedElement>
+              <classMoniker
+                Id="b5b2c41f-56ef-416f-8340-8fd07cb0f14f"
+                LastKnownName="ResourceManager"
+                LastKnownLocation="Package5_2219.uml" />
+            </type_NamedElement>
+          </property>
+          <property
+            Id="966d5d58-221b-4e98-8c49-4df7e2d1ef1d"
+            name="Culture"
+            visibility="Package"
+            isLeaf="false"
+            isStatic="true"
+            isReadOnly="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <referencesInternal>
+              <reference
+                Id="2fc877f4-7a9b-4776-9311-50daa766f67d"
+                handle="viewcode://./CodeSchema_Property?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2Fasafb_000%2FDocuments%2FVisual Studio 2013%2FProjects%2FE_Mart%2FMainProg%2Fbin%2FDebug%2FMainProg.exe&quot; Namespace%3DMainProg.Properties Type%3DResources Member%3DCulture"
+                tag="ViewCode" />
+            </referencesInternal>
+            <appliedStereotypesInternal>
+              <stereotypeInstance
+                Id="05a8884f-7f91-4c8d-b351-3e16f05ebb5c"
+                name="property"
+                profile="CSharpProfile">
+                <propertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="02f4fecb-6051-40c6-b2d5-fdae86a67cc2">
+                    <propertyInstance
+                      Id="bf852613-50e8-445d-baf8-613a0e0747b1"
+                      name="ClrAttributes" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="475c50ac-aa47-46ad-95b1-53ff1d57c7c7">
+                    <propertyInstance
+                      Id="ad1673a3-d226-416a-9757-7730709e2b2c"
+                      name="Get"
+                      value="package" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="9cd89369-2bd8-457d-b735-d40ade66d4fd">
+                    <propertyInstance
+                      Id="e651b00f-44f2-4a18-8573-b7c597da7558"
+                      name="HasBody"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="cec487e5-ac78-4bf6-bea4-34472359dca8">
+                    <propertyInstance
+                      Id="abb8bf81-4f6f-44d6-8cb8-f8300aef3038"
+                      name="IsUnsafe"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="bd3ebc2a-34d6-44c1-acf4-78427a1b04ed">
+                    <propertyInstance
+                      Id="d594b301-2c03-4085-895e-7013a190e43f"
+                      name="Inheritance"
+                      value="none" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="13dc5093-db91-4687-b69a-06f47f2d0164">
+                    <propertyInstance
+                      Id="e9a80249-b013-4304-bd8b-c8cb18578079"
+                      name="PackageVisibility"
+                      value="internal" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="b307e211-ba19-456c-90a9-1abc460fd5f0">
+                    <propertyInstance
+                      Id="d4f3a93f-4589-433e-9db3-6b1817a77668"
+                      name="Set"
+                      value="package" />
+                  </stereotypeInstanceHasPropertyInstances>
+                </propertyInstances>
+              </stereotypeInstance>
+            </appliedStereotypesInternal>
+            <type_NamedElement>
+              <classMoniker
+                Id="e938b0b9-2c99-458b-8bdf-9b68fdae2d41"
+                LastKnownName="CultureInfo"
+                LastKnownLocation="Package6_2219.uml" />
+            </type_NamedElement>
+          </property>
+          <property
+            Id="0fb24041-5503-47c8-b623-f1abb285b5fb"
+            name="resourceMan"
+            visibility="Private"
+            isLeaf="false"
+            isStatic="true"
+            isReadOnly="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <referencesInternal>
+              <reference
+                Id="2b81d38e-1838-432d-bda3-ecfbc16996ad"
+                handle="viewcode://./CodeSchema_Field?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2Fasafb_000%2FDocuments%2FVisual Studio 2013%2FProjects%2FE_Mart%2FMainProg%2Fbin%2FDebug%2FMainProg.exe&quot; Namespace%3DMainProg.Properties Type%3DResources Member%3DresourceMan"
+                tag="ViewCode" />
+            </referencesInternal>
+            <appliedStereotypesInternal>
+              <stereotypeInstance
+                Id="23bbdb5c-0dce-410f-8059-42e530feea42"
+                name="field"
+                profile="CSharpProfile">
+                <propertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="21a6675d-ce01-4a25-89d5-3c4b4ab1c7d1">
+                    <propertyInstance
+                      Id="327531bc-a3c8-4859-8cd3-8cfb5b3785a7"
+                      name="ClrAttributes" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="c25ba8d6-158c-44e3-aba2-95349d6b5f36">
+                    <propertyInstance
+                      Id="23c8a17e-456e-4538-bc07-f4cee1e386ed"
+                      name="IsConst"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="9b294d56-fdfb-43b3-8c2b-d1ee99bc9994">
+                    <propertyInstance
+                      Id="64d6e3e2-bc5a-4ad1-b966-ba229ccb2317"
+                      name="IsNullable"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="12529a44-765e-429a-bfb6-0a2463dea2c5">
+                    <propertyInstance
+                      Id="5d8b836a-8c45-4aa2-8f06-bbbdc60e408b"
+                      name="IsVolatile"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="70c01d6a-027d-424c-9a4e-fdc526b908fc">
+                    <propertyInstance
+                      Id="115222b7-563b-42ce-b3d0-c512196d1b44"
+                      name="PackageVisibility"
+                      value="internal" />
+                  </stereotypeInstanceHasPropertyInstances>
+                </propertyInstances>
+              </stereotypeInstance>
+            </appliedStereotypesInternal>
+            <type_NamedElement>
+              <classMoniker
+                Id="b5b2c41f-56ef-416f-8340-8fd07cb0f14f"
+                LastKnownName="ResourceManager"
+                LastKnownLocation="Package5_2219.uml" />
+            </type_NamedElement>
+          </property>
+          <property
+            Id="0d87d57a-2363-48aa-b3b8-5ca06211ba29"
+            name="resourceCulture"
+            visibility="Private"
+            isLeaf="false"
+            isStatic="true"
+            isReadOnly="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <referencesInternal>
+              <reference
+                Id="319ce05b-f876-4bbc-af69-1c9fa1fc6893"
+                handle="viewcode://./CodeSchema_Field?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2Fasafb_000%2FDocuments%2FVisual Studio 2013%2FProjects%2FE_Mart%2FMainProg%2Fbin%2FDebug%2FMainProg.exe&quot; Namespace%3DMainProg.Properties Type%3DResources Member%3DresourceCulture"
+                tag="ViewCode" />
+            </referencesInternal>
+            <appliedStereotypesInternal>
+              <stereotypeInstance
+                Id="46770fb3-bb46-4d7c-8d02-23b7f4cb0eae"
+                name="field"
+                profile="CSharpProfile">
+                <propertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="4b38e199-f1d4-4063-b5c9-37c8acccf50d">
+                    <propertyInstance
+                      Id="77c52a1e-33fc-41e3-b371-f55f5cd5608e"
+                      name="ClrAttributes" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="37ae73b4-2de7-48f6-8035-cd369e8e6eda">
+                    <propertyInstance
+                      Id="d757a4aa-6ad8-4801-85e3-7c9d75cb0301"
+                      name="IsConst"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="bc440461-732d-46d7-8d22-bd21f378e6e8">
+                    <propertyInstance
+                      Id="33cd11ef-c52a-4a7f-ba9e-cfd73972c5a7"
+                      name="IsNullable"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="c7acff0f-d7ce-412b-9a93-f189db3de0de">
+                    <propertyInstance
+                      Id="739fbbb8-8f0d-44ef-b43b-741eed51f11e"
+                      name="IsVolatile"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="3b1a23ac-a6d6-4576-96b5-afa1916dd1f8">
+                    <propertyInstance
+                      Id="e605b363-fe1d-4454-8bc7-c4f0361e7621"
+                      name="PackageVisibility"
+                      value="internal" />
+                  </stereotypeInstanceHasPropertyInstances>
+                </propertyInstances>
+              </stereotypeInstance>
+            </appliedStereotypesInternal>
+            <type_NamedElement>
+              <classMoniker
+                Id="e938b0b9-2c99-458b-8bdf-9b68fdae2d41"
+                LastKnownName="CultureInfo"
+                LastKnownLocation="Package6_2219.uml" />
+            </type_NamedElement>
+          </property>
+        </ownedAttributesInternal>
+        <ownedOperationsInternal>
+          <operation
+            Id="f5f90e00-5cc6-40e7-a1b7-c408e0ff5a2f"
+            name="Resources"
+            visibility="Package"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="5d446ff8-9908-4e6f-a74c-6c7aa1a87bdb"
+                handle="viewcode://./CodeSchema_Method?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2Fasafb_000%2FDocuments%2FVisual Studio 2013%2FProjects%2FE_Mart%2FMainProg%2Fbin%2FDebug%2FMainProg.exe&quot; Namespace%3DMainProg.Properties Type%3DResources Member%3D.ctor"
+                tag="ViewCode" />
+            </referencesInternal>
+            <appliedStereotypesInternal>
+              <stereotypeInstance
+                Id="d0922df1-dafb-4058-94d0-ff428ceb7465"
+                name="method"
+                profile="CSharpProfile">
+                <propertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="f9b2983c-0973-48cd-9ccc-e740404dd16f">
+                    <propertyInstance
+                      Id="58ecb7a9-ec72-40bc-9dec-79eea3dbedac"
+                      name="ClrAttributes" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="77afd752-34ab-4382-a64f-2baf8d631dcc">
+                    <propertyInstance
+                      Id="40501927-877b-48ab-a283-66dff1e598cf"
+                      name="IsPartial"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="eb0e5812-817b-4a01-9e15-93878c310ece">
+                    <propertyInstance
+                      Id="6a448f9c-bf7e-4725-923b-0ddeeced64ef"
+                      name="IsUnsafe"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="60303253-672a-4514-afdc-75142090c931">
+                    <propertyInstance
+                      Id="77db07af-2552-4119-8d65-18c45af60912"
+                      name="Inheritance"
+                      value="none" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="3fd14e56-ac17-4911-8fc9-89b8fcf40151">
+                    <propertyInstance
+                      Id="d4e6377b-6a0d-4067-b3a1-1ed66a9ebc75"
+                      name="PackageVisibility"
+                      value="internal" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="db16fa01-b322-4e56-b8dd-0bf3d2e56679">
+                    <propertyInstance
+                      Id="2d5f767f-3bb7-46d6-bbc7-c38b9c27896b"
+                      name="params"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                </propertyInstances>
+              </stereotypeInstance>
+            </appliedStereotypesInternal>
+          </operation>
+        </ownedOperationsInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="9c39d1ed-00de-4687-b204-7a9055dea827"
+        name="Settings"
+        visibility="Package"
+        isAbstract="false"
+        isLeaf="true"
+        isActiveClass="false">
+        <referencesInternal>
+          <reference
+            Id="e7d89d3a-81ab-4d8d-913c-4938a6b8e8af"
+            handle="viewcode://./CodeSchema_Class?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2Fasafb_000%2FDocuments%2FVisual Studio 2013%2FProjects%2FE_Mart%2FMainProg%2Fbin%2FDebug%2FMainProg.exe&quot; Namespace%3DMainProg.Properties Type%3DSettings"
+            tag="ViewCode" />
+        </referencesInternal>
+        <appliedStereotypesInternal>
+          <stereotypeInstance
+            Id="cdf3f259-204b-4e76-b7bf-2c531cc8e243"
+            name="class"
+            profile="CSharpProfile">
+            <propertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="5918c112-ba24-49be-a83d-619ebd46c000">
+                <propertyInstance
+                  Id="76e66928-5ecd-491f-a786-6553affeecd1"
+                  name="ClrAttributes" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="cd94a2e0-a7e7-463f-bd01-5ba526683bec">
+                <propertyInstance
+                  Id="0fc8c7e1-dae3-41e0-a469-81fcb9d3e1ba"
+                  name="IsPartial"
+                  value="false" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="f3d34cd4-9034-4717-87ac-8a11e27afd82">
+                <propertyInstance
+                  Id="eddb08f1-b652-4e0a-a4a8-83d7b6d2c1a3"
+                  name="IsStatic"
+                  value="False" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="a0074053-5ff1-4668-afa4-bb6306ff1820">
+                <propertyInstance
+                  Id="e4986640-9e35-480a-9fab-bed2ab220081"
+                  name="IsUnsafe"
+                  value="false" />
+              </stereotypeInstanceHasPropertyInstances>
+              <stereotypeInstanceHasPropertyInstances
+                Id="770d6cfb-923c-4f31-9673-9379ebe312d6">
+                <propertyInstance
+                  Id="6d24e711-bbc2-40ef-8486-a1aba0deb1ff"
+                  name="PackageVisibility"
+                  value="internal" />
+              </stereotypeInstanceHasPropertyInstances>
+            </propertyInstances>
+          </stereotypeInstance>
+        </appliedStereotypesInternal>
+        <generalsInternal>
+          <generalization
+            Id="a7539a0d-a8f4-48c8-98a0-2a2d08e9387d"
+            isSubstitutable="false">
+            <classMoniker
+              Id="9736c073-382d-4509-947a-e33a1bec099f"
+              LastKnownName="ApplicationSettingsBase"
+              LastKnownLocation="Package7_2219.uml" />
+          </generalization>
+        </generalsInternal>
+        <targetEnds>
+          <association
+            Id="13cfe09d-3184-4cf8-bc19-6e3b91b588df"
+            isDerived="false"
+            sourceEndRoleName="Settings"
+            targetEndRoleName="Default"
+            isLeaf="false"
+            isAbstract="false">
+            <classMoniker
+              Id="9c39d1ed-00de-4687-b204-7a9055dea827"
+              LastKnownName="Settings"
+              LastKnownLocation="Package4_2219.uml" />
+            <description>Property Default references type Settings.</description>
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="91fd389d-f857-4690-be0c-9c32edb22eeb"
+                  name="Settings"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false"
+                  isNavigableOwned="false">
+                  <lowerValueInternal>
+                    <literalString
+                      Id="8ff326ce-7013-4f4b-ba61-8de5ed4f3907"
+                      name="Lower"
+                      value="*" />
+                  </lowerValueInternal>
+                  <upperValueInternal>
+                    <literalString
+                      Id="5a380a5e-c517-4ea1-a2f5-a83e98010468"
+                      name="Upper"
+                      value="*" />
+                  </upperValueInternal>
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="1d19996d-a5ce-4dc1-b366-0c8987bdb4b0"
+                  name="Default"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false">
+                  <lowerValueInternal>
+                    <literalString
+                      Id="cb87d20b-19e4-4354-a34e-2032262c594a"
+                      name="Lower"
+                      value="1" />
+                  </lowerValueInternal>
+                  <upperValueInternal>
+                    <literalString
+                      Id="57cf7e11-7ade-4523-b33f-2541b2eac136"
+                      name="Upper"
+                      value="1" />
+                  </upperValueInternal>
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+        </targetEnds>
+        <ownedAttributesInternal>
+          <property
+            Id="75578a6a-1f4c-485e-915a-d6394f955b23"
+            name="Default"
+            isLeaf="false"
+            isStatic="true"
+            isReadOnly="true"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <referencesInternal>
+              <reference
+                Id="f7c88562-13da-418b-a152-35e2b4c854da"
+                handle="viewcode://./CodeSchema_Property?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2Fasafb_000%2FDocuments%2FVisual Studio 2013%2FProjects%2FE_Mart%2FMainProg%2Fbin%2FDebug%2FMainProg.exe&quot; Namespace%3DMainProg.Properties Type%3DSettings Member%3DDefault"
+                tag="ViewCode" />
+            </referencesInternal>
+            <appliedStereotypesInternal>
+              <stereotypeInstance
+                Id="8421e8e5-dec3-43fe-b797-0b5ca0992f68"
+                name="property"
+                profile="CSharpProfile">
+                <propertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="e5ef238c-51cc-4347-8a5f-7d46af8da42f">
+                    <propertyInstance
+                      Id="14e4ecb6-1442-4586-98a0-81b44678a6cf"
+                      name="ClrAttributes" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="46e20e1f-484c-483d-858c-9870a22fc55b">
+                    <propertyInstance
+                      Id="7e24ba6e-be03-4c64-a4bc-84fd03547552"
+                      name="Get"
+                      value="public" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="073079d2-2c45-4192-b84c-162f5531ea4a">
+                    <propertyInstance
+                      Id="6e479e97-1f0f-4ecc-8922-60a52ab68294"
+                      name="HasBody"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="a33057ca-57e7-4867-8275-23c87e66beae">
+                    <propertyInstance
+                      Id="637dbe13-982c-46cc-a640-2c7840a54790"
+                      name="IsUnsafe"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="8aabb660-d270-4760-819f-9df2255425e6">
+                    <propertyInstance
+                      Id="fc117665-96c6-4ecd-b63e-6a81f77a54f6"
+                      name="Inheritance"
+                      value="none" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="cab8a546-08bf-43b9-a7a1-5e11e443dfa0">
+                    <propertyInstance
+                      Id="92d369a1-fe8a-4ca4-8d37-29cbeabf3758"
+                      name="PackageVisibility"
+                      value="internal" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="f647a80a-9d12-423c-9516-440fb8f9dc44">
+                    <propertyInstance
+                      Id="a94f120a-5923-4492-8fe0-af276b53c00e"
+                      name="Set"
+                      value="none" />
+                  </stereotypeInstanceHasPropertyInstances>
+                </propertyInstances>
+              </stereotypeInstance>
+            </appliedStereotypesInternal>
+            <type_NamedElement>
+              <classMoniker
+                Id="9c39d1ed-00de-4687-b204-7a9055dea827"
+                LastKnownName="Settings"
+                LastKnownLocation="Package4_2219.uml" />
+            </type_NamedElement>
+          </property>
+          <property
+            Id="c52bc069-6146-48b7-a44d-b14d57d1a6ba"
+            name="defaultInstance"
+            visibility="Private"
+            isLeaf="false"
+            isStatic="true"
+            isReadOnly="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <referencesInternal>
+              <reference
+                Id="40cf3ff2-e16e-43ad-8f3a-44e997baeac4"
+                handle="viewcode://./CodeSchema_Field?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2Fasafb_000%2FDocuments%2FVisual Studio 2013%2FProjects%2FE_Mart%2FMainProg%2Fbin%2FDebug%2FMainProg.exe&quot; Namespace%3DMainProg.Properties Type%3DSettings Member%3DdefaultInstance"
+                tag="ViewCode" />
+            </referencesInternal>
+            <appliedStereotypesInternal>
+              <stereotypeInstance
+                Id="ee707ab1-b3c3-471e-a828-0da92af75fd7"
+                name="field"
+                profile="CSharpProfile">
+                <propertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="1ad5b274-8d85-487a-88e5-0f3f5013e6cd">
+                    <propertyInstance
+                      Id="51daafd9-5d19-446f-9df3-0cf38a287ac7"
+                      name="ClrAttributes" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="191f622a-4708-47dd-aeed-99b30156c977">
+                    <propertyInstance
+                      Id="f0c657f8-e4e0-4ab5-9166-30b798ac026d"
+                      name="IsConst"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="c9d31363-c109-4adb-b64f-d61ee0db0dea">
+                    <propertyInstance
+                      Id="98400fdc-f4ce-4b43-8e35-3d75b9e26e17"
+                      name="IsNullable"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="34f52473-93f4-4c6a-925f-e7c8f03361ce">
+                    <propertyInstance
+                      Id="e0214034-4513-4c7d-96f9-3cae46ad3d34"
+                      name="IsVolatile"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="6a58562d-9eb3-4200-a576-acb81e043527">
+                    <propertyInstance
+                      Id="f48120de-3c95-4aea-9079-47c0336e5d6e"
+                      name="PackageVisibility"
+                      value="internal" />
+                  </stereotypeInstanceHasPropertyInstances>
+                </propertyInstances>
+              </stereotypeInstance>
+            </appliedStereotypesInternal>
+            <type_NamedElement>
+              <classMoniker
+                Id="9c39d1ed-00de-4687-b204-7a9055dea827"
+                LastKnownName="Settings"
+                LastKnownLocation="Package4_2219.uml" />
+            </type_NamedElement>
+          </property>
+        </ownedAttributesInternal>
+        <ownedOperationsInternal>
+          <operation
+            Id="ad7cb109-2c92-48e4-a570-58001fbf6880"
+            name="Settings"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="b758e88d-e7a2-4a84-906f-c6be363314a3"
+                handle="viewcode://./CodeSchema_Method?Assembly%3D&quot;file:%2F%2F%2FC:%2FUsers%2Fasafb_000%2FDocuments%2FVisual Studio 2013%2FProjects%2FE_Mart%2FMainProg%2Fbin%2FDebug%2FMainProg.exe&quot; Namespace%3DMainProg.Properties Type%3DSettings Member%3D.ctor"
+                tag="ViewCode" />
+            </referencesInternal>
+            <appliedStereotypesInternal>
+              <stereotypeInstance
+                Id="a632f719-af74-46bd-85b4-dde088034007"
+                name="method"
+                profile="CSharpProfile">
+                <propertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="535f15e1-fee6-4a7e-9942-0d5f680c5d18">
+                    <propertyInstance
+                      Id="77f42ac4-6aa2-47c3-b4d5-593cc92b9003"
+                      name="ClrAttributes" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="37a1446f-59c0-4b6e-b7f7-cccafeafdba2">
+                    <propertyInstance
+                      Id="1c182102-b8cd-4351-a85c-46e0ae26ee86"
+                      name="IsPartial"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="c5b95d65-6d33-454c-bce0-815cf62b627e">
+                    <propertyInstance
+                      Id="5868da0e-422f-4526-9d61-0135b26900f3"
+                      name="IsUnsafe"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="16237538-cbcd-4ae2-8a14-9b4f4881482f">
+                    <propertyInstance
+                      Id="4084d974-5c2b-488d-8c6e-65e952a2ec9d"
+                      name="Inheritance"
+                      value="none" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="9a62ab84-3bbc-4685-8ed1-df9d6fee16ef">
+                    <propertyInstance
+                      Id="36cc2fb7-6d74-40d5-a7e4-fc17e96e34ac"
+                      name="PackageVisibility"
+                      value="internal" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="a137a2e9-aee1-431c-a92f-34db464a2443">
+                    <propertyInstance
+                      Id="d9b0be93-7b58-45ae-bfa1-a7d26fbfd568"
+                      name="params"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                </propertyInstances>
+              </stereotypeInstance>
+            </appliedStereotypesInternal>
+          </operation>
+        </ownedOperationsInternal>
+      </class>
+    </packageHasNamedElement>
+  </packagedElements>
+</package>

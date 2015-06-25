@@ -79,9 +79,24 @@ namespace DAL
         public void SQLClear()
         {
             clear();
-            Assert.IsEmpty(sql.ReadFromFile(Elements.Product));
+            Assert.IsEmpty(list);
             clear();
 
+        }
+        [Test]
+        public void SQLProductQueryByName()
+        {
+            clear();
+            List<object> depList = new List<object>();
+            depList.Add(new Backend.Department("Dep1", 1));
+            depList.Add(new Backend.Department("Dep2", 3));
+            sql.WriteToFile(depList, new Backend.Department());
+            list.Add(a);
+            list.Add(b);
+            sql.WriteToFile(list, b);
+            List<Backend.Product> testlist = sql.ProductNameQuery("first", StringFields.name);
+            Assert.Contains(a, testlist);
+            clear();
         }
         [Test]
         public void SQLProductQueryByNum()
