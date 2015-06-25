@@ -420,10 +420,10 @@ namespace PL
             if (done) // Search was successful
             {
                 MessageBox.Show("Search of " + cats[categoryNum].GetEntityName() + " was done successfully!\nPlease click OK to view the results");
+                // update the tab that is selected
+                allTabs.SelectedIndex = categoryNum - 1; 
                 DisplayData(results, categoryNum);
                 currentCategory = categoryNum;
-                // update the tab that is selected
-                allTabs.SelectedIndex = categoryNum - 1;
             }
             return done;
         }
@@ -637,7 +637,7 @@ namespace PL
         public bool RemoveDataEntity(Object _objToDelete)
         {
             bool done = true;
-            MessageBoxResult result = MessageBox.Show("Are you sure you want to remove the selected " + cats[currentCategory].GetEntityName(), "Remove" + cats[currentCategory].GetEntityName(), MessageBoxButton.YesNo);
+            MessageBoxResult result = MessageBox.Show("Are you sure you want to remove the selected " + cats[currentCategory].GetEntityName() + "?", "Remove" + cats[currentCategory].GetEntityName(), MessageBoxButton.YesNo);
             switch (result)
             {
                 case MessageBoxResult.Yes:

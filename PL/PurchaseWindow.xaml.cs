@@ -111,24 +111,31 @@ namespace PL
                 foreach (var comboBox in currentTypes.Keys)
                     if (comboBox.SelectedItem != null && comboBox.SelectedIndex != 3)
                         areAllNull = false;
+
+                ComboBox selectedComboBox = ((ComboBox)sender);
+                int TypesInStore = Enum.GetNames(typeof(PType)).Length;
+
                 if (areAllNull)
+                {
                     currentList.Clear();
+                    if (selectedComboBox.SelectedIndex != -1)
+                        currentTypes[selectedComboBox] = TypesInStore;
+                }
                 else
                 {
-                    ComboBox selectedComboBox = ((ComboBox)sender);
-                    int TypesInStore = Enum.GetNames(typeof(PType)).Length;
                     int previousChoice = currentTypes[selectedComboBox];
                     if (!previousChoice.Equals(TypesInStore))
                         if (!isDuplicate(selectedComboBox, previousChoice))
                             ((Product_BL)parentWindow.cats[5]).FilterProducts(currentList, typeIndex[previousChoice], false);
 
                     int newChoice = selectedComboBox.SelectedIndex;
-                    if (!newChoice.Equals(TypesInStore))
-                        if (!isDuplicate(selectedComboBox, newChoice))
-                            if (newChoice != -1)
+                    if (newChoice != -1)
+                    {
+                        if (!newChoice.Equals(TypesInStore))
+                            if (!isDuplicate(selectedComboBox, newChoice))
                                 ((Product_BL)parentWindow.cats[5]).FilterProducts(currentList, typeIndex[newChoice], true);
-
-                    currentTypes[selectedComboBox] = newChoice;
+                        currentTypes[selectedComboBox] = newChoice;
+                    }
 
                     // update products and amounts from a saved dictionary
                     if (currentCart.Any())
@@ -154,6 +161,10 @@ namespace PL
         {
             foreach (var comboBox in currentTypes.Keys)
                 comboBox.ClearValue(ComboBox.SelectedItemProperty);
+
+            String[] allTypes = Enum.GetNames(typeof(PType));
+            for (int i = 0; i < allTypes.Length; i++)
+                currentTypes[currentTypes.ElementAt(i).Key] = allTypes.Length;
         }
 
         public void EmphasizeBestSellers(object sender, DataGridRowEventArgs e)

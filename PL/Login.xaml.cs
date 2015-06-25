@@ -87,7 +87,7 @@ namespace PL
         private void Register(object sender, RoutedEventArgs e)
         {
             isEndProccess = false;
-            this.Close();
+            this.Hide();
             AddEditCustomer reg = new AddEditCustomer(this, this.parentWindow, true, true, null);
             reg.Show();
         }
