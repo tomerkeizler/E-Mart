@@ -82,8 +82,7 @@ namespace BL
                 {
                     if (clubmem.CreditCard != null && clubmem.CreditCard.CreditNumber == ((Backend.ClubMember)newCM).CreditCard.CreditNumber)
                     {
-                        //throw new System.Data.DataException("The Credit Card ID allready exist in the system");
-                        ((Backend.ClubMember)newCM).CreditCard.CreditNumber++;
+                        throw new System.Data.DataException("The Credit Card ID allready exist in the system");
                     }
                 }
             }
