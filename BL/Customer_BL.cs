@@ -71,13 +71,14 @@ namespace BL
         {
             List<Backend.Customer> Allclubmems = itsDAL.ReadFromFile(Elements.Customer).Cast<Backend.Customer>().ToList();
             //Check for credit card conflict
-            if (((Backend.Customer)newC).CreditCard != null)
+            if (((Backend.Customer)newC).CreditCard != null && !((Backend.Customer)newC).CreditCard.Equals(((Backend.Customer)oldC).CreditCard))
             {
                 foreach (Backend.Customer customer in Allclubmems)
                 {
                     if (customer.CreditCard != null && customer.CreditCard.CreditNumber == ((Backend.Customer)newC).CreditCard.CreditNumber)
                     {
-                        throw new System.Data.DataException("The Credit Card ID allready exist in the system");
+                        //throw new System.Data.DataException("The Credit Card ID allready exist in the system");
+                        ((Backend.Customer)newC).CreditCard.CreditNumber++;
                     }
                 }
             }
