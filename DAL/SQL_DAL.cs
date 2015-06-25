@@ -986,7 +986,7 @@ namespace DAL
             //Customer Entity
             Customer currtCusAsClub = new Customer();
             currtCusAsClub.IsAClubMember = true;
-            currtCusAsClub.FirstName = currentClubMember.LastName;
+            currtCusAsClub.FirstName = currentClubMember.FirstName;
             currtCusAsClub.LastName = currentClubMember.LastName;
             currtCusAsClub.Id = currentClubMember.Id;
             dataContextClubMember.Customer = currtCusAsClub;
